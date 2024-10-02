@@ -1,14 +1,14 @@
 #pragma once
-#include "helper.h"
-#include "PlayerClasses.h"
+#include "includes.h"
+#include "Config.h"
 
 
 
 class Aimbot {
 
 public:
-	void AimAtPlayer(uintptr_t entity, bool orb);
-	void AimAt(vec3 Target);
-	void RunAimbot();
+	vec2 GetAimAngles(vec3 Target);
+	void AimAt(uintptr_t entity, const char* bone);
+	void RunAimbot(ConfigSettings cfg);
 
 };

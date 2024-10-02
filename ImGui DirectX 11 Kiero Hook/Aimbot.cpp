@@ -31,105 +31,130 @@ inline void sort_entities()
 	}	
 }
 
+vec2 Aimbot::GetAimAngles(vec3 Target) {
 
+	vec2 AimAngles = { 0, 0 };
 
-void Aimbot::AimAt(vec3 Target) {
 	uint64_t CameraManager = *(uint64_t*)(Aimbot_HelperObj.Modulebaseaddress + Aimbot_Offsets.o_CameraManager + 0x28);
-	vec2* ViewAngles = (vec2*)(CameraManager + 0x44);
 	vec3 CameraPos = *(vec3*)(CameraManager + 0x38);
 	vec3 AbsPos = Target - CameraPos;
-	ViewAngles->y = atan2f(AbsPos.y, AbsPos.x) * 180 / M_PI;
-	ViewAngles->x = -atan2f(AbsPos.z, sqrt(AbsPos.x * AbsPos.x + AbsPos.y * AbsPos.y)) * 180 / M_PI;
+	AimAngles.y = atan2f(AbsPos.y, AbsPos.x) * 180 / M_PI;
+	AimAngles.x = -atan2f(AbsPos.z, sqrt(AbsPos.x * AbsPos.x + AbsPos.y * AbsPos.y)) * 180 / M_PI;
+	return AimAngles;
 }
 
-void Aimbot::AimAtPlayer(uintptr_t entity, bool orb) {
-	if(!entity)
-		return;
-	vec3 TargetPos;
-	TargetPos.x = 0;
-	TargetPos.y = 0;
-	TargetPos.z = 0;
-	if (orb) {
-		uint64_t GameSceneNode = *(uint64_t*)(entity + C_BaseEntity::m_pGameSceneNode);
-		vec3 TargetPos = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
-	}
-	else {
-		//Get PlayerPawn
-		uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
-		uint64_t Pawn = Aimbot_HelperObj.get_base_entity_from_index(Aimbot_HelperObj.CHandle_get_entry_index(PawnHandle));
-		std::string bonechoice = "head";
-		int boneindex = Aimbot_HelperObj.get_index(Pawn, bonechoice);
-		TargetPos = Aimbot_HelperObj.GetBoneVectorFromIndex(Pawn, boneindex);
-	}
-	this->AimAt(TargetPos); // Aim at the target
+void Aimbot::AimAt(uintptr_t entity, const char* bone) {
+
+	const uint64_t CameraManager = *(uint64_t*)(Aimbot_HelperObj.Modulebaseaddress + Aimbot_Offsets.o_CameraManager + 0x28);
+	vec2* ViewAngles = (vec2*)(CameraManager + 0x44);
+
+	vec3 vec_target = { 0, 0, 0 };
+	vec_target = Aimbot_HelperObj.GetBonePosition(entity, bone);
+	
+	vec2 aimangles = this->GetAimAngles(vec_target);
+	ViewAngles->x = aimangles.x;
+	ViewAngles->y = aimangles.y;
+
 }
 
-void Aimbot::RunAimbot() {
+float GetAngleDifference(float angle1, float angle2) {
+	float diff = fmod(angle1 - angle2 + 180.0f, 360.0f);
+	if (diff < 0) {
+		diff += 360.0f;
+	}
+	return diff - 180.0f; // Normalize to [-180, 180]
+}
+
+
+void Aimbot::RunAimbot(ConfigSettings cfg) {
 	processed_ents.clear();
 	sort_entities();
 
 	float ClosestDistance = 99999999999.0;
-	int ClosestIndex = 0;
+	int ClosestIndex = 999;
 
-	uint64_t aimbotTarget = 0;
-	vec3 TargetPos = { 0, 0, 0 };  // Initialize TargetPos here
+	int LowestHealth = 99999999999;
+	int LowestHealthIndex = 999;
+	
+	float LowestFov = 99999999999.0;
+	int lowestfovindex = 999;
 
-	// Sort the entities by distance to the player
+	//get PlayerData
+	PlayerData LocalPlayerData = Aimbot_HelperObj.get_player_data(Aimbot_HelperObj.get_local_player());
+	const uint64_t CameraManager = *(uint64_t*)(Aimbot_HelperObj.Modulebaseaddress + Aimbot_Offsets.o_CameraManager + 0x28);
+	vec2* ViewAngles = (vec2*)(CameraManager + 0x44);
+
+	// Sort Entities
 	for (int i = 0; i < processed_ents.size(); i++) {
 
 		if (processed_ents.empty() || !processed_ents[i])
 			continue;
-		
 
-		PlayerData LocalPlayerData = Aimbot_HelperObj.get_player_data(Aimbot_HelperObj.get_local_player());
 		PlayerData TargetPlayerData = Aimbot_HelperObj.get_player_data(processed_ents[i]);
 
 		if (!TargetPlayerData.isalive)
 			continue;
-		if(TargetPlayerData.TeamNum == LocalPlayerData.TeamNum)
+		if (TargetPlayerData.TeamNum == LocalPlayerData.TeamNum)
 			continue;
 
-
-		uintptr_t entity = processed_ents[i];
-		std::string EntName = Aimbot_HelperObj.get_schema_name(entity);
-
-		// Reset TargetPos for each entity iteration
-		TargetPos = { 0, 0, 0 };
-
-		if (EntName == "CCitadelPlayerController") {
-			uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
-			uint64_t Pawn = Aimbot_HelperObj.get_base_entity_from_index(Aimbot_HelperObj.CHandle_get_entry_index(PawnHandle));
-			uint64_t boneindex = Aimbot_HelperObj.get_index(Pawn, "head");
-			TargetPos = Aimbot_HelperObj.GetBoneVectorFromIndex(Pawn, boneindex);  // No re-declaration of TargetPos here
-			
-
-		}
-		else if (EntName == "CItemXP") {
-			uint64_t GameSceneNode = *(uint64_t*)(entity + C_BaseEntity::m_pGameSceneNode);
-			TargetPos = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);  // No re-declaration of TargetPos here
-		}
+		vec3 TargetPos = { 0, 0, 0 };
+		TargetPos = Aimbot_HelperObj.GetBonePosition(processed_ents[i], "head");
 
 		if (TargetPos.x == 0 && TargetPos.y == 0 && TargetPos.z == 0)
 			continue; // Skip invalid targets (no position data)
-		
 
+		// Closest
 		// Calculate distance between targetpos and localplayer
-		vec3 LocalPlayerPos = LocalPlayerData.m_vecOrigin;
+		float distance = Aimbot_HelperObj.GetDistance(LocalPlayerData.m_vecOrigin, TargetPos);
 
-		float distanceSquared = (TargetPos.x - LocalPlayerPos.x) * (TargetPos.x - LocalPlayerPos.x) +
-			(TargetPos.y - LocalPlayerPos.y) * (TargetPos.y - LocalPlayerPos.y) +
-			(TargetPos.z - LocalPlayerPos.z) * (TargetPos.z - LocalPlayerPos.z);
-		float distance = sqrt(distanceSquared);
-	
+		if (distance > cfg.aimbot.MaxDistance)
+			continue;
+
+		// Fov
+
+		vec2 LocalPlayerAngles = { ViewAngles->x, ViewAngles->y };
+		vec2 AimAngles = GetAimAngles(TargetPos);
+		vec2 angle_difference = AimAngles - LocalPlayerAngles;
+		if (angle_difference.x > 180) angle_difference.x -= 360;
+		if (angle_difference.x < -180) angle_difference.x += 360;
+		if (angle_difference.y > 180) angle_difference.y -= 360;
+		if (angle_difference.y < -180) angle_difference.y += 360;
+		float FOV = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
+
+		if (FOV > cfg.aimbot.fov)
+			continue; // Skip targets outside of the FOV
 
 		if (distance < ClosestDistance) {
 			ClosestDistance = distance;
 			ClosestIndex = i;
 		}
+
+		if (TargetPlayerData.Health < LowestHealth) {
+			LowestHealth = TargetPlayerData.Health;
+			LowestHealthIndex = i;
+		}
+
+		if (FOV < LowestFov) {
+			LowestFov = FOV; // Update the lowest FOV
+			lowestfovindex = i; // Update the index of the target with the lowest FOV
+		}
+
+
+	}
+	if (cfg.aimbot.targetSelectionMode == 0 && ClosestIndex !=999) {
+		if (!processed_ents.empty() && processed_ents[ClosestIndex]) {
+			AimAt(processed_ents[ClosestIndex], "head");
+		}
+	}
+	else if (cfg.aimbot.targetSelectionMode == 1 && LowestHealthIndex != 999) {
+		if (!processed_ents.empty() && processed_ents[LowestHealthIndex]) {
+			AimAt(processed_ents[LowestHealthIndex], "head");
+		}
+	}
+	else if (cfg.aimbot.targetSelectionMode == 2 && lowestfovindex != 999) {
+		if (!processed_ents.empty() && processed_ents[lowestfovindex]) {
+			AimAt(processed_ents[lowestfovindex], "head");
+		}
 	}
 
-	// Make sure we have a valid target
-	if (!processed_ents.empty() && processed_ents[ClosestIndex]) {
-		this->AimAtPlayer(processed_ents[ClosestIndex], false);		
-	}
 }

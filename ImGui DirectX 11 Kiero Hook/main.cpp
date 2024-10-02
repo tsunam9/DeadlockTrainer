@@ -69,17 +69,57 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 	if (Config.MenuOpen) {
 
-		ImGui::Begin("NiggerKillerWare");
-		ImGui::Checkbox("Aimbot", &Config.bAimbot);
-		ImGui::Checkbox("Esp", &Config.bEsp);
-		ImGui::Checkbox("BoxEsp", &Config.boxEsp);
-		ImGui::Checkbox("Health Text", &Config.HealthEsp);
-		ImGui::Checkbox("Tracers", &Config.Tracers);
-		if (ImGui::Button("Slay them all"))
+		ImGui::Begin("Moonlightkillabrotha");
+
+		if (ImGui::BeginTabBar("Cheat"))
 		{
-			kiero::shutdown();
-			fclose(fp);
-			FreeConsole();
+			// First tab
+			if (ImGui::BeginTabItem("Aimbot"))
+			{
+				static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
+				static int currentItem = 0; // Index of the currently selected item
+
+				ImGui::Checkbox("Aimbot", &Config.aimbot.bAimbot);
+				ImGui::SameLine();
+				ImGui::Hotkey(&Config.aimbot.AimKey);
+				ImGui::Combo("Target ", &currentItem, items, IM_ARRAYSIZE(items)); Config.aimbot.targetSelectionMode = currentItem;
+				ImGui::Text("Selected: %s", items[currentItem]);
+				ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f,"%.1f");
+				ImGui::SliderFloat("FOV", &Config.aimbot.fov, 0.0f, 180.0f, "%.1f");
+
+
+
+				ImGui::EndTabItem();
+			}
+
+			// Second tab
+			if (ImGui::BeginTabItem("Esp"))
+			{
+				ImGui::Checkbox("Esp", &Config.esp.bEsp);
+				ImGui::Checkbox("Box Esp", &Config.esp.boxEsp);
+				ImGui::Checkbox("Health Text", &Config.esp.HealthEsp);
+				ImGui::Checkbox("Tracers", &Config.esp.Tracers);
+				ImGui::Checkbox("Distance Esp", &Config.esp.DistanceEsp);
+				ImGui::Checkbox("Name Esp", &Config.esp.NameEsp);
+				ImGui::Checkbox("Health Bar", &Config.esp.HealthBar);
+				ImGui::Checkbox("Draw Fov", &Config.esp.DrawFov);
+				ImGui::EndTabItem();
+			}
+
+			// Third tab
+			if (ImGui::BeginTabItem("Misc"))
+			{
+				if (ImGui::Button("Slay them all"))
+				{
+					kiero::shutdown();
+					fclose(fp);
+					FreeConsole();
+				}
+
+				ImGui::EndTabItem();
+			}
+
+			ImGui::EndTabBar();
 		}
 		ImGui::End();
 	}

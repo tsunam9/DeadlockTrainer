@@ -30,10 +30,10 @@ void GodFunction(uintptr_t ConfigPtr){
     ConfigSettings MainSettings = *(ConfigSettings*)ConfigPtr;
         
 
-        if (MainSettings.bAimbot && GetAsyncKeyState(VK_RBUTTON)) {
-            Main_AimbotObj.RunAimbot();
+        if (MainSettings.aimbot.bAimbot && GetAsyncKeyState(MainSettings.aimbot.AimKey)) {
+            Main_AimbotObj.RunAimbot(MainSettings);
         }
-        if (MainSettings.bEsp) {
+        if (MainSettings.esp.bEsp) {
             Main_ESPObj.DoEsp(MainSettings);
 		}
         

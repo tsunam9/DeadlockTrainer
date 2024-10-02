@@ -200,9 +200,9 @@ PlayerData Helper::get_player_data(uint64_t entity) {
 	uint64_t GameSceneNode = *(uint64_t*)(Pawn + C_BaseEntity::m_pGameSceneNode);
 	uint64_t PlayerDataGlobal = entity + CCitadelPlayerController::m_PlayerDataGlobal;
 
-	ReturnObj.m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
-	ReturnObj.Health = *(uint64_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealth);
-	ReturnObj.MaxHealth = *(uint64_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealthMax);
+																																					ReturnObj.m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
+	ReturnObj.Health = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealth);
+	ReturnObj.MaxHealth = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealthMax);
 	ReturnObj.HeroID = *(int*)(PlayerDataGlobal + PlayerDataGlobal_t::m_nHeroID);
 	ReturnObj.TeamNum = *(int*)(Pawn + C_BaseEntity::m_iTeamNum);
 	ReturnObj.isalive = *(bool*)(PlayerDataGlobal + PlayerDataGlobal_t::m_bAlive);
@@ -210,6 +210,37 @@ PlayerData Helper::get_player_data(uint64_t entity) {
 
 	return ReturnObj;
 }
+
+std::string Helper::GetHeroNameByID(int id) {
+	switch (id) {
+	case Infernus: return "Infernus";
+	case Seven: return "Seven";
+	case Vindicta: return "Vindicta";
+	case LadyGeist: return "LadyGeist";
+	case Abrams: return "Abrams";
+	case Wraith: return "Wraith";
+	case McGinnis: return "McGinnis";
+	case Paradox: return "Paradox";
+	case Dynamo: return "Dynamo";
+	case Kelvin: return "Kelvin";
+	case Haze: return "Haze";
+	case Holliday: return "Holliday";
+	case Bebop: return "Bebop";
+	case GreyTalon: return "Grey Talon";
+	case MoAndKrill: return "Mo and Krill";
+	case Shiv: return "Shiv";
+	case Ivy: return "Ivy";
+	case Warden: return "Warden";
+	case Yamato: return "Yamato";
+	case Lash: return "Lash";
+	case Viscous: return "Viscous";
+	case Wrecker: return "Wrecker";
+	case Pocket: return "Pocket";
+	case Mirage: return "Mirage";
+	default: return "Unknown Hero"; // Handle invalid IDs
+	}
+}
+
 
 
 std::string Helper::get_schema_name(const uintptr_t& entity)
@@ -227,6 +258,16 @@ std::string Helper::get_schema_name(const uintptr_t& entity)
 	return class_name_str;
 }
 
+float Helper::GetDistance(vec3 point1, vec3 point2) {
+
+	float distanceSquared = (point1.x - point2.x) * (point1.x - point2.x) +
+		(point1.y - point2.y) * (point1.y - point2.y) +
+		(point1.z - point2.z) * (point1.z - point2.z);
+	float distance = sqrt(distanceSquared);
+
+	return distance;
+}
+
 uint64_t Helper::CHandle_get_entry_index(uint64_t handle)
 {
 	return handle & 0x7FFF;
@@ -237,4 +278,21 @@ bool Helper::CHandle_is_valid(uint64_t handle)
 	return handle > 0 && handle != 0xFFFFFFFF;
 }
 
+vec3 Helper::GetBonePosition(uintptr_t entity, const char* BoneName) {
+
+	vec3 BonePos = { 0, 0, 0 };
+
+	//Get PlayerPawn
+	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
+	uint64_t Pawn = this->get_base_entity_from_index(this->CHandle_get_entry_index(PawnHandle));
+	std::string bonechoice = BoneName;
+	int boneindex = this->get_index(Pawn, bonechoice);
+	BonePos = this->GetBoneVectorFromIndex(Pawn, boneindex);
+
+	return BonePos;
+}
+
+float Helper::DegreesToRadians(float degrees) {
+	return degrees * (M_PI / 180.0f);
+}
 

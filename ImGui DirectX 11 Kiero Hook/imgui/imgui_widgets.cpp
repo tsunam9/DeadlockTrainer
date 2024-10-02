@@ -1158,6 +1158,37 @@ void ImGui::Bullet()
     SameLine(0, style.FramePadding.x * 2.0f);
 }
 
+void ImGui::Hotkey(int* key)
+{
+    static bool waitingForKey = false;
+
+    if (key == NULL)
+        *key = 0;
+
+    if (!waitingForKey) {
+
+        int keynum = *key;
+        std::string temp = std::to_string(*key);
+        if (ImGui::Button(temp.c_str())) {
+            waitingForKey = true; // Start waiting for a key press
+        }
+    }
+    else {
+        ImGui::Button("..."); // Indicate waiting for a key
+
+        // Check for key presses
+        for (int i = 0; i < 256; i++) {
+            if (GetAsyncKeyState(i) & 0x8000) { // Check if the key is pressed
+                *key = i; // Update the key value
+                waitingForKey = false; // Stop waiting
+                break; // Exit the loop after detecting a key
+            }
+        }
+    }
+}
+
+
+
 //-------------------------------------------------------------------------
 // [SECTION] Widgets: Low-level Layout helpers
 //-------------------------------------------------------------------------

@@ -28,6 +28,8 @@ inline void sort_esp_entities()
 }
 
 //impliment safety checks
+
+
 void Esp::DrawEsp(uintptr_t Entity)
 {
 	uintptr_t ViewMatrix = (EspHelperObj.Modulebaseaddress + EspOffsetsObj.o_ViewMatrix);
@@ -52,27 +54,54 @@ void Esp::DrawEsp(uintptr_t Entity)
 			
 	int height = ScreenFeet.y - ScreenHead.y;
 	int width = height / 1.75;
-	float EqualizeHeadX = ScreenHead.x = ScreenHead.x - width / 2;
-	float EqualizeHeadY = ScreenHead.y = ScreenHead.y - height / 10;
+	vec2 BoxHead;
+	BoxHead.x = ScreenHead.x - width / 2;
+	BoxHead.y = ScreenHead.y - height / 10;
 
-	if (espconfig.boxEsp) {
-		draw.DrawBox(EqualizeHeadX, EqualizeHeadY, width, height * 1.2, IM_COL32(255, 0, 0, 255));
-		draw.DrawCircle(ScreenHead.x + width / 2, ScreenHead.y + height * 0.125, 15.0, IM_COL32(255, 0, 0, 255));
+	int ScreenWidth = *(int*)(EspHelperObj.Modulebaseaddress + EspOffsetsObj.o_Resolution);
+	int ScreenHeight = *(int*)(EspHelperObj.Modulebaseaddress + EspOffsetsObj.o_Resolution + 8);
+
+	if (espconfig.esp.boxEsp) {
+		draw.DrawBox(BoxHead.x, BoxHead.y, width, height * 1.2, IM_COL32(255, 0, 0, 255));
 	}
-	if (espconfig.HealthEsp) {
-		std::string temp = std::to_string(EntInfo.Health);
-		draw.DrawTextA(ScreenHead.x + width / 2, ScreenHead.y + height * 1.2, IM_COL32(255, 255, 255, 255), _strdup(temp.c_str()));
+	if (espconfig.esp.HealthEsp) {
+		std::string Health = std::to_string(EntInfo.Health);
+		std::string MaxHealth = std::to_string(EntInfo.MaxHealth);
+		std::string HealthDisplay = "Health: " + Health + " / " + MaxHealth;
+
+		draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.2, IM_COL32(0, 255, 0, 255), _strdup(HealthDisplay.c_str()));
 	}
-	if (espconfig.Tracers) {
-		int ScreenWidth = *(int*)(EspHelperObj.Modulebaseaddress + EspOffsetsObj.o_Resolution);
-		int ScreenHeight = *(int*)(EspHelperObj.Modulebaseaddress + EspOffsetsObj.o_Resolution + 8);
+	if (espconfig.esp.Tracers) {
 		draw.DrawLine(ScreenWidth / 2, ScreenHeight, ScreenFeet.x, ScreenFeet.y, IM_COL32(255, 255, 255, 255));
 	}
-		
+	if (espconfig.esp.DistanceEsp) {
+
+		PlayerData LocalPlayerData = EspHelperObj.get_player_data(EspHelperObj.get_local_player());
+		std::string temp = std::to_string(EspHelperObj.GetDistance(LocalPlayerData.m_vecOrigin, EntInfo.m_vecOrigin));
+		draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.5, IM_COL32(255, 255, 255, 255), _strdup(temp.c_str()));
+	}
+	if (espconfig.esp.NameEsp) {
+		draw.DrawTextA(BoxHead.x, BoxHead.y - height * 0.1, IM_COL32(255, 255, 255, 255), EspHelperObj.GetHeroNameByID(EntInfo.HeroID).c_str());
+	}
+	if (espconfig.esp.HealthBar) {
+		float missinghealth = 1.0f - ((float)EntInfo.Health / (float)EntInfo.MaxHealth);
+		draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 4, height * 1.2 , IM_COL32(0, 255, 0, 255));
+		draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 4, height * 1.2 * missinghealth, IM_COL32(255, 0, 0, 255));
+	}
+	if (espconfig.esp.DrawFov) {
+		const uint64_t CameraManager = *(uint64_t*)(EspHelperObj.Modulebaseaddress + EspOffsetsObj.o_CameraManager + 0x28);
+		float pFov = *(float*)(CameraManager + 0x50);
+		float radius = tanf(EspHelperObj.DegreesToRadians(espconfig.aimbot.fov) / 2) / tanf(EspHelperObj.DegreesToRadians(pFov) / 2) * (ScreenWidth / 2);
+
+		draw.DrawCircle(ScreenWidth / 2, ScreenHeight / 2, radius, IM_COL32(255, 255, 255, 255));
+	}
+	
+	
 
 
 
 }
+
 
 void Esp::DoEsp(ConfigSettings cfg) {
 	espconfig = cfg;

@@ -9,6 +9,8 @@
 #include <iostream>
 #include <vector>
 
+#define M_PI 3.14159265358979323846
+
 class vec2 {
 public:
     float x, y;
@@ -89,14 +91,43 @@ class PlayerData {
 public:
 
 	vec3 m_vecOrigin;
-	uint64_t Health;
-	uint64_t MaxHealth;
+	uint32_t Health;
+	uint32_t MaxHealth;
     bool isalive;
     int HeroID;
     int TeamNum;
 
 
 };
+
+enum HeroIDs {
+    Infernus = 1,
+    Seven,
+    Vindicta,
+    LadyGeist,
+    Abrams = 6,
+    Wraith,
+    McGinnis,
+    Paradox = 10,
+    Dynamo,
+    Kelvin,
+    Haze,
+    Holliday,
+    Bebop,
+    GreyTalon = 17,
+    MoAndKrill,
+    Shiv,
+    Ivy,
+    Warden = 25,
+    Yamato = 27,
+    Lash = 31,
+    Viscous = 35,
+    Wrecker = 48,
+    Pocket = 50,
+    Mirage = 52
+};
+
+
 
 class Helper {
 
@@ -120,5 +151,9 @@ public:
     vec3 GetBoneVectorFromIndex(uintptr_t target_entity, int index);
     std::string ReadString(uintptr_t address);
     bool WorldToScreen(vec3 pos, vec2& screen, float matrix[16]);
+	float GetDistance(vec3 src, vec3 dst);
+    std::string GetHeroNameByID(int id);
+    vec3 GetBonePosition(uintptr_t entity, const char* BoneName);
+    float DegreesToRadians(float degrees);
 
 };
