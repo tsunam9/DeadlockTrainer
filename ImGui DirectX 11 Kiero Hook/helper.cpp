@@ -194,13 +194,14 @@ PlayerData Helper::get_player_data(uint64_t entity) {
 	if(!entity)
 		return ReturnObj;
 
-	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
+	uint64_t PawnHandle = *(uint64_t*)(entity + CBasePlayerController::m_hPawn);
 	uint64_t Index = this->CHandle_get_entry_index(PawnHandle);
 	uint64_t Pawn = this->get_base_entity_from_index(Index);
+	if (!Pawn)
+		return ReturnObj;
 	uint64_t GameSceneNode = *(uint64_t*)(Pawn + C_BaseEntity::m_pGameSceneNode);
 	uint64_t PlayerDataGlobal = entity + CCitadelPlayerController::m_PlayerDataGlobal;
-
-																																					ReturnObj.m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
+	ReturnObj.m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
 	ReturnObj.Health = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealth);
 	ReturnObj.MaxHealth = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealthMax);
 	ReturnObj.HeroID = *(int*)(PlayerDataGlobal + PlayerDataGlobal_t::m_nHeroID);
@@ -210,6 +211,21 @@ PlayerData Helper::get_player_data(uint64_t entity) {
 
 	return ReturnObj;
 }
+
+xpData Helper::get_xp_data(uint64_t entity) {
+
+	xpData xpdataobj;
+
+	if (!entity)
+		return xpdataobj;
+
+	uintptr_t GameSceneNode = *(uintptr_t*)(entity + C_BaseEntity::m_pGameSceneNode);
+	xpdataobj.m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
+	xpdataobj.bDormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
+	xpdataobj.blaunchtime = *(float*)(entity + CItemXP::m_timeLaunch);
+
+}
+
 
 std::string Helper::GetHeroNameByID(int id) {
 	switch (id) {

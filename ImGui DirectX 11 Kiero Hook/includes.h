@@ -18,6 +18,8 @@
 #include "helper.h"
 #include "ESP.h"
 #include "Drawing.h"
+#include "Misc.h"
+#include "kiero/minhook/include/MinHook.h"
 
 using namespace cs2_dumper::schemas::client_dll;
 

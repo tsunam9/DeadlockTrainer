@@ -86,6 +86,10 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				ImGui::Text("Selected: %s", items[currentItem]);
 				ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f,"%.1f");
 				ImGui::SliderFloat("FOV", &Config.aimbot.fov, 0.0f, 180.0f, "%.1f");
+				ImGui::SliderFloat("Smooth", &Config.aimbot.smooth, 0.0f, 100.0f, "%.1f");
+				ImGui::Checkbox("Aim at XP", &Config.aimbot.AimXp);
+				ImGui::SameLine();
+				ImGui::Hotkey(&Config.aimbot.AimKeyXp);
 
 
 
@@ -103,12 +107,14 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				ImGui::Checkbox("Name Esp", &Config.esp.NameEsp);
 				ImGui::Checkbox("Health Bar", &Config.esp.HealthBar);
 				ImGui::Checkbox("Draw Fov", &Config.esp.DrawFov);
+				ImGui::Checkbox("Draw Xp", &Config.esp.DrawXp);
 				ImGui::EndTabItem();
 			}
 
 			// Third tab
 			if (ImGui::BeginTabItem("Misc"))
 			{
+				ImGui::Checkbox("No Recoil", &Config.misc.bNorecoil);
 				if (ImGui::Button("Slay them all"))
 				{
 					kiero::shutdown();
@@ -150,6 +156,8 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			init_hook = true;
 		}
 	} while (!init_hook);
+
+
 	return TRUE;
 }
 

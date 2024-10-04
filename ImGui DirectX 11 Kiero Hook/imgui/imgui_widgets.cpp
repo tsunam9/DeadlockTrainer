@@ -1158,17 +1158,28 @@ void ImGui::Bullet()
     SameLine(0, style.FramePadding.x * 2.0f);
 }
 
+
+//CUSTOM FUNCTION
+#include "unordered_map"
+
 void ImGui::Hotkey(int* key)
 {
-    static bool waitingForKey = false;
+    static std::unordered_map<int*, bool> waitingForKeyMap;
 
-    if (key == NULL)
-        *key = 0;
+    if (key == nullptr) {
+        return;
+    }
+
+    // Initialize waiting state if not already done
+    if (waitingForKeyMap.find(key) == waitingForKeyMap.end()) {
+        waitingForKeyMap[key] = false;
+    }
+
+    bool& waitingForKey = waitingForKeyMap[key];
 
     if (!waitingForKey) {
-
         int keynum = *key;
-        std::string temp = std::to_string(*key);
+        std::string temp = std::to_string(keynum);
         if (ImGui::Button(temp.c_str())) {
             waitingForKey = true; // Start waiting for a key press
         }
@@ -1186,6 +1197,7 @@ void ImGui::Hotkey(int* key)
         }
     }
 }
+
 
 
 

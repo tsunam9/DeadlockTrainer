@@ -28,6 +28,35 @@ public:
         result.y = this->y - other.y;
         return result;
     }
+
+    float length() const {
+        return std::sqrt(x * x + y * y);
+    }
+
+    vec2 normalized() const {
+        float len = length();
+        if (len == 0) return { 0, 0 }; // Avoid division by zero
+        return { x / len, y / len };
+    }
+
+    vec2 clamp() const {
+        vec2 delta = *this;
+
+        if (delta.x > 180) delta.x -= 360;
+        if (delta.x < -180) delta.x += 360;
+        if (delta.y > 180) delta.y -= 360;
+        if (delta.y < -180) delta.y += 360;
+
+        return delta;
+    }
+
+    vec2 operator/(float scalar) const {
+        return { x / scalar, y / scalar };
+    }
+
+    vec2 operator*(float scalar) const {
+        return { x * scalar, y * scalar };
+    }
 };
 
 class vec3 {
@@ -49,6 +78,30 @@ public:
         result.z = this->z - other.z;
         return result;
     }
+
+    // Calculate the length of the vector
+    float length() const {
+        return std::sqrt(x * x + y * y + z * z);
+    }
+
+    // Normalize the vector (make its length 1)
+    vec3 normalized() const {
+        float len = length();
+        if (len == 0) return { 0, 0, 0 }; // Avoid division by zero
+        return { x / len, y / len, z / len };
+    }
+
+    // Overload the division operator for scalar division
+    vec3 operator/(float scalar) const {
+        return { x / scalar, y / scalar, z / scalar };
+    }
+
+    // Overload the multiplication operator for scalar multiplication
+    vec3 operator*(float scalar) const {
+        return { x * scalar, y * scalar, z * scalar };
+    }
+
+
 };
 
 class vec4 {
@@ -100,6 +153,13 @@ public:
 
 };
 
+class xpData {
+public:
+    vec3 m_vecOrigin;
+    bool bDormant;
+    float blaunchtime;
+};
+
 enum HeroIDs {
     Infernus = 1,
     Seven,
@@ -135,6 +195,7 @@ public:
 
 	uint64_t GetModuleBaseAddress(uint64_t procId, const char* modName);
 	uint64_t Modulebaseaddress = GetModuleBaseAddress(GetProcessIdByName("project8.exe"), "client.dll");
+	uint64_t networkSystemBase = GetModuleBaseAddress(GetProcessIdByName("project8.exe"), "networksystem.dll");
 	uint64_t GetProcessIdByName(const char* processname);
 	uint64_t get_entity_list();
 	std::string readstr(uintptr_t address);
@@ -155,5 +216,6 @@ public:
     std::string GetHeroNameByID(int id);
     vec3 GetBonePosition(uintptr_t entity, const char* BoneName);
     float DegreesToRadians(float degrees);
+    xpData get_xp_data(uint64_t entity);
 
 };

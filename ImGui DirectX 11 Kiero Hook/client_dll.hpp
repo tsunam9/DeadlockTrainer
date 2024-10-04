@@ -1390,6 +1390,7 @@ namespace cs2_dumper {
             // NetworkVarNames: m_hTonemapController (CHandle<CTonemapController2>)
             // NetworkVarNames: m_audio (audioparams_t)
             // NetworkVarNames: m_PostProcessingVolumes (CHandle<C_PostProcessingVolume>)
+
             namespace CPlayer_CameraServices {
                 constexpr std::ptrdiff_t m_vecPunchAngle = 0x40; // 
                 constexpr std::ptrdiff_t m_vecPunchAngleVel = 0x58; // 

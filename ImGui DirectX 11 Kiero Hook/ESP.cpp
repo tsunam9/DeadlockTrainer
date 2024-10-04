@@ -23,17 +23,18 @@ inline void sort_esp_entities()
 
 		if (EntName == "CCitadelPlayerController" && !*(bool*)(entity + CBasePlayerController::m_bIsLocalPlayerController))
 			processed_ents_esp.push_back(entity);
+		if (EntName == "CItemXP")
+			processed_ents_esp.push_back(entity);
 
 	}
 }
 
 //impliment safety checks
 
-
 void Esp::DrawEsp(uintptr_t Entity)
 {
 	uintptr_t ViewMatrix = (EspHelperObj.Modulebaseaddress + EspOffsetsObj.o_ViewMatrix);
-	if(!ViewMatrix)
+	if (!ViewMatrix)
 		return;
 
 	ViewMatrixObj matrix = *(ViewMatrixObj*)ViewMatrix;
@@ -43,7 +44,7 @@ void Esp::DrawEsp(uintptr_t Entity)
 	PlayerData EntInfo = EspHelperObj.get_player_data(Entity);
 	if (!EspHelperObj.WorldToScreen(EntInfo.m_vecOrigin, ScreenFeet, matrix.matrix))
 		return;
-	
+
 
 	vec2 ScreenHead;
 	uint64_t PawnHandle = *(uint64_t*)(Entity + CCitadelPlayerController::m_hHeroPawn);
@@ -51,7 +52,7 @@ void Esp::DrawEsp(uintptr_t Entity)
 	uint64_t boneindex = EspHelperObj.get_index(Pawn, "head");
 	vec3 HeadPos = EspHelperObj.GetBoneVectorFromIndex(Pawn, boneindex);  // No re-declaration of TargetPos here
 	EspHelperObj.WorldToScreen(HeadPos, ScreenHead, matrix.matrix);
-			
+
 	int height = ScreenFeet.y - ScreenHead.y;
 	int width = height / 1.75;
 	vec2 BoxHead;
@@ -85,21 +86,58 @@ void Esp::DrawEsp(uintptr_t Entity)
 	}
 	if (espconfig.esp.HealthBar) {
 		float missinghealth = 1.0f - ((float)EntInfo.Health / (float)EntInfo.MaxHealth);
-		draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 4, height * 1.2 , IM_COL32(0, 255, 0, 255));
+		draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 4, height * 1.2, IM_COL32(0, 255, 0, 255));
 		draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 4, height * 1.2 * missinghealth, IM_COL32(255, 0, 0, 255));
 	}
-	if (espconfig.esp.DrawFov) {
+
+}
+
+void DrawXPEsp(uintptr_t entity) {
+
+	if(!espconfig.esp.DrawXp)
+		return;
+
+	vec2 ScreenXp;
+	xpData EntInfo = EspHelperObj.get_xp_data(entity);
+	uintptr_t ViewMatrix = (EspHelperObj.Modulebaseaddress + EspOffsetsObj.o_ViewMatrix);
+
+	PlayerData LocalPlayerData = EspHelperObj.get_player_data(EspHelperObj.get_local_player());
+	float distance = EspHelperObj.GetDistance(LocalPlayerData.m_vecOrigin, EntInfo.m_vecOrigin);
+
+	if (!ViewMatrix)
+		return;
+
+	if (EntInfo.bDormant)
+		return;
+
+	if (distance > 2000.0f)
+		return;
+
+
+	ViewMatrixObj matrix = *(ViewMatrixObj*)ViewMatrix;
+
+
+	if (!EspHelperObj.WorldToScreen(EntInfo.m_vecOrigin, ScreenXp, matrix.matrix))
+		return;
+
+	draw.DrawCircle(ScreenXp.x, ScreenXp.y, 10, IM_COL32(255, 255, 255, 255));
+
+}
+
+void DrawFov() {
+
+	int ScreenWidth = *(int*)(EspHelperObj.Modulebaseaddress + EspOffsetsObj.o_Resolution);
+	int ScreenHeight = *(int*)(EspHelperObj.Modulebaseaddress + EspOffsetsObj.o_Resolution + 8);
+
+
 		const uint64_t CameraManager = *(uint64_t*)(EspHelperObj.Modulebaseaddress + EspOffsetsObj.o_CameraManager + 0x28);
+		if (!CameraManager)
+			return;
+
 		float pFov = *(float*)(CameraManager + 0x50);
 		float radius = tanf(EspHelperObj.DegreesToRadians(espconfig.aimbot.fov) / 2) / tanf(EspHelperObj.DegreesToRadians(pFov) / 2) * (ScreenWidth / 2);
 
 		draw.DrawCircle(ScreenWidth / 2, ScreenHeight / 2, radius, IM_COL32(255, 255, 255, 255));
-	}
-	
-	
-
-
-
 }
 
 
@@ -108,24 +146,31 @@ void Esp::DoEsp(ConfigSettings cfg) {
 	processed_ents_esp.clear();
 	sort_esp_entities();
 
+	if (cfg.esp.DrawFov) {
+		DrawFov();
+	}
+
 	for (int i = 0; i < processed_ents_esp.size(); i++) {
 
 		if (processed_ents_esp.empty() || !processed_ents_esp[i])
 			continue;
 
+		std::string EntName = EspHelperObj.get_schema_name(processed_ents_esp[i]);
 
-		PlayerData LocalPlayerData = EspHelperObj.get_player_data(EspHelperObj.get_local_player());
-		PlayerData TargetPlayerData = EspHelperObj.get_player_data(processed_ents_esp[i]);
+		if (EntName == "CCitadelPlayerController") {
+			PlayerData LocalPlayerData = EspHelperObj.get_player_data(EspHelperObj.get_local_player());
+			PlayerData TargetPlayerData = EspHelperObj.get_player_data(processed_ents_esp[i]);
 
-		if (!TargetPlayerData.isalive)
-			continue;
-		if (TargetPlayerData.TeamNum == LocalPlayerData.TeamNum)
-			continue;
+			if (!TargetPlayerData.isalive)
+				continue;
+			if (TargetPlayerData.TeamNum == LocalPlayerData.TeamNum)
+				continue;
 
-		uintptr_t entity = processed_ents_esp[i];
-
-		this->DrawEsp(entity);
-	
+			this->DrawEsp(processed_ents_esp[i]);
+		}
+		else if (EntName == "CItemXP") {
+			DrawXPEsp(processed_ents_esp[i]);
+		}
 	}
 
 }

@@ -7,9 +7,12 @@ public:
     struct AimbotSettings {
         bool bAimbot = false;
         int AimKey = 0; // Default value
+		int AimKeyXp = 0; // Default value
+		bool AimXp = false;
         int targetSelectionMode = 0; // 0, 1, 2... depending on your mode
         float MaxDistance = 0.0f;
         float fov = 0.0f;
+        float smooth = 0.0f;
         int aimBone = 0; // Example bone index
 
     } aimbot;
@@ -25,7 +28,12 @@ public:
         bool NameEsp = false;
         bool HealthBar = false;
 		bool DrawFov = false;
+		bool DrawXp = false;
     } esp;
+
+    struct MiscSettings {
+        bool bNorecoil = false;
+    } misc;
 
     // General settings
     bool MenuOpen = true;

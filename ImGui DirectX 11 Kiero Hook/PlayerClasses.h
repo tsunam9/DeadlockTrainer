@@ -24,7 +24,7 @@ public:
 			for (size_t i = 1; i <= PlayerClassHelperObj.get_max_entities(); ++i)
 			{
 				uint64_t* entityptr = PlayerClassHelperObj.get_base_entityptr_from_index(i);
-				if (!*entityptr)
+				if (!entityptr)
 					continue;
 
 				entityList.push_back(entityptr);

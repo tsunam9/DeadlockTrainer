@@ -43,6 +43,9 @@
     <Filter Include="Source Files\Drawing">
       <UniqueIdentifier>{b82b2467-0075-4e4a-8a04-c75e8a812a9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Misc">
+      <UniqueIdentifier>{ec49920a-12af-465f-bc20-990de62346da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kiero\minhook\src\buffer.c">
@@ -98,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="Drawing.cpp">
       <Filter>Source Files\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Misc.cpp">
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +189,9 @@
     </ClInclude>
     <ClInclude Include="Logic.h">
       <Filter>Source Files\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc.h">
+      <Filter>Source Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
