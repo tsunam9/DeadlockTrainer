@@ -5,7 +5,7 @@ class ConfigSettings
 public:
     // Nested structure for Aimbot settings
     struct AimbotSettings {
-        bool bAimbot = false;
+        bool bAimbot = false;;
         int AimKey = 0; // Default value
 		int AimKeyXp = 0; // Default value
 		bool AimXp = false;
@@ -38,5 +38,7 @@ public:
     // General settings
     bool MenuOpen = true;
 };
+
+extern ConfigSettings Config;
 
 

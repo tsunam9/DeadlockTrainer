@@ -1,3 +1,4 @@
+#include "includes.h"
 #pragma once
 
-void GodFunction(uintptr_t ConfigPtr);
+void GodFunction();

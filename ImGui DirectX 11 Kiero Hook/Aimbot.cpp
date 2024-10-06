@@ -3,10 +3,6 @@
 #include "Aimbot.h"
 #include "math.h"
 
-EntityList Aimbot_EntList;
-Helper Aimbot_HelperObj;
-Offsets Aimbot_Offsets;
-
 #define M_PI 3.14159265358979323846
 
 
@@ -17,20 +13,23 @@ PlayerData LocalPlayerData;
 uint64_t CameraManager;
 vec2* ViewAngles;
 
+Helper AimbotHelperObj;
+
+
 
 
 inline void sort_entities()
 {
-	int max_ents = Aimbot_HelperObj.get_max_entities();
+	int max_ents = Helper::get_max_entities();
 
 	for (size_t i = 1; i <= static_cast<size_t>(max_ents); ++i)
 	{
-		uint64_t entity = Aimbot_HelperObj.get_base_entity_from_index(i);
+		uint64_t entity = Helper::get_base_entity_from_index(i);
 
 		if (!entity)
 			continue;
 
-		std::string EntName = Aimbot_HelperObj.get_schema_name(entity);
+		std::string EntName = Helper::get_schema_name(entity);
 
 		if (EntName == "CCitadelPlayerController" && !*(bool*)(entity + CBasePlayerController::m_bIsLocalPlayerController))
 			processed_ents.push_back(entity);
@@ -53,7 +52,7 @@ vec2 Aimbot::GetAimAngles(vec3 Target) {
 void Aimbot::AimAt(uintptr_t entity, const char* bone, float smooth_factor) {
 
 
-	vec3 vec_target = Aimbot_HelperObj.GetBonePosition(entity, bone);
+	vec3 vec_target = Helper::GetBonePosition(entity, bone);
 	vec2 target_angles = this->GetAimAngles(vec_target);
 
 	// Calculate the difference between current angles and target angles
@@ -78,7 +77,7 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone, float smooth_factor) {
 
 void Aimbot::AimAtXp(uintptr_t entity, float smooth_factor) {
 
-	xpData TargetXPData = Aimbot_HelperObj.get_xp_data(entity);
+	xpData TargetXPData = Helper::get_xp_data(entity);
 
 	vec2 target_angles = this->GetAimAngles(TargetXPData.m_vecOrigin);
 
@@ -115,12 +114,13 @@ float GetAngleDifference(float angle1, float angle2) {
 
 
 
-void Aimbot::RunAimbot(ConfigSettings cfg) {
+void Aimbot::RunAimbot() {
 	processed_ents.clear();
 	sort_entities();
-	CameraManager = *(uint64_t*)(Aimbot_HelperObj.Modulebaseaddress + Aimbot_Offsets.o_CameraManager + 0x28);
+
+	CameraManager = *(uint64_t*)(ClientModuleBase + Offsets::o_CameraManager + 0x28);
 	ViewAngles = (vec2*)(CameraManager + 0x44);
-	LocalPlayerData = Aimbot_HelperObj.get_player_data(Aimbot_HelperObj.get_local_player());
+	LocalPlayerData = Helper::get_player_data(Helper::get_local_player());
 
 	if (processed_ents.empty())
 		return;
@@ -143,10 +143,10 @@ void Aimbot::RunAimbot(ConfigSettings cfg) {
 		if (processed_ents.empty() || !processed_ents[i])
 			continue;
 
-		std::string entClass = Aimbot_HelperObj.get_schema_name(processed_ents[i]);
+		std::string entClass = Helper::get_schema_name(processed_ents[i]);
 
 		if (entClass == "CCitadelPlayerController") {
-			PlayerData TargetPlayerData = Aimbot_HelperObj.get_player_data(processed_ents[i]);
+			PlayerData TargetPlayerData = Helper::get_player_data(processed_ents[i]);
 
 			if (!TargetPlayerData.isalive)
 				continue;
@@ -154,16 +154,16 @@ void Aimbot::RunAimbot(ConfigSettings cfg) {
 				continue;
 
 			vec3 TargetPos = { 0, 0, 0 };
-			TargetPos = Aimbot_HelperObj.GetBonePosition(processed_ents[i], "head");
+			TargetPos = Helper::GetBonePosition(processed_ents[i], "head");
 
 			if (TargetPos.x == 0 && TargetPos.y == 0 && TargetPos.z == 0)
 				continue; // Skip invalid targets (no position data)
 
 			// Closest
 			// Calculate distance between targetpos and localplayer
-			float distance = Aimbot_HelperObj.GetDistance(LocalPlayerData.m_vecOrigin, TargetPos);
+			float distance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetPos);
 
-			if (distance > cfg.aimbot.MaxDistance)
+			if (distance > Config.aimbot.MaxDistance)
 				continue;
 
 			// Fov
@@ -175,7 +175,7 @@ void Aimbot::RunAimbot(ConfigSettings cfg) {
 
 			float FOV = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
 
-			if (FOV > cfg.aimbot.fov)
+			if (FOV > Config.aimbot.fov)
 				continue; // Skip targets outside of the FOV
 
 			if (distance < ClosestDistance) {
@@ -198,13 +198,13 @@ void Aimbot::RunAimbot(ConfigSettings cfg) {
 		}
 		if (entClass == "CItemXP") {
 
-			xpData TargetXPData = Aimbot_HelperObj.get_xp_data(processed_ents[i]);
+			xpData TargetXPData = Helper::get_xp_data(processed_ents[i]);
 
 			if (TargetXPData.bDormant)
 				continue;
 
-			float xpdistance = Aimbot_HelperObj.GetDistance(LocalPlayerData.m_vecOrigin, TargetXPData.m_vecOrigin);
-			if (xpdistance > cfg.aimbot.MaxDistance)
+			float xpdistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetXPData.m_vecOrigin);
+			if (xpdistance > Config.aimbot.MaxDistance)
 				continue;
 
 			vec2 LocalPlayerAngles = { ViewAngles->x, ViewAngles->y };
@@ -214,7 +214,7 @@ void Aimbot::RunAimbot(ConfigSettings cfg) {
 
 			float xpFOV = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
 
-			if (xpFOV > cfg.aimbot.fov)
+			if (xpFOV > Config.aimbot.fov)
 				continue; // Skip targets outside of the FOV
 
 			if (xpdistance < ClosestXPDistance) {
@@ -233,33 +233,33 @@ void Aimbot::RunAimbot(ConfigSettings cfg) {
 
 	}
 
-	if (GetAsyncKeyState(cfg.aimbot.AimKey)) {
-		if (cfg.aimbot.targetSelectionMode == 0 && ClosestIndex != 999) {
+	if (GetAsyncKeyState(Config.aimbot.AimKey)) {
+		if (Config.aimbot.targetSelectionMode == 0 && ClosestIndex != 999) {
 			if (!processed_ents.empty() && processed_ents[ClosestIndex]) {
-				AimAt(processed_ents[ClosestIndex], "head", cfg.aimbot.smooth);
+				AimAt(processed_ents[ClosestIndex], "head", Config.aimbot.smooth);
 			}
 		}
-		else if (cfg.aimbot.targetSelectionMode == 1 && LowestHealthIndex != 999) {
+		else if (Config.aimbot.targetSelectionMode == 1 && LowestHealthIndex != 999) {
 			if (!processed_ents.empty() && processed_ents[LowestHealthIndex]) {
-				AimAt(processed_ents[LowestHealthIndex], "head", cfg.aimbot.smooth);
+				AimAt(processed_ents[LowestHealthIndex], "head", Config.aimbot.smooth);
 			}
 		}
-		else if (cfg.aimbot.targetSelectionMode == 2 && lowestfovindex != 999) {
+		else if (Config.aimbot.targetSelectionMode == 2 && lowestfovindex != 999) {
 			if (!processed_ents.empty() && processed_ents[lowestfovindex]) {
-				AimAt(processed_ents[lowestfovindex], "head", cfg.aimbot.smooth);
+				AimAt(processed_ents[lowestfovindex], "head", Config.aimbot.smooth);
 			}
 		}
 
 	}
-	if (cfg.aimbot.AimXp && GetAsyncKeyState(cfg.aimbot.AimKeyXp)) {
-		if (cfg.aimbot.targetSelectionMode == 0 && ClosestXPIndex != 999) {
+	if (Config.aimbot.AimXp && GetAsyncKeyState(Config.aimbot.AimKeyXp)) {
+		if (Config.aimbot.targetSelectionMode == 0 && ClosestXPIndex != 999) {
 			if (!processed_ents.empty() && processed_ents[ClosestXPIndex]) {
-				AimAtXp(processed_ents[ClosestXPIndex], cfg.aimbot.smooth);
+				AimAtXp(processed_ents[ClosestXPIndex], Config.aimbot.smooth);
 			}
 		}
-		else if (cfg.aimbot.targetSelectionMode == 1 || cfg.aimbot.targetSelectionMode == 2 && LowestFovXPIndex != 999) {
+		else if (Config.aimbot.targetSelectionMode == 1 || Config.aimbot.targetSelectionMode == 2 && LowestFovXPIndex != 999) {
 			if (!processed_ents.empty() && processed_ents[LowestFovXPIndex]) {
-				AimAtXp(processed_ents[LowestFovXPIndex], cfg.aimbot.smooth);
+				AimAtXp(processed_ents[LowestFovXPIndex], Config.aimbot.smooth);
 			}
 		}
 

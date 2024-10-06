@@ -50,8 +50,13 @@ uint64_t Helper::GetProcessIdByName(const char* processname) {
 }
 
 uint64_t Helper::get_entity_list(){
-	uintptr_t tf = *(uintptr_t*)(this->Modulebaseaddress + HelperOffsets.o_EntityList);
+	uintptr_t tf = *(uintptr_t*)(ClientModuleBase + HelperOffsets.o_EntityList);
 	return static_cast<uint64_t>(tf);
+}
+
+uint64_t Helper::GetClientBase() {
+	uint64_t Modulebaseaddress = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "client.dll");
+	return Modulebaseaddress;
 }
 
 std::string Helper::readstr(uintptr_t address){
@@ -67,7 +72,7 @@ std::string Helper::readstr(uintptr_t address){
 
 int Helper::get_max_entities()
 {
-	uint64_t entity_list = this->get_entity_list();
+	uint64_t entity_list = Helper::get_entity_list();
 	int max_entities = *(int*)(entity_list + HelperOffsets.o_HighestEntityIndex);
 	return max_entities;
 }
@@ -76,21 +81,20 @@ uint64_t Helper::get_Camera() {
 
 
 	//camera = pm.read_longlong(client_base + 0x1f450b0 + 0x28)
-	uint64_t camera = (this->Modulebaseaddress + HelperOffsets.o_CameraManager + 0x28);
+	uint64_t camera = (ClientModuleBase + HelperOffsets.o_CameraManager + 0x28);
 	camera = *(uint64_t*)camera;
 	return camera;
 }
 
 uint64_t Helper::get_local_player() {
-	uint64_t local_player = *(uint64_t*)(this->Modulebaseaddress + HelperOffsets.o_LocalPlayerController);
+	uint64_t local_player = *(uint64_t*)(ClientModuleBase + HelperOffsets.o_LocalPlayerController);
 	return local_player;
 }
 
 //DirectX 11 WorldToScreen
 bool Helper::WorldToScreen(vec3 pos, vec2& screen, float matrix[16]) {
 
-	int width = *(int*)(Modulebaseaddress + HelperOffsets.o_Resolution);
-	int height = *(int*)(Modulebaseaddress + HelperOffsets.o_Resolution + 8);
+	vec2 resolution = Helper::GetResolution();
 
 	vec4 clipCoords;
 	clipCoords.x = pos.x * matrix[0] + pos.y * matrix[1] + pos.z * matrix[2] + matrix[3];
@@ -106,8 +110,8 @@ bool Helper::WorldToScreen(vec3 pos, vec2& screen, float matrix[16]) {
 	NDC.y = clipCoords.y / clipCoords.w;
 	NDC.z = clipCoords.z / clipCoords.w;
 
-	screen.x = (width / 2 * NDC.x) + (NDC.x + width / 2);
-	screen.y = -(height / 2 * NDC.y) + (NDC.y + height / 2);
+	screen.x = (resolution.x / 2 * NDC.x) + (NDC.x + resolution.x / 2);
+	screen.y = -(resolution.y / 2 * NDC.y) + (NDC.y + resolution.y / 2);
 
 	return true;
 }
@@ -115,7 +119,7 @@ bool Helper::WorldToScreen(vec3 pos, vec2& screen, float matrix[16]) {
 uint64_t Helper::get_base_entity_from_index(int index)
 {
 	
-	uint64_t entity_list = this->get_entity_list();
+	uint64_t entity_list = Helper::get_entity_list();
 
 	uint64_t entity_base = entity_list + 8LL * ((index & 0x7FFF) >> 9) + 16;
 	uint64_t entity = *(uint64_t*)(entity_base);
@@ -130,7 +134,7 @@ uint64_t Helper::get_base_entity_from_index(int index)
 uint64_t* Helper::get_base_entityptr_from_index(int index)
 {
 
-	uint64_t entity_list = this->get_entity_list();
+	uint64_t entity_list = Helper::get_entity_list();
 
 	uint64_t entity_base = entity_list + 8LL * ((index & 0x7FFF) >> 9) + 16;
 	uint64_t entity = *(uint64_t*)(entity_base);
@@ -150,6 +154,13 @@ vec3 Helper::GetBoneVectorFromIndex(uintptr_t target_entity, int index) {
 	vec3 bonepos = *(vec3*)(BoneArray + index * 32);
 
 	return bonepos;
+}
+
+float Helper::GetGameTime() {
+
+	uint64_t local_player = *(uint64_t*)(ClientModuleBase + HelperOffsets.o_LocalPlayerController);
+	float gametime = *(float*)(local_player + C_BaseEntity::m_flSimulationTime);
+	return gametime;
 }
 
 int Helper::get_index(uintptr_t target_entity, const std::string bone_name) {
@@ -195,8 +206,8 @@ PlayerData Helper::get_player_data(uint64_t entity) {
 		return ReturnObj;
 
 	uint64_t PawnHandle = *(uint64_t*)(entity + CBasePlayerController::m_hPawn);
-	uint64_t Index = this->CHandle_get_entry_index(PawnHandle);
-	uint64_t Pawn = this->get_base_entity_from_index(Index);
+	uint64_t Index = Helper::CHandle_get_entry_index(PawnHandle);
+	uint64_t Pawn = Helper::get_base_entity_from_index(Index);
 	if (!Pawn)
 		return ReturnObj;
 	uint64_t GameSceneNode = *(uint64_t*)(Pawn + C_BaseEntity::m_pGameSceneNode);
@@ -224,6 +235,19 @@ xpData Helper::get_xp_data(uint64_t entity) {
 	xpdataobj.bDormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
 	xpdataobj.blaunchtime = *(float*)(entity + CItemXP::m_timeLaunch);
 
+}
+
+vec2 Helper::GetResolution() {
+
+	vec2 resolution;
+
+	uint64_t resolutionptr = ClientModuleBase + HelperOffsets.o_Resolution;
+	uint64_t resclassobj = *(uint64_t*)resolutionptr;
+	uint64_t resolutionaddress = resclassobj + 0x484;
+
+	resolution.x = *(int*)(resolutionaddress);
+	resolution.y = *(int*)(resolutionaddress + 0x8);
+	return resolution;
 }
 
 
@@ -300,15 +324,42 @@ vec3 Helper::GetBonePosition(uintptr_t entity, const char* BoneName) {
 
 	//Get PlayerPawn
 	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
-	uint64_t Pawn = this->get_base_entity_from_index(this->CHandle_get_entry_index(PawnHandle));
+	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
 	std::string bonechoice = BoneName;
-	int boneindex = this->get_index(Pawn, bonechoice);
-	BonePos = this->GetBoneVectorFromIndex(Pawn, boneindex);
+	int boneindex = Helper::get_index(Pawn, bonechoice);
+	BonePos = Helper::GetBoneVectorFromIndex(Pawn, boneindex);
 
 	return BonePos;
 }
 
 float Helper::DegreesToRadians(float degrees) {
 	return degrees * (M_PI / 180.0f);
+}
+
+CCitadelUserCmdPB* Helper::GetUserCmdArray()
+{
+	using fnGetUserCmd = CCitadelUserCmdPB * (__fastcall*)(__int64*);
+	static auto oGetUserCmd = reinterpret_cast<fnGetUserCmd>(ClientModuleBase + 0xAC6950);
+
+	return oGetUserCmd(reinterpret_cast<__int64*>(Helper::get_local_player));
+}
+
+CCitadelUserCmdPB* Helper::GetUserCmdByIndex(int index)
+{
+	auto _array = Helper::GetUserCmdArray();
+	auto sequence = *(uint32_t*)((uintptr_t)_array + 0x5290);
+	auto current_cmd = (uintptr_t)_array + 0x88 * index;
+	return (CCitadelUserCmdPB*)current_cmd;
+
+}
+
+CCitadelUserCmdPB* Helper::GetCurrentUserCmd()
+{
+	auto _array = Helper::GetUserCmdArray();
+	auto sequence = *(uint32_t*)((uintptr_t)_array + 0x5290);
+	auto current_index = sequence % 150u; // evil terrible
+	auto current_cmd = Helper::GetUserCmdByIndex(current_index);
+	return (CCitadelUserCmdPB*)current_cmd;
+
 }
 

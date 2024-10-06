@@ -25,14 +25,8 @@
     <Filter Include="Source Files\Helper">
       <UniqueIdentifier>{e81ee0a9-56a3-49e0-a3ff-fbdbc9bb7258}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ESP">
-      <UniqueIdentifier>{6f824638-cb05-4b44-90d4-9dbfa97bccd3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Dump">
       <UniqueIdentifier>{62a58775-7b43-43ca-8e1d-07ee0585863f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Aimbot">
-      <UniqueIdentifier>{ec54dd53-398a-4e3a-960f-73d61f1a090b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Logic">
       <UniqueIdentifier>{204658b2-3c0a-4387-a7e0-bf375616e93c}</UniqueIdentifier>
@@ -43,8 +37,20 @@
     <Filter Include="Source Files\Drawing">
       <UniqueIdentifier>{b82b2467-0075-4e4a-8a04-c75e8a812a9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Misc">
+    <Filter Include="Source Files\Features">
+      <UniqueIdentifier>{5bbbdbf2-334c-47f3-bf2d-14a2788f03ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Misc">
       <UniqueIdentifier>{ec49920a-12af-465f-bc20-990de62346da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\ESP">
+      <UniqueIdentifier>{6f824638-cb05-4b44-90d4-9dbfa97bccd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Aimbot">
+      <UniqueIdentifier>{ec54dd53-398a-4e3a-960f-73d61f1a090b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameInterface">
+      <UniqueIdentifier>{04c32b85-9f1e-42bc-9640-dafeab0fbd29}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -88,10 +94,10 @@
       <Filter>imgui</Filter>
     </ClCompile>
     <ClCompile Include="Aimbot.cpp">
-      <Filter>Source Files\Aimbot</Filter>
+      <Filter>Source Files\Features\Aimbot</Filter>
     </ClCompile>
     <ClCompile Include="ESP.cpp">
-      <Filter>Source Files\ESP</Filter>
+      <Filter>Source Files\Features\ESP</Filter>
     </ClCompile>
     <ClCompile Include="helper.cpp">
       <Filter>Source Files\Helper</Filter>
@@ -103,7 +109,13 @@
       <Filter>Source Files\Drawing</Filter>
     </ClCompile>
     <ClCompile Include="Misc.cpp">
-      <Filter>Source Files\Misc</Filter>
+      <Filter>Source Files\Features\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>Source Files\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="gameinterface.cpp">
+      <Filter>Source Files\GameInterface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,16 +182,13 @@
       <Filter>Source Files\Offsets</Filter>
     </ClInclude>
     <ClInclude Include="Aimbot.h">
-      <Filter>Source Files\Aimbot</Filter>
+      <Filter>Source Files\Features\Aimbot</Filter>
     </ClInclude>
     <ClInclude Include="ESP.h">
-      <Filter>Source Files\ESP</Filter>
+      <Filter>Source Files\Features\ESP</Filter>
     </ClInclude>
     <ClInclude Include="helper.h">
       <Filter>Source Files\Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="client_dll.hpp">
-      <Filter>Dump</Filter>
     </ClInclude>
     <ClInclude Include="Config.h">
       <Filter>Source Files\Config</Filter>
@@ -191,7 +200,67 @@
       <Filter>Source Files\Logic</Filter>
     </ClInclude>
     <ClInclude Include="Misc.h">
-      <Filter>Source Files\Misc</Filter>
+      <Filter>Source Files\Features\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\client_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\worldrenderer_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\vphysics2_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\soundsystem_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\server_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\schemasystem_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\scenesystem_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\resourcesystem_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\rendersystemdx11_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\pulse_system_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\particles_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\panorama_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\networksystem_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\materialsystem2_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\host_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\engine2_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\animationsystem_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\interfaces.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\buttons.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="gameinterface.h">
+      <Filter>Source Files\GameInterface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

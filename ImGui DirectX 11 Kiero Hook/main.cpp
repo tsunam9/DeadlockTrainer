@@ -9,8 +9,6 @@ ID3D11Device* pDevice = NULL;
 ID3D11DeviceContext* pContext = NULL;
 ID3D11RenderTargetView* mainRenderTargetView;
 
-ConfigSettings Config;
-
 HMODULE myhmod;
 FILE* fp;
 
@@ -65,7 +63,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
-	GodFunction((uintptr_t)&Config); // Main Cheat Logic
+	GodFunction();
 
 	if (Config.MenuOpen) {
 
@@ -76,12 +74,12 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			// First tab
 			if (ImGui::BeginTabItem("Aimbot"))
 			{
-				static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
-				static int currentItem = 0; // Index of the currently selected item
-
+		
 				ImGui::Checkbox("Aimbot", &Config.aimbot.bAimbot);
 				ImGui::SameLine();
 				ImGui::Hotkey(&Config.aimbot.AimKey);
+				static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
+				static int currentItem = 0; // Index of the currently selected item
 				ImGui::Combo("Target ", &currentItem, items, IM_ARRAYSIZE(items)); Config.aimbot.targetSelectionMode = currentItem;
 				ImGui::Text("Selected: %s", items[currentItem]);
 				ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f,"%.1f");

@@ -23,6 +23,7 @@
     <ProjectGuid>{04B17470-CB82-4724-904B-25445926AB86}</ProjectGuid>
     <RootNamespace>ImGuiDirectX11KieroHook</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>L9 ONESHOTWARE</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -143,8 +144,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Aimbot.cpp" />
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="ESP.cpp" />
+    <ClCompile Include="gameinterface.cpp" />
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -169,11 +172,30 @@
     <ResourceCompile Include="kiero\minhook\dll_resources\MinHook.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\animationsystem_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\buttons.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\client_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\engine2_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\host_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\interfaces.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\materialsystem2_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\networksystem_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\panorama_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\particles_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\pulse_system_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\rendersystemdx11_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\resourcesystem_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\scenesystem_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\schemasystem_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\server_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\soundsystem_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\vphysics2_dll.hpp" />
+    <ClInclude Include="..\..\..\Cs2Dumper\output\worldrenderer_dll.hpp" />
     <ClInclude Include="Aimbot.h" />
-    <ClInclude Include="client_dll.hpp" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="ESP.h" />
+    <ClInclude Include="gameinterface.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />

@@ -187,35 +187,90 @@ enum HeroIDs {
     Mirage = 52
 };
 
+struct Vec3
+{
+    float X = 0, Y = 0, Z = 0;
+
+    Vec3(float X = 0, float Y = 0, float Z = 0) : X(X), Y(Y), Z(Z) {};
+    Vec3 operator - (const Vec3& other) const {
+        return Vec3(X - other.X, Y - other.Y, Z - other.Z);
+    }
+
+};
+
+class CMsgQAngle {
+public:
+    char pad1[0x18];
+    vec3 viewAngles;
+};
+
+class CInButtonStatePB {
+public:
+    char pad[0x18];
+    uint32_t buttons;
+
+};
+
+class CBaseUserCMD {
+public:
+
+    char pad1[0x38];
+    CInButtonStatePB* CInButtonStatePB;
+    CMsgQAngle* QAngle;
+    char pad2[0x10];
+    float forwardMove;
+    float sideMove;
+
+};
+
+class CCitadelUserCmdPB {
+public:
+
+    char pad1[0x28];
+    CBaseUserCMD* pBaseUserCMD;
+    char pad2[0x8];
+    CMsgQAngle* pViewAngle;
+    char pad3[0x18];
+    uint32_t buttons;
+};
+
+
 
 
 class Helper {
 
 public:
 
-	uint64_t GetModuleBaseAddress(uint64_t procId, const char* modName);
-	uint64_t Modulebaseaddress = GetModuleBaseAddress(GetProcessIdByName("project8.exe"), "client.dll");
-	uint64_t networkSystemBase = GetModuleBaseAddress(GetProcessIdByName("project8.exe"), "networksystem.dll");
-	uint64_t GetProcessIdByName(const char* processname);
-	uint64_t get_entity_list();
-	std::string readstr(uintptr_t address);
-	int get_max_entities();
-	uint64_t get_base_entity_from_index(int index);
-	uint64_t* get_base_entityptr_from_index(int index);
-	std::string get_schema_name(const uintptr_t& entity);
-	uint64_t CHandle_get_entry_index(uint64_t handle);
-	bool CHandle_is_valid(uint64_t handle);
-	uint64_t get_Camera();
-	uint64_t get_local_player();
-	PlayerData get_player_data(uint64_t entity);
-    int get_index(uintptr_t target_entity, const std::string bone_name);
-    vec3 GetBoneVectorFromIndex(uintptr_t target_entity, int index);
-    std::string ReadString(uintptr_t address);
-    bool WorldToScreen(vec3 pos, vec2& screen, float matrix[16]);
-	float GetDistance(vec3 src, vec3 dst);
-    std::string GetHeroNameByID(int id);
-    vec3 GetBonePosition(uintptr_t entity, const char* BoneName);
-    float DegreesToRadians(float degrees);
-    xpData get_xp_data(uint64_t entity);
+	static uint64_t GetModuleBaseAddress(uint64_t procId, const char* modName);
+    static uint64_t GetClientBase();
+	static uint64_t GetProcessIdByName(const char* processname);
+	static uint64_t get_entity_list();
+	static std::string readstr(uintptr_t address);
+	static int get_max_entities();
+	static uint64_t get_base_entity_from_index(int index);
+	static uint64_t* get_base_entityptr_from_index(int index);
+	static std::string get_schema_name(const uintptr_t& entity);
+    static uint64_t CHandle_get_entry_index(uint64_t handle);
+    static bool CHandle_is_valid(uint64_t handle);
+    static uint64_t get_Camera();
+    static uint64_t get_local_player();
+    static PlayerData get_player_data(uint64_t entity);
+    static int get_index(uintptr_t target_entity, const std::string bone_name);
+    static vec3 GetBoneVectorFromIndex(uintptr_t target_entity, int index);
+    static std::string ReadString(uintptr_t address);
+    static bool WorldToScreen(vec3 pos, vec2& screen, float matrix[16]);
+    static float GetDistance(vec3 src, vec3 dst);
+    static std::string GetHeroNameByID(int id);
+    static vec3 GetBonePosition(uintptr_t entity, const char* BoneName);
+    static float DegreesToRadians(float degrees);
+    static xpData get_xp_data(uint64_t entity);
+    static vec2 GetResolution();
+    static float GetGameTime();
+    static CCitadelUserCmdPB* GetUserCmdArray();
+    static CCitadelUserCmdPB* GetUserCmdByIndex(int index);
+    static CCitadelUserCmdPB* GetCurrentUserCmd();
+
 
 };
+
+static const uint64_t ClientModuleBase = Helper::GetClientBase();

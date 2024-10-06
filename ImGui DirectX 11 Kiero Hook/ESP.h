@@ -7,7 +7,7 @@ class Esp
 public:
 	
 	void DrawEsp(uintptr_t Entity);
-	void DoEsp(ConfigSettings cfg);
+	void DoEsp();
 
 
 
