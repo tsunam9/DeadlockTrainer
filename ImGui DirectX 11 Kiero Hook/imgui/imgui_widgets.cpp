@@ -1190,6 +1190,13 @@ void ImGui::Hotkey(int* key)
         // Check for key presses
         for (int i = 0; i < 256; i++) {
             if (GetAsyncKeyState(i) & 0x8000) { // Check if the key is pressed
+				if (i == 27) // Escape key
+				{
+					*key = 0; // Clear the key value
+					waitingForKey = false; // Stop waiting
+					break; // Exit the loop after detecting a key
+				}
+
                 *key = i; // Update the key value
                 waitingForKey = false; // Stop waiting
                 break; // Exit the loop after detecting a key

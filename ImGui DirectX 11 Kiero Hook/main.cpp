@@ -1,5 +1,6 @@
 #include "includes.h"
 
+
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 Present oPresent;
@@ -64,7 +65,6 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 	GodFunction();
-
 	if (Config.MenuOpen) {
 
 		ImGui::Begin("Moonlightkillabrotha");
@@ -74,7 +74,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			// First tab
 			if (ImGui::BeginTabItem("Aimbot"))
 			{
-		
+
 				ImGui::Checkbox("Aimbot", &Config.aimbot.bAimbot);
 				ImGui::SameLine();
 				ImGui::Hotkey(&Config.aimbot.AimKey);
@@ -82,7 +82,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				static int currentItem = 0; // Index of the currently selected item
 				ImGui::Combo("Target ", &currentItem, items, IM_ARRAYSIZE(items)); Config.aimbot.targetSelectionMode = currentItem;
 				ImGui::Text("Selected: %s", items[currentItem]);
-				ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f,"%.1f");
+				ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f, "%.1f");
 				ImGui::SliderFloat("FOV", &Config.aimbot.fov, 0.0f, 180.0f, "%.1f");
 				ImGui::SliderFloat("Smooth", &Config.aimbot.smooth, 0.0f, 100.0f, "%.1f");
 				ImGui::Checkbox("Aim at XP", &Config.aimbot.AimXp);
@@ -106,6 +106,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				ImGui::Checkbox("Health Bar", &Config.esp.HealthBar);
 				ImGui::Checkbox("Draw Fov", &Config.esp.DrawFov);
 				ImGui::Checkbox("Draw Xp", &Config.esp.DrawXp);
+				ImGui::Checkbox("Draw Monsters", &Config.esp.DrawMonsters);
 				ImGui::EndTabItem();
 			}
 
@@ -115,6 +116,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				ImGui::Checkbox("No Recoil", &Config.misc.bNorecoil);
 				if (ImGui::Button("Slay them all"))
 				{
+					
 					kiero::shutdown();
 					fclose(fp);
 					FreeConsole();

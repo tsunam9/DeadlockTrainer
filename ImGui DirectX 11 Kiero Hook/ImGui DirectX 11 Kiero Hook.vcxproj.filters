@@ -205,57 +205,6 @@
     <ClInclude Include="..\..\..\Cs2Dumper\output\client_dll.hpp">
       <Filter>Dump</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\worldrenderer_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\vphysics2_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\soundsystem_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\server_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\schemasystem_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\scenesystem_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\resourcesystem_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\rendersystemdx11_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\pulse_system_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\particles_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\panorama_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\networksystem_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\materialsystem2_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\host_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\engine2_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\animationsystem_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\interfaces.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Cs2Dumper\output\buttons.hpp">
       <Filter>Dump</Filter>
     </ClInclude>

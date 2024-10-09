@@ -17,6 +17,16 @@ void Drawing::DrawCircle(float x, float y, float radius, ImU32 color) {
 	draw_list->AddCircle(ImVec2(x, y), radius, color, 128, 1.0f);
 }
 
+void Drawing::DrawQuad(vec2 a, vec2 b, vec2 c, vec2 d, ImU32 color, float thickness){
+	ImDrawList* draw_list = ImGui::GetBackgroundDrawList(); // Use the background draw list for ESP
+	draw_list->AddQuad(ImVec2(a.x, a.y), ImVec2(b.x, b.y), ImVec2(c.x, c.y), ImVec2(d.x, d.y), color, thickness);
+}
+
+void Drawing::DrawFilledCircle(float x, float y, float radius, ImU32 color) {
+	ImDrawList* draw_list = ImGui::GetBackgroundDrawList(); // Use the background draw list for ESP
+	draw_list->AddCircleFilled(ImVec2(x, y), radius, color, 128);
+}
+
 void Drawing::DrawText(float x, float y, ImU32 color, const char* text) {
 	ImDrawList* draw_list = ImGui::GetBackgroundDrawList(); // Use the background draw list for ESP
 	draw_list->AddText(ImVec2(x, y), color, text);

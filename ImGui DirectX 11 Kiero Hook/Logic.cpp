@@ -22,37 +22,14 @@ void detourCalcAngle(__int64 pCamera, float a2, float a3, float a4, bool a5) {
   FOR WHEN I NEED TO MAKE A HOOK
 */ 
 
+//CreateMove Hook
 typedef void(__fastcall* f_CreateMove)(__int64 *a1, int a2, char a3);
 f_CreateMove CreateMove = nullptr;
-f_CreateMove CreateMoveTarget = reinterpret_cast<f_CreateMove>(ClientModuleBase + Offsets::o_CreateMove);
+f_CreateMove CreateMoveTarget = reinterpret_cast<f_CreateMove>(ClientModuleBase + Offsets::o_fCreateMove);
+
 
 void detourCreateMove(__int64* a1, int a2, char a3) {
-
-    const uintptr_t local_player = Helper::get_local_player();
-	if (!local_player)
-	{
-		std::cout << "No LocalPlayer" << std::endl;
-		return CreateMove(a1, a2, a3);
-	}
-
-    const CCitadelUserCmdPB* UserCmd = Helper::GetCurrentUserCmd();
-
-	std::cout << std::hex << UserCmd << std::endl;
-	std::cout << "---------------------------------" << std::endl;
-
-	if (!UserCmd || !UserCmd->pViewAngle)
-	{
-        //std::cout << "Nigger shit" << std::endl;
-		return CreateMove(a1, a2, a3);
-	}
-
-
-    //std::cout << "No nigger shit for once" << std::endl;    
-    UserCmd->pViewAngle->viewAngles = { 1, 1, 0 };
-
-	return CreateMove(a1, a2, a3);
-
-	CreateMove(a1, a2, a3);
+    CreateMove(a1, a2, a3);
 }
 
 
@@ -64,6 +41,9 @@ void CreateHooks() {
    
 	MH_CreateHook((LPVOID)CreateMoveTarget, &detourCreateMove, reinterpret_cast<LPVOID*>(&CreateMove));
 	MH_EnableHook((LPVOID)CreateMoveTarget);
+
+
+
     init = true;
 
 }

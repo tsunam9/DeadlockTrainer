@@ -20,7 +20,9 @@ inline void sort_esp_entities()
 
 		if (EntName == "CCitadelPlayerController" && !*(bool*)(entity + CBasePlayerController::m_bIsLocalPlayerController))
 			processed_ents_esp.push_back(entity);
-		if (EntName == "CItemXP")
+		if (EntName == "CItemXP" && Config.esp.DrawXp)
+			processed_ents_esp.push_back(entity);
+		if (EntName == "C_NPC_TrooperNeutral" && Config.esp.DrawMonsters)
 			processed_ents_esp.push_back(entity);
 
 	}
@@ -89,13 +91,12 @@ void Esp::DrawEsp(uintptr_t Entity)
 
 void DrawXPEsp(uintptr_t entity) {
 
-	if(!Config.esp.DrawXp)
+	if(!Config.esp.DrawXp || !entity)
 		return;
 
 	vec2 ScreenXp;
 	xpData EntInfo = Helper::get_xp_data(entity);
 	uintptr_t ViewMatrix = (ClientModuleBase + Offsets::o_ViewMatrix);
-
 	PlayerData LocalPlayerData = Helper::get_player_data(Helper::get_local_player());
 	float distance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, EntInfo.m_vecOrigin);
 
@@ -116,6 +117,54 @@ void DrawXPEsp(uintptr_t entity) {
 		return;
 
 	draw.DrawCircle(ScreenXp.x, ScreenXp.y, 10, IM_COL32(255, 255, 255, 255));
+
+}
+
+void DrawMonsterEsp(uintptr_t entity) {
+
+	if (!Config.esp.DrawMonsters || !entity)
+		return;
+	xpData EntInfo = Helper::get_xp_data(entity);
+	uintptr_t ViewMatrix = (ClientModuleBase + Offsets::o_ViewMatrix);
+	PlayerData LocalPlayerData = Helper::get_player_data(Helper::get_local_player());
+	float distance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, EntInfo.m_vecOrigin);
+
+	if (!ViewMatrix)
+		return;
+
+	if (EntInfo.bDormant)
+		return;
+
+	if (distance > 2000.0f)
+		return;
+
+	ViewMatrixObj matrix = *(ViewMatrixObj*)ViewMatrix;
+
+	// im sorry
+	vec3 posleft = EntInfo.m_vecOrigin;
+	vec3 posright = EntInfo.m_vecOrigin;
+	vec3 posup = EntInfo.m_vecOrigin;
+	vec3 posdown = EntInfo.m_vecOrigin;
+
+	posleft.x += 50;
+	posright.x -= 50;
+	posup.y += 50;
+	posdown.y -= 50;
+
+	vec2 limitleft;
+	vec2 limitright;
+	vec2 limitup;
+	vec2 limitdown;
+
+	if (!Helper::WorldToScreen(posleft, limitleft, matrix.matrix))
+		return;
+	if (!Helper::WorldToScreen(posright, limitright, matrix.matrix))
+		return;
+	if (!Helper::WorldToScreen(posup, limitup, matrix.matrix))
+		return;
+	if (!Helper::WorldToScreen(posdown, limitdown, matrix.matrix))
+		return;
+	draw.DrawQuad(limitup, limitright, limitdown, limitleft, IM_COL32(255, 255, 255, 255));
 
 }
 
@@ -163,6 +212,9 @@ void Esp::DoEsp() {
 		}
 		else if (EntName == "CItemXP") {
 			DrawXPEsp(processed_ents_esp[i]);
+		}
+		else if (EntName == "C_NPC_TrooperNeutral" && Config.esp.DrawMonsters) {
+			DrawMonsterEsp(processed_ents_esp[i]);
 		}
 	}
 

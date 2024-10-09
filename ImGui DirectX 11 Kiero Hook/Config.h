@@ -29,6 +29,7 @@ public:
         bool HealthBar = false;
 		bool DrawFov = false;
 		bool DrawXp = false;
+        bool DrawMonsters = false;
     } esp;
 
     struct MiscSettings {

@@ -235,6 +235,8 @@ xpData Helper::get_xp_data(uint64_t entity) {
 	xpdataobj.bDormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
 	xpdataobj.blaunchtime = *(float*)(entity + CItemXP::m_timeLaunch);
 
+	return xpdataobj;
+
 }
 
 vec2 Helper::GetResolution() {
@@ -339,7 +341,7 @@ float Helper::DegreesToRadians(float degrees) {
 CCitadelUserCmdPB* Helper::GetUserCmdArray()
 {
 	using fnGetUserCmd = CCitadelUserCmdPB * (__fastcall*)(__int64*);
-	static auto oGetUserCmd = reinterpret_cast<fnGetUserCmd>(ClientModuleBase + 0xAC6950);
+	static auto oGetUserCmd = reinterpret_cast<fnGetUserCmd>(ClientModuleBase + Offsets::o_fGetUserCmdArray);
 
 	return oGetUserCmd(reinterpret_cast<__int64*>(Helper::get_local_player));
 }
@@ -347,7 +349,6 @@ CCitadelUserCmdPB* Helper::GetUserCmdArray()
 CCitadelUserCmdPB* Helper::GetUserCmdByIndex(int index)
 {
 	auto _array = Helper::GetUserCmdArray();
-	auto sequence = *(uint32_t*)((uintptr_t)_array + 0x5290);
 	auto current_cmd = (uintptr_t)_array + 0x88 * index;
 	return (CCitadelUserCmdPB*)current_cmd;
 
@@ -355,11 +356,27 @@ CCitadelUserCmdPB* Helper::GetUserCmdByIndex(int index)
 
 CCitadelUserCmdPB* Helper::GetCurrentUserCmd()
 {
-	auto _array = Helper::GetUserCmdArray();
-	auto sequence = *(uint32_t*)((uintptr_t)_array + 0x5290);
-	auto current_index = sequence % 150u; // evil terrible
+	CCitadelUserCmdPB* cmdarray = Helper::GetUserCmdArray();
+	uint64_t sequence = *(uint64_t*)(uint64_t)(cmdarray + 0x5290);
+	if (sequence != 0) {
+		std::cout << "SEQUENCE: " << sequence << "\n";
+	}
+	auto current_index = sequence % 150u; // evil terrible 
 	auto current_cmd = Helper::GetUserCmdByIndex(current_index);
+
 	return (CCitadelUserCmdPB*)current_cmd;
 
+}
+
+
+bool Helper::KeyBindHandler(int key) {
+
+	if (key == 0) {
+		return true;
+	}
+
+	if (GetAsyncKeyState(key) & 0x8000)
+		return true;
+	return false;
 }
 

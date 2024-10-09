@@ -187,54 +187,42 @@ enum HeroIDs {
     Mirage = 52
 };
 
-struct Vec3
-{
-    float X = 0, Y = 0, Z = 0;
-
-    Vec3(float X = 0, float Y = 0, float Z = 0) : X(X), Y(Y), Z(Z) {};
-    Vec3 operator - (const Vec3& other) const {
-        return Vec3(X - other.X, Y - other.Y, Z - other.Z);
-    }
-
-};
-
 class CMsgQAngle {
 public:
-    char pad1[0x18];
-    vec3 viewAngles;
+	char pad1[0x18];
+	vec3 viewAngles;
 };
-
+ 
 class CInButtonStatePB {
 public:
-    char pad[0x18];
-    uint32_t buttons;
-
+	char pad[0x18];
+	uint32_t buttons;
+ 
 };
-
+ 
 class CBaseUserCMD {
 public:
-
-    char pad1[0x38];
-    CInButtonStatePB* CInButtonStatePB;
-    CMsgQAngle* QAngle;
-    char pad2[0x10];
-    float forwardMove;
-    float sideMove;
-
+ 
+	char pad1[0x38];
+	CInButtonStatePB* CInButtonStatePB;
+	CMsgQAngle* playerViewAngle;
+	char pad2[0x10];
+	float forwardMove;
+	float sideMove;
+ 
 };
-
+ 
 class CCitadelUserCmdPB {
 public:
-
-    char pad1[0x28];
-    CBaseUserCMD* pBaseUserCMD;
-    char pad2[0x8];
-    CMsgQAngle* pViewAngle;
-    char pad3[0x18];
-    uint32_t buttons;
+	char pad[0x8];
+	DWORD commandNumber;
+	char pad1[0x1C];
+	CBaseUserCMD* pBaseUserCMD;
+	char pad2[0x8];
+	CMsgQAngle* cameraViewAngle;
+	char pad3[0x18];
+	uint32_t buttons;
 };
-
-
 
 
 class Helper {
@@ -269,6 +257,7 @@ public:
     static CCitadelUserCmdPB* GetUserCmdArray();
     static CCitadelUserCmdPB* GetUserCmdByIndex(int index);
     static CCitadelUserCmdPB* GetCurrentUserCmd();
+    static bool KeyBindHandler(int key);
 
 
 };

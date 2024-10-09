@@ -47,6 +47,7 @@ vec2 Aimbot::GetAimAngles(vec3 Target) {
 	AimAngles.y = atan2f(AbsPos.y, AbsPos.x) * 180 / M_PI;
 	AimAngles.x = -atan2f(AbsPos.z, sqrt(AbsPos.x * AbsPos.x + AbsPos.y * AbsPos.y)) * 180 / M_PI;
 	return AimAngles;
+
 }
 
 void Aimbot::AimAt(uintptr_t entity, const char* bone, float smooth_factor) {
@@ -232,8 +233,7 @@ void Aimbot::RunAimbot() {
 
 
 	}
-
-	if (GetAsyncKeyState(Config.aimbot.AimKey)) {
+	if (Helper::KeyBindHandler(Config.aimbot.AimKey)) {
 		if (Config.aimbot.targetSelectionMode == 0 && ClosestIndex != 999) {
 			if (!processed_ents.empty() && processed_ents[ClosestIndex]) {
 				AimAt(processed_ents[ClosestIndex], "head", Config.aimbot.smooth);
@@ -249,9 +249,10 @@ void Aimbot::RunAimbot() {
 				AimAt(processed_ents[lowestfovindex], "head", Config.aimbot.smooth);
 			}
 		}
-
 	}
-	if (Config.aimbot.AimXp && GetAsyncKeyState(Config.aimbot.AimKeyXp)) {
+
+
+	if (Config.aimbot.AimXp && Helper::KeyBindHandler(Config.aimbot.AimKeyXp)) {
 		if (Config.aimbot.targetSelectionMode == 0 && ClosestXPIndex != 999) {
 			if (!processed_ents.empty() && processed_ents[ClosestXPIndex]) {
 				AimAtXp(processed_ents[ClosestXPIndex], Config.aimbot.smooth);
