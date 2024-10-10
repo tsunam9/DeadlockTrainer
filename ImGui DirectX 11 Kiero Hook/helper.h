@@ -127,21 +127,21 @@ public:
     }
 };
 
-class ViewMatrixObj {
+struct ViewMatrixObj {
 
     public:
 	float matrix[16];
 
 };
 
-class Bone {
-public:
+struct Bone {
+
     vec3 Position;
 	std::string name;
 };
 
-class PlayerData {
-public:
+struct PlayerData {
+    
 
 	vec3 m_vecOrigin;
 	uint32_t Health;
@@ -149,16 +149,34 @@ public:
     bool isalive;
     int HeroID;
     int TeamNum;
+    uint64_t weaponservices;
+    uint64_t itemservices;
+    uint64_t autoaimservices;
+    uint64_t movementservices;
 
 
 };
 
-class xpData {
-public:
+struct  xpData {
+
     vec3 m_vecOrigin;
-    bool bDormant;
-    float blaunchtime;
+    bool m_bDormant;
+    float m_flLaunchtime;
 };
+
+struct  NpcData {
+
+    bool m_bMinion;
+    int m_iHealth;
+	int m_iMaxHealth;
+    int m_ilifestate;
+    int m_iteamnum;
+    bool m_bDormant;
+	vec3 m_vecOrigin;
+    char* m_szClassname;
+
+};
+
 
 enum HeroIDs {
     Infernus = 1,
@@ -224,6 +242,13 @@ public:
 	uint32_t buttons;
 };
 
+struct BoneConnection
+{
+    int bone1;
+    int bone2;
+
+    BoneConnection(int b1, int b2) : bone1(b1), bone2(b2) {}
+};
 
 class Helper {
 
@@ -243,13 +268,17 @@ public:
     static uint64_t get_Camera();
     static uint64_t get_local_player();
     static PlayerData get_player_data(uint64_t entity);
-    static int get_index(uintptr_t target_entity, const std::string bone_name);
+
+    //Bone Stuff
+    static int get_bone_index(uintptr_t target_entity, const std::string bone_name);
     static vec3 GetBoneVectorFromIndex(uintptr_t target_entity, int index);
+    static vec3 GetBonePosition(uintptr_t entity, const char* BoneName);
+    static std::vector<BoneConnection> GetBoneConnections(uintptr_t playerpawn);
+
     static std::string ReadString(uintptr_t address);
-    static bool WorldToScreen(vec3 pos, vec2& screen, float matrix[16]);
+    static bool WorldToScreen(vec3 pos, vec2& screen);
     static float GetDistance(vec3 src, vec3 dst);
     static std::string GetHeroNameByID(int id);
-    static vec3 GetBonePosition(uintptr_t entity, const char* BoneName);
     static float DegreesToRadians(float degrees);
     static xpData get_xp_data(uint64_t entity);
     static vec2 GetResolution();
@@ -258,6 +287,7 @@ public:
     static CCitadelUserCmdPB* GetUserCmdByIndex(int index);
     static CCitadelUserCmdPB* GetCurrentUserCmd();
     static bool KeyBindHandler(int key);
+	static NpcData get_npc_data(uint64_t entity);
 
 
 };

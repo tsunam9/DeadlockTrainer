@@ -99,6 +99,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			{
 				ImGui::Checkbox("Esp", &Config.esp.bEsp);
 				ImGui::Checkbox("Box Esp", &Config.esp.boxEsp);
+				ImGui::Checkbox("Bone Esp", &Config.esp.boneEsp);
 				ImGui::Checkbox("Health Text", &Config.esp.HealthEsp);
 				ImGui::Checkbox("Tracers", &Config.esp.Tracers);
 				ImGui::Checkbox("Distance Esp", &Config.esp.DistanceEsp);
@@ -107,6 +108,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				ImGui::Checkbox("Draw Fov", &Config.esp.DrawFov);
 				ImGui::Checkbox("Draw Xp", &Config.esp.DrawXp);
 				ImGui::Checkbox("Draw Monsters", &Config.esp.DrawMonsters);
+				ImGui::Checkbox("Draw Minions", &Config.esp.DrawMinions);
 				ImGui::EndTabItem();
 			}
 

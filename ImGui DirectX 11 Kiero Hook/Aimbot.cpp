@@ -201,7 +201,7 @@ void Aimbot::RunAimbot() {
 
 			xpData TargetXPData = Helper::get_xp_data(processed_ents[i]);
 
-			if (TargetXPData.bDormant)
+			if (TargetXPData.m_bDormant)
 				continue;
 
 			float xpdistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetXPData.m_vecOrigin);

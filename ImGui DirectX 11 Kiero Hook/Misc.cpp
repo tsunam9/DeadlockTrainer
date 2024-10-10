@@ -31,8 +31,13 @@ void Misc::SimpleNoRecoil(){
 
 }
 
+void testbed() {
+
+}
+
 
 
 void Misc::DoMisc() {
 		SimpleNoRecoil();
+		//testbed();
 }

@@ -29,6 +29,7 @@ f_CreateMove CreateMoveTarget = reinterpret_cast<f_CreateMove>(ClientModuleBase 
 
 
 void detourCreateMove(__int64* a1, int a2, char a3) {
+	//std::cout << a1 << std::endl;
     CreateMove(a1, a2, a3);
 }
 

@@ -20,6 +20,7 @@ public:
     // Nested structure for ESP settings
     struct EspSettings {
         bool bEsp = false;
+        bool boneEsp = false;
         bool boxEsp = false;
         bool HealthText = false;
         bool Tracers = false;
@@ -30,6 +31,7 @@ public:
 		bool DrawFov = false;
 		bool DrawXp = false;
         bool DrawMonsters = false;
+        bool DrawMinions = false;
     } esp;
 
     struct MiscSettings {

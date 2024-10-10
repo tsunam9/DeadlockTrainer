@@ -92,15 +92,18 @@ uint64_t Helper::get_local_player() {
 }
 
 //DirectX 11 WorldToScreen
-bool Helper::WorldToScreen(vec3 pos, vec2& screen, float matrix[16]) {
+bool Helper::WorldToScreen(vec3 pos, vec2& screen) {
 
 	vec2 resolution = Helper::GetResolution();
+	uintptr_t ViewMatrix = (ClientModuleBase + Offsets::o_ViewMatrix);
+	ViewMatrixObj matrix = *(ViewMatrixObj*)ViewMatrix;
+	
 
 	vec4 clipCoords;
-	clipCoords.x = pos.x * matrix[0] + pos.y * matrix[1] + pos.z * matrix[2] + matrix[3];
-	clipCoords.y = pos.x * matrix[4] + pos.y * matrix[5] + pos.z * matrix[6] + matrix[7];
-	clipCoords.z = pos.x * matrix[8] + pos.y * matrix[9] + pos.z * matrix[10] + matrix[11];
-	clipCoords.w = pos.x * matrix[12] + pos.y * matrix[13] + pos.z * matrix[14] + matrix[15];
+	clipCoords.x = pos.x * matrix.matrix[0] + pos.y * matrix.matrix[1] + pos.z * matrix.matrix[2] + matrix.matrix[3];
+	clipCoords.y = pos.x * matrix.matrix[4] + pos.y * matrix.matrix[5] + pos.z * matrix.matrix[6] + matrix.matrix[7];
+	clipCoords.z = pos.x * matrix.matrix[8] + pos.y * matrix.matrix[9] + pos.z * matrix.matrix[10] + matrix.matrix[11];
+	clipCoords.w = pos.x * matrix.matrix[12] + pos.y * matrix.matrix[13] + pos.z * matrix.matrix[14] + matrix.matrix[15];
 
 	if (clipCoords.w < 0.1f)
 		return false;
@@ -163,7 +166,7 @@ float Helper::GetGameTime() {
 	return gametime;
 }
 
-int Helper::get_index(uintptr_t target_entity, const std::string bone_name) {
+int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name) { // entity = pawn
 																							
 	if(!target_entity)
 		return -1;
@@ -218,6 +221,7 @@ PlayerData Helper::get_player_data(uint64_t entity) {
 	ReturnObj.HeroID = *(int*)(PlayerDataGlobal + PlayerDataGlobal_t::m_nHeroID);
 	ReturnObj.TeamNum = *(int*)(Pawn + C_BaseEntity::m_iTeamNum);
 	ReturnObj.isalive = *(bool*)(PlayerDataGlobal + PlayerDataGlobal_t::m_bAlive);
+	ReturnObj.weaponservices = *(uint64_t*)(Pawn + C_BasePlayerPawn::m_pWeaponServices);
 	
 
 	return ReturnObj;
@@ -232,10 +236,33 @@ xpData Helper::get_xp_data(uint64_t entity) {
 
 	uintptr_t GameSceneNode = *(uintptr_t*)(entity + C_BaseEntity::m_pGameSceneNode);
 	xpdataobj.m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
-	xpdataobj.bDormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
-	xpdataobj.blaunchtime = *(float*)(entity + CItemXP::m_timeLaunch);
+	xpdataobj.m_bDormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
+	xpdataobj.m_flLaunchtime = *(float*)(entity + CItemXP::m_timeLaunch);
 
 	return xpdataobj;
+
+}
+
+NpcData Helper::get_npc_data(uint64_t entity) {
+
+
+	NpcData DataObj;
+
+	if (!entity)
+		return DataObj;
+
+	uintptr_t GameSceneNode = *(uintptr_t*)(entity + C_BaseEntity::m_pGameSceneNode);
+
+	DataObj.m_bMinion = *(bool*)(entity + C_AI_CitadelNPC::m_bMinion);
+	DataObj.m_iHealth = *(int*)(entity + C_BaseEntity::m_iHealth);
+	DataObj.m_iMaxHealth = *(int*)(entity + C_BaseEntity::m_iMaxHealth);
+	DataObj.m_ilifestate = *(int*)(entity + C_BaseEntity::m_lifeState);
+	DataObj.m_iteamnum = *(int*)(entity + C_BaseEntity::m_iTeamNum);
+	DataObj.m_bDormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
+	DataObj.m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
+	DataObj.m_szClassname = (char*)(GameSceneNode + CGameSceneNode::m_name);
+
+	return DataObj;
 
 }
 
@@ -328,11 +355,36 @@ vec3 Helper::GetBonePosition(uintptr_t entity, const char* BoneName) {
 	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
 	std::string bonechoice = BoneName;
-	int boneindex = Helper::get_index(Pawn, bonechoice);
+	int boneindex = Helper::get_bone_index(Pawn, bonechoice);
 	BonePos = Helper::GetBoneVectorFromIndex(Pawn, boneindex);
 
 	return BonePos;
 }
+
+std::vector<BoneConnection> Helper::GetBoneConnections(uintptr_t playerpawn) {
+
+	
+	std::vector <BoneConnection> connections;
+
+
+		
+		uint64_t pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(*(uint64_t*)(playerpawn + CCitadelPlayerController::m_hHeroPawn)));
+
+			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "head"), Helper::get_bone_index(pawn, "neck_0")));
+			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "neck_0"), Helper::get_bone_index(pawn, "spine_3")));
+			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "spine_3"), Helper::get_bone_index(pawn, "pelvis")));
+			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "pelvis"), Helper::get_bone_index(pawn, "leg_lower_L")));
+			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "pelvis"), Helper::get_bone_index(pawn, "leg_lower_R")));
+			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "leg_lower_R"), Helper::get_bone_index(pawn, "ankle_R")));
+			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "leg_lower_L"), Helper::get_bone_index(pawn, "ankle_L")));
+			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "spine_3"), Helper::get_bone_index(pawn, "arm_lower_R")));
+			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "spine_3"), Helper::get_bone_index(pawn, "arm_lower_L")));
+			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "arm_lower_R"), Helper::get_bone_index(pawn, "hand_R")));
+			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "arm_lower_L"), Helper::get_bone_index(pawn, "hand_L")));
+
+	return connections;
+
+ }
 
 float Helper::DegreesToRadians(float degrees) {
 	return degrees * (M_PI / 180.0f);

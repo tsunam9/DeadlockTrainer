@@ -7960,7 +7960,8 @@ namespace cs2_dumper {
             // Metadata:
             // MNetworkIncludeByName
             // MNetworkIncludeByName
-            // NetworkVarNames: m_NPCState (NPC_STATE)
+            // NetworkVarNames: m_NPCState (
+            // )
             // NetworkVarNames: m_bFadeCorpse (bool)
             // NetworkVarNames: m_bImportantRagdoll (bool)
             namespace C_AI_BaseNPC {
