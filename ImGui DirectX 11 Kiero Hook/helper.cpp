@@ -2,8 +2,6 @@
 #include "helper.h"
 using namespace cs2_dumper::schemas::client_dll;
 
-Offsets HelperOffsets;
-
 
 
 std::string Helper::ReadString(uintptr_t address) {
@@ -50,7 +48,7 @@ uint64_t Helper::GetProcessIdByName(const char* processname) {
 }
 
 uint64_t Helper::get_entity_list(){
-	uintptr_t tf = *(uintptr_t*)(ClientModuleBase + HelperOffsets.o_EntityList);
+	uintptr_t tf = *(uintptr_t*)(ClientModuleBase + Offsets::o_EntityList);
 	return static_cast<uint64_t>(tf);
 }
 
@@ -73,7 +71,7 @@ std::string Helper::readstr(uintptr_t address){
 int Helper::get_max_entities()
 {
 	uint64_t entity_list = Helper::get_entity_list();
-	int max_entities = *(int*)(entity_list + HelperOffsets.o_HighestEntityIndex);
+	int max_entities = *(int*)(entity_list + Offsets::o_HighestEntityIndex);
 	return max_entities;
 }
 
@@ -81,13 +79,13 @@ uint64_t Helper::get_Camera() {
 
 
 	//camera = pm.read_longlong(client_base + 0x1f450b0 + 0x28)
-	uint64_t camera = (ClientModuleBase + HelperOffsets.o_CameraManager + 0x28);
+	uint64_t camera = (ClientModuleBase + Offsets::o_CameraManager + 0x28);
 	camera = *(uint64_t*)camera;
 	return camera;
 }
 
 uint64_t Helper::get_local_player() {
-	uint64_t local_player = *(uint64_t*)(ClientModuleBase + HelperOffsets.o_LocalPlayerController);
+	uint64_t local_player = *(uint64_t*)(ClientModuleBase + Offsets::o_LocalPlayerController);
 	return local_player;
 }
 
@@ -153,7 +151,7 @@ vec3 Helper::GetBoneVectorFromIndex(uintptr_t target_entity, int index) {
 	if(index == -1)
 		return vec3{0,0,0};
 	uint64_t skel_instance = *(uint64_t*)(target_entity + C_BaseEntity::m_pGameSceneNode);
-	uint64_t BoneArray = *(uint64_t*)(skel_instance + CSkeletonInstance::m_modelState + HelperOffsets.o_BoneArray);
+	uint64_t BoneArray = *(uint64_t*)(skel_instance + CSkeletonInstance::m_modelState + Offsets::o_BoneArray);
 	vec3 bonepos = *(vec3*)(BoneArray + index * 32);
 
 	return bonepos;
@@ -161,7 +159,7 @@ vec3 Helper::GetBoneVectorFromIndex(uintptr_t target_entity, int index) {
 
 float Helper::GetGameTime() {
 
-	uint64_t local_player = *(uint64_t*)(ClientModuleBase + HelperOffsets.o_LocalPlayerController);
+	uint64_t local_player = *(uint64_t*)(ClientModuleBase + Offsets::o_LocalPlayerController);
 	float gametime = *(float*)(local_player + C_BaseEntity::m_flSimulationTime);
 	return gametime;
 }
@@ -216,6 +214,7 @@ PlayerData Helper::get_player_data(uint64_t entity) {
 	uint64_t GameSceneNode = *(uint64_t*)(Pawn + C_BaseEntity::m_pGameSceneNode);
 	uint64_t PlayerDataGlobal = entity + CCitadelPlayerController::m_PlayerDataGlobal;
 	ReturnObj.m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
+	ReturnObj.m_vecVelocity= *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
 	ReturnObj.Health = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealth);
 	ReturnObj.MaxHealth = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealthMax);
 	ReturnObj.HeroID = *(int*)(PlayerDataGlobal + PlayerDataGlobal_t::m_nHeroID);
@@ -270,7 +269,7 @@ vec2 Helper::GetResolution() {
 
 	vec2 resolution;
 
-	uint64_t resolutionptr = ClientModuleBase + HelperOffsets.o_Resolution;
+	uint64_t resolutionptr = ClientModuleBase + Offsets::o_Resolution;
 	uint64_t resclassobj = *(uint64_t*)resolutionptr;
 	uint64_t resolutionaddress = resclassobj + 0x484;
 
@@ -314,12 +313,12 @@ std::string Helper::GetHeroNameByID(int id) {
 
 std::string Helper::get_schema_name(const uintptr_t& entity)
 {
-	const uintptr_t entity_identity = *(uintptr_t*)(entity + HelperOffsets																															.o_entityInfo);
+	uintptr_t entity_identity = *(uintptr_t*)(entity + CEntityInstance::m_pEntity);
 	if (!entity_identity)
 		return "";
 
 	const uintptr_t entity_class_info = *(uint64_t*)(entity_identity + 0x8);
-	const uintptr_t schema_class_info_data = *(uint64_t*)(entity_class_info + 0x28);
+	const uintptr_t schema_class_info_data = *(uint64_t*)(entity_class_info + 0x30);
 	const uintptr_t class_name = *(uintptr_t*)(schema_class_info_data + 0x8);
 
 	std::string class_name_str = reinterpret_cast<const char*>(class_name);
@@ -413,7 +412,7 @@ CCitadelUserCmdPB* Helper::GetCurrentUserCmd()
 	if (sequence != 0) {
 		std::cout << "SEQUENCE: " << sequence << "\n";
 	}
-	auto current_index = sequence % 150u; // evil terrible 
+	auto current_index = sequence % 0x150u; // evil terrible 
 	auto current_cmd = Helper::GetUserCmdByIndex(current_index);
 
 	return (CCitadelUserCmdPB*)current_cmd;
@@ -430,5 +429,26 @@ bool Helper::KeyBindHandler(int key) {
 	if (GetAsyncKeyState(key) & 0x8000)
 		return true;
 	return false;
+}
+
+
+uint64_t Helper::get_localplr_weapon() {
+
+	int max_ents = Helper::get_max_entities();
+
+	for (size_t i = 1; i <= static_cast<size_t>(max_ents); ++i)
+	{
+		uint64_t entity = Helper::get_base_entity_from_index(i);
+
+		if (!entity)
+			continue;
+
+		std::string EntName = Helper::get_schema_name(entity);
+
+		if (EntName == "CCitadel_Ability_PrimaryWeapon_Empty")
+			return entity;
+
+	}
+	return -1;
 }
 

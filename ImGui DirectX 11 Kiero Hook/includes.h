@@ -10,7 +10,6 @@
 #include "offsets.h"
 #include <unordered_set>
 #include <string>
-#include "client_dll.hpp"
 #include "PlayerClasses.h"
 #include "Aimbot.h"
 #include "Logic.h"
@@ -20,6 +19,8 @@
 #include "Drawing.h"
 #include "Misc.h"
 #include "kiero/minhook/include/MinHook.h"
+#include "client_dll.hpp"
+#include "hooks.h"
 
 using namespace cs2_dumper::schemas::client_dll;
 

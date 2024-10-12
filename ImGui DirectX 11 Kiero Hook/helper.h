@@ -144,6 +144,7 @@ struct PlayerData {
     
 
 	vec3 m_vecOrigin;
+    vec3 m_vecVelocity;
 	uint32_t Health;
 	uint32_t MaxHealth;
     bool isalive;
@@ -268,6 +269,7 @@ public:
     static uint64_t get_Camera();
     static uint64_t get_local_player();
     static PlayerData get_player_data(uint64_t entity);
+    static uint64_t get_localplr_weapon();
 
     //Bone Stuff
     static int get_bone_index(uintptr_t target_entity, const std::string bone_name);

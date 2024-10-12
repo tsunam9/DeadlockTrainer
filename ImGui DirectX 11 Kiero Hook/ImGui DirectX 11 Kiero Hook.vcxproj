@@ -80,7 +80,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\Russel Ward\source\repos\ImGui-DirectX-11-Kiero-Hook;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;C:\Users\Russel Ward\source\repos\ImGui-DirectX-11-Kiero-Hook\ImGui DirectX 11 Kiero Hook;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
@@ -104,6 +104,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,6 +150,7 @@
     <ClCompile Include="ESP.cpp" />
     <ClCompile Include="gameinterface.cpp" />
     <ClCompile Include="helper.cpp" />
+    <ClCompile Include="hooks.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -173,13 +175,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Cs2Dumper\output\buttons.hpp" />
-    <ClInclude Include="..\..\..\Cs2Dumper\output\client_dll.hpp" />
     <ClInclude Include="Aimbot.h" />
+    <ClInclude Include="client_dll.hpp" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="ESP.h" />
     <ClInclude Include="gameinterface.h" />
     <ClInclude Include="helper.h" />
+    <ClInclude Include="hooks.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />

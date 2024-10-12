@@ -67,7 +67,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	GodFunction();
 	if (Config.MenuOpen) {
 
-		ImGui::Begin("Moonlightkillabrotha");
+		ImGui::Begin("MeinKampfWare V9");
 
 		if (ImGui::BeginTabBar("Cheat"))
 		{
@@ -78,6 +78,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				ImGui::Checkbox("Aimbot", &Config.aimbot.bAimbot);
 				ImGui::SameLine();
 				ImGui::Hotkey(&Config.aimbot.AimKey);
+				ImGui::Checkbox("Silent Aim", &Config.aimbot.silentaim);
 				static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
 				static int currentItem = 0; // Index of the currently selected item
 				ImGui::Combo("Target ", &currentItem, items, IM_ARRAYSIZE(items)); Config.aimbot.targetSelectionMode = currentItem;
@@ -100,15 +101,17 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				ImGui::Checkbox("Esp", &Config.esp.bEsp);
 				ImGui::Checkbox("Box Esp", &Config.esp.boxEsp);
 				ImGui::Checkbox("Bone Esp", &Config.esp.boneEsp);
+				ImGui::Checkbox("Health Bar", &Config.esp.HealthBar);
 				ImGui::Checkbox("Health Text", &Config.esp.HealthEsp);
 				ImGui::Checkbox("Tracers", &Config.esp.Tracers);
 				ImGui::Checkbox("Distance Esp", &Config.esp.DistanceEsp);
+				ImGui::Separator();
 				ImGui::Checkbox("Name Esp", &Config.esp.NameEsp);
-				ImGui::Checkbox("Health Bar", &Config.esp.HealthBar);
 				ImGui::Checkbox("Draw Fov", &Config.esp.DrawFov);
 				ImGui::Checkbox("Draw Xp", &Config.esp.DrawXp);
 				ImGui::Checkbox("Draw Monsters", &Config.esp.DrawMonsters);
 				ImGui::Checkbox("Draw Minions", &Config.esp.DrawMinions);
+				//ImGui::Checkbox("Draw Aimbot Prediction", &Config.esp.DrawAimbotPrediction);
 				ImGui::EndTabItem();
 			}
 
@@ -116,6 +119,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			if (ImGui::BeginTabItem("Misc"))
 			{
 				ImGui::Checkbox("No Recoil", &Config.misc.bNorecoil);
+
 				if (ImGui::Button("Slay them all"))
 				{
 					

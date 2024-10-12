@@ -52,6 +52,9 @@
     <Filter Include="Source Files\GameInterface">
       <UniqueIdentifier>{04c32b85-9f1e-42bc-9640-dafeab0fbd29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Hooks">
+      <UniqueIdentifier>{3712a731-ea13-462f-a753-87cd3b73bdc6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kiero\minhook\src\buffer.c">
@@ -116,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="gameinterface.cpp">
       <Filter>Source Files\GameInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="hooks.cpp">
+      <Filter>Source Files\Hooks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,14 +208,17 @@
     <ClInclude Include="Misc.h">
       <Filter>Source Files\Features\Misc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Cs2Dumper\output\client_dll.hpp">
-      <Filter>Dump</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Cs2Dumper\output\buttons.hpp">
       <Filter>Dump</Filter>
     </ClInclude>
     <ClInclude Include="gameinterface.h">
       <Filter>Source Files\GameInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="client_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="hooks.h">
+      <Filter>Source Files\Hooks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -74,7 +74,6 @@ void DrawXPEsp(uintptr_t entity) {
 		return;
 
 	draw.DrawCircle(ScreenXp.x, ScreenXp.y, 10, IM_COL32(255, 255, 255, 255));
-
 }
 
 void DrawMonsterEsp(uintptr_t entity) {

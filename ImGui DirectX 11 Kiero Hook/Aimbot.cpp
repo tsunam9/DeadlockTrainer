@@ -12,6 +12,7 @@ std::vector<uint64_t> processed_ents;
 PlayerData LocalPlayerData;
 uint64_t CameraManager;
 vec2* ViewAngles;
+vec2* crosshairposition;
 
 Helper AimbotHelperObj;
 
@@ -39,6 +40,18 @@ inline void sort_entities()
 	}	
 }
 
+vec3 Aimbot::PredictPosition(vec3 Target, vec3 Velocity, float bulletspeed) {
+
+	vec3 localpos = LocalPlayerData.m_vecOrigin;
+	float distance = Helper::GetDistance(localpos, Target);
+	float time = distance / bulletspeed;
+	Target.x += (Velocity.x * time);
+	Target.y += (Velocity.y * time);
+	Target.z += (Velocity.z * time);
+	return Target;
+
+}
+
 vec2 Aimbot::GetAimAngles(vec3 Target) {
 
 	vec2 AimAngles = { 0, 0 };
@@ -54,7 +67,12 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone, float smooth_factor) {
 
 
 	vec3 vec_target = Helper::GetBonePosition(entity, bone);
-	vec2 target_angles = this->GetAimAngles(vec_target);
+	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
+	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
+	vec3 vec_velocity = *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
+	vec3 predictedposition = this->PredictPosition(vec_target, vec_velocity, 30000.0f);
+	vec2 target_angles = this->GetAimAngles(predictedposition);
+
 
 	// Calculate the difference between current angles and target angles
 
@@ -62,6 +80,20 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone, float smooth_factor) {
 	float delta_y = target_angles.y - ViewAngles->y;
 	vec2 delta = { delta_x, delta_y };
 
+	if (Config.aimbot.silentaim) { // silent aim
+
+		if (!GetAsyncKeyState(VK_LBUTTON))
+			return;
+		uintptr_t localweapon = Helper::get_localplr_weapon();
+		float NextAttack = *(float*)(localweapon + CCitadel_Ability_PrimaryWeapon::m_flNextPrimaryAttack);
+		float LocalPlayerSimTime = *(float*)(Helper::get_local_player() + C_BaseEntity::m_flSimulationTime);
+		NextAttack -= 0.017;
+		if(NextAttack > LocalPlayerSimTime)
+			return;
+		crosshairposition->x = target_angles.x;	
+		crosshairposition->y = target_angles.y;
+		return;
+	}
 	// Smoothly interpolate between current angles and target angles
 	if (smooth_factor < 1)
 	{
@@ -71,6 +103,8 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone, float smooth_factor) {
 	}
 
 	vec2 final_delta = delta.clamp();
+
+
 
 	ViewAngles->x += final_delta.x / smooth_factor;
 	ViewAngles->y += final_delta.y / smooth_factor;
@@ -87,6 +121,22 @@ void Aimbot::AimAtXp(uintptr_t entity, float smooth_factor) {
 	vec2 delta = { delta_x, delta_y };
 
 	// Smoothly interpolate between current angles and target angles
+
+	if (Config.aimbot.silentaim) { // silent aim
+
+		if (!GetAsyncKeyState(VK_LBUTTON))
+			return;
+		uintptr_t localweapon = Helper::get_localplr_weapon();
+		float NextAttack = *(float*)(localweapon + CCitadel_Ability_PrimaryWeapon::m_flNextPrimaryAttack);
+		float LocalPlayerSimTime = *(float*)(Helper::get_local_player() + C_BaseEntity::m_flSimulationTime);
+		NextAttack -= 0.017;
+		if (NextAttack > LocalPlayerSimTime)
+			return;
+		crosshairposition->x = target_angles.x;
+		crosshairposition->y = target_angles.y;
+		return;
+	}
+
 	if (smooth_factor < 1)
 	{
 		ViewAngles->x = target_angles.x;
@@ -120,7 +170,8 @@ void Aimbot::RunAimbot() {
 	sort_entities();
 
 	CameraManager = *(uint64_t*)(ClientModuleBase + Offsets::o_CameraManager + 0x28);
-	ViewAngles = (vec2*)(CameraManager + 0x44);
+	ViewAngles = (vec2*)(CameraManager + 0x44); // RESET to 0x44
+	crosshairposition = (vec2*)(CameraManager + Offsets::o_crosshairposfromcameramanager);
 	LocalPlayerData = Helper::get_player_data(Helper::get_local_player());
 
 	if (processed_ents.empty())

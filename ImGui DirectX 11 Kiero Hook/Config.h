@@ -1,4 +1,5 @@
 #pragma once
+#include "includes.h"
 
 class ConfigSettings
 {
@@ -14,6 +15,7 @@ public:
         float fov = 0.0f;
         float smooth = 0.0f;
         int aimBone = 0; // Example bone index
+        bool silentaim = false;
 
     } aimbot;
 
@@ -29,6 +31,7 @@ public:
         bool NameEsp = false;
         bool HealthBar = false;
 		bool DrawFov = false;
+        bool DrawAimbotPrediction = false;
 		bool DrawXp = false;
         bool DrawMonsters = false;
         bool DrawMinions = false;

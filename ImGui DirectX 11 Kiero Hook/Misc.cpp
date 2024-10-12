@@ -31,7 +31,13 @@ void Misc::SimpleNoRecoil(){
 
 }
 
+
+Drawing testdraw;
+
 void testbed() {
+
+
+
 
 }
 
