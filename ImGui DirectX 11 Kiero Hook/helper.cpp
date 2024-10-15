@@ -452,3 +452,82 @@ uint64_t Helper::get_localplr_weapon() {
 	return -1;
 }
 
+uint64_t Helper::GetPawnHandle(uint64_t entity) {
+
+	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
+	return PawnHandle;
+
+}
+
+
+
+uint64_t Helper::GetPawn(uint64_t entity) {
+
+	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
+	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
+	return Pawn;
+
+}
+
+bool __fastcall Helper::traceshape(void* dis, Ray_t* pRay, vec3* vecStart, vec3* vecEnd, TraceFilter_t* pFilter, GameTrace_t* pGameTrace) {
+
+	typedef bool(__fastcall* traceshape_fn)(void*, Ray_t*, vec3*, vec3*, TraceFilter_t*, GameTrace_t*);
+	traceshape_fn traceshape = (traceshape_fn)(ClientModuleBase + Offsets::o_ftraceShape);
+	bool result = traceshape(dis, pRay, vecStart, vecEnd, pFilter, pGameTrace);
+	return result;
+}
+
+static void __fastcall ConstructFilter(void* thisptr, void* pSkip1, void* uMask, void* nlayer, void* unkNum) {
+
+	typedef void(__fastcall* ConfstructFilter_fn)(void*, void*, void*, void*, void*);
+	ConfstructFilter_fn filterconstruct = (ConfstructFilter_fn)(ClientModuleBase + Offsets::o_fConstructFilter);
+	filterconstruct(thisptr, pSkip1, uMask, nlayer, unkNum);
+	return;
+
+}
+
+uint32_t GetOwnerHandle(uint64_t ent)
+{
+	if (!ent)
+		return -1;
+
+	std::uint32_t Result = -1;
+	Result = *(uint64_t*)(ent + C_BaseEntity::m_hOwnerEntity);
+	return Result;
+}
+
+uint64_t GetEntityHandleRebuilt(uintptr_t a1) //aka CCSPlayerPawn* a1 
+{
+	uintptr_t v1; // rax
+	unsigned int v2; // r8d
+	int v3; // edx
+	int v4; // eax
+
+	if (!a1)
+		return 0xFFFFFFFF;
+	v1 = *(uint64_t*)(a1 + 16);
+	if (!v1)
+		return 0xFFFFFFFF;
+	v2 = *(uint32_t*)(v1 + 16);
+	v3 = 0x7FFF;
+	v4 = ((v2 >> 15) - (*(uint32_t*)(v1 + 48) & 1)) << 15;
+	if (v2 != -1)
+		v3 = v2 & 0x7FFF;
+	return v3 | (unsigned int)v4;
+}
+
+int16_t GetCollisionMask(uint64_t ent)
+{
+	if (!ent)
+		return -1;
+	uint64_t collisionproperty = *(uint64_t*)(ent + C_BaseEntity::m_pCollision);
+	UINT8 collisionmask = (UINT8)(collisionproperty + CCollisionProperty::m_CollisionGroup);
+	return (int16_t)collisionmask;
+}
+
+
+TraceFilter_t::TraceFilter_t(uint32_t uMask, uint64_t pSkip1, uint8_t nLayer, uint16_t unkNum) {
+	reinterpret_cast<void(*)(TraceFilter_t*, uint64_t, uint32_t mask, uint8_t layer, uint16_t num7)>
+		(ConstructFilter)(this, pSkip1, uMask, nLayer, unkNum);
+	return;
+}

@@ -251,6 +251,92 @@ struct BoneConnection
     BoneConnection(int b1, int b2) : bone1(b1), bone2(b2) {}
 };
 
+struct Ray_t
+{
+public:
+    vec3 m_vecStart;
+    vec3 m_vecEnd;
+    vec3 m_vecMins;
+    vec3 m_vecMaxs;
+    char pad[0x4];
+    std::uint8_t UnkType;
+};
+
+static_assert(sizeof(Ray_t) == 0x38);
+
+struct SurfaceData_t
+{
+public:
+    char pad[0x8];
+    float m_flPenetrationModifier;
+    float m_flDamageModifier;
+    char pad2[0x4];
+    int m_iMaterial;
+};
+
+static_assert(sizeof(SurfaceData_t) == 0x18);
+
+struct TraceHitboxData_t
+{
+public:
+    char pad[0x38];
+    int m_nHitGroup;
+    char pad2[0x4];
+    int m_nHitboxId;
+};
+
+static_assert(sizeof(TraceHitboxData_t) == 0x44);
+
+
+struct GameTrace_t
+{
+public:
+    GameTrace_t() = default;
+
+
+    void* m_pSurface;
+    uint64_t m_pHitEntity;
+    TraceHitboxData_t* m_pHitboxData;
+    // MEM_PAD(0x38);
+    char pad[0x38];
+    std::uint32_t m_uContents;
+    // MEM_PAD(0x24);
+    char pad2[0x24];
+    vec3 m_vecStartPos;
+    vec3 m_vecEndPos;
+    vec3 m_vecNormal;
+    vec3 m_vecPosition;
+    // MEM_PAD(0x4);
+    char pad3[0x4];
+    float m_flFraction;
+    // MEM_PAD(0x6);
+    char pad4[0x6];
+    bool m_bAllSolid;
+    // MEM_PAD(0x4D)
+    char pad5[0x4D];
+}; // Size: 0x108
+
+static_assert(sizeof(GameTrace_t) == 0x108);
+
+struct TraceFilter_t
+{
+public:
+    char pad[0x8];
+    std::int64_t m_uTraceMask;
+    int64_t m_v1[2];
+	int32_t m_arrSkipHandles[4];
+	int16_t m_arrCollisions[2];
+
+    std::int16_t m_v2;
+    std::uint8_t m_v3;
+    std::uint8_t m_v4;
+    std::uint8_t m_v5;
+    TraceFilter_t() = default;
+    TraceFilter_t(uint32_t uMask, uint64_t pSkip1, uint8_t nLayer, uint16_t unkNum);
+};
+
+static_assert(sizeof(TraceFilter_t) == 0x40);
+
 class Helper {
 
 public:
@@ -290,8 +376,22 @@ public:
     static CCitadelUserCmdPB* GetCurrentUserCmd();
     static bool KeyBindHandler(int key);
 	static NpcData get_npc_data(uint64_t entity);
+    static bool __fastcall traceshape(void* dis, Ray_t* pRay, vec3* vecStart, vec3* vecEnd, TraceFilter_t* pFilter, GameTrace_t* pGameTrace);
+    static void __fastcall ConstructFilter(__int64 a1, __int64 a2, __int64 a3, char a4, __int16 a5);
+    static uint64_t GetPawnHandle(uint64_t entity);
+    static uint64_t GetPawn(uint64_t entity);
 
 
 };
 
 static const uint64_t ClientModuleBase = Helper::GetClientBase();
+
+class CGameTraceManager
+{
+public:
+    bool TraceShape(Ray_t* pRay, vec3 vecStart, vec3 vecEnd, TraceFilter_t* pFilter, GameTrace_t* pGameTrace)
+    {
+        return Helper::traceshape(this, pRay, &vecStart, &vecEnd, pFilter, pGameTrace);
+    }
+};
+

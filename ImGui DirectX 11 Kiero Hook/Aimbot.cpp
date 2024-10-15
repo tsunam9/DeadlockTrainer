@@ -13,7 +13,6 @@ PlayerData LocalPlayerData;
 uint64_t CameraManager;
 vec2* ViewAngles;
 vec2* crosshairposition;
-
 Helper AimbotHelperObj;
 
 
