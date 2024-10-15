@@ -55,6 +55,9 @@
     <Filter Include="Source Files\Hooks">
       <UniqueIdentifier>{3712a731-ea13-462f-a753-87cd3b73bdc6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Features\AntiAim">
+      <UniqueIdentifier>{db13c58b-dcea-4ea4-9963-85f28abbcee3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kiero\minhook\src\buffer.c">
@@ -122,6 +125,9 @@
     </ClCompile>
     <ClCompile Include="hooks.cpp">
       <Filter>Source Files\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="AntiAim.cpp">
+      <Filter>Source Files\Features\AntiAim</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -219,6 +225,9 @@
     </ClInclude>
     <ClInclude Include="hooks.h">
       <Filter>Source Files\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="AntiAim.h">
+      <Filter>Source Files\Features\AntiAim</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Aimbot.cpp" />
+    <ClCompile Include="AntiAim.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="ESP.cpp" />
@@ -176,6 +177,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Cs2Dumper\output\buttons.hpp" />
     <ClInclude Include="Aimbot.h" />
+    <ClInclude Include="AntiAim.h" />
     <ClInclude Include="client_dll.hpp" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Drawing.h" />

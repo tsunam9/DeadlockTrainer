@@ -17,10 +17,15 @@ const extern class Offsets {
 		static const uint64_t o_fApplyRecoil = 0x379b2c;
 		static const uint64_t o_fCreateMove = 0xcdc3c0;
 		static const uint64_t o_fGetUserCmdArray = 0xb03d50;
+		static const uint64_t o_fGetUserCmd = 0xB03CC0;
+		static const uint64_t o_fGetCUserCmdBase = 0xB03F80;
+		static const uint64_t o_oUserCmdArray = 0x1E32B08;
 		static const uint64_t o_fRenderStart = 0x364796;
 		static const uint64_t o_fEntityUnderCrosshair = 0xc63ed0;
 		static const uint64_t o_dwGlobalVars = 0x1e59468;
 		static const uint64_t o_ftraceShape = 0xBB8660;
 		static const uint64_t o_fConstructFilter = 0x2b6a50;
+		static const uint64_t o_oGameTraceManager = 0x1e3d608;
+		static const uint64_t o_fGetCommandIndex = 0x11529A0;
 
 };

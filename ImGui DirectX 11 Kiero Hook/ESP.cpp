@@ -123,19 +123,21 @@ void DrawMinionEsp(uintptr_t entity) {
 
 	if (!Config.esp.DrawMinions || !entity)
 		return;
+
+
+
 	NpcData EntInfo = Helper::get_npc_data(entity);
 	PlayerData LocalPlayerData = Helper::get_player_data(Helper::get_local_player());
 	float distance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, EntInfo.m_vecOrigin);
 
 	ImColor red = IM_COL32(255, 0, 0, 127);
 	ImColor green = IM_COL32(0, 255, 0, 127);
-	
-
-	if (EntInfo.m_iteamnum != 263171) // really awful terribleness because the number just happens to be this for minion teams
-		return;
-
 
 	if (EntInfo.m_bDormant)
+		return;
+	
+	uint64_t entteamnum = 263169 + LocalPlayerData.TeamNum;
+	if (EntInfo.m_iteamnum != entteamnum) // really awful terribleness because the number just happens to be this for minion teams
 		return;
 
 	if(EntInfo.m_ilifestate != 0)
@@ -143,6 +145,7 @@ void DrawMinionEsp(uintptr_t entity) {
 
 	if (distance > 2000.0f)
 		return;
+
 
 	// im sorry
 	vec3 posleft = EntInfo.m_vecOrigin;

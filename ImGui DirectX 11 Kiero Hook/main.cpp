@@ -77,8 +77,11 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 				ImGui::Checkbox("Aimbot", &Config.aimbot.bAimbot);
 				ImGui::SameLine();
-				ImGui::Hotkey(&Config.aimbot.AimKey);
+				Helper::HotKey(Config.aimbot.AimKey);
+				ImGui::SameLine();
+				ImGui::Checkbox("Visible Check", &Config.aimbot.VisibleCheck);
 				ImGui::Checkbox("Silent Aim", &Config.aimbot.silentaim);
+				ImGui::Checkbox("Auto Fire", &Config.aimbot.AutoFire);
 				static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
 				static int currentItem = 0; // Index of the currently selected item
 				ImGui::Combo("Target ", &currentItem, items, IM_ARRAYSIZE(items)); Config.aimbot.targetSelectionMode = currentItem;
@@ -88,7 +91,11 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				ImGui::SliderFloat("Smooth", &Config.aimbot.smooth, 0.0f, 100.0f, "%.1f");
 				ImGui::Checkbox("Aim at XP", &Config.aimbot.AimXp);
 				ImGui::SameLine();
-				ImGui::Hotkey(&Config.aimbot.AimKeyXp);
+				Helper::HotKey(Config.aimbot.AimKeyXp);
+				ImGui::Checkbox("Aim At Minions", &Config.aimbot.AimMinions);
+				ImGui::SameLine();
+				Helper::HotKey(Config.aimbot.AimKeyMinions);
+
 
 
 
@@ -113,6 +120,13 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				ImGui::Checkbox("Draw Minions", &Config.esp.DrawMinions);
 				//ImGui::Checkbox("Draw Aimbot Prediction", &Config.esp.DrawAimbotPrediction);
 				ImGui::EndTabItem();
+			}
+
+			if (ImGui::BeginTabItem("AntiAim")) {
+
+				ImGui::Checkbox("AntiAim", &Config.antiaim.bAntiAim);
+				ImGui::EndTabItem();
+
 			}
 
 			// Third tab

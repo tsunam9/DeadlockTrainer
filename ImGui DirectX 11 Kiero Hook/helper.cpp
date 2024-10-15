@@ -1,7 +1,9 @@
 #pragma once
 #include "helper.h"
+#include "imgui/imgui.h"
 using namespace cs2_dumper::schemas::client_dll;
 
+#define M_PI 3.14159265358979323846
 
 
 std::string Helper::ReadString(uintptr_t address) {
@@ -237,6 +239,8 @@ xpData Helper::get_xp_data(uint64_t entity) {
 	xpdataobj.m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
 	xpdataobj.m_bDormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
 	xpdataobj.m_flLaunchtime = *(float*)(entity + CItemXP::m_timeLaunch);
+	xpdataobj.CreationTime = *(float*)(entity + C_BaseEntity::m_flCreateTime);
+
 
 	return xpdataobj;
 
@@ -389,35 +393,65 @@ float Helper::DegreesToRadians(float degrees) {
 	return degrees * (M_PI / 180.0f);
 }
 
-CCitadelUserCmdPB* Helper::GetUserCmdArray()
-{
-	using fnGetUserCmd = CCitadelUserCmdPB * (__fastcall*)(__int64*);
-	static auto oGetUserCmd = reinterpret_cast<fnGetUserCmd>(ClientModuleBase + Offsets::o_fGetUserCmdArray);
 
-	return oGetUserCmd(reinterpret_cast<__int64*>(Helper::get_local_player));
-}
-
-CCitadelUserCmdPB* Helper::GetUserCmdByIndex(int index)
-{
-	auto _array = Helper::GetUserCmdArray();
-	auto current_cmd = (uintptr_t)_array + 0x88 * index;
-	return (CCitadelUserCmdPB*)current_cmd;
-
-}
 
 CCitadelUserCmdPB* Helper::GetCurrentUserCmd()
 {
-	CCitadelUserCmdPB* cmdarray = Helper::GetUserCmdArray();
-	uint64_t sequence = *(uint64_t*)(uint64_t)(cmdarray + 0x5290);
-	if (sequence != 0) {
-		std::cout << "SEQUENCE: " << sequence << "\n";
-	}
-	auto current_index = sequence % 0x150u; // evil terrible 
-	auto current_cmd = Helper::GetUserCmdByIndex(current_index);
 
-	return (CCitadelUserCmdPB*)current_cmd;
+	using fmGetUCmd = CCitadelUserCmdPB * (__fastcall*)(__int64 a1, int a2);
+	static auto oGetUserCmd = reinterpret_cast<fmGetUCmd>(ClientModuleBase + Offsets::o_fGetUserCmd);
+
+	using GetCommandIndex = __int64(__fastcall*)(__int64 a1, __int64 a2);
+	static auto oGetCommandIndex = reinterpret_cast<GetCommandIndex>(ClientModuleBase + Offsets::o_fGetCommandIndex);
+
+	using GetCUserCMDBASE = __int64(__fastcall*)(__int64 a1, int a2);
+	static auto oGetCUserCmdBASE = reinterpret_cast<GetCUserCMDBASE>(ClientModuleBase + Offsets::o_fGetCUserCmdBase);
+
+
+
+	uint64_t v132 = 0;
+	uint64_t LocalPlayerController = Helper::get_local_player();
+	uint64_t v5 = LocalPlayerController;
+	oGetCommandIndex(LocalPlayerController, (uint64_t)&v132);
+	uint64_t v6 = (unsigned int)((uint32_t)v132 - 1);
+	if ((uint32_t)v132 == -1)
+		v6 = 0xFFFFFFFFLL;
+	uint64_t v7 = *(uint64_t*)oGetCUserCmdBASE((ClientModuleBase + Offsets::o_oUserCmdArray), v6);
+	uint64_t v8 = *(uint32_t*)(v7 + 21136);
+	uint64_t v9 = (uint64_t)oGetUserCmd(v5, v8);
+
+	return (CCitadelUserCmdPB*)v9;
 
 }
+
+void Helper::HotKey(KeyBind &keybind){
+
+
+	if (!keybind.waitingForKey) {
+		if (ImGui::Button(keybind.name.c_str())) {
+			keybind.waitingForKey = true;
+		}
+	}
+	else {
+		ImGui::Button("...");
+		for (auto& Key : KeyCodes) {
+			if (GetAsyncKeyState(Key)) {
+				Sleep(20);
+				if (Key == VK_ESCAPE) {
+					keybind.key = 0;
+					keybind.name = "None";
+					keybind.waitingForKey = false;
+					break;
+				}
+				keybind.key = Key;
+				keybind.name = KeyNames[Key];
+				keybind.waitingForKey = false;
+				break;
+			}
+		}
+	}
+}
+
 
 
 bool Helper::KeyBindHandler(int key) {
@@ -531,3 +565,76 @@ TraceFilter_t::TraceFilter_t(uint32_t uMask, uint64_t pSkip1, uint8_t nLayer, ui
 		(ConstructFilter)(this, pSkip1, uMask, nLayer, unkNum);
 	return;
 }
+
+uint64_t Helper::gettracemanager(){
+
+	uint64_t tracemanagerptr = ClientModuleBase + Offsets::o_oGameTraceManager;
+	uint64_t tracemanagerlr1 = *(uint64_t*)tracemanagerptr;
+
+	return tracemanagerlr1;
+}
+
+bool Helper::CheckLocationVisible(vec3 LocalPlayerPos, vec3 LocationCheck) {
+
+	CGameTraceManager* tracemanager = (CGameTraceManager*)Helper::gettracemanager();
+
+	uint64_t localplayerpawn = Helper::GetPawn(Helper::get_local_player());
+	TraceFilter_t filter(0x1C3003, localplayerpawn, 4, 7);
+	Ray_t ray = {};
+	GameTrace_t trace = {};
+
+	tracemanager->TraceShape(&ray, LocalPlayerPos, LocationCheck, &filter, &trace);
+	if (trace.m_flFraction < 0.97)
+		return false;
+	return true;
+		
+}
+
+void Helper::CorrectMovement(vec2 OldAngles, CCitadelUserCmdPB* pCmd, float& fOldForward, float& fOldSidemove) {
+
+	// side/forward move correction
+	float deltaView;
+	float f1;
+	float f2;
+
+
+		f1 = OldAngles.y;
+		f2 = pCmd->cameraViewAngle->viewAngles.y;
+
+
+	if (f2 < f1)
+		deltaView = abs(f2 - f1);
+	else
+		deltaView = 360.0f - abs(f1 - f2);
+
+
+	// Replace DEG2RAD with inline conversion (PI / 180)
+	float radDeltaView = deltaView * (M_PI / 180.0f);
+	float radDeltaViewPlus90 = (deltaView + 90.0f) * (M_PI / 180.0f);
+
+	float forwardmove = cos(radDeltaView) * fOldForward + cos(radDeltaViewPlus90) * fOldSidemove;
+	float sidemove = sin(radDeltaView) * fOldForward + sin(radDeltaViewPlus90) * fOldSidemove;
+
+	if (forwardmove > 1.0f)
+		forwardmove = 1.0f;
+	if (forwardmove < -1.0f)
+		forwardmove = -1.0f;
+	if (sidemove > 1.0f)
+		sidemove = 1.0f;
+	if (sidemove < -1.0f)
+		sidemove = -1.0f;
+
+
+	pCmd->pBaseUserCMD->forwardMove = forwardmove;
+	pCmd->pBaseUserCMD->sideMove = sidemove;
+}
+
+void Helper::CorrectViewAngles(vec2 OldAngles, CCitadelUserCmdPB* pCmd) {
+
+	pCmd->pBaseUserCMD->playerViewAngle->viewAngles.x = OldAngles.x;
+	pCmd->pBaseUserCMD->playerViewAngle->viewAngles.y = OldAngles.y;
+
+}
+
+
+
