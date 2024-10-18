@@ -167,6 +167,8 @@
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Misc.cpp" />
+    <ClCompile Include="mem.cpp" />
+    <ClCompile Include="offsets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="kiero\minhook\dll_resources\MinHook.def" />
@@ -206,6 +208,7 @@
     <ClInclude Include="Logic.h" />
     <ClInclude Include="Misc.h" />
     <ClInclude Include="offsets.h" />
+    <ClInclude Include="mem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

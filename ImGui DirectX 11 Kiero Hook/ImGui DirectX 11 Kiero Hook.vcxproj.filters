@@ -58,6 +58,9 @@
     <Filter Include="Source Files\Features\AntiAim">
       <UniqueIdentifier>{db13c58b-dcea-4ea4-9963-85f28abbcee3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SigScanner">
+      <UniqueIdentifier>{a052dac5-42c7-494d-b7b5-599be03a3c09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kiero\minhook\src\buffer.c">
@@ -120,14 +123,20 @@
     <ClCompile Include="Config.cpp">
       <Filter>Source Files\Config</Filter>
     </ClCompile>
-    <ClCompile Include="gameinterface.cpp">
-      <Filter>Source Files\GameInterface</Filter>
-    </ClCompile>
     <ClCompile Include="hooks.cpp">
       <Filter>Source Files\Hooks</Filter>
     </ClCompile>
     <ClCompile Include="AntiAim.cpp">
       <Filter>Source Files\Features\AntiAim</Filter>
+    </ClCompile>
+    <ClCompile Include="mem.cpp">
+      <Filter>Source Files\SigScanner</Filter>
+    </ClCompile>
+    <ClCompile Include="gameinterface.cpp">
+      <Filter>Source Files\GameInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="offsets.cpp">
+      <Filter>Source Files\Offsets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -228,6 +237,9 @@
     </ClInclude>
     <ClInclude Include="AntiAim.h">
       <Filter>Source Files\Features\AntiAim</Filter>
+    </ClInclude>
+    <ClInclude Include="mem.h">
+      <Filter>Source Files\SigScanner</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

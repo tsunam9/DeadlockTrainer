@@ -185,7 +185,7 @@ void DrawFov() {
 	vec2 resolution = Helper::GetResolution();
 
 
-		const uint64_t CameraManager = *(uint64_t*)(ClientModuleBase + Offsets::o_CameraManager + 0x28);
+		const uint64_t CameraManager = *(uint64_t*)(ClientModuleBase + Offsets.o_CameraManager + 0x28);
 		if (!CameraManager)
 			return;
 

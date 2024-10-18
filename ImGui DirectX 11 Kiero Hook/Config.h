@@ -52,6 +52,10 @@ public:
 
     struct MiscSettings {
         bool bNorecoil = false;
+        float XRange = 0.0f;
+		float YRange = 0.0f;
+		float Yrange2 = 0.0f;
+		float Xrange2 = 0.0f;
     } misc;
 
 	struct AntiAimSettings {

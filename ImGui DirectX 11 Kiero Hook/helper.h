@@ -10,6 +10,7 @@
 #include <vector>
 #include "math.h"
 #include "Config.h"
+#include "mem.h"
 
 #define M_PI 3.14159265358979323846
 
@@ -746,6 +747,7 @@ public:
 	static void CorrectMovement(vec2 OldAngles, CCitadelUserCmdPB* pCmd, float &fOldForward, float &fOldSidemove);
     static void CorrectViewAngles(vec2 OldAngles, CCitadelUserCmdPB* pCmd);
     static void HotKey(KeyBind& keybind);
+	static uint64_t GetAbilityData(uint64_t entity_pawn);
 
 
 };

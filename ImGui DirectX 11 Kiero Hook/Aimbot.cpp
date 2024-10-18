@@ -117,8 +117,12 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone, float smooth_factor) {
 		float NextAttack = *(float*)(localweapon + CCitadel_Ability_PrimaryWeapon::m_flNextPrimaryAttack);
 		float LocalPlayerSimTime = *(float*)(Helper::get_local_player() + C_BaseEntity::m_flSimulationTime);
 		NextAttack -= 0.017;
+
+
+
 		if (NextAttack > LocalPlayerSimTime)
 			return;
+
 		CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
 		CUserCmd->cameraViewAngle->viewAngles.y = target_angles.y;
 		Helper::CorrectMovement(*ViewAngles, CUserCmd, CUserCmd->pBaseUserCMD->forwardMove, CUserCmd->pBaseUserCMD->sideMove);
@@ -262,9 +266,9 @@ void Aimbot::RunAimbot() {
 	processed_ents.clear();
 	sort_entities();
 
-	CameraManager = *(uint64_t*)(ClientModuleBase + Offsets::o_CameraManager + 0x28);
+	CameraManager = *(uint64_t*)(ClientModuleBase + Offsets.o_CameraManager + 0x28);
 	ViewAngles = (vec2*)(CameraManager + 0x44); // RESET to 0x44
-	crosshairposition = (vec2*)(CameraManager + Offsets::o_crosshairposfromcameramanager);
+	crosshairposition = (vec2*)(CameraManager + Offsets.o_crosshairposfromcameramanager);
 	LocalPlayerData = Helper::get_player_data(Helper::get_local_player());
 
 	if (processed_ents.empty())

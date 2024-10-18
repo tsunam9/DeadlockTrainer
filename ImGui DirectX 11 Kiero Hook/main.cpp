@@ -67,7 +67,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	GodFunction();
 	if (Config.MenuOpen) {
 
-		ImGui::Begin("MeinKampfWare V9");
+		ImGui::Begin("LynchWare");
 
 		if (ImGui::BeginTabBar("Cheat"))
 		{
@@ -133,6 +133,10 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			if (ImGui::BeginTabItem("Misc"))
 			{
 				ImGui::Checkbox("No Recoil", &Config.misc.bNorecoil);
+				ImGui::SliderFloat("X Range", &Config.misc.XRange, 0.0f, 360.0f, "%.1f");
+				ImGui::SliderFloat("Y Range", &Config.misc.YRange, -90.0f, 90.0f, "%.1f");
+				ImGui::SliderFloat("X Range 2", &Config.misc.Xrange2, 0.0f, 360.0f, "%.1f");
+				ImGui::SliderFloat("Y Range 2", &Config.misc.Yrange2, -90.0f, 90.0f, "%.1f");
 
 				if (ImGui::Button("Slay them all"))
 				{

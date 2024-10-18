@@ -50,7 +50,7 @@ uint64_t Helper::GetProcessIdByName(const char* processname) {
 }
 
 uint64_t Helper::get_entity_list(){
-	uintptr_t tf = *(uintptr_t*)(ClientModuleBase + Offsets::o_EntityList);
+	uintptr_t tf = *(uintptr_t*)(ClientModuleBase + Offsets.o_EntityList);
 	return static_cast<uint64_t>(tf);
 }
 
@@ -73,7 +73,7 @@ std::string Helper::readstr(uintptr_t address){
 int Helper::get_max_entities()
 {
 	uint64_t entity_list = Helper::get_entity_list();
-	int max_entities = *(int*)(entity_list + Offsets::o_HighestEntityIndex);
+	int max_entities = *(int*)(entity_list + Offsets.o_HighestEntityIndex);
 	return max_entities;
 }
 
@@ -81,13 +81,13 @@ uint64_t Helper::get_Camera() {
 
 
 	//camera = pm.read_longlong(client_base + 0x1f450b0 + 0x28)
-	uint64_t camera = (ClientModuleBase + Offsets::o_CameraManager + 0x28);
+	uint64_t camera = (ClientModuleBase + Offsets.o_CameraManager + 0x28);
 	camera = *(uint64_t*)camera;
 	return camera;
 }
 
 uint64_t Helper::get_local_player() {
-	uint64_t local_player = *(uint64_t*)(ClientModuleBase + Offsets::o_LocalPlayerController);
+	uint64_t local_player = *(uint64_t*)(ClientModuleBase + Offsets.o_LocalPlayerController);
 	return local_player;
 }
 
@@ -95,7 +95,7 @@ uint64_t Helper::get_local_player() {
 bool Helper::WorldToScreen(vec3 pos, vec2& screen) {
 
 	vec2 resolution = Helper::GetResolution();
-	uintptr_t ViewMatrix = (ClientModuleBase + Offsets::o_ViewMatrix);
+	uintptr_t ViewMatrix = (ClientModuleBase + Offsets.o_ViewMatrix);
 	ViewMatrixObj matrix = *(ViewMatrixObj*)ViewMatrix;
 	
 
@@ -153,7 +153,7 @@ vec3 Helper::GetBoneVectorFromIndex(uintptr_t target_entity, int index) {
 	if(index == -1)
 		return vec3{0,0,0};
 	uint64_t skel_instance = *(uint64_t*)(target_entity + C_BaseEntity::m_pGameSceneNode);
-	uint64_t BoneArray = *(uint64_t*)(skel_instance + CSkeletonInstance::m_modelState + Offsets::o_BoneArray);
+	uint64_t BoneArray = *(uint64_t*)(skel_instance + CSkeletonInstance::m_modelState + Offsets.o_BoneArray);
 	vec3 bonepos = *(vec3*)(BoneArray + index * 32);
 
 	return bonepos;
@@ -161,7 +161,7 @@ vec3 Helper::GetBoneVectorFromIndex(uintptr_t target_entity, int index) {
 
 float Helper::GetGameTime() {
 
-	uint64_t local_player = *(uint64_t*)(ClientModuleBase + Offsets::o_LocalPlayerController);
+	uint64_t local_player = *(uint64_t*)(ClientModuleBase + Offsets.o_LocalPlayerController);
 	float gametime = *(float*)(local_player + C_BaseEntity::m_flSimulationTime);
 	return gametime;
 }
@@ -254,6 +254,8 @@ NpcData Helper::get_npc_data(uint64_t entity) {
 	if (!entity)
 		return DataObj;
 
+
+
 	uintptr_t GameSceneNode = *(uintptr_t*)(entity + C_BaseEntity::m_pGameSceneNode);
 
 	DataObj.m_bMinion = *(bool*)(entity + C_AI_CitadelNPC::m_bMinion);
@@ -273,7 +275,7 @@ vec2 Helper::GetResolution() {
 
 	vec2 resolution;
 
-	uint64_t resolutionptr = ClientModuleBase + Offsets::o_Resolution;
+	uint64_t resolutionptr = ClientModuleBase + Offsets.o_Resolution;
 	uint64_t resclassobj = *(uint64_t*)resolutionptr;
 	uint64_t resolutionaddress = resclassobj + 0x484;
 
@@ -394,33 +396,57 @@ float Helper::DegreesToRadians(float degrees) {
 }
 
 
+using WeirdFunction = uint64_t(__fastcall*)(__int64 a1);
+static auto oweirdfunction = reinterpret_cast<WeirdFunction>(ClientModuleBase + 0xB047A0);
+
+__int64 __fastcall GetLocalPlayerController(int a1)
+{
+	if (a1 == -1)
+		a1 = 0;
+
+	uint64_t* qword_2180328 = (uint64_t*)(0x2180328 + ClientModuleBase);
+	return qword_2180328[a1]; // Access the element at the index a1
+}
+
+__int64 __fastcall GetCUserCmd(__int64 a1, int a2)
+{
+	__int64 v3; // r8
+
+	if (a2 < 0)
+		return 0LL;
+	v3 = 136LL * (a2 % 0x96u) + oweirdfunction(a1);
+	if (*(uint32_t*)(v3 + 8) != a2)
+		std::cout << "H8 NIGGERS SO MUCH" << std::endl;
+		return 0LL;
+	return v3;
+}
 
 CCitadelUserCmdPB* Helper::GetCurrentUserCmd()
 {
 
 	using fmGetUCmd = CCitadelUserCmdPB * (__fastcall*)(__int64 a1, int a2);
-	static auto oGetUserCmd = reinterpret_cast<fmGetUCmd>(ClientModuleBase + Offsets::o_fGetUserCmd);
+	static auto oGetUserCmd = reinterpret_cast<fmGetUCmd>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "40 53 48 83 ec ? 8b da 85 d2 78"));
 
 	using GetCommandIndex = __int64(__fastcall*)(__int64 a1, __int64 a2);
-	static auto oGetCommandIndex = reinterpret_cast<GetCommandIndex>(ClientModuleBase + Offsets::o_fGetCommandIndex);
+	static auto oGetCommandIndex = reinterpret_cast<GetCommandIndex>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "40 53 48 83 ec ? 4c 8b 41 ? 48 8b da 48 8b 0d"));
 
 	using GetCUserCMDBASE = __int64(__fastcall*)(__int64 a1, int a2);
-	static auto oGetCUserCmdBASE = reinterpret_cast<GetCUserCMDBASE>(ClientModuleBase + Offsets::o_fGetCUserCmdBase);
+	static auto oGetCUserCmdBASE = reinterpret_cast<GetCUserCMDBASE>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "48 89 4c 24 ? 41 54 41 57"));
 
-
-
-	uint64_t v132 = 0;
-	uint64_t LocalPlayerController = Helper::get_local_player();
-	uint64_t v5 = LocalPlayerController;
-	oGetCommandIndex(LocalPlayerController, (uint64_t)&v132);
-	uint64_t v6 = (unsigned int)((uint32_t)v132 - 1);
+	uint32_t v132 = 0;
+	auto v4 = GetLocalPlayerController(0);
+	auto v5 = v4;
+	if (!v4)
+		return nullptr;
+	oGetCommandIndex(v4, (__int64)&v132);
+	auto v6 = (uint32_t)v132 - 1;
 	if ((uint32_t)v132 == -1)
-		v6 = 0xFFFFFFFFLL;
-	uint64_t v7 = *(uint64_t*)oGetCUserCmdBASE((ClientModuleBase + Offsets::o_oUserCmdArray), v6);
-	uint64_t v8 = *(uint32_t*)(v7 + 21136);
-	uint64_t v9 = (uint64_t)oGetUserCmd(v5, v8);
+		v6 = -1;
+	auto v7 = oGetCUserCmdBASE((__int64)ClientModuleBase + 0x1E36B58, v6);
+	auto v8 = *(uint32_t*)(v7 + 21136);
+	auto v9 = oGetUserCmd(v5, v8);
 
-	return (CCitadelUserCmdPB*)v9;
+	return (CCitadelUserCmdPB*)(v9);
 
 }
 
@@ -506,7 +532,7 @@ uint64_t Helper::GetPawn(uint64_t entity) {
 bool __fastcall Helper::traceshape(void* dis, Ray_t* pRay, vec3* vecStart, vec3* vecEnd, TraceFilter_t* pFilter, GameTrace_t* pGameTrace) {
 
 	typedef bool(__fastcall* traceshape_fn)(void*, Ray_t*, vec3*, vec3*, TraceFilter_t*, GameTrace_t*);
-	traceshape_fn traceshape = (traceshape_fn)(ClientModuleBase + Offsets::o_ftraceShape);
+	traceshape_fn traceshape = (traceshape_fn)(ClientModuleBase + Offsets.o_ftraceShape);
 	bool result = traceshape(dis, pRay, vecStart, vecEnd, pFilter, pGameTrace);
 	return result;
 }
@@ -514,7 +540,7 @@ bool __fastcall Helper::traceshape(void* dis, Ray_t* pRay, vec3* vecStart, vec3*
 static void __fastcall ConstructFilter(void* thisptr, void* pSkip1, void* uMask, void* nlayer, void* unkNum) {
 
 	typedef void(__fastcall* ConfstructFilter_fn)(void*, void*, void*, void*, void*);
-	ConfstructFilter_fn filterconstruct = (ConfstructFilter_fn)(ClientModuleBase + Offsets::o_fConstructFilter);
+	ConfstructFilter_fn filterconstruct = (ConfstructFilter_fn)(ClientModuleBase + Offsets.o_fConstructFilter);
 	filterconstruct(thisptr, pSkip1, uMask, nlayer, unkNum);
 	return;
 
@@ -568,7 +594,7 @@ TraceFilter_t::TraceFilter_t(uint32_t uMask, uint64_t pSkip1, uint8_t nLayer, ui
 
 uint64_t Helper::gettracemanager(){
 
-	uint64_t tracemanagerptr = ClientModuleBase + Offsets::o_oGameTraceManager;
+	uint64_t tracemanagerptr = ClientModuleBase + Offsets.o_oGameTraceManager;
 	uint64_t tracemanagerlr1 = *(uint64_t*)tracemanagerptr;
 
 	return tracemanagerlr1;
@@ -633,6 +659,24 @@ void Helper::CorrectViewAngles(vec2 OldAngles, CCitadelUserCmdPB* pCmd) {
 
 	pCmd->pBaseUserCMD->playerViewAngle->viewAngles.x = OldAngles.x;
 	pCmd->pBaseUserCMD->playerViewAngle->viewAngles.y = OldAngles.y;
+
+}
+
+uint64_t Helper::GetAbilityData(uint64_t entity_pawn) {
+
+	uint64_t weaponcomponent = (uint64_t)(entity_pawn + C_CitadelPlayerPawn::m_CCitadelAbilityComponent);
+	uint64_t vecAbilities = *(uint64_t*)(weaponcomponent + CCitadelAbilityComponent::m_vecAbilities + 0x8);
+
+	for (int i = 11; i < 15; i++) {
+		auto abilityHandle = *(uint32_t*)(vecAbilities + (0x4 * i));
+		if (abilityHandle == 0) continue;
+
+		int index = Helper::CHandle_get_entry_index(abilityHandle);
+		uintptr_t ability = Helper::get_base_entity_from_index(index);
+		if (!ability) continue;
+
+		return ability;
+	}
 
 }
 
