@@ -7,5 +7,5 @@
 class AntiAim {
 
 	public:
-		static void DoAntiAim();
+		static void DoAntiAim(CCitadelUserCmdPB* cmd);
 };

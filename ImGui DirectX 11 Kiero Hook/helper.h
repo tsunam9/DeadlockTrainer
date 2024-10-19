@@ -32,10 +32,11 @@
 #define IN_SPEED (1 << 16)
 #define IN_JOYAUTOSPRINT (1 << 17)
 // UNKNOWN (1 << 18-31)
-#define IN_USEORRELOAD (1 << 32)
-#define IN_SCORE (1 << 33)
-#define IN_ZOOM (1 << 34)
-#define IN_JUMP_THROW_RELEASE (1 << 35)
+#define IN_ABILITY1  (1ull << 33ull)
+#define IN_ABILITY2  (1ull << 34ull)
+#define IN_ABILITY3  (1ull << 35ull)
+#define IN_ABILITY4  (1ull << 36ull)
+
 
 static const char* KeyNames[] = {
     "OFF",
@@ -542,7 +543,6 @@ struct  NpcData {
 
 };
 
-
 enum HeroIDs {
     Infernus = 1,
     Seven,
@@ -575,6 +575,12 @@ public:
 	char pad1[0x18];
 	vec3 viewAngles;
 };
+
+class CMsgVector {
+public:
+    char pad01[0x18];
+	vec4 m_vecOrigin;
+};
  
 class CInButtonStatePB {
 public:
@@ -601,10 +607,10 @@ public:
 	DWORD commandNumber;
 	char pad1[0x1C];
 	CBaseUserCMD* pBaseUserCMD;
-	char pad2[0x8];
+    CMsgVector* origin;
 	CMsgQAngle* cameraViewAngle;
 	char pad3[0x18];
-	uint32_t buttons;
+	uint64_t buttons;
 };
 
 struct BoneConnection
@@ -738,16 +744,17 @@ public:
     static vec2 GetResolution();
     static float GetGameTime();
     static CCitadelUserCmdPB* GetCurrentUserCmd();
+    static CCitadelUserCmdPB* ExperimentalGetUserCmd();
     static bool KeyBindHandler(int key);
 	static NpcData get_npc_data(uint64_t entity);
     static bool __fastcall traceshape(void* dis, Ray_t* pRay, vec3* vecStart, vec3* vecEnd, TraceFilter_t* pFilter, GameTrace_t* pGameTrace);
     static void __fastcall ConstructFilter(__int64 a1, __int64 a2, __int64 a3, char a4, __int16 a5);
     static uint64_t GetPawnHandle(uint64_t entity);
     static uint64_t GetPawn(uint64_t entity);
-	static void CorrectMovement(vec2 OldAngles, CCitadelUserCmdPB* pCmd, float &fOldForward, float &fOldSidemove);
-    static void CorrectViewAngles(vec2 OldAngles, CCitadelUserCmdPB* pCmd);
+	static void CorrectMovement(CCitadelUserCmdPB* pCmd, float &fOldForward, float &fOldSidemove);
+    static void CorrectViewAngles(CCitadelUserCmdPB* pCmd);
     static void HotKey(KeyBind& keybind);
-	static uint64_t GetAbilityData(uint64_t entity_pawn);
+	static std::vector<uintptr_t> GetAbilities(uint64_t entity_pawn);
 
 
 };

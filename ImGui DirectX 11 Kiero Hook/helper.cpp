@@ -396,59 +396,80 @@ float Helper::DegreesToRadians(float degrees) {
 }
 
 
-using WeirdFunction = uint64_t(__fastcall*)(__int64 a1);
-static auto oweirdfunction = reinterpret_cast<WeirdFunction>(ClientModuleBase + 0xB047A0);
+using fmGetUCmd = CCitadelUserCmdPB * (__fastcall*)(__int64 a1, int a2);
+static auto oGetUserCmd = reinterpret_cast<fmGetUCmd>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "40 53 48 83 ec ? 8b da 85 d2 78"));
+
+using GetCommandIndex = __int64(__fastcall*)(__int64 a1, __int64 a2);
+static auto oGetCommandIndex = reinterpret_cast<GetCommandIndex>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "40 53 48 83 ec ? 4c 8b 41 ? 48 8b da 48 8b 0d"));
+
+using GetCUserCMDBASE = __int64(__fastcall*)(__int64 a1, int a2);
+static auto oGetCUserCmdBASE = reinterpret_cast<GetCUserCMDBASE>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "48 89 4c 24 ? 41 54 41 57"));
+
+using getcmdupdated = __int64(__fastcall*)(__int64 a1);
+static auto ogetcmdupdated = reinterpret_cast<getcmdupdated>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "48 83 ec ? e8 ? ? ? ? 8b 80"));
+			
+
 
 __int64 __fastcall GetLocalPlayerController(int a1)
 {
 	if (a1 == -1)
 		a1 = 0;
 
-	uint64_t* qword_2180328 = (uint64_t*)(0x2180328 + ClientModuleBase);
+	uint64_t* qword_2180328 = (uint64_t*)(0x2180308 + ClientModuleBase);
 	return qword_2180328[a1]; // Access the element at the index a1
-}
-
-__int64 __fastcall GetCUserCmd(__int64 a1, int a2)
-{
-	__int64 v3; // r8
-
-	if (a2 < 0)
-		return 0LL;
-	v3 = 136LL * (a2 % 0x96u) + oweirdfunction(a1);
-	if (*(uint32_t*)(v3 + 8) != a2)
-		std::cout << "H8 NIGGERS SO MUCH" << std::endl;
-		return 0LL;
-	return v3;
 }
 
 CCitadelUserCmdPB* Helper::GetCurrentUserCmd()
 {
 
-	using fmGetUCmd = CCitadelUserCmdPB * (__fastcall*)(__int64 a1, int a2);
-	static auto oGetUserCmd = reinterpret_cast<fmGetUCmd>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "40 53 48 83 ec ? 8b da 85 d2 78"));
+	auto localplayer = Helper::get_local_player();
 
-	using GetCommandIndex = __int64(__fastcall*)(__int64 a1, __int64 a2);
-	static auto oGetCommandIndex = reinterpret_cast<GetCommandIndex>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "40 53 48 83 ec ? 4c 8b 41 ? 48 8b da 48 8b 0d"));
+	if (localplayer) {
+		auto var = ogetcmdupdated(localplayer);
+		auto cmd = oGetUserCmd(localplayer, var);
+		return cmd;
+	}
+	return nullptr;
 
-	using GetCUserCMDBASE = __int64(__fastcall*)(__int64 a1, int a2);
-	static auto oGetCUserCmdBASE = reinterpret_cast<GetCUserCMDBASE>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "48 89 4c 24 ? 41 54 41 57"));
+}
 
-	uint32_t v132 = 0;
-	auto v4 = GetLocalPlayerController(0);
-	auto v5 = v4;
+CCitadelUserCmdPB* Helper::ExperimentalGetUserCmd() {
+
+	__int64 v18;
+	auto LocalPlr = GetLocalPlayerController(0);
+	auto v8 = LocalPlr;
+	if (LocalPlr)
+	{
+		oGetCommandIndex(LocalPlr, (__int64)&v18);
+		auto v9 = v18 - 1;
+		if (v18 == -1)
+			v9 = -1;
+		auto UserCmdBase = oGetCUserCmdBASE((__int64)ClientModuleBase + 0x1E36B58, v9);
+		auto UserCmd = oGetUserCmd(v8, *(uint64_t*)(UserCmdBase));
+		return UserCmd;
+	}
+	return nullptr;
+}
+
+/*
+	static uint64_t offset = ClientModuleBase + MEM::PatternScanOffset((void*)ClientModuleBase, "48 8b 0d ? ? ? ? e8 ? ? ? ? 48 8b cf 4c 8b e8", 3, 7);
+
+	const char* v132;
+	__int64 v4 = GetLocalPlayerController(0LL);
+	__int64 v5 = v4;
 	if (!v4)
 		return nullptr;
 	oGetCommandIndex(v4, (__int64)&v132);
-	auto v6 = (uint32_t)v132 - 1;
+	__int64 v6 = (unsigned int)((uint32_t)v132 - 1);
 	if ((uint32_t)v132 == -1)
-		v6 = -1;
-	auto v7 = oGetCUserCmdBASE((__int64)ClientModuleBase + 0x1E36B58, v6);
-	auto v8 = *(uint32_t*)(v7 + 21136);
-	auto v9 = oGetUserCmd(v5, v8);
+		v6 = 0xFFFFFFFFLL;
+	__int64 *v7 = (__int64*)oGetCUserCmdBASE(offset, v6);
 
-	return (CCitadelUserCmdPB*)(v9);
+	unsigned int v8 = *(uint32_t*)(*v7 + 21136);
+	CCitadelUserCmdPB* v9 = oGetUserCmd(v5, v8);
 
-}
+	return v9;
+*/
 
 void Helper::HotKey(KeyBind &keybind){
 
@@ -601,6 +622,12 @@ uint64_t Helper::gettracemanager(){
 }
 
 bool Helper::CheckLocationVisible(vec3 LocalPlayerPos, vec3 LocationCheck) {
+	
+	float tracefraction = 0.97f;
+
+	if (Helper::GetDistance(LocalPlayerPos, LocationCheck) < 300.0f) {
+		tracefraction = 0.8f;
+	}
 
 	CGameTraceManager* tracemanager = (CGameTraceManager*)Helper::gettracemanager();
 
@@ -610,15 +637,18 @@ bool Helper::CheckLocationVisible(vec3 LocalPlayerPos, vec3 LocationCheck) {
 	GameTrace_t trace = {};
 
 	tracemanager->TraceShape(&ray, LocalPlayerPos, LocationCheck, &filter, &trace);
-	if (trace.m_flFraction < 0.97)
+	if (trace.m_flFraction < tracefraction)
 		return false;
 	return true;
 		
 }
 
-void Helper::CorrectMovement(vec2 OldAngles, CCitadelUserCmdPB* pCmd, float& fOldForward, float& fOldSidemove) {
+void Helper::CorrectMovement(CCitadelUserCmdPB* pCmd, float& fOldForward, float& fOldSidemove) {
 
-	// side/forward move correction
+
+	auto camera = Helper::get_Camera();
+	vec2 OldAngles = *(vec2*)(camera + 0x44);
+
 	float deltaView;
 	float f1;
 	float f2;
@@ -655,28 +685,35 @@ void Helper::CorrectMovement(vec2 OldAngles, CCitadelUserCmdPB* pCmd, float& fOl
 	pCmd->pBaseUserCMD->sideMove = sidemove;
 }
 
-void Helper::CorrectViewAngles(vec2 OldAngles, CCitadelUserCmdPB* pCmd) {
+void Helper::CorrectViewAngles( CCitadelUserCmdPB* pCmd) {
 
+	auto camera = Helper::get_Camera();
+	vec2 OldAngles = *(vec2*)(camera + 0x44);
+
+	if (!pCmd->pBaseUserCMD->playerViewAngle)
+		return;
 	pCmd->pBaseUserCMD->playerViewAngle->viewAngles.x = OldAngles.x;
 	pCmd->pBaseUserCMD->playerViewAngle->viewAngles.y = OldAngles.y;
 
 }
 
-uint64_t Helper::GetAbilityData(uint64_t entity_pawn) {
+std::vector<uintptr_t> Helper::GetAbilities(uint64_t entity_pawn) {
 
+	std::vector<uintptr_t> abilities;
 	uint64_t weaponcomponent = (uint64_t)(entity_pawn + C_CitadelPlayerPawn::m_CCitadelAbilityComponent);
 	uint64_t vecAbilities = *(uint64_t*)(weaponcomponent + CCitadelAbilityComponent::m_vecAbilities + 0x8);
 
-	for (int i = 11; i < 15; i++) {
+	for (int i = 10; i < 16; i++) {
 		auto abilityHandle = *(uint32_t*)(vecAbilities + (0x4 * i));
 		if (abilityHandle == 0) continue;
 
 		int index = Helper::CHandle_get_entry_index(abilityHandle);
 		uintptr_t ability = Helper::get_base_entity_from_index(index);
+		abilities.push_back(ability);
 		if (!ability) continue;
 
-		return ability;
 	}
+	return abilities;
 
 }
 

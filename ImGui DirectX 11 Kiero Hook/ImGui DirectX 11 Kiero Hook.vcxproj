@@ -151,6 +151,7 @@
     <ClCompile Include="ESP.cpp" />
     <ClCompile Include="gameinterface.cpp" />
     <ClCompile Include="helper.cpp" />
+    <ClCompile Include="heros.cpp" />
     <ClCompile Include="hooks.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -169,6 +170,8 @@
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="mem.cpp" />
     <ClCompile Include="offsets.cpp" />
+    <ClCompile Include="shiv.cpp" />
+    <ClCompile Include="vindicta.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="kiero\minhook\dll_resources\MinHook.def" />
@@ -186,6 +189,7 @@
     <ClInclude Include="ESP.h" />
     <ClInclude Include="gameinterface.h" />
     <ClInclude Include="helper.h" />
+    <ClInclude Include="heros.h" />
     <ClInclude Include="hooks.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -209,6 +213,8 @@
     <ClInclude Include="Misc.h" />
     <ClInclude Include="offsets.h" />
     <ClInclude Include="mem.h" />
+    <ClInclude Include="shiv.h" />
+    <ClInclude Include="vindicta.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

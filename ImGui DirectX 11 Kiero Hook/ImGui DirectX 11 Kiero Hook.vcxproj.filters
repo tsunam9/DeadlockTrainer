@@ -61,6 +61,15 @@
     <Filter Include="Source Files\SigScanner">
       <UniqueIdentifier>{a052dac5-42c7-494d-b7b5-599be03a3c09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Features\Heros">
+      <UniqueIdentifier>{2de12c44-f8e6-4bac-a68a-4e09b495bfdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\shiv">
+      <UniqueIdentifier>{bbf72b9b-e122-4b39-8449-b39772486d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Vindicta">
+      <UniqueIdentifier>{18d71714-7ba0-4d82-8da6-5e8f9d32953a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kiero\minhook\src\buffer.c">
@@ -137,6 +146,15 @@
     </ClCompile>
     <ClCompile Include="offsets.cpp">
       <Filter>Source Files\Offsets</Filter>
+    </ClCompile>
+    <ClCompile Include="heros.cpp">
+      <Filter>Source Files\Features\Heros</Filter>
+    </ClCompile>
+    <ClCompile Include="shiv.cpp">
+      <Filter>Source Files\Features\Heros\shiv</Filter>
+    </ClCompile>
+    <ClCompile Include="vindicta.cpp">
+      <Filter>Source Files\Features\Heros\Vindicta</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +258,15 @@
     </ClInclude>
     <ClInclude Include="mem.h">
       <Filter>Source Files\SigScanner</Filter>
+    </ClInclude>
+    <ClInclude Include="heros.h">
+      <Filter>Source Files\Features\Heros</Filter>
+    </ClInclude>
+    <ClInclude Include="shiv.h">
+      <Filter>Source Files\Features\Heros\shiv</Filter>
+    </ClInclude>
+    <ClInclude Include="vindicta.h">
+      <Filter>Source Files\Features\Heros\Vindicta</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

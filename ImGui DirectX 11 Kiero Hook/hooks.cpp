@@ -91,52 +91,56 @@ void detourdrawmodel(__int64 a1, __int64 a2, __int64* a3, int a4, __int64 a5, __
 
 }
 
+void printBinary(uint64_t num) {
+	// Create a mask to check each bit
+	for (int i = 63; i >= 0; --i) {
+		// Print the bit at the current position
+		std::cout << ((num >> i) & 1);
+	}
+	std::cout << std::endl; // New line after the binary output
+}
 
 
-/*
-
-	std::cout << std::dec << (int)material_data->m_color[0] << std::endl;
-	std::cout << std::dec << (int)material_data->m_color[1] << std::endl;
-	std::cout << std::dec << (int)material_data->m_color[2] << std::endl;
-	std::cout << std::dec << (int)material_data->m_color[3] << std::endl;
-	std::cout << "---------------------------------" << std::endl;
-
-*/
-
-Aimbot objaimbot;
 void detourCreateMove(__int64* a1, int a2, char a3) {
 
-	CCitadelUserCmdPB* cmd = Helper::GetCurrentUserCmd();
-	if (!cmd)
-		return;
-	std::cout << (uint64_t)cmd << std::endl;
+	CreateMove(a1, a2, a3);
+	CCitadelUserCmdPB* cmd = Helper::GetCurrentUserCmd(); 
+	if (!cmd) return;
 	uint64_t CameraManager = Helper::get_Camera();
 	vec2 ViewAngles = *(vec2*)(CameraManager + 0x44);
+	PlayerData LocalPlayer = Helper::get_player_data(Helper::get_local_player());
+	uint64_t playerpawn = Helper::GetPawn(Helper::get_local_player());
+	auto abilities = Helper::GetAbilities(playerpawn);
 
-	CreateMove(a1, a2, a3);
+
 	if (Config.aimbot.bAimbot) {
-		objaimbot.RunAimbot();
-		if(!Config.antiaim.bAntiAim)
-			Helper::CorrectViewAngles(ViewAngles, cmd);
+		Aimbot::RunAimbot(cmd);
 	}
 
 	if (Config.antiaim.bAntiAim) {
-		AntiAim::DoAntiAim();
+		AntiAim::DoAntiAim(cmd);
 	}
-	
+
+	ShivLogic shiv;
+	VindictaLogic vindicta;
+
+	switch (LocalPlayer.HeroID) {
+
+		case Shiv:
+			shiv.RunScript(cmd);
+			break;
+		case Vindicta:
+			vindicta.RunScript(cmd);
+			break;
+		default:
+			break;
+	}
+
 
 
 }
 
 
-using GetCUserCMDBASE = __int64(__fastcall*)(__int64 a1, int a2);
-static auto oGetCUserCmdBASE = reinterpret_cast<GetCUserCMDBASE>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "48 89 4c 24 ? 41 54 41 57"));
-
-void detourGetCUserCmdBASE(__int64 a1, int a2) {
-	std::cout << a1 << std::endl;
-
-	oGetCUserCmdBASE(a1, a2);
-}
 
 void CreateHooks() {
 
@@ -149,9 +153,6 @@ void CreateHooks() {
 
 	//MH_CreateHook((LPVOID)DrawModelTarget, &detourdrawmodel, reinterpret_cast<LPVOID*>(&DrawModel));
 	//MH_EnableHook((LPVOID)DrawModelTarget);
-
-	MH_CreateHook((LPVOID)oGetCUserCmdBASE, &detourGetCUserCmdBASE, reinterpret_cast<LPVOID*>(&oGetCUserCmdBASE));
-	MH_EnableHook((LPVOID)oGetCUserCmdBASE);
 
 
 	init = true;

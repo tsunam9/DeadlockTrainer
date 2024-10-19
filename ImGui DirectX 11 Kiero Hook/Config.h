@@ -29,6 +29,7 @@ public:
         bool silentaim = false;
 		bool VisibleCheck = false;
         bool AutoFire = false;
+        bool bPSilent = false;
 
     } aimbot;
 
@@ -57,6 +58,19 @@ public:
 		float Yrange2 = 0.0f;
 		float Xrange2 = 0.0f;
     } misc;
+
+	struct ShivSettings {
+		bool AutoAimDagger = false;
+		bool AutoAimDash = false;
+		bool AutoExecute = false;
+        bool BlockManualR = false;
+	} shiv;
+
+    struct VindictaSettings {
+        bool AutoAimStake = false;
+        bool AutoAimCrow = false;
+		bool AutoSnipe = false;
+    } vindicta;
 
 	struct AntiAimSettings {
 		bool bAntiAim = false;

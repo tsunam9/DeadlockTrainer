@@ -1,4 +1,4 @@
-#include "includes.h"
+﻿#include "includes.h"
 
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -81,6 +81,10 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				ImGui::SameLine();
 				ImGui::Checkbox("Visible Check", &Config.aimbot.VisibleCheck);
 				ImGui::Checkbox("Silent Aim", &Config.aimbot.silentaim);
+				if (Config.aimbot.silentaim) {
+					ImGui::SameLine();
+					ImGui::Checkbox("PSilent", &Config.aimbot.bPSilent);
+				}
 				ImGui::Checkbox("Auto Fire", &Config.aimbot.AutoFire);
 				static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
 				static int currentItem = 0; // Index of the currently selected item
@@ -129,6 +133,87 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 			}
 
+			if (ImGui::BeginTabItem("Heroes")) {
+				switch (Helper::get_player_data(Helper::get_local_player()).HeroID) {
+
+				case Abrams:
+					ImGui::Text("Abrams");
+					break;
+				case Bebop:
+					ImGui::Text("Bebop");
+					break;
+				case Dynamo:
+					ImGui::Text("Dynamo");
+					break;
+				case GreyTalon:
+					ImGui::Text("GreyTalon");
+					break;
+				case Haze:
+					ImGui::Text("Haze");
+					break;
+				case Infernus:
+					ImGui::Text("Infernus");
+					break;
+				case Ivy:
+					ImGui::Text("Ivy");
+					break;
+				case Kelvin:
+					ImGui::Text("Kelvin");
+					break;
+				case LadyGeist:
+					ImGui::Text("LadyGeist");
+					break;
+				case Lash:
+					ImGui::Text("Lash");
+					break;
+				case McGinnis:
+					ImGui::Text("McGinnis");
+					break;
+				case Mirage:
+					ImGui::Text("Mirage");
+					break;
+				case MoAndKrill:
+					ImGui::Text("MoAndKrill");
+					break;
+				case Paradox:
+					ImGui::Text("Paradox");
+					break;
+				case Pocket:
+					ImGui::Text("Pocket");
+					break;
+				case Seven:
+					ImGui::Text("Seven");
+					break;
+				case Shiv:
+					ImGui::Text("Shiv");
+					ImGui::Checkbox("Auto Aim Dagger", &Config.shiv.AutoAimDagger);
+					ImGui::Checkbox("Auto Aim Dash", &Config.shiv.AutoAimDash);
+					ImGui::Checkbox("Auto Execute", &Config.shiv.AutoExecute);
+					ImGui::Checkbox("Block Manual R", &Config.shiv.BlockManualR);
+					break;
+				case Vindicta:
+					ImGui::Text("Vindicta");
+					ImGui::Checkbox("Auto Aim Stake", &Config.vindicta.AutoAimStake);
+					ImGui::Checkbox("Auto Aim Crow", &Config.vindicta.AutoAimCrow);
+					ImGui::Checkbox("Auto Snipe", &Config.vindicta.AutoSnipe);
+					break;
+				case Viscous:
+					ImGui::Text("Viscous");
+					break;
+				case Warden:
+					ImGui::Text("Warden");
+					break;
+				case Wraith:
+					ImGui::Text("Wraith");
+					break;
+				case Yamato:
+					ImGui::Text("Yamato");
+					break;
+				}
+
+				ImGui::EndTabItem();
+			}
+
 			// Third tab
 			if (ImGui::BeginTabItem("Misc"))
 			{
@@ -160,16 +245,46 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	return oPresent(pSwapChain, SyncInterval, Flags);
 }
 
+void setConsoleColor(int textColor, int bgColor) {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, (bgColor << 4) | textColor);
+}
 
 DWORD WINAPI MainThread(LPVOID lpReserved)
 {
 	//
 	AllocConsole();
 	freopen_s(&fp, "CONOUT$", "w", stdout); // output only
-	std::cout << "test" << std::endl;
-	//
+
+	const std::string red = "\033[31m";
+	const std::string green = "\033[32m";
+	const std::string yellow = "\033[33m";
+	const std::string blue = "\033[34m";
+	const std::string reset = "\033[0m"; // Reset to default color
+
+	setConsoleColor(5, 0);
+
+	std::cout << R"(
+                                                                                                                                                                       
+M""MMMMMMMM                            dP       M""MMM""MMM""M                            
+M  MMMMMMMM                            88       M  MMM  MMM  M                            
+M  MMMMMMMM dP    dP 88d888b. .d8888b. 88d888b. M  MMP  MMP  M .d8888b. 88d888b. .d8888b. 
+M  MMMMMMMM 88    88 88'  `88 88'  `"" 88'  `88 M  MM'  MM' .M 88'  `88 88'  `88 88ooood8 
+M  MMMMMMMM 88.  .88 88    88 88.  ... 88    88 M  `' . '' .MM 88.  .88 88       88.  ... 
+M         M `8888P88 dP    dP `88888P' dP    dP M    .d  .dMMM `88888P8 dP       `88888P' 
+MMMMMMMMMMM      .88                            MMMMMMMMMMMMMM                            
+             d8888P                                                                              
+
+)" << '\n';
+
+	std::cout << "[+] LynchWare Loaded\n";
+	std::cout << "[+] Press INSERT to open menu\n";
+
+	setConsoleColor(2, 0);
+	std::cout << "[+] Aimbot: " << Config.aimbot.bAimbot << std::endl;
 
 
+		                                                                                                                                                       
 
 	bool init_hook = false;
 	do
