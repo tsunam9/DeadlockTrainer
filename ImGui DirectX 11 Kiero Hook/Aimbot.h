@@ -13,6 +13,7 @@ public:
 	static void RunAimbot(CCitadelUserCmdPB* usercmd);
 	static vec3 PredictPosition(vec3 Target, vec3 Velocity, float bulletspeed);
 	static uint64_t GetAimbotTarget(std::string group);
+	static void AimAbility(uintptr_t entity, int aimpos, uintptr_t ability);
 
 
 };

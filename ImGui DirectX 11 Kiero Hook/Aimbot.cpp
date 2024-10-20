@@ -206,7 +206,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 
 
 		}
-		else if (entClass == "CItemXP" && TargetEntityType == "CItemXp") {
+		else if (entClass == "CItemXP" && TargetEntityType == "CItemXP") {
 
 			xpData TargetXPData = Helper::get_xp_data(processed_ents[i]);
 			float GameTime = Helper::GetGameTime();
@@ -296,30 +296,25 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 		}
 	}
 	
-	
 
-	switch (Config.aimbot.targetSelectionMode) {
-		case 0:
-			if (ClosestIndex == 999)
-				return 0;
-			break;
-		case 1:
-			if (LowestHealthIndex == 999)
-				return 0;
-			break;
-		case 2:
-			if (lowestfovindex == 999)
-				return 0;
-			break;
-	}
+
 
 	if (TargetEntityType == "CCitadelPlayerController") {
 		switch (Config.aimbot.targetSelectionMode) {
 		case 0:
+			if (ClosestIndex == 999) {
+				return 0;
+			}
 			return processed_ents[ClosestIndex];
 		case 1:
 			return processed_ents[LowestHealthIndex];
+			if (LowestHealthIndex == 999) {
+				return 0;
+			}
 		case 2:
+			if (lowestfovindex == 999) {
+				return 0;
+			}
 			return processed_ents[lowestfovindex];
 		}
 	}
@@ -327,10 +322,19 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 	if (TargetEntityType == "CItemXP") {
 		switch (Config.aimbot.targetSelectionMode) {
 		case 0:
+			if (ClosestXPIndex == 999) {
+				return 0;
+			}
 			return processed_ents[ClosestXPIndex];
 		case 1:
+			if (LowestFovXPIndex == 999) {
+				return 0;
+			}
 			return processed_ents[LowestFovXPIndex];
 		case 2:
+			if (LowestFovXPIndex == 999) {
+				return 0;
+			}
 			return processed_ents[LowestFovXPIndex];
 		}
 	}
@@ -338,10 +342,19 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 	if (TargetEntityType == "C_NPC_Trooper") {
 		switch (Config.aimbot.targetSelectionMode) {
 		case 0:
+			if (ClosestminionIndex == 999) {
+				return 0;
+			}
 			return processed_ents[ClosestminionIndex];
 		case 1:
+			if (LowestMinionHealthIndex == 999) {
+				return 0;
+			}
 			return processed_ents[LowestMinionHealthIndex];
 		case 2:
+			if (LowestMinionHealthIndex == 999) {
+				return 0;
+			}
 			return processed_ents[LowestFovminionIndex];
 		}
 	}
@@ -378,6 +391,36 @@ vec2 Aimbot::GetAimAngles(vec3 Target) {
 	return GetAim(CameraPos, Target);
 }
 
+void Aimbot::AimAbility(uintptr_t entity, int aimpos, uintptr_t ability) {
+
+	if (!entity)
+		return;
+	if (!ability)
+		return;
+
+	auto targetdata = Helper::get_player_data(entity);
+
+	vec3 vec_target;
+	if (aimpos == 0) {
+		vec_target = Helper::GetBonePosition(entity, "head");
+	}
+	else if (aimpos == 1) {
+		vec_target = Helper::GetBonePosition(entity, "pelvis");
+	}
+	else {
+		vec_target = targetdata.m_vecOrigin;
+	}
+
+	vec3 predictedposition = Aimbot::PredictPosition(vec_target, targetdata.m_vecVelocity, 15000.0f);
+	vec2 target_angles = Aimbot::GetAimAngles(predictedposition);
+	CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
+	CUserCmd->cameraViewAngle->viewAngles.y = target_angles.y;
+	Helper::CorrectMovement(CUserCmd, CUserCmd->pBaseUserCMD->forwardMove, CUserCmd->pBaseUserCMD->sideMove);
+	if (Config.aimbot.bPSilent)
+		Helper::CorrectViewAngles(CUserCmd);
+
+}
+
 void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 
 	float BulletSpeed = 30000.0f;
@@ -386,22 +429,8 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
 	vec3 vec_velocity = *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
 
-	switch (LocalPlayerData.HeroID) {
-
-		case Vindicta:
-			if (*(float*)(abilities[3] + CCitadel_Ability_Hornet_Snipe::m_flScopeStartTime)) {
-				BulletSpeed = -1.0f;
-			}
-			else if (!(CUserCmd->buttons & IN_ABILITY4)) { // check not scoping in or about to scope in before firing so we dont waste ult
-				if (Config.aimbot.AutoFire) {
-					CUserCmd->buttons |= IN_ATTACK;
-				}
-			}
-			break;
-		default:
-			if (Config.aimbot.AutoFire) {
-				CUserCmd->buttons |= IN_ATTACK;
-			}
+	if (Config.aimbot.AutoFire) {
+		CUserCmd->buttons |= IN_ATTACK;
 	}
 
 
@@ -444,6 +473,7 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 		if (!(CUserCmd->buttons & IN_ATTACK)) {
 			return;
 		}
+
 		uintptr_t localweapon = Helper::get_localplr_weapon();
 		if (localweapon == -1)
 			return;
@@ -460,9 +490,9 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 
 		CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
 		CUserCmd->cameraViewAngle->viewAngles.y = target_angles.y;
+		crosshairposition->x = target_angles.x;
+		crosshairposition->y = target_angles.y;
 		Helper::CorrectMovement(CUserCmd, CUserCmd->pBaseUserCMD->forwardMove, CUserCmd->pBaseUserCMD->sideMove);
-		if (!Config.antiaim.bAntiAim && Config.aimbot.bPSilent)
-			Helper::CorrectViewAngles(CUserCmd);
 		return;
 
 	}
@@ -510,9 +540,9 @@ void Aimbot::AimAtXp(uintptr_t entity) {
 			return;
 		CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
 		CUserCmd->cameraViewAngle->viewAngles.y = target_angles.y;
+		crosshairposition->x = target_angles.x;
+		crosshairposition->y = target_angles.y;
 		Helper::CorrectMovement(CUserCmd, CUserCmd->pBaseUserCMD->forwardMove, CUserCmd->pBaseUserCMD->sideMove);
-		if (!Config.antiaim.bAntiAim && Config.aimbot.bPSilent)
-			Helper::CorrectViewAngles(CUserCmd);
 		return;
 	}
 
@@ -566,9 +596,9 @@ void Aimbot::AimAtMinions(uintptr_t entity) {
 			return;
 		CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
 		CUserCmd->cameraViewAngle->viewAngles.y = target_angles.y;
+		crosshairposition->x = target_angles.x;
+		crosshairposition->y = target_angles.y;
 		Helper::CorrectMovement(CUserCmd, CUserCmd->pBaseUserCMD->forwardMove, CUserCmd->pBaseUserCMD->sideMove);
-		if (!Config.antiaim.bAntiAim && Config.aimbot.bPSilent)
-			Helper::CorrectViewAngles(CUserCmd);
 		return;
 	}
 
@@ -607,6 +637,7 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 	processed_ents.clear();
 	sort_entities();
 
+	crosshairposition = (vec2*)(CameraManager + Offsets.o_crosshairposfromcameramanager);
 	CameraManager = *(uint64_t*)(ClientModuleBase + Offsets.o_CameraManager + 0x28);
 	ViewAngles = (vec2*)(CameraManager + 0x44); // RESET to 0x44
 	LocalPlayerData = Helper::get_player_data(Helper::get_local_player());

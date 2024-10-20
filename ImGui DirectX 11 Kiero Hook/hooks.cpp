@@ -2,13 +2,6 @@
 #include "mem.h"
 
 
-
-//CreateMove Hook
-typedef void(__fastcall* f_CreateMove)(__int64* a1, int a2, char a3);
-f_CreateMove CreateMove = nullptr;
-f_CreateMove CreateMoveTarget = reinterpret_cast<f_CreateMove>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "85 D2 0F 85 ? ? ? ? 48 8B C4 44 88 40"));
-
-
 struct object_info_t {
 	enum e_id : int {
 		arm = 38,
@@ -100,6 +93,10 @@ void printBinary(uint64_t num) {
 	std::cout << std::endl; // New line after the binary output
 }
 
+//CreateMove Hook
+typedef void(__fastcall* f_CreateMove)(__int64* a1, int a2, char a3);
+f_CreateMove CreateMove = nullptr;
+f_CreateMove CreateMoveTarget = reinterpret_cast<f_CreateMove>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "85 D2 0F 85 ? ? ? ? 48 8B C4 44 88 40"));
 
 void detourCreateMove(__int64* a1, int a2, char a3) {
 
@@ -110,11 +107,11 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	vec2 ViewAngles = *(vec2*)(CameraManager + 0x44);
 	PlayerData LocalPlayer = Helper::get_player_data(Helper::get_local_player());
 	uint64_t playerpawn = Helper::GetPawn(Helper::get_local_player());
-	auto abilities = Helper::GetAbilities(playerpawn);
-
 
 	if (Config.aimbot.bAimbot) {
 		Aimbot::RunAimbot(cmd);
+		if (!Config.antiaim.bAntiAim && Config.aimbot.bPSilent)
+			Helper::CorrectViewAngles(cmd);
 	}
 
 	if (Config.antiaim.bAntiAim) {
@@ -126,20 +123,39 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 
 	switch (LocalPlayer.HeroID) {
 
-		case Shiv:
-			shiv.RunScript(cmd);
-			break;
-		case Vindicta:
-			vindicta.RunScript(cmd);
-			break;
-		default:
-			break;
+	case Shiv:
+		shiv.RunScript(cmd);
+		break;
+	case Vindicta:
+		vindicta.RunScript(cmd);
+		break;
+	default:
+		break;
 	}
-
-
 
 }
 
+class CViewRender
+{
+public:
+	char pad_0000[1256]; //0x0000
+	float Fov; //0x04E8
+	char pad_04EC[60]; //0x04EC
+	float AspectRatio; //0x0528
+	char pad_052C[0x70];
+	BYTE nSomeFlags;
+};
+//RenderStart Hook
+typedef void(__fastcall* f_render)(CViewRender* pViewRender);
+f_render RenderStart = nullptr;
+f_render RenderStartTarget = reinterpret_cast<f_render>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "48 8b c4 53 55 56 57 41 55"));
+void __fastcall hkRenderStart(CViewRender* pViewRender)
+{
+	RenderStart(pViewRender);
+	pViewRender->Fov *= Config.misc.fovmodifier;
+	pViewRender->nSomeFlags |= 2;
+
+}
 
 
 void CreateHooks() {
@@ -151,8 +167,14 @@ void CreateHooks() {
 	MH_CreateHook((LPVOID)CreateMoveTarget, &detourCreateMove, reinterpret_cast<LPVOID*>(&CreateMove));
 	MH_EnableHook((LPVOID)CreateMoveTarget);
 
+	MH_CreateHook((LPVOID)RenderStartTarget, &hkRenderStart, reinterpret_cast<LPVOID*>(&RenderStart));
+	MH_EnableHook((LPVOID)RenderStartTarget);
+
 	//MH_CreateHook((LPVOID)DrawModelTarget, &detourdrawmodel, reinterpret_cast<LPVOID*>(&DrawModel));
 	//MH_EnableHook((LPVOID)DrawModelTarget);
+
+
+
 
 
 	init = true;

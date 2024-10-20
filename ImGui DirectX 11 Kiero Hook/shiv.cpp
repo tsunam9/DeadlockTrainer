@@ -4,13 +4,13 @@
 namespace shiv {
 	uint64_t target;
 	PlayerData targetdata;
-	uint64_t localplayer;
-	PlayerData localplayerdata;
-	std::vector<uintptr_t> abilitiesarray;
 }
 void ShivLogic::AutoUlt() {
 
-	int rlevel = *(int*)(shiv::abilitiesarray[4] + C_CitadelBaseAbility::m_nUpgradeBits);
+	if (*(bool*)(this->abilitiesarray[5] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
+		return;
+
+	int rlevel = *(int*)(this->abilitiesarray[5] + C_CitadelBaseAbility::m_nUpgradeBits);
 	float UltimateExecutehealth = 0.2f;
 	if (rlevel >= 7)
 		UltimateExecutehealth = 0.28f;
@@ -31,27 +31,22 @@ void ShivLogic::AutoUlt() {
 
 void ShivLogic::OnAbility1() {
 
+	if (*(bool*)(this->abilitiesarray[2] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
+		return;
+
 	if (!Config.shiv.AutoAimDagger)
 		return;
 
 	uint64_t target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
 	if (!target)
 		return;
-	vec3 vec_target = Helper::GetBonePosition(target, "head");
-	uint64_t PawnHandle = *(uint64_t*)(target + CCitadelPlayerController::m_hHeroPawn);
-	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
-	vec3 vec_velocity = *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
-	vec3 predictedposition = Aimbot::PredictPosition(vec_target, vec_velocity, 15000.0f);
-	vec2 target_angles = Aimbot::GetAimAngles(predictedposition);
-
-	this->cmd->cameraViewAngle->viewAngles.x = target_angles.x;
-	this->cmd->cameraViewAngle->viewAngles.y = target_angles.y;
-	Helper::CorrectMovement(this->cmd, this->cmd->pBaseUserCMD->forwardMove, this->cmd->pBaseUserCMD->sideMove);
-	if (Config.aimbot.bPSilent)
-		Helper::CorrectViewAngles(this->cmd);
+	Aimbot::AimAbility(target, 1, this->abilitiesarray[2]);
 }
 
 void ShivLogic::OnAbility2() {
+
+	if (*(bool*)(this->abilitiesarray[3] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
+		return;
 
 	if (!Config.shiv.AutoAimDash)
 		return;
@@ -66,8 +61,8 @@ void ShivLogic::OnAbility2() {
 	vec3 predictedposition = Aimbot::PredictPosition(vec_target, vec_velocity, 15000.0f);
 	vec2 target_angles = Aimbot::GetAimAngles(predictedposition);
 
-	this->cmd->cameraViewAngle->viewAngles.x = target_angles.x;
-	this->cmd->cameraViewAngle->viewAngles.y = target_angles.y;
+	this->cmd->pBaseUserCMD->playerViewAngle->viewAngles.x = target_angles.x;
+	this->cmd->pBaseUserCMD->playerViewAngle->viewAngles.y = target_angles.y;
 	Helper::CorrectMovement(this->cmd, this->cmd->pBaseUserCMD->forwardMove, this->cmd->pBaseUserCMD->sideMove);
 }
 
@@ -85,9 +80,6 @@ void ShivLogic::OnTick() {
 	 shiv::target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
 	 if (!shiv::target) return;
 	 shiv::targetdata = Helper::get_player_data(shiv::target);
-	 shiv::localplayer = Helper::get_local_player();
-	 shiv::localplayerdata = Helper::get_player_data(shiv::localplayer);
-	 shiv::abilitiesarray = Helper::GetAbilities(Helper::GetPawn(shiv::localplayer));
 
 	 if (Config.shiv.AutoExecute) {
 		 AutoUlt();

@@ -483,7 +483,6 @@ void Helper::HotKey(KeyBind &keybind){
 		ImGui::Button("...");
 		for (auto& Key : KeyCodes) {
 			if (GetAsyncKeyState(Key)) {
-				Sleep(20);
 				if (Key == VK_ESCAPE) {
 					keybind.key = 0;
 					keybind.name = "None";
@@ -701,7 +700,11 @@ std::vector<uintptr_t> Helper::GetAbilities(uint64_t entity_pawn) {
 
 	std::vector<uintptr_t> abilities;
 	uint64_t weaponcomponent = (uint64_t)(entity_pawn + C_CitadelPlayerPawn::m_CCitadelAbilityComponent);
+	if (!weaponcomponent)
+		return abilities;
 	uint64_t vecAbilities = *(uint64_t*)(weaponcomponent + CCitadelAbilityComponent::m_vecAbilities + 0x8);
+	if (!vecAbilities)
+		return abilities;
 
 	for (int i = 10; i < 16; i++) {
 		auto abilityHandle = *(uint32_t*)(vecAbilities + (0x4 * i));
@@ -714,6 +717,23 @@ std::vector<uintptr_t> Helper::GetAbilities(uint64_t entity_pawn) {
 
 	}
 	return abilities;
+
+}
+
+bool Helper::IsAbilityCasting(uintptr_t ability) {
+
+
+	if (GetAsyncKeyState(VK_F6)) {
+		int test = 0;
+	}
+
+	float creationtime = *(float*)(ability + C_BaseEntity::m_flSimulationTime);
+	float completetime = *(float*)(ability + C_CitadelBaseAbility::m_flCastCompletedTime);
+	float gametime = Helper::GetGameTime();
+	
+	if (completetime > creationtime)
+		return true;
+	return false;
 
 }
 

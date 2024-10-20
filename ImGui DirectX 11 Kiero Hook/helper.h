@@ -755,6 +755,8 @@ public:
     static void CorrectViewAngles(CCitadelUserCmdPB* pCmd);
     static void HotKey(KeyBind& keybind);
 	static std::vector<uintptr_t> GetAbilities(uint64_t entity_pawn);
+	static bool IsAbilityCasting(uintptr_t ability);
+
 
 
 };

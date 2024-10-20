@@ -2,6 +2,7 @@
 #include "helper.h"
 #include "heros.h"
 #include "Aimbot.h"
+#include "offsets.h"
 
 class VindictaLogic : public Hero {
 

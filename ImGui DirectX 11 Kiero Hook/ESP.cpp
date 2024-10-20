@@ -279,12 +279,12 @@ void Esp::DrawEsp(uintptr_t Entity)
 		draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.5, IM_COL32(255, 255, 255, 255), _strdup(temp.c_str()));
 	}
 	if (Config.esp.NameEsp) {
-		draw.DrawTextA(BoxHead.x, BoxHead.y - height * 0.1, IM_COL32(255, 255, 255, 255), Helper::GetHeroNameByID(EntInfo.HeroID).c_str());
+		draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y - height * 0.2, IM_COL32(255, 255, 255, 255), Helper::GetHeroNameByID(EntInfo.HeroID).c_str());
 	}
 	if (Config.esp.HealthBar) {
 		float missinghealth = 1.0f - ((float)EntInfo.Health / (float)EntInfo.MaxHealth);
-		draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 4, height * 1.2, IM_COL32(0, 255, 0, 255));
-		draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 4, height * 1.2 * missinghealth, IM_COL32(255, 0, 0, 255));
+		draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 2, height * 1.2, IM_COL32(0, 255, 0, 255));
+		draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 2, height * 1.2 * missinghealth, IM_COL32(255, 0, 0, 255));
 	}
 	if (Config.esp.boneEsp) {
 		DrawBoneEsp(Entity);

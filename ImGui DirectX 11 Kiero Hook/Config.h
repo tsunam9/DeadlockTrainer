@@ -53,10 +53,9 @@ public:
 
     struct MiscSettings {
         bool bNorecoil = false;
-        float XRange = 0.0f;
-		float YRange = 0.0f;
-		float Yrange2 = 0.0f;
-		float Xrange2 = 0.0f;
+        bool modfovandaspect = false;
+        float fovmodifier = 1.0f;
+        float aspectratio = 1.0f;
     } misc;
 
 	struct ShivSettings {
@@ -74,6 +73,9 @@ public:
 
 	struct AntiAimSettings {
 		bool bAntiAim = false;
+        int AAtype = 0;
+        float lowerjitter = -90.0f;
+        float upperjitter = 90.0f;
 	} antiaim;
 
     // General settings

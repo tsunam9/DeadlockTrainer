@@ -29,6 +29,13 @@ void Drawing::DrawFilledCircle(float x, float y, float radius, ImU32 color) {
 
 void Drawing::DrawText(float x, float y, ImU32 color, const char* text) {
 	ImDrawList* draw_list = ImGui::GetBackgroundDrawList(); // Use the background draw list for ESP
+
+	// Calculate text size
+	ImVec2 textSize = ImGui::CalcTextSize(text);
+
+	// Adjust x position to center the text
+	x -= textSize.x * 0.5f;
+
 	draw_list->AddText(ImVec2(x, y), color, text);
 }
 

@@ -5,6 +5,14 @@ class Hero {
 
 public:
 	CCitadelUserCmdPB* cmd;
+	uint64_t LocalPlayer;
+	uint64_t target;
+	PlayerData targetdata;
+	PlayerData localplayerdata;
+	std::vector<uintptr_t> abilitiesarray;
+
+
+
 	void RunScript(CCitadelUserCmdPB* cmd);
 private:
 	virtual void OnAbility1();
@@ -14,4 +22,5 @@ private:
 	virtual void OnTick();
 
 };
+
 

@@ -13,6 +13,8 @@ ID3D11RenderTargetView* mainRenderTargetView;
 HMODULE myhmod;
 FILE* fp;
 
+ImFont* cascadia = nullptr;
+ImFont* impact = nullptr;
 
 void InitImGui()
 {
@@ -21,7 +23,37 @@ void InitImGui()
 	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
 	ImGui_ImplWin32_Init(window);
 	ImGui_ImplDX11_Init(pDevice, pContext);
+	cascadia = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\CascadiaMono.ttf", 20.0f, NULL, io.Fonts->GetGlyphRangesDefault());
+	cascadia = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\impact.ttf", 50.0f, NULL, io.Fonts->GetGlyphRangesDefault());
+
+	//colors
+	ImVec4* colors = ImGui::GetStyle().Colors;
+	colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.00f);
+	colors[ImGuiCol_Border] = ImVec4(1.00f, 0.00f, 0.53f, 0.24f);
+	colors[ImGuiCol_FrameBg] = ImVec4(0.24f, 0.24f, 0.24f, 0.54f);
+	colors[ImGuiCol_FrameBgHovered] = ImVec4(1.00f, 0.00f, 0.36f, 0.40f);
+	colors[ImGuiCol_FrameBgActive] = ImVec4(0.67f, 0.00f, 0.24f, 0.40f);
+	colors[ImGuiCol_TitleBg] = ImVec4(0.65f, 0.00f, 0.40f, 1.00f);
+	colors[ImGuiCol_TitleBgActive] = ImVec4(0.65f, 0.00f, 0.40f, 1.00f);
+	colors[ImGuiCol_CheckMark] = ImVec4(1.00f, 0.00f, 0.48f, 1.00f);
+	colors[ImGuiCol_SliderGrab] = ImVec4(0.72f, 0.11f, 0.35f, 1.00f);
+	colors[ImGuiCol_SliderGrabActive] = ImVec4(0.92f, 0.06f, 0.41f, 1.00f);
+	colors[ImGuiCol_Button] = ImVec4(0.72f, 0.11f, 0.35f, 1.00f);
+	colors[ImGuiCol_ButtonHovered] = ImVec4(1.00f, 0.00f, 0.40f, 1.00f);
+	colors[ImGuiCol_ButtonActive] = ImVec4(0.85f, 0.06f, 0.74f, 1.00f);
+	colors[ImGuiCol_Separator] = ImVec4(1.00f, 0.00f, 0.65f, 0.50f);
+	colors[ImGuiCol_ResizeGrip] = ImVec4(1.00f, 0.00f, 0.53f, 0.24f);
+	colors[ImGuiCol_ResizeGripHovered] = ImVec4(1.00f, 0.00f, 0.53f, 0.24f);
+	colors[ImGuiCol_ResizeGripActive] = ImVec4(1.00f, 0.00f, 0.53f, 0.68f);
+	colors[ImGuiCol_Tab] = ImVec4(0.65f, 0.00f, 0.40f, 1.00f);
+	colors[ImGuiCol_TabHovered] = ImVec4(1.00f, 0.00f, 0.62f, 1.00f);
+	colors[ImGuiCol_TabActive] = ImVec4(1.00f, 0.00f, 0.62f, 1.00f);
+
+
+
+
 }
+
 
 LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
@@ -30,6 +62,7 @@ LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
+
 
 
 bool init = false;
@@ -64,7 +97,11 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+
+	ImGui::PushFont(impact);
 	GodFunction();
+	ImGui::PopFont();
+
 	if (Config.MenuOpen) {
 
 		ImGui::Begin("LynchWare");
@@ -106,29 +143,49 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 				ImGui::EndTabItem();
 			}
 
+
+
 			// Second tab
 			if (ImGui::BeginTabItem("Esp"))
-			{
+			{	
+				ImVec2 availableSize = ImGui::GetContentRegionAvail();
+				float childHeight = availableSize.y * 0.5f; // Set to half
+
+				ImGui::BeginChild("Top EspChild", ImVec2(0, childHeight), true);
+
 				ImGui::Checkbox("Esp", &Config.esp.bEsp);
 				ImGui::Checkbox("Box Esp", &Config.esp.boxEsp);
-				ImGui::Checkbox("Bone Esp", &Config.esp.boneEsp);
+				ImGui::Checkbox("Skeleton", &Config.esp.boneEsp);
 				ImGui::Checkbox("Health Bar", &Config.esp.HealthBar);
+				ImGui::Checkbox("Name Esp", &Config.esp.NameEsp);
+
+				ImGui::EndChild();
+
+				ImGui::BeginChild("Bottom EspChild", ImVec2(0, childHeight), true);
+
 				ImGui::Checkbox("Health Text", &Config.esp.HealthEsp);
 				ImGui::Checkbox("Tracers", &Config.esp.Tracers);
 				ImGui::Checkbox("Distance Esp", &Config.esp.DistanceEsp);
-				ImGui::Separator();
-				ImGui::Checkbox("Name Esp", &Config.esp.NameEsp);
 				ImGui::Checkbox("Draw Fov", &Config.esp.DrawFov);
 				ImGui::Checkbox("Draw Xp", &Config.esp.DrawXp);
 				ImGui::Checkbox("Draw Monsters", &Config.esp.DrawMonsters);
 				ImGui::Checkbox("Draw Minions", &Config.esp.DrawMinions);
 				//ImGui::Checkbox("Draw Aimbot Prediction", &Config.esp.DrawAimbotPrediction);
+				ImGui::EndChild();
 				ImGui::EndTabItem();
 			}
 
 			if (ImGui::BeginTabItem("AntiAim")) {
 
 				ImGui::Checkbox("AntiAim", &Config.antiaim.bAntiAim);
+				static const char* items[] = { "Spin", "Jitter", "180 Treehouse" }; // Options for the dropdown
+				static int currentItem = 0; // Index of the currently selected item
+				ImGui::Combo("Target ", &currentItem, items, IM_ARRAYSIZE(items)); Config.antiaim.AAtype = currentItem;
+				ImGui::PushFont(impact);
+				ImGui::Text("Selected: %s", items[currentItem]);
+				ImGui::PopFont();
+				ImGui::SliderFloat("Lower Jitter", &Config.antiaim.lowerjitter, -180, Config.antiaim.upperjitter, "%.1f");
+				ImGui::SliderFloat("Upper Jitter", &Config.antiaim.upperjitter, Config.antiaim.lowerjitter, 180.0f, "%.1f");
 				ImGui::EndTabItem();
 
 			}
@@ -217,11 +274,9 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			// Third tab
 			if (ImGui::BeginTabItem("Misc"))
 			{
-				ImGui::Checkbox("No Recoil", &Config.misc.bNorecoil);
-				ImGui::SliderFloat("X Range", &Config.misc.XRange, 0.0f, 360.0f, "%.1f");
-				ImGui::SliderFloat("Y Range", &Config.misc.YRange, -90.0f, 90.0f, "%.1f");
-				ImGui::SliderFloat("X Range 2", &Config.misc.Xrange2, 0.0f, 360.0f, "%.1f");
-				ImGui::SliderFloat("Y Range 2", &Config.misc.Yrange2, -90.0f, 90.0f, "%.1f");
+				
+				ImGui::Checkbox("No Recoil", &Config.misc.bNorecoil); 
+				ImGui::SliderFloat("Fov Multiplier", &Config.misc.fovmodifier, 0.1f, 2.0f, "%.3f");
 
 				if (ImGui::Button("Slay them all"))
 				{

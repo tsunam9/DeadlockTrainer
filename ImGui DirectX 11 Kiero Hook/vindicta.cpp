@@ -3,14 +3,21 @@
 namespace vindicta {
 	uint64_t target;
 	PlayerData targetdata;
-	uint64_t localplayer;
-	PlayerData localplayerdata;
-	std::vector<uintptr_t> abilitiesarray;
 }
 
 void VindictaLogic::AutoUlt() {
 
+	if (*(bool*)(this->abilitiesarray[4] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
+		return;
 
+	int remainingcharges = *(int*)(this->abilitiesarray[4] + C_CitadelBaseAbility::m_iRemainingCharges);
+	if (remainingcharges <= 0)
+		return;
+
+	bool rechargetime = *(bool*)(this->abilitiesarray[4] + C_CitadelBaseAbility::m_bIsCoolingDownInternal);
+	if (rechargetime)
+		return;
+	
 	if (vindicta::targetdata.Health <= 0 || vindicta::targetdata.MaxHealth <= 0)
 		return;
 
@@ -25,6 +32,7 @@ void VindictaLogic::AutoUlt() {
 
 		this->cmd->buttons |= IN_ABILITY4;
 		this->cmd->buttons |= IN_ATTACK;
+		Helper::CorrectMovement(this->cmd, this->cmd->pBaseUserCMD->forwardMove, this->cmd->pBaseUserCMD->sideMove);
 		if (Config.aimbot.bPSilent)
 			Helper::CorrectViewAngles(this->cmd);
 
@@ -35,31 +43,31 @@ void VindictaLogic::AutoUlt() {
 
 void VindictaLogic::OnAbility1() {
 
+	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
+		return;
+
 	if (!Config.vindicta.AutoAimStake)
 		return;
 
 	uint64_t target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
 	if (!target)
 		return;
-	vec3 vec_target = Helper::GetBonePosition(target, "head");
-	uint64_t PawnHandle = *(uint64_t*)(target + CCitadelPlayerController::m_hHeroPawn);
-	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
-	vec3 vec_velocity = *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
-	vec3 predictedposition = Aimbot::PredictPosition(vec_target, vec_velocity, 15000.0f);
-	vec2 target_angles = Aimbot::GetAimAngles(predictedposition);
+	Aimbot::AimAbility(target, 2, this->abilitiesarray[1]);
 
-	this->cmd->cameraViewAngle->viewAngles.x = target_angles.x;
-	this->cmd->cameraViewAngle->viewAngles.y = target_angles.y;
-	Helper::CorrectMovement(this->cmd, this->cmd->pBaseUserCMD->forwardMove, this->cmd->pBaseUserCMD->sideMove);
-	if (Config.aimbot.bPSilent)
-		Helper::CorrectViewAngles(this->cmd);
 }
 
 void VindictaLogic::OnAbility2() {
 
+	if (*(bool*)(this->abilitiesarray[2] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
+		return;
+
+
 }
 
 void VindictaLogic::OnAbility3() {
+
+	if (*(bool*)(this->abilitiesarray[3] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
+		return;
 
 	if (!Config.vindicta.AutoAimCrow)
 		return;
@@ -67,34 +75,32 @@ void VindictaLogic::OnAbility3() {
 	uint64_t target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
 	if (!target)
 		return;
-	vec3 vec_target = Helper::GetBonePosition(target, "head");
-	uint64_t PawnHandle = *(uint64_t*)(target + CCitadelPlayerController::m_hHeroPawn);
-	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
-	vec3 vec_velocity = *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
-	vec3 predictedposition = Aimbot::PredictPosition(vec_target, vec_velocity, 15000.0f);
-	vec2 target_angles = Aimbot::GetAimAngles(predictedposition);
-
-	this->cmd->cameraViewAngle->viewAngles.x = target_angles.x;
-	this->cmd->cameraViewAngle->viewAngles.y = target_angles.y;
-	Helper::CorrectMovement(this->cmd, this->cmd->pBaseUserCMD->forwardMove, this->cmd->pBaseUserCMD->sideMove);
-	if (Config.aimbot.bPSilent)
-		Helper::CorrectViewAngles(this->cmd);
+	Aimbot::AimAbility(target, 1, this->abilitiesarray[3]);
 
 }
 
 void VindictaLogic::OnAbility4() {
 
+	if (*(bool*)(this->abilitiesarray[4] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
+		return;
+
 }
 
 void VindictaLogic::OnTick() {
 
+	if (cmd->buttons & IN_ABILITY4) {
+		cmd->buttons &= ~IN_ATTACK;
+	}
+
+	float scopetime = *(float*)(this->abilitiesarray[4] + CCitadel_Ability_Hornet_Snipe::m_flScopeStartTime);
+	if (scopetime) {
+		this->cmd->buttons |= (1 << 11);
+		this->cmd->buttons &= ~(1 << 0);
+	}
 
 	vindicta::target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
 	if (!vindicta::target) return;
 	vindicta::targetdata = Helper::get_player_data(vindicta::target);
-	vindicta::localplayer = Helper::get_local_player();
-	vindicta::localplayerdata = Helper::get_player_data(vindicta::localplayer);
-	vindicta::abilitiesarray = Helper::GetAbilities(Helper::GetPawn(vindicta::localplayer));
 
 	if (Config.vindicta.AutoSnipe) {
 		AutoUlt();
