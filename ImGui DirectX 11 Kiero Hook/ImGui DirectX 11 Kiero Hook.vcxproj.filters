@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -69,6 +65,16 @@
     </Filter>
     <Filter Include="Source Files\Features\Heros\Vindicta">
       <UniqueIdentifier>{18d71714-7ba0-4d82-8da6-5e8f9d32953a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Chams">
+      <UniqueIdentifier>{17b27bb5-e346-446f-919c-9a010ef11600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dump\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Menu">
+      <UniqueIdentifier>{6ad05beb-af5a-469b-b3a8-e0b382a2efe8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +162,15 @@
     <ClCompile Include="vindicta.cpp">
       <Filter>Source Files\Features\Heros\Vindicta</Filter>
     </ClCompile>
+    <ClCompile Include="chams.cpp">
+      <Filter>Source Files\Features\Chams</Filter>
+    </ClCompile>
+    <ClCompile Include="globals.cpp">
+      <Filter>Source Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="kiero\minhook\dll_resources\MinHook.rc">
@@ -215,7 +230,7 @@
       <Filter>imgui</Filter>
     </ClInclude>
     <ClInclude Include="includes.h">
-      <Filter>Header Files</Filter>
+      <Filter>Dump\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="offsets.h">
       <Filter>Source Files\Offsets</Filter>
@@ -267,6 +282,15 @@
     </ClInclude>
     <ClInclude Include="vindicta.h">
       <Filter>Source Files\Features\Heros\Vindicta</Filter>
+    </ClInclude>
+    <ClInclude Include="chams.h">
+      <Filter>Source Files\Features\Chams</Filter>
+    </ClInclude>
+    <ClInclude Include="globals.h">
+      <Filter>Source Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Source Files\Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

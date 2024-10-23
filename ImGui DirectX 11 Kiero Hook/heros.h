@@ -4,6 +4,12 @@
 class Hero {
 
 public:
+
+	bool InputCasting1 = false;
+	bool InputCasting2 = false;
+	bool InputCasting3 = false;
+	bool InputCasting4 = false;
+
 	CCitadelUserCmdPB* cmd;
 	uint64_t LocalPlayer;
 	uint64_t target;
@@ -15,10 +21,7 @@ public:
 
 	void RunScript(CCitadelUserCmdPB* cmd);
 private:
-	virtual void OnAbility1();
-	virtual void OnAbility2();
-	virtual void OnAbility3();
-	virtual void OnAbility4();
+
 	virtual void OnTick();
 
 };

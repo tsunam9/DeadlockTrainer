@@ -161,10 +161,18 @@ vec3 Helper::GetBoneVectorFromIndex(uintptr_t target_entity, int index) {
 
 float Helper::GetGameTime() {
 
-	uint64_t local_player = *(uint64_t*)(ClientModuleBase + Offsets.o_LocalPlayerController);
-	float gametime = *(float*)(local_player + C_BaseEntity::m_flSimulationTime);
-	return gametime;
+	CGlobalVarsBase* globals = *(CGlobalVarsBase**)(ClientModuleBase + Offsets.o_dwGlobalVars);
+	return globals->flCurtime;
+
 }
+
+CGlobalVarsBase* Helper::GetGlobals() {
+	return *(CGlobalVarsBase**)(ClientModuleBase + Offsets.o_dwGlobalVars);
+}
+
+
+
+
 
 int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name) { // entity = pawn
 																							
@@ -324,7 +332,13 @@ std::string Helper::get_schema_name(const uintptr_t& entity)
 		return "";
 
 	const uintptr_t entity_class_info = *(uint64_t*)(entity_identity + 0x8);
+	if (!entity_class_info)
+		return "";
+
 	const uintptr_t schema_class_info_data = *(uint64_t*)(entity_class_info + 0x30);
+	if (!schema_class_info_data)
+		return "";
+
 	const uintptr_t class_name = *(uintptr_t*)(schema_class_info_data + 0x8);
 
 	std::string class_name_str = reinterpret_cast<const char*>(class_name);
@@ -352,9 +366,14 @@ bool Helper::CHandle_is_valid(uint64_t handle)
 	return handle > 0 && handle != 0xFFFFFFFF;
 }
 
+
 vec3 Helper::GetBonePosition(uintptr_t entity, const char* BoneName) {
 
 	vec3 BonePos = { 0, 0, 0 };
+
+	if (!entity)
+		return BonePos;
+
 
 	//Get PlayerPawn
 	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
@@ -366,26 +385,39 @@ vec3 Helper::GetBonePosition(uintptr_t entity, const char* BoneName) {
 	return BonePos;
 }
 
-std::vector<BoneConnection> Helper::GetBoneConnections(uintptr_t playerpawn) {
+std::vector<BoneConnection> Helper::GetBoneConnections(uintptr_t playerpawn, int heroid) {
 
 	
 	std::vector <BoneConnection> connections;
 
+	uint64_t pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(*(uint64_t*)(playerpawn + CCitadelPlayerController::m_hHeroPawn)));
 
-		
-		uint64_t pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(*(uint64_t*)(playerpawn + CCitadelPlayerController::m_hHeroPawn)));
 
-			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "head"), Helper::get_bone_index(pawn, "neck_0")));
-			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "neck_0"), Helper::get_bone_index(pawn, "spine_3")));
-			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "spine_3"), Helper::get_bone_index(pawn, "pelvis")));
-			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "pelvis"), Helper::get_bone_index(pawn, "leg_lower_L")));
-			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "pelvis"), Helper::get_bone_index(pawn, "leg_lower_R")));
-			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "leg_lower_R"), Helper::get_bone_index(pawn, "ankle_R")));
-			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "leg_lower_L"), Helper::get_bone_index(pawn, "ankle_L")));
-			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "spine_3"), Helper::get_bone_index(pawn, "arm_lower_R")));
-			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "spine_3"), Helper::get_bone_index(pawn, "arm_lower_L")));
-			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "arm_lower_R"), Helper::get_bone_index(pawn, "hand_R")));
-			connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "arm_lower_L"), Helper::get_bone_index(pawn, "hand_L")));
+	if (heroid == Dynamo) {
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "head"), Helper::get_bone_index(pawn, "neck_0")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "neck_0"), Helper::get_bone_index(pawn, "pelvis")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "pelvis"), Helper::get_bone_index(pawn, "leg_lower_L")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "pelvis"), Helper::get_bone_index(pawn, "leg_lower_R")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "leg_lower_R"), Helper::get_bone_index(pawn, "ankle_R")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "leg_lower_L"), Helper::get_bone_index(pawn, "ankle_L")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "neck_0"), Helper::get_bone_index(pawn, "arm_lower_R")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "neck_0"), Helper::get_bone_index(pawn, "arm_lower_L")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "arm_lower_R"), Helper::get_bone_index(pawn, "hand_R")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "arm_lower_L"), Helper::get_bone_index(pawn, "hand_L")));
+	}
+	else {
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "head"), Helper::get_bone_index(pawn, "neck_0")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "neck_0"), Helper::get_bone_index(pawn, "spine_3")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "spine_3"), Helper::get_bone_index(pawn, "pelvis")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "pelvis"), Helper::get_bone_index(pawn, "leg_lower_L")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "pelvis"), Helper::get_bone_index(pawn, "leg_lower_R")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "leg_lower_R"), Helper::get_bone_index(pawn, "ankle_R")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "leg_lower_L"), Helper::get_bone_index(pawn, "ankle_L")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "spine_3"), Helper::get_bone_index(pawn, "arm_lower_R")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "spine_3"), Helper::get_bone_index(pawn, "arm_lower_L")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "arm_lower_R"), Helper::get_bone_index(pawn, "hand_R")));
+		connections.push_back(BoneConnection(Helper::get_bone_index(pawn, "arm_lower_L"), Helper::get_bone_index(pawn, "hand_L")));
+	}
 
 	return connections;
 
@@ -471,32 +503,57 @@ CCitadelUserCmdPB* Helper::ExperimentalGetUserCmd() {
 	return v9;
 */
 
-void Helper::HotKey(KeyBind &keybind){
+// Add a static variable to track the currently active keybind waiting for a key
+static KeyBind* activeKeybind = nullptr;
+std::vector<KeyBind> KeyBinds;
 
+void Helper::HotKey(KeyBind& keybind) {
+	// Use PushID with a unique identifier for each keybind
+	ImGui::PushID(&keybind); // Use the address of keybind as a unique ID
 
 	if (!keybind.waitingForKey) {
 		if (ImGui::Button(keybind.name.c_str())) {
-			keybind.waitingForKey = true;
+			// Set the active keybind if none is waiting
+			if (activeKeybind == nullptr) {
+				activeKeybind = &keybind; // Set this keybind as active
+				keybind.waitingForKey = true;
+			}
 		}
 	}
 	else {
 		ImGui::Button("...");
 		for (auto& Key : KeyCodes) {
-			if (GetAsyncKeyState(Key)) {
+			if (GetAsyncKeyState(Key) & 0x8000) { // Ensure the key is pressed down
 				if (Key == VK_ESCAPE) {
 					keybind.key = 0;
-					keybind.name = "None";
+					keybind.name = "Always";
 					keybind.waitingForKey = false;
+					activeKeybind = nullptr; // Reset active keybind
 					break;
 				}
+
+				// Check if the key is already bound to another keybind
+				if (activeKeybind != nullptr && activeKeybind != &keybind && activeKeybind->key == Key) {
+					// Optionally handle the conflict here (e.g., notify the user)
+					// You could reset the conflicting keybind or ignore the new key.	
+					break;
+				}
+
+				// Set the key and update the name
 				keybind.key = Key;
 				keybind.name = KeyNames[Key];
 				keybind.waitingForKey = false;
+				activeKeybind = nullptr; // Reset active keybind
 				break;
 			}
 		}
 	}
+
+	// Pop the ID to restore the previous state
+	ImGui::PopID();
 }
+
+
 
 
 
@@ -642,18 +699,15 @@ bool Helper::CheckLocationVisible(vec3 LocalPlayerPos, vec3 LocationCheck) {
 		
 }
 
-void Helper::CorrectMovement(CCitadelUserCmdPB* pCmd, float& fOldForward, float& fOldSidemove) {
+void Helper::CorrectMovement(CCitadelUserCmdPB* pCmd, float& fOldForward, float& fOldSidemove,vec3 oldangles) {
 
-
-	auto camera = Helper::get_Camera();
-	vec2 OldAngles = *(vec2*)(camera + 0x44);
 
 	float deltaView;
 	float f1;
 	float f2;
 
 
-		f1 = OldAngles.y;
+		f1 = oldangles.y;
 		f2 = pCmd->cameraViewAngle->viewAngles.y;
 
 
@@ -661,7 +715,6 @@ void Helper::CorrectMovement(CCitadelUserCmdPB* pCmd, float& fOldForward, float&
 		deltaView = abs(f2 - f1);
 	else
 		deltaView = 360.0f - abs(f1 - f2);
-
 
 	// Replace DEG2RAD with inline conversion (PI / 180)
 	float radDeltaView = deltaView * (M_PI / 180.0f);
@@ -678,7 +731,6 @@ void Helper::CorrectMovement(CCitadelUserCmdPB* pCmd, float& fOldForward, float&
 		sidemove = 1.0f;
 	if (sidemove < -1.0f)
 		sidemove = -1.0f;
-
 
 	pCmd->pBaseUserCMD->forwardMove = forwardmove;
 	pCmd->pBaseUserCMD->sideMove = sidemove;
@@ -699,6 +751,10 @@ void Helper::CorrectViewAngles( CCitadelUserCmdPB* pCmd) {
 std::vector<uintptr_t> Helper::GetAbilities(uint64_t entity_pawn) {
 
 	std::vector<uintptr_t> abilities;
+
+	if (!entity_pawn)
+		return abilities;
+
 	uint64_t weaponcomponent = (uint64_t)(entity_pawn + C_CitadelPlayerPawn::m_CCitadelAbilityComponent);
 	if (!weaponcomponent)
 		return abilities;
@@ -722,16 +778,10 @@ std::vector<uintptr_t> Helper::GetAbilities(uint64_t entity_pawn) {
 
 bool Helper::IsAbilityCasting(uintptr_t ability) {
 
-
-	if (GetAsyncKeyState(VK_F6)) {
-		int test = 0;
-	}
-
-	float creationtime = *(float*)(ability + C_BaseEntity::m_flSimulationTime);
-	float completetime = *(float*)(ability + C_CitadelBaseAbility::m_flCastCompletedTime);
+	float completetime = *(float*)(ability + C_CitadelBaseAbility::m_bInCastDelay);
 	float gametime = Helper::GetGameTime();
 	
-	if (completetime > creationtime)
+	if (completetime > gametime)
 		return true;
 	return false;
 

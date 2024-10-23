@@ -35,7 +35,8 @@ inline void sort_esp_entities()
 
 void DrawBoneEsp(uintptr_t entity) {
 
-	std::vector<BoneConnection> connections = Helper::GetBoneConnections(entity); //really inneficient will find better solution
+	auto plrdata = Helper::get_player_data(entity);
+	std::vector<BoneConnection> connections = Helper::GetBoneConnections(entity, plrdata.HeroID); //really inneficient will find better solution
 
 	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
@@ -46,7 +47,11 @@ void DrawBoneEsp(uintptr_t entity) {
 		vec2 ScreenPos1;
 		vec2 ScreenPos2;
 		if (Helper::WorldToScreen(BonePos1, ScreenPos1) && Helper::WorldToScreen(BonePos2, ScreenPos2))
-			draw.DrawLine(ScreenPos1.x, ScreenPos1.y, ScreenPos2.x, ScreenPos2.y, IM_COL32(255, 255, 255, 255));
+			draw.DrawLine(ScreenPos1.x, ScreenPos1.y, ScreenPos2.x, ScreenPos2.y, ImColor(Config.colors.skeletoncol));
+
+
+
+
 	}
 
 }
@@ -115,7 +120,7 @@ void DrawMonsterEsp(uintptr_t entity) {
 		return;
 	if (!Helper::WorldToScreen(posdown, limitdown))
 		return;
-	draw.DrawQuad(limitup, limitright, limitdown, limitleft, IM_COL32(85, 6, 238, 177));
+	draw.DrawQuad(limitup, limitright, limitdown, limitleft, ImColor(Config.colors.drawmonsterscol));
 
 }
 
@@ -192,9 +197,40 @@ void DrawFov() {
 		float pFov = *(float*)(CameraManager + 0x50);
 		float radius = tanf(Helper::DegreesToRadians(Config.aimbot.fov) / 2) / tanf(Helper::DegreesToRadians(pFov) / 2) * (resolution.x / 2);
 
-		draw.DrawCircle(resolution.x / 2, resolution.y / 2, radius, IM_COL32(255, 255, 255, 255));
+		draw.DrawCircle(resolution.x / 2, resolution.y / 2, radius, ImColor(Config.colors.drawfovcol));
 }
 
+void DrawAimbotTargetInfo(PlayerData info) {
+    ImGui::Begin("Tiny Window", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+
+	ImGui::SetWindowSize(ImVec2(100, 17), ImGuiCond_Always);
+
+	ImGui::Text(Helper::GetHeroNameByID(info.HeroID).c_str());
+
+    // Get the text size and window positionr
+    ImVec2 textSize = ImGui::CalcTextSize(Helper::GetHeroNameByID(info.HeroID).c_str());
+    ImVec2 windowPos = ImGui::GetWindowPos();
+    ImVec2 barPos = ImVec2(windowPos.x, windowPos.y + textSize.y + ImGui::GetStyle().ItemSpacing.y); // Adjust Y position
+
+    // Calculate health
+    float healthRatio = static_cast<float>(info.Health) / static_cast<float>(info.MaxHealth);
+    float barWidth = 100.0f; // Width of the health bar
+    float filledWidth = barWidth * healthRatio; // Width of the filled (green) part
+    float missingWidth = barWidth - filledWidth; // Width of the missing (red) part
+
+    // Draw the filled health bar (green)
+    draw.DrawFilledBox(barPos.x, barPos.y + 15, filledWidth, 5, IM_COL32(0, 255, 0, 255)); // Green
+    // Draw the missing health (red) part on the right
+    draw.DrawFilledBox(barPos.x + filledWidth, barPos.y + 15, missingWidth, 5, IM_COL32(255, 0, 0, 255)); // Red
+
+    ImGui::End();
+}
+
+const char* Vec3ToCString(const vec3& vec) {
+	static char buffer[50]; // Buffer to hold the C string
+	snprintf(buffer, sizeof(buffer), "Position: (%.2f, %.2f, %.2f)", vec.x, vec.y, vec.z);
+	return buffer;
+}
 
 void Esp::DoEsp() {
 	processed_ents_esp.clear();
@@ -203,6 +239,88 @@ void Esp::DoEsp() {
 	if (Config.esp.DrawFov) {
 		DrawFov();
 	}
+
+
+/*
+	uint64_t aimbottarget = Aimbot::GetCurrentAimbotTarget();
+	if (aimbottarget) {
+
+		vec3 localheadpos = Helper::GetBonePosition(Helper::get_local_player(), "head");
+
+		vec3 targetheadpos = Helper::GetBonePosition(aimbottarget, "head");
+
+		vec3 check1 = { localheadpos.x + Config.tempvalues.slider1, localheadpos.y, localheadpos.z };
+		vec3 check2 = { localheadpos.x - Config.tempvalues.slider1, localheadpos.y, localheadpos.z };
+		vec3 check3 = { localheadpos.x, localheadpos.y + Config.tempvalues.slider1, localheadpos.z };
+		vec3 check4 = { localheadpos.x, localheadpos.y - Config.tempvalues.slider1, localheadpos.z };
+		vec3 check5 = { localheadpos.x, localheadpos.y, localheadpos.z + Config.tempvalues.slider1 };
+
+		bool check1vis = Helper::CheckLocationVisible(check1, targetheadpos);
+		bool check2vis = Helper::CheckLocationVisible(check2, targetheadpos);
+		bool check3vis = Helper::CheckLocationVisible(check3, targetheadpos);
+		bool check4vis = Helper::CheckLocationVisible(check4, targetheadpos);
+		bool check5vis = Helper::CheckLocationVisible(check5, targetheadpos);
+
+		vec2 screen1;
+		vec2 screen2;
+		vec2 screen3;
+		vec2 screen4;
+		vec2 screen5;
+
+		if (Helper::WorldToScreen(check1, screen1)) {
+			if (check1vis) {
+				draw.DrawCircle(screen1.x, screen1.y, 5.0f, IM_COL32(0, 255, 0, 255));
+				draw.DrawTextA(screen1.x, screen1.y, IM_COL32(255, 255, 255, 255), "1");
+			}
+			else {
+				draw.DrawCircle(screen1.x, screen1.y, 5.0f, IM_COL32(255, 0, 0, 255));
+				draw.DrawTextA(screen1.x, screen1.y, IM_COL32(255, 255, 255, 255), "1");
+			}
+		}
+
+		if (Helper::WorldToScreen(check2, screen2)) {
+			if (check2vis) {
+				draw.DrawCircle(screen2.x, screen2.y, 5.0f, IM_COL32(0, 255, 0, 255));
+				draw.DrawTextA(screen2.x, screen2.y, IM_COL32(255, 255, 255, 255), "2");
+			}
+			else {
+				draw.DrawCircle(screen2.x, screen2.y, 5.0f, IM_COL32(255, 0, 0, 255));
+				draw.DrawTextA(screen2.x, screen2.y, IM_COL32(255, 255, 255, 255), "2");
+			}
+		}
+
+		if (Helper::WorldToScreen(check3, screen3)) {
+			if (check3vis) {
+				draw.DrawCircle(screen3.x, screen3.y, 5.0f, IM_COL32(0, 255, 0, 255));
+				draw.DrawTextA(screen3.x, screen3.y, IM_COL32(255, 255, 255, 255), "3");
+			}
+			else {
+				draw.DrawCircle(screen3.x, screen3.y, 5.0f, IM_COL32(255, 0, 0, 255));
+				draw.DrawTextA(screen3.x, screen3.y, IM_COL32(255, 255, 255, 255), "3");
+			}
+		}
+
+		if (Helper::WorldToScreen(check4, screen4)) {
+			if (check4vis) {
+				draw.DrawCircle(screen4.x, screen4.y, 5.0f, IM_COL32(0, 255, 0, 255));
+				draw.DrawTextA(screen4.x, screen4.y, IM_COL32(255, 255, 255, 255), "4");
+			}
+			else {
+				draw.DrawCircle(screen4.x, screen4.y, 5.0f, IM_COL32(255, 0, 0, 255));
+				draw.DrawTextA(screen4.x, screen4.y, IM_COL32(255, 255, 255, 255), "4");
+			}
+		}
+
+
+		vec2 screenheadpos;
+
+		const char* positionString = Vec3ToCString(localheadpos);
+
+		Helper::WorldToScreen(localheadpos, screenheadpos);
+		draw.DrawTextA(screenheadpos.x, screenheadpos.y, IM_COL32(255, 255, 255, 255), positionString);
+	}
+*/
+
 
 	for (int i = 0; i < processed_ents_esp.size(); i++) {
 
@@ -241,9 +359,16 @@ void Esp::DrawEsp(uintptr_t Entity)
 
 	vec2 ScreenFeet;
 	PlayerData EntInfo = Helper::get_player_data(Entity);
-	if (!Helper::WorldToScreen(EntInfo.m_vecOrigin, ScreenFeet))
-		return;
 
+
+
+
+
+
+
+
+
+	bool w2sresult = Helper::WorldToScreen(EntInfo.m_vecOrigin, ScreenFeet);
 
 	vec2 ScreenHead;
 	uint64_t PawnHandle = *(uint64_t*)(Entity + CCitadelPlayerController::m_hHeroPawn);
@@ -259,35 +384,57 @@ void Esp::DrawEsp(uintptr_t Entity)
 	BoxHead.y = ScreenHead.y - height / 10;
 	vec2 resolution = Helper::GetResolution();
 
-	if (Config.esp.boxEsp) {
-		draw.DrawBox(BoxHead.x, BoxHead.y, width, height * 1.2, IM_COL32(255, 0, 0, 255));
-	}
-	if (Config.esp.HealthEsp) {
-		std::string Health = std::to_string(EntInfo.Health);
-		std::string MaxHealth = std::to_string(EntInfo.MaxHealth);
-		std::string HealthDisplay = "Health: " + Health + " / " + MaxHealth;
+	if (Config.esp.DrawAimbotTarget && Aimbot::GetCurrentAimbotTarget() == Entity) {
+		if (w2sresult) {
+			vec2 point1;
+			vec2 point2;
+			vec2 point3;
 
-		draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.2, IM_COL32(0, 255, 0, 255), _strdup(HealthDisplay.c_str()));
-	}
-	if (Config.esp.Tracers) {
-		draw.DrawLine(resolution.x / 2, resolution.y, ScreenFeet.x, ScreenFeet.y, IM_COL32(255, 255, 255, 255));
-	}
-	if (Config.esp.DistanceEsp) {
+			point1.x = BoxHead.x + (0.5 * width);
+			point1.y = BoxHead.y - 25.0f;
 
-		PlayerData LocalPlayerData = Helper::get_player_data(Helper::get_local_player());
-		std::string temp = std::to_string(Helper::GetDistance(LocalPlayerData.m_vecOrigin, EntInfo.m_vecOrigin));
-		draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.5, IM_COL32(255, 255, 255, 255), _strdup(temp.c_str()));
+			point2.x = (BoxHead.x + (0.5 * width)) + 8;
+			point2.y = BoxHead.y - 35.0f;
+
+			point3.x = (BoxHead.x + (0.5 * width)) - 8;
+			point3.y = BoxHead.y - 35.0f;
+
+			draw.DrawTriangleFilled(point1, point2, point3, ImColor(Config.colors.aimbotTargetcol));
+		}
+		DrawAimbotTargetInfo(EntInfo);
 	}
-	if (Config.esp.NameEsp) {
-		draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y - height * 0.2, IM_COL32(255, 255, 255, 255), Helper::GetHeroNameByID(EntInfo.HeroID).c_str());
-	}
-	if (Config.esp.HealthBar) {
-		float missinghealth = 1.0f - ((float)EntInfo.Health / (float)EntInfo.MaxHealth);
-		draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 2, height * 1.2, IM_COL32(0, 255, 0, 255));
-		draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 2, height * 1.2 * missinghealth, IM_COL32(255, 0, 0, 255));
-	}
-	if (Config.esp.boneEsp) {
-		DrawBoneEsp(Entity);
+	
+	if (w2sresult) {
+		if (Config.esp.boxEsp) {
+			draw.DrawBox(BoxHead.x, BoxHead.y, width, height * 1.2, ImColor(Config.colors.boxespcol));
+		}
+		if (Config.esp.HealthEsp) {
+			std::string Health = std::to_string(EntInfo.Health);
+			std::string MaxHealth = std::to_string(EntInfo.MaxHealth);
+			std::string HealthDisplay = "Health: " + Health + " / " + MaxHealth;
+
+			draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.2, ImColor(Config.colors.healthtextcolesp), _strdup(HealthDisplay.c_str()));
+		}
+		if (Config.esp.Tracers) {
+			draw.DrawLine(resolution.x / 2, resolution.y, ScreenFeet.x, ScreenFeet.y, ImColor(Config.colors.tracerscol));
+		}
+		if (Config.esp.DistanceEsp) {
+
+			PlayerData LocalPlayerData = Helper::get_player_data(Helper::get_local_player());
+			std::string temp = std::to_string(Helper::GetDistance(LocalPlayerData.m_vecOrigin, EntInfo.m_vecOrigin));
+			draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.5, ImColor(Config.colors.distancecolesp), _strdup(temp.c_str()));
+		}
+		if (Config.esp.NameEsp) {
+			draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y - 15.0f, ImColor(Config.colors.namecoloresp), Helper::GetHeroNameByID(EntInfo.HeroID).c_str());
+		}
+		if (Config.esp.HealthBar) {
+			float missinghealth = 1.0f - ((float)EntInfo.Health / (float)EntInfo.MaxHealth);
+			draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 2, height * 1.2, IM_COL32(0, 255, 0, 255));
+			draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 2, height * 1.2 * missinghealth, IM_COL32(255, 0, 0, 255));
+		}
+		if (Config.esp.boneEsp) {
+			DrawBoneEsp(Entity);
+		}
 	}
 
 }

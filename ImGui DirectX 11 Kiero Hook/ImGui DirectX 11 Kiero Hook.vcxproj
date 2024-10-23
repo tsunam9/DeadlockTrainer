@@ -146,10 +146,12 @@
   <ItemGroup>
     <ClCompile Include="Aimbot.cpp" />
     <ClCompile Include="AntiAim.cpp" />
+    <ClCompile Include="chams.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="ESP.cpp" />
     <ClCompile Include="gameinterface.cpp" />
+    <ClCompile Include="globals.cpp" />
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="heros.cpp" />
     <ClCompile Include="hooks.cpp" />
@@ -167,6 +169,7 @@
     <ClCompile Include="kiero\minhook\src\trampoline.c" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="mem.cpp" />
     <ClCompile Include="offsets.cpp" />
@@ -183,11 +186,13 @@
     <ClInclude Include="..\..\..\Cs2Dumper\output\buttons.hpp" />
     <ClInclude Include="Aimbot.h" />
     <ClInclude Include="AntiAim.h" />
+    <ClInclude Include="chams.h" />
     <ClInclude Include="client_dll.hpp" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="ESP.h" />
     <ClInclude Include="gameinterface.h" />
+    <ClInclude Include="globals.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="heros.h" />
     <ClInclude Include="hooks.h" />
@@ -210,6 +215,7 @@
     <ClInclude Include="kiero\minhook\src\hde\table64.h" />
     <ClInclude Include="kiero\minhook\src\trampoline.h" />
     <ClInclude Include="Logic.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Misc.h" />
     <ClInclude Include="offsets.h" />
     <ClInclude Include="mem.h" />

@@ -22,9 +22,6 @@ void ShivLogic::AutoUlt() {
 		vec2 angles = Aimbot::GetAimAngles(shiv::targetdata.m_vecOrigin);
 		this->cmd->cameraViewAngle->viewAngles.x = angles.x;
 		this->cmd->cameraViewAngle->viewAngles.y = angles.y;
-		Helper::CorrectMovement(this->cmd, this->cmd->pBaseUserCMD->forwardMove, this->cmd->pBaseUserCMD->sideMove);
-		if (Config.aimbot.bPSilent)
-			Helper::CorrectViewAngles(this->cmd);
 		this->cmd->buttons |= IN_ABILITY4;
 	}
 }
@@ -40,7 +37,7 @@ void ShivLogic::OnAbility1() {
 	uint64_t target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
 	if (!target)
 		return;
-	Aimbot::AimAbility(target, 1, this->abilitiesarray[2]);
+	Aimbot::AimAbility(target, 1, this->abilitiesarray[2],5000.0f);
 }
 
 void ShivLogic::OnAbility2() {
@@ -63,7 +60,8 @@ void ShivLogic::OnAbility2() {
 
 	this->cmd->pBaseUserCMD->playerViewAngle->viewAngles.x = target_angles.x;
 	this->cmd->pBaseUserCMD->playerViewAngle->viewAngles.y = target_angles.y;
-	Helper::CorrectMovement(this->cmd, this->cmd->pBaseUserCMD->forwardMove, this->cmd->pBaseUserCMD->sideMove);
+	this->cmd->cameraViewAngle->viewAngles.x = target_angles.x;
+	this->cmd->cameraViewAngle->viewAngles.y = target_angles.y;
 }
 
 void ShivLogic::OnAbility3(){
@@ -81,9 +79,28 @@ void ShivLogic::OnTick() {
 	 if (!shiv::target) return;
 	 shiv::targetdata = Helper::get_player_data(shiv::target);
 
+	 vec3 old_viewangles = cmd->pBaseUserCMD->playerViewAngle->viewAngles;
+	 float old_forwardmove = cmd->pBaseUserCMD->forwardMove;
+	 float old_sidemove = cmd->pBaseUserCMD->sideMove;
+
+	 if (this->InputCasting1 || *(bool*)(ShivLogic::abilitiesarray[2] + C_CitadelBaseAbility::m_bInCastDelay)) {
+		 OnAbility1();
+	 }
+	 if (this->InputCasting2 || *(bool*)(ShivLogic::abilitiesarray[3] + C_CitadelBaseAbility::m_bInCastDelay)) {
+		 OnAbility2();
+	 }
+	 if (this->InputCasting3 || *(bool*)(ShivLogic::abilitiesarray[4] + C_CitadelBaseAbility::m_bInCastDelay)) {
+		 OnAbility3();
+	 }
+	 if (this->InputCasting4 || *(bool*)(ShivLogic::abilitiesarray[5] + C_CitadelBaseAbility::m_bInCastDelay)) {
+		 OnAbility4();
+	 }
+
 	 if (Config.shiv.AutoExecute) {
 		 AutoUlt();
 	 }
+
+	 Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
 	
 
 }

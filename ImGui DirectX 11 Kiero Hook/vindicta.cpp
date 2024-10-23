@@ -5,7 +5,19 @@ namespace vindicta {
 	PlayerData targetdata;
 }
 
+static bool CommandQuedNextTick = false;
+static bool justshot = true;
+
 void VindictaLogic::AutoUlt() {
+
+	if (Config.aimbot.magicbullet && Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key))
+		return;
+
+	float scopetime = *(float*)(this->abilitiesarray[4] + CCitadel_Ability_Hornet_Snipe::m_flScopeStartTime);
+	if (scopetime) {
+		this->cmd->buttons |= (1 << 11);
+		this->cmd->buttons &= ~(1 << 0);
+	}
 
 	if (*(bool*)(this->abilitiesarray[4] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
@@ -30,13 +42,18 @@ void VindictaLogic::AutoUlt() {
 		this->cmd->cameraViewAngle->viewAngles.x = angles.x;
 		this->cmd->cameraViewAngle->viewAngles.y = angles.y;
 
-		this->cmd->buttons |= IN_ABILITY4;
-		this->cmd->buttons |= IN_ATTACK;
-		Helper::CorrectMovement(this->cmd, this->cmd->pBaseUserCMD->forwardMove, this->cmd->pBaseUserCMD->sideMove);
-		if (Config.aimbot.bPSilent)
-			Helper::CorrectViewAngles(this->cmd);
-
-
+		if (!CommandQuedNextTick) {
+			this->cmd->buttons &= ~IN_ATTACK;
+			this->cmd->buttons &= ~IN_ZOOM;
+			CommandQuedNextTick = true;
+		}
+		else {
+			this->cmd->buttons |= IN_ATTACK;
+			this->cmd->buttons |= IN_ABILITY4;
+			this->cmd->buttons &= ~IN_ZOOM;
+			CommandQuedNextTick = false;
+			justshot = true;
+		}
 	}
 }
 
@@ -52,7 +69,7 @@ void VindictaLogic::OnAbility1() {
 	uint64_t target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
 	if (!target)
 		return;
-	Aimbot::AimAbility(target, 2, this->abilitiesarray[1]);
+	Aimbot::AimAbility(target, 2, this->abilitiesarray[1],1000.0f);
 
 }
 
@@ -75,7 +92,7 @@ void VindictaLogic::OnAbility3() {
 	uint64_t target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
 	if (!target)
 		return;
-	Aimbot::AimAbility(target, 1, this->abilitiesarray[3]);
+	Aimbot::AimAbility(target, 1, this->abilitiesarray[3],2500.0f);
 
 }
 
@@ -88,19 +105,22 @@ void VindictaLogic::OnAbility4() {
 
 void VindictaLogic::OnTick() {
 
-	if (cmd->buttons & IN_ABILITY4) {
-		cmd->buttons &= ~IN_ATTACK;
-	}
-
-	float scopetime = *(float*)(this->abilitiesarray[4] + CCitadel_Ability_Hornet_Snipe::m_flScopeStartTime);
-	if (scopetime) {
-		this->cmd->buttons |= (1 << 11);
-		this->cmd->buttons &= ~(1 << 0);
-	}
-
 	vindicta::target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
 	if (!vindicta::target) return;
 	vindicta::targetdata = Helper::get_player_data(vindicta::target);
+
+	if (this->InputCasting1 || *(bool*)(VindictaLogic::abilitiesarray[1] + C_CitadelBaseAbility::m_bInCastDelay)) {
+		OnAbility1();
+	}
+	if (this->InputCasting2 || *(bool*)(VindictaLogic::abilitiesarray[2] + C_CitadelBaseAbility::m_bInCastDelay)) {
+		OnAbility2();
+	}
+	if (this->InputCasting3 || *(bool*)(VindictaLogic::abilitiesarray[3] + C_CitadelBaseAbility::m_bInCastDelay)){
+		OnAbility3();
+	}
+	if (this->InputCasting4 || *(bool*)(VindictaLogic::abilitiesarray[4] + C_CitadelBaseAbility::m_bInCastDelay)) {
+		OnAbility4();
+	}
 
 	if (Config.vindicta.AutoSnipe) {
 		AutoUlt();

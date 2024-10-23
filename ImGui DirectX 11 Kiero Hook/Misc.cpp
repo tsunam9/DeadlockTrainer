@@ -38,7 +38,6 @@ Drawing testdraw;
 
 void testbed() {
 
-
 }
 
 

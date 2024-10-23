@@ -1,4 +1,5 @@
 ﻿#include "includes.h"
+#include "Menu.h"
 
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -14,7 +15,8 @@ HMODULE myhmod;
 FILE* fp;
 
 ImFont* cascadia = nullptr;
-ImFont* impact = nullptr;
+ImFont* Franklin = nullptr;
+ImFont* segoesc = nullptr;
 
 void InitImGui()
 {
@@ -23,8 +25,11 @@ void InitImGui()
 	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
 	ImGui_ImplWin32_Init(window);
 	ImGui_ImplDX11_Init(pDevice, pContext);
-	cascadia = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\CascadiaMono.ttf", 20.0f, NULL, io.Fonts->GetGlyphRangesDefault());
-	cascadia = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\impact.ttf", 50.0f, NULL, io.Fonts->GetGlyphRangesDefault());
+	//cascadia = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\CascadiaMono.ttf", 20.0f, NULL, io.Fonts->GetGlyphRangesDefault());
+	segoesc = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\SEGOESC.ttf", 20.0f, NULL, io.Fonts->GetGlyphRangesDefault());
+	Franklin = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\FRAMD.ttf", 15.0f, NULL, io.Fonts->GetGlyphRangesDefault());
+
+	ImGui::SetColorEditOptions(196776);
 
 	//colors
 	ImVec4* colors = ImGui::GetStyle().Colors;
@@ -98,200 +103,12 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::PushFont(impact);
+	ImGui::PushFont(Franklin);
 	GodFunction();
 	ImGui::PopFont();
 
 	if (Config.MenuOpen) {
-
-		ImGui::Begin("LynchWare");
-
-		if (ImGui::BeginTabBar("Cheat"))
-		{
-			// First tab
-			if (ImGui::BeginTabItem("Aimbot"))
-			{
-
-				ImGui::Checkbox("Aimbot", &Config.aimbot.bAimbot);
-				ImGui::SameLine();
-				Helper::HotKey(Config.aimbot.AimKey);
-				ImGui::SameLine();
-				ImGui::Checkbox("Visible Check", &Config.aimbot.VisibleCheck);
-				ImGui::Checkbox("Silent Aim", &Config.aimbot.silentaim);
-				if (Config.aimbot.silentaim) {
-					ImGui::SameLine();
-					ImGui::Checkbox("PSilent", &Config.aimbot.bPSilent);
-				}
-				ImGui::Checkbox("Auto Fire", &Config.aimbot.AutoFire);
-				static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
-				static int currentItem = 0; // Index of the currently selected item
-				ImGui::Combo("Target ", &currentItem, items, IM_ARRAYSIZE(items)); Config.aimbot.targetSelectionMode = currentItem;
-				ImGui::Text("Selected: %s", items[currentItem]);
-				ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f, "%.1f");
-				ImGui::SliderFloat("FOV", &Config.aimbot.fov, 0.0f, 180.0f, "%.1f");
-				ImGui::SliderFloat("Smooth", &Config.aimbot.smooth, 0.0f, 100.0f, "%.1f");
-				ImGui::Checkbox("Aim at XP", &Config.aimbot.AimXp);
-				ImGui::SameLine();
-				Helper::HotKey(Config.aimbot.AimKeyXp);
-				ImGui::Checkbox("Aim At Minions", &Config.aimbot.AimMinions);
-				ImGui::SameLine();
-				Helper::HotKey(Config.aimbot.AimKeyMinions);
-
-
-
-
-				ImGui::EndTabItem();
-			}
-
-
-
-			// Second tab
-			if (ImGui::BeginTabItem("Esp"))
-			{	
-				ImVec2 availableSize = ImGui::GetContentRegionAvail();
-				float childHeight = availableSize.y * 0.5f; // Set to half
-
-				ImGui::BeginChild("Top EspChild", ImVec2(0, childHeight), true);
-
-				ImGui::Checkbox("Esp", &Config.esp.bEsp);
-				ImGui::Checkbox("Box Esp", &Config.esp.boxEsp);
-				ImGui::Checkbox("Skeleton", &Config.esp.boneEsp);
-				ImGui::Checkbox("Health Bar", &Config.esp.HealthBar);
-				ImGui::Checkbox("Name Esp", &Config.esp.NameEsp);
-
-				ImGui::EndChild();
-
-				ImGui::BeginChild("Bottom EspChild", ImVec2(0, childHeight), true);
-
-				ImGui::Checkbox("Health Text", &Config.esp.HealthEsp);
-				ImGui::Checkbox("Tracers", &Config.esp.Tracers);
-				ImGui::Checkbox("Distance Esp", &Config.esp.DistanceEsp);
-				ImGui::Checkbox("Draw Fov", &Config.esp.DrawFov);
-				ImGui::Checkbox("Draw Xp", &Config.esp.DrawXp);
-				ImGui::Checkbox("Draw Monsters", &Config.esp.DrawMonsters);
-				ImGui::Checkbox("Draw Minions", &Config.esp.DrawMinions);
-				//ImGui::Checkbox("Draw Aimbot Prediction", &Config.esp.DrawAimbotPrediction);
-				ImGui::EndChild();
-				ImGui::EndTabItem();
-			}
-
-			if (ImGui::BeginTabItem("AntiAim")) {
-
-				ImGui::Checkbox("AntiAim", &Config.antiaim.bAntiAim);
-				static const char* items[] = { "Spin", "Jitter", "180 Treehouse" }; // Options for the dropdown
-				static int currentItem = 0; // Index of the currently selected item
-				ImGui::Combo("Target ", &currentItem, items, IM_ARRAYSIZE(items)); Config.antiaim.AAtype = currentItem;
-				ImGui::PushFont(impact);
-				ImGui::Text("Selected: %s", items[currentItem]);
-				ImGui::PopFont();
-				ImGui::SliderFloat("Lower Jitter", &Config.antiaim.lowerjitter, -180, Config.antiaim.upperjitter, "%.1f");
-				ImGui::SliderFloat("Upper Jitter", &Config.antiaim.upperjitter, Config.antiaim.lowerjitter, 180.0f, "%.1f");
-				ImGui::EndTabItem();
-
-			}
-
-			if (ImGui::BeginTabItem("Heroes")) {
-				switch (Helper::get_player_data(Helper::get_local_player()).HeroID) {
-
-				case Abrams:
-					ImGui::Text("Abrams");
-					break;
-				case Bebop:
-					ImGui::Text("Bebop");
-					break;
-				case Dynamo:
-					ImGui::Text("Dynamo");
-					break;
-				case GreyTalon:
-					ImGui::Text("GreyTalon");
-					break;
-				case Haze:
-					ImGui::Text("Haze");
-					break;
-				case Infernus:
-					ImGui::Text("Infernus");
-					break;
-				case Ivy:
-					ImGui::Text("Ivy");
-					break;
-				case Kelvin:
-					ImGui::Text("Kelvin");
-					break;
-				case LadyGeist:
-					ImGui::Text("LadyGeist");
-					break;
-				case Lash:
-					ImGui::Text("Lash");
-					break;
-				case McGinnis:
-					ImGui::Text("McGinnis");
-					break;
-				case Mirage:
-					ImGui::Text("Mirage");
-					break;
-				case MoAndKrill:
-					ImGui::Text("MoAndKrill");
-					break;
-				case Paradox:
-					ImGui::Text("Paradox");
-					break;
-				case Pocket:
-					ImGui::Text("Pocket");
-					break;
-				case Seven:
-					ImGui::Text("Seven");
-					break;
-				case Shiv:
-					ImGui::Text("Shiv");
-					ImGui::Checkbox("Auto Aim Dagger", &Config.shiv.AutoAimDagger);
-					ImGui::Checkbox("Auto Aim Dash", &Config.shiv.AutoAimDash);
-					ImGui::Checkbox("Auto Execute", &Config.shiv.AutoExecute);
-					ImGui::Checkbox("Block Manual R", &Config.shiv.BlockManualR);
-					break;
-				case Vindicta:
-					ImGui::Text("Vindicta");
-					ImGui::Checkbox("Auto Aim Stake", &Config.vindicta.AutoAimStake);
-					ImGui::Checkbox("Auto Aim Crow", &Config.vindicta.AutoAimCrow);
-					ImGui::Checkbox("Auto Snipe", &Config.vindicta.AutoSnipe);
-					break;
-				case Viscous:
-					ImGui::Text("Viscous");
-					break;
-				case Warden:
-					ImGui::Text("Warden");
-					break;
-				case Wraith:
-					ImGui::Text("Wraith");
-					break;
-				case Yamato:
-					ImGui::Text("Yamato");
-					break;
-				}
-
-				ImGui::EndTabItem();
-			}
-
-			// Third tab
-			if (ImGui::BeginTabItem("Misc"))
-			{
-				
-				ImGui::Checkbox("No Recoil", &Config.misc.bNorecoil); 
-				ImGui::SliderFloat("Fov Multiplier", &Config.misc.fovmodifier, 0.1f, 2.0f, "%.3f");
-
-				if (ImGui::Button("Slay them all"))
-				{
-					
-					kiero::shutdown();
-					fclose(fp);
-					FreeConsole();
-				}
-
-				ImGui::EndTabItem();
-			}
-
-			ImGui::EndTabBar();
-		}
-		ImGui::End();
+		Menu::DrawMenu(fp);
 	}
 	ImGui::Render();
 
@@ -311,11 +128,6 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	AllocConsole();
 	freopen_s(&fp, "CONOUT$", "w", stdout); // output only
 
-	const std::string red = "\033[31m";
-	const std::string green = "\033[32m";
-	const std::string yellow = "\033[33m";
-	const std::string blue = "\033[34m";
-	const std::string reset = "\033[0m"; // Reset to default color
 
 	setConsoleColor(5, 0);
 
@@ -336,7 +148,6 @@ MMMMMMMMMMM      .88                            MMMMMMMMMMMMMM
 	std::cout << "[+] Press INSERT to open menu\n";
 
 	setConsoleColor(2, 0);
-	std::cout << "[+] Aimbot: " << Config.aimbot.bAimbot << std::endl;
 
 
 		                                                                                                                                                       

@@ -25,7 +25,7 @@
 #define IN_TURNRIGHT (1 << 8)
 #define IN_MOVELEFT (1 << 9)
 #define IN_MOVERIGHT (1 << 10)
-#define IN_ATTACK2 (1 << 11)
+#define IN_ZOOM (1 << 11)
 // UNKNOWN (1 << 12)
 #define IN_RELOAD (1 << 13)
 // UNKNOWN (1 << 14-15)
@@ -579,7 +579,7 @@ public:
 class CMsgVector {
 public:
     char pad01[0x18];
-	vec4 m_vecOrigin;
+	vec3 m_vecOrigin;
 };
  
 class CInButtonStatePB {
@@ -707,6 +707,38 @@ public:
 
 static_assert(sizeof(TraceFilter_t) == 0x40);
 
+class CGlobalVarsBase
+{
+public:
+    float flRealTime; //0x0000 
+    std::uint32_t iFrameCount; //0x0004 
+    float flFrameTime; //0x0008 
+    float flAbsFrameTime; //0x000C 
+    std::uint32_t iMaxClients; //0x0010
+private:
+    [[maybe_unused]] float flUnkn1; //0x0014
+    [[maybe_unused]] char pad_0x0018[0x1C]; //0x0018
+public:
+    float flCurtime; //0x0034 
+    float flAbsCurTime; //0x0038 
+    float flSomeFraction; //0x003C
+private:
+    [[maybe_unused]] char pad_0x0040[0x8]; //0x0040
+public:
+    std::uint32_t iTickCount; //0x0048
+private:
+    [[maybe_unused]] char pad_0x004C[0x14]; //0x004C
+public:
+    void* pNetChannel; //0x0060
+private:
+    [[maybe_unused]] char pad_0x0068[0x118]; //0x0068
+public:
+    char* szCurrentMap; //0x0180 
+    char* szCurrentMapGame; //0x0188
+private:
+    [[maybe_unused]] char pad_0x0190[0x298]; //0x0190
+};
+
 class Helper {
 
 public:
@@ -733,7 +765,7 @@ public:
     static int get_bone_index(uintptr_t target_entity, const std::string bone_name);
     static vec3 GetBoneVectorFromIndex(uintptr_t target_entity, int index);
     static vec3 GetBonePosition(uintptr_t entity, const char* BoneName);
-    static std::vector<BoneConnection> GetBoneConnections(uintptr_t playerpawn);
+    static std::vector<BoneConnection> GetBoneConnections(uintptr_t playerpawn, int heroid);
 
     static std::string ReadString(uintptr_t address);
     static bool WorldToScreen(vec3 pos, vec2& screen);
@@ -743,6 +775,7 @@ public:
     static xpData get_xp_data(uint64_t entity);
     static vec2 GetResolution();
     static float GetGameTime();
+    static CGlobalVarsBase* GetGlobals();
     static CCitadelUserCmdPB* GetCurrentUserCmd();
     static CCitadelUserCmdPB* ExperimentalGetUserCmd();
     static bool KeyBindHandler(int key);
@@ -751,7 +784,7 @@ public:
     static void __fastcall ConstructFilter(__int64 a1, __int64 a2, __int64 a3, char a4, __int16 a5);
     static uint64_t GetPawnHandle(uint64_t entity);
     static uint64_t GetPawn(uint64_t entity);
-	static void CorrectMovement(CCitadelUserCmdPB* pCmd, float &fOldForward, float &fOldSidemove);
+	static void CorrectMovement(CCitadelUserCmdPB* pCmd, float &fOldForward, float &fOldSidemove, vec3 oldangles);
     static void CorrectViewAngles(CCitadelUserCmdPB* pCmd);
     static void HotKey(KeyBind& keybind);
 	static std::vector<uintptr_t> GetAbilities(uint64_t entity_pawn);
@@ -760,6 +793,20 @@ public:
 
 
 };
+
+template <typename T = void*>
+[[nodiscard]] constexpr T GetVFunc(const void* thisptr, std::size_t nIndex) {
+    // Retrieve the virtual function pointer from the vtable
+    return (*static_cast<T**>(const_cast<void*>(thisptr)))[nIndex];
+}
+
+template <typename T, std::size_t nIndex, typename CBaseClass, typename... Args>
+[[nodiscard]] constexpr T CallVFunc(CBaseClass* thisptr, Args&&... args) {
+    using VirtualFn_t = T(__thiscall*)(CBaseClass*, Args...);
+    // Get the virtual function pointer from the vtable
+    VirtualFn_t fn = GetVFunc<VirtualFn_t>(thisptr, nIndex);
+    return fn(thisptr, std::forward<Args>(args)...);
+}
 
 static const uint64_t ClientModuleBase = Helper::GetClientBase();
 

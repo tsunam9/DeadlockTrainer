@@ -1,10 +1,15 @@
 #pragma once
 
 #include <string>
+#include "imgui/imgui.h"
+#include "fstream"
+#include "iostream"
+#include "json.hpp"
+#include <vector>
 
 
 struct KeyBind {
-    std::string name = "Not Set";
+    std::string name = "Always";
     int key = 0;           // The key code
     bool waitingForKey = false; // Track if this keybind is waiting for a key press
 };
@@ -13,6 +18,10 @@ struct KeyBind {
 class ConfigSettings
 {
 public:
+
+    std::vector<std::string> configs;
+    int selectedconfig = 0;
+
     // Nested structure for Aimbot settings
     struct AimbotSettings {
         bool bAimbot = false;;
@@ -29,7 +38,8 @@ public:
         bool silentaim = false;
 		bool VisibleCheck = false;
         bool AutoFire = false;
-        bool bPSilent = false;
+        bool magicbullet = false;
+        KeyBind magicbulletkey;
 
     } aimbot;
 
@@ -49,6 +59,7 @@ public:
 		bool DrawXp = false;
         bool DrawMonsters = false;
         bool DrawMinions = false;
+        bool DrawAimbotTarget = false;
     } esp;
 
     struct MiscSettings {
@@ -62,7 +73,6 @@ public:
 		bool AutoAimDagger = false;
 		bool AutoAimDash = false;
 		bool AutoExecute = false;
-        bool BlockManualR = false;
 	} shiv;
 
     struct VindictaSettings {
@@ -78,10 +88,43 @@ public:
         float upperjitter = 90.0f;
 	} antiaim;
 
+    struct Colors {
+       
+        ImVec4 boxespcol = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+        ImVec4 skeletoncol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 namecoloresp = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 healthtextcolesp = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 tracerscol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 distancecolesp = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 drawfovcol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 drawxpcol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 drawmonsterscol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 aimbotTargetcol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        
+
+
+    } colors;
+
+    struct TempValues {
+        bool checkbox = false;
+        float slider1 = 0.0f;
+        float slider2 = 0.0f;
+        float inputfloat = 0.0f;
+        int inputint = 0.0f;
+    }tempvalues;
+
+    static void LoadConfig(const std::string& filename);
+    static void SaveConfig(const std::string& filename);
+    void DeleteConfig(const std::string& filename);
+    void RefreshConfigs();
+
+
+
     // General settings
     bool MenuOpen = true;
 };
 
 extern ConfigSettings Config;
+
 
 
