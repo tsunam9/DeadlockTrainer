@@ -9,15 +9,15 @@
 std::vector<uint64_t> processed_ents;
 
 //get PlayerData
-uint64_t LocalPlayerController;
-PlayerData LocalPlayerData;
-uint64_t CameraManager;
-vec2* ViewAngles;
-vec2* crosshairposition;
-Helper AimbotHelperObj;
-Drawing aimbotdraw;
-std::vector<uintptr_t> abilities;
-CCitadelUserCmdPB* CUserCmd;
+static uint64_t LocalPlayerController;
+static PlayerData LocalPlayerData;
+static uint64_t CameraManager;
+static vec2* ViewAngles;
+static vec2* crosshairposition;
+static Helper AimbotHelperObj;
+static Drawing aimbotdraw;
+static std::vector<uintptr_t> abilities;
+static CCitadelUserCmdPB* CUserCmd;
 
 uint64_t CurrentPlayerTarget = 0;
 
@@ -37,20 +37,23 @@ bool IsPlayerVisible(uint64_t entity) {
 
 bool IsXpVisible(uint64_t entity) {
 
-	xpData TargetXPData = Helper::get_xp_data(entity);
+	xpData* TargetXPData = new xpData;
+	Helper::get_xp_data(entity, TargetXPData);
 	vec3 LocalCameraPos = *(vec3*)(CameraManager + 0x38);
 	vec3 LocalPlayerHead = Helper::GetBonePosition(Helper::get_local_player(), "head");
-	return Helper::CheckLocationVisible(LocalCameraPos, TargetXPData.m_vecOrigin) && Helper::CheckLocationVisible(LocalPlayerHead, TargetXPData.m_vecOrigin);
-
+	bool result = Helper::CheckLocationVisible(LocalCameraPos, TargetXPData->m_vecOrigin) && Helper::CheckLocationVisible(LocalPlayerHead, TargetXPData->m_vecOrigin);
+	delete TargetXPData;
+	return result;
 }
 
 bool IsNpcVisible(uint64_t entity) {
 
-	NpcData TargetNpcData = Helper::get_npc_data(entity);
+	NpcData* TargetNpcData = new NpcData; 
+	Helper::get_npc_data(entity, TargetNpcData);
 	vec3 LocalCameraPos = *(vec3*)(CameraManager + 0x38);
 	vec3 LocalPlayerHead = Helper::GetBonePosition(Helper::get_local_player(), "head");
-	return Helper::CheckLocationVisible(LocalCameraPos, TargetNpcData.m_vecOrigin) && Helper::CheckLocationVisible(LocalPlayerHead, TargetNpcData.m_vecOrigin);
-
+	return Helper::CheckLocationVisible(LocalCameraPos, TargetNpcData->m_vecOrigin) && Helper::CheckLocationVisible(LocalPlayerHead, TargetNpcData->m_vecOrigin);
+	delete TargetNpcData;
 }
 
 bool ClosestVisiblePosToTarget(vec3 localheadpos, vec3 target, vec3 &AimFromPos) {
@@ -62,28 +65,38 @@ bool ClosestVisiblePosToTarget(vec3 localheadpos, vec3 target, vec3 &AimFromPos)
 	vec3 check5 = { localheadpos.x, localheadpos.y, localheadpos.z + 150 };
 
 	if (Helper::CheckLocationVisible(check1, target)) {
-		AimFromPos = check1;
-		return true;
+		if (Helper::CheckLocationVisible(LocalPlayerData.m_vecOrigin, check1)) {
+			AimFromPos = check1;
+			return true;
+		}
 	}
 
 	if (Helper::CheckLocationVisible(check2, target)) {
-		AimFromPos = check2;
-		return true;
+		if (Helper::CheckLocationVisible(LocalPlayerData.m_vecOrigin, check2)) {
+			AimFromPos = check2;
+			return true;
+		}
 	}
 
 	if (Helper::CheckLocationVisible(check3, target)) {
-		AimFromPos = check3;
-		return true;
+		if (Helper::CheckLocationVisible(LocalPlayerData.m_vecOrigin, check3)) {
+			AimFromPos = check3;
+			return true;
+		}
 	}
 
 	if (Helper::CheckLocationVisible(check4, target)) {
-		AimFromPos = check4;
-		return true;
+		if (Helper::CheckLocationVisible(LocalPlayerData.m_vecOrigin, check4)) {
+			AimFromPos = check4;
+			return true;
+		}
 	}
 
 	if (Helper::CheckLocationVisible(check5, target)) {
-		AimFromPos = check5;
-		return true;
+		if (Helper::CheckLocationVisible(LocalPlayerData.m_vecOrigin, check5)) {
+			AimFromPos = check5;
+			return true;
+		}
 	}
 
 	return false;
@@ -106,9 +119,9 @@ inline void sort_entities()
 
 		if (EntName == "CCitadelPlayerController" && !*(bool*)(entity + CBasePlayerController::m_bIsLocalPlayerController))
 			processed_ents.push_back(entity);
-		if (EntName == "CItemXP" && Config.aimbot.AimXp) 
+		else if (Config.aimbot.AimXp && EntName == "CItemXP")
 			processed_ents.push_back(entity); // for optimizing silentaim
-		if (EntName == "C_NPC_Trooper" && Config.aimbot.AimMinions)
+		else if (Config.aimbot.AimMinions && EntName == "C_NPC_Trooper")
 			processed_ents.push_back(entity);
 
 		
@@ -131,18 +144,6 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 	float LowestFov = 99999999999.0;
 	int lowestfovindex = 999;
 
-	int ClosestXPDistance = 99999999999.0;
-	int ClosestXPIndex = 999;
-	int LowestFovXP = 99999999999.0;
-	int LowestFovXPIndex = 999;
-
-	int ClosestminionDistance = 99999999999.0;
-	int ClosestminionIndex = 999;
-	int LowestMinionHealth = 99999999999;
-	int LowestMinionHealthIndex = 999;
-	int LowestFovminion = 99999999999.0;
-	int LowestFovminionIndex = 999;
-
 	// Sort Entities
 	for (int i = 0; i < processed_ents.size(); i++) {
 
@@ -151,17 +152,25 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 
 		std::string entClass = Helper::get_schema_name(processed_ents[i]);
 
-		if (entClass == "CCitadelPlayerController" && TargetEntityType == "CCitadelPlayerController") {
-			PlayerData TargetPlayerData = Helper::get_player_data(processed_ents[i]);
+		if (TargetEntityType == "CCitadelPlayerController" && entClass == "CCitadelPlayerController") {
+			PlayerData* TargetPlayerData = new PlayerData;
+			Helper::get_player_data(processed_ents[i], TargetPlayerData);
 
-			if (!TargetPlayerData.isalive)
+
+			if (!TargetPlayerData->isalive) {
+				delete TargetPlayerData;
 				continue;
-			if (TargetPlayerData.TeamNum == LocalPlayerData.TeamNum)
+			}
+			if (TargetPlayerData->TeamNum == LocalPlayerData.TeamNum) {
+				delete TargetPlayerData;
 				continue;
+			}
 
 			if(!Config.aimbot.magicbullet || !Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key)){ // if magic bullet then obviously dont do vischeck 
-				if (Config.aimbot.VisibleCheck && IsPlayerVisible(processed_ents[i]) == false)
+				if (Config.aimbot.VisibleCheck && IsPlayerVisible(processed_ents[i]) == false) {
+					delete TargetPlayerData;
 					continue;
+				}
 			}
 
 
@@ -170,15 +179,19 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			vec3 TargetPos = { 0, 0, 0 };
 			TargetPos = Helper::GetBonePosition(processed_ents[i], "head");
 
-			if (TargetPos.x == 0 && TargetPos.y == 0 && TargetPos.z == 0)
-				continue; // Skip invalid targets (no position data)
+			if (TargetPos.x == 0 && TargetPos.y == 0 && TargetPos.z == 0) {
+				delete TargetPlayerData;
+				continue;
+			}
 
 			// Closest
 			// Calculate distance between targetpos and localplayer
 			float distance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetPos);
 
-			if (distance > Config.aimbot.MaxDistance)
+			if (distance > Config.aimbot.MaxDistance) {
+				delete TargetPlayerData;
 				continue;
+			}
 
 			// Fov
 
@@ -189,16 +202,18 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 
 			float FOV = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
 
-			if (FOV > Config.aimbot.fov)
+			if (FOV > Config.aimbot.fov) {
+				delete TargetPlayerData;
 				continue; // Skip targets outside of the FOV
+			}
 
 			if (distance < ClosestDistance) {
 				ClosestDistance = distance;
 				ClosestIndex = i;
 			}
 
-			if (TargetPlayerData.Health < LowestHealth) {
-				LowestHealth = TargetPlayerData.Health;
+			if (TargetPlayerData->Health < LowestHealth) {
+				LowestHealth = TargetPlayerData->Health;
 				LowestHealthIndex = i;
 			}
 
@@ -207,29 +222,32 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 				lowestfovindex = i; // Update the index of the target with the lowest FOV
 			}
 
+			delete TargetPlayerData;
+
 
 
 		}
 		else if (entClass == "CItemXP" && TargetEntityType == "CItemXP") {
 
-			xpData TargetXPData = Helper::get_xp_data(processed_ents[i]);
+			xpData* TargetXPData = new xpData;
+			Helper::get_xp_data(processed_ents[i], TargetXPData);
 			float GameTime = Helper::GetGameTime();
-			float launchtime = TargetXPData.m_flLaunchtime;
+			float launchtime = TargetXPData->m_flLaunchtime;
 
-			if (TargetXPData.m_bDormant)
+			if (TargetXPData->m_bDormant)
 				continue;
-			if (GameTime < TargetXPData.m_flLaunchtime + 0.184)
+			if (GameTime < TargetXPData->m_flLaunchtime + 0.184)
 				continue;
 
 			if (Config.aimbot.VisibleCheck && IsXpVisible(processed_ents[i]) == false)
 				continue;
 
-			float xpdistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetXPData.m_vecOrigin);
+			float xpdistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetXPData->m_vecOrigin);
 			if (xpdistance > Config.aimbot.MaxDistance)
 				continue;
 
 			vec2 LocalPlayerAngles = { ViewAngles->x, ViewAngles->y };
-			vec2 AimAngles = GetAimAngles(TargetXPData.m_vecOrigin);
+			vec2 AimAngles = GetAimAngles(TargetXPData->m_vecOrigin);
 			vec2 angle_difference = AimAngles - LocalPlayerAngles;
 			angle_difference = angle_difference.clamp();
 
@@ -238,44 +256,60 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			if (xpFOV > Config.aimbot.fov)
 				continue; // Skip targets outside of the FOV
 
-			if (xpdistance < ClosestXPDistance) {
-				ClosestXPDistance = xpdistance;
-				ClosestXPIndex = i;
+			if (xpdistance < ClosestIndex) {
+				ClosestDistance = xpdistance;
+				ClosestIndex = i;
 			}
 
-			if (xpFOV < LowestFovXP) {
-				LowestFovXP = xpFOV; // Update the lowest FOV
-				LowestFovXPIndex = i; // Update the index of the target with the lowest FOV
+			if (xpFOV < LowestFov) {
+				LowestFov = xpFOV; // Update the lowest FOV
+				lowestfovindex = i; // Update the index of the target with the lowest FOV
 			}
+
+			delete TargetXPData;
 
 		}
 		else if (entClass == "C_NPC_Trooper" && TargetEntityType == "C_NPC_Trooper") {
 
-			NpcData TargetNpcData = Helper::get_npc_data(processed_ents[i]);
+			NpcData* TargetNpcData = new NpcData;
+			Helper::get_npc_data(processed_ents[i], TargetNpcData);
 
-			if (TargetNpcData.m_bDormant)
+			if (TargetNpcData->m_bDormant) {
+				delete TargetNpcData;
 				continue;
+			}
 
 			uint64_t entteamnum = 263169 + LocalPlayerData.TeamNum;
-			if (TargetNpcData.m_iteamnum != entteamnum) // really awful terribleness because the number just happens to be this for minion teams
+			if (TargetNpcData->m_iteamnum != entteamnum) { // really awful terribleness because the number just happens to be this for minion teams
+				delete TargetNpcData;
 				continue;
+			}
+			if (TargetNpcData->m_ilifestate != 0) {
+				delete TargetNpcData;
+				continue;
+			}
 
-			if (TargetNpcData.m_ilifestate != 0)
+			if (Config.aimbot.VisibleCheck && IsNpcVisible(processed_ents[i]) == false) {
+				delete TargetNpcData;
 				continue;
+			}
 
-			if (Config.aimbot.VisibleCheck && IsNpcVisible(processed_ents[i]) == false)
+			float MinionDistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetNpcData->m_vecOrigin);
+			if (MinionDistance > Config.aimbot.MaxDistance) {
+				delete TargetNpcData;
 				continue;
+			}
 
-			float MinionDistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetNpcData.m_vecOrigin);
-			if (MinionDistance > Config.aimbot.MaxDistance)
+			if (MinionDistance > 2000.0f) {
+				delete TargetNpcData;
 				continue;
-
-			if (MinionDistance > 2000.0f)
-				continue;
+			}
 
 			int boneindex = Helper::get_bone_index(processed_ents[i], "head");
-			if (!boneindex)
+			if (!boneindex) {
+				delete TargetNpcData;
 				continue;
+			}
 			vec3 HeadPos = Helper::GetBoneVectorFromIndex(processed_ents[i], boneindex);  // No re-declaration of TargetPos here
 			vec2 LocalPlayerAngles = { ViewAngles->x, ViewAngles->y };
 			vec2 AimAngles = GetAimAngles(HeadPos);
@@ -284,18 +318,22 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 
 			float minionfov = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
 
-			if (minionfov > Config.aimbot.fov)
-				continue; // Skip targets outside of the FOV
+			if (minionfov > Config.aimbot.fov) {
+				delete TargetNpcData;
+				continue;
+			} // Skip targets outside of the FOV
 
-			if (MinionDistance < ClosestminionDistance) {
-				ClosestminionDistance = MinionDistance;
-				ClosestminionIndex = i;
+			if (MinionDistance < ClosestDistance) {
+				ClosestDistance = MinionDistance;
+				ClosestIndex = i;
 			}
 
-			if (minionfov < LowestFovminion) {
-				LowestFovminion = minionfov; // Update the lowest FOV
-				LowestFovminionIndex = i; // Update the index of the target with the lowest FOV
+			if (minionfov < LowestFov) {
+				LowestFov = minionfov; // Update the lowest FOV
+				lowestfovindex = i; // Update the index of the target with the lowest FOV
 			}
+
+			delete TargetNpcData;
 
 		}
 	}
@@ -332,40 +370,40 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 	if (TargetEntityType == "CItemXP") {
 		switch (Config.aimbot.targetSelectionMode) {
 		case 0:
-			if (ClosestXPIndex == 999) {
+			if (ClosestIndex == 999) {
 				return 0;
 			}
-			return processed_ents[ClosestXPIndex];
+			return processed_ents[ClosestIndex];
 		case 1:
-			if (LowestFovXPIndex == 999) {
+			if (lowestfovindex == 999) {
 				return 0;
 			}
-			return processed_ents[LowestFovXPIndex];
+			return processed_ents[lowestfovindex];
 		case 2:
-			if (LowestFovXPIndex == 999) {
+			if (lowestfovindex == 999) {
 				return 0;
 			}
-			return processed_ents[LowestFovXPIndex];
+			return processed_ents[lowestfovindex];
 		}
 	}
 
 	if (TargetEntityType == "C_NPC_Trooper") {
 		switch (Config.aimbot.targetSelectionMode) {
 		case 0:
-			if (ClosestminionIndex == 999) {
+			if (ClosestIndex == 999) {
 				return 0;
 			}
-			return processed_ents[ClosestminionIndex];
+			return processed_ents[ClosestIndex];
 		case 1:
-			if (LowestMinionHealthIndex == 999) {
+			if (LowestHealthIndex == 999) {
 				return 0;
 			}
-			return processed_ents[LowestMinionHealthIndex];
+			return processed_ents[LowestHealthIndex];
 		case 2:
-			if (LowestMinionHealthIndex == 999) {
+			if (LowestHealthIndex == 999) {
 				return 0;
 			}
-			return processed_ents[LowestFovminionIndex];
+			return processed_ents[lowestfovindex];
 		}
 	}
 }
@@ -408,7 +446,9 @@ void Aimbot::AimAbility(uintptr_t entity, int aimpos, uintptr_t ability, float p
 	if (!ability)
 		return;
 
-	auto targetdata = Helper::get_player_data(entity);
+	PlayerData* targetdata = new PlayerData;
+	Helper::get_player_data(entity, targetdata);
+
 
 	vec3 vec_target;
 	if (aimpos == 0) {
@@ -418,13 +458,15 @@ void Aimbot::AimAbility(uintptr_t entity, int aimpos, uintptr_t ability, float p
 		vec_target = Helper::GetBonePosition(entity, "pelvis");
 	}
 	else {
-		vec_target = targetdata.m_vecOrigin;
+		vec_target = targetdata->m_vecOrigin;
 	}
 
-	vec3 predictedposition = Aimbot::PredictPosition(vec_target, targetdata.m_vecVelocity, projectilespeed);
+	vec3 predictedposition = Aimbot::PredictPosition(vec_target, targetdata->m_vecVelocity, projectilespeed);
 	vec2 target_angles = Aimbot::GetAimAngles(predictedposition);
 	CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
 	CUserCmd->cameraViewAngle->viewAngles.y = target_angles.y;
+
+	delete targetdata;
 
 }
 
@@ -474,12 +516,17 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 	}
 
 
+
 	vec3 predictedposition = Aimbot::PredictPosition(vec_target, vec_velocity, BulletSpeed);
 	vec2 target_angles = Aimbot::GetAimAngles(predictedposition);
 
 
 
 	if (Config.aimbot.silentaim) { // silent aim
+
+		if (!(CUserCmd->buttons & IN_ATTACK) && !(CUserCmd->buttons & IN_ZOOM)) {
+			return;
+		}
 
 		uintptr_t localweapon = Helper::get_localplr_weapon();
 		if (localweapon == -1)
@@ -520,8 +567,9 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 
 void Aimbot::AimAtXp(uintptr_t entity) {
 
-	xpData TargetXPData = Helper::get_xp_data(entity);
-	vec2 target_angles = Aimbot::GetAimAngles(TargetXPData.m_vecOrigin);
+	xpData* TargetXPData = new xpData;
+	Helper::get_xp_data(entity, TargetXPData);
+	vec2 target_angles = Aimbot::GetAimAngles(TargetXPData->m_vecOrigin);
 
 	if (Config.aimbot.AutoFire) {
 		CUserCmd->buttons |= IN_ATTACK;
@@ -529,9 +577,10 @@ void Aimbot::AimAtXp(uintptr_t entity) {
 
 	if (Config.aimbot.silentaim) { // silent aim
 
-		if (!CUserCmd->buttons & IN_ATTACK) {
+		if (!(CUserCmd->buttons & IN_ATTACK) && !(CUserCmd->buttons & IN_ZOOM)) {
 			return;
 		}
+
 		uintptr_t localweapon = Helper::get_localplr_weapon();
 		float NextAttack = *(float*)(localweapon + CCitadel_Ability_PrimaryWeapon::m_flNextPrimaryAttack);
 		float LocalPlayerSimTime = *(float*)(Helper::get_local_player() + C_BaseEntity::m_flSimulationTime);
@@ -558,13 +607,16 @@ void Aimbot::AimAtXp(uintptr_t entity) {
 	ViewAngles->x += final_delta.x / Config.aimbot.smooth;
 	ViewAngles->y += final_delta.y / Config.aimbot.smooth;
 
+	delete TargetXPData;
+
 }
 
 void Aimbot::AimAtMinions(uintptr_t entity) {
 
-	NpcData targetnpcdata = Helper::get_npc_data(entity);
+	NpcData* targetnpcdata = new NpcData;
+	Helper::get_npc_data(entity, targetnpcdata);
 
-	if(targetnpcdata.m_bDormant)
+	if(targetnpcdata->m_bDormant)
 		return;
 
 	int boneindex = Helper::get_bone_index(entity, "head");
@@ -582,9 +634,10 @@ void Aimbot::AimAtMinions(uintptr_t entity) {
 	if (Config.aimbot.silentaim) { // silent aim
 
 
-		if (!CUserCmd->buttons & IN_ATTACK) {
+		if (!(CUserCmd->buttons & IN_ATTACK) && !(CUserCmd->buttons & IN_ZOOM)) {
 			return;
 		}
+
 		uintptr_t localweapon = Helper::get_localplr_weapon();
 		float NextAttack = *(float*)(localweapon + CCitadel_Ability_PrimaryWeapon::m_flNextPrimaryAttack);
 		float LocalPlayerSimTime = *(float*)(Helper::get_local_player() + C_BaseEntity::m_flSimulationTime);
@@ -610,6 +663,8 @@ void Aimbot::AimAtMinions(uintptr_t entity) {
 
 	ViewAngles->x += final_delta.x / Config.aimbot.smooth;
 	ViewAngles->y += final_delta.y / Config.aimbot.smooth;
+
+	delete targetnpcdata;
 
 }
 
@@ -638,35 +693,51 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 	CameraManager = *(uint64_t*)(ClientModuleBase + Offsets.o_CameraManager + 0x28);
 	ViewAngles = (vec2*)(CameraManager + 0x44); // RESET to 0x44
 	LocalPlayerController = Helper::get_local_player();
-	LocalPlayerData = Helper::get_player_data(LocalPlayerController);
+	PlayerData* tempplrdata = new PlayerData;
+	Helper::get_player_data(LocalPlayerController, tempplrdata);
+	LocalPlayerData = *tempplrdata;	
+
 	abilities = Helper::GetAbilities(Helper::GetPawn(Helper::get_local_player()));
 
 	
-	if (processed_ents.empty())
+	if (processed_ents.empty()) {
+		delete tempplrdata;
 		return;
+	}
 
 	uint64_t aimtarget = Aimbot::GetAimbotTarget("CCitadelPlayerController");
-	uint64_t xp_target = Aimbot::GetAimbotTarget("CItemXP");
-	uint64_t minion_target = Aimbot::GetAimbotTarget("C_NPC_Trooper");
+	uint64_t xp_target = 0; // make sure unassigned is always zero 
+	uint64_t minion_target = 0;
 
-	if (Config.aimbot.magicbullet && Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key) && aimtarget && !processed_ents.empty()) {
+	if(Config.aimbot.AimXp)
+		 xp_target = Aimbot::GetAimbotTarget("CItemXP");
+	if(Config.aimbot.AimMinions)
+		 minion_target = Aimbot::GetAimbotTarget("C_NPC_Trooper");
+
+
+	if (Config.aimbot.magicbullet && Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key) && aimtarget ) {
 		ShootMagicBullet(aimtarget, "head");
+		delete tempplrdata;
 		return;
 	}
 
-	if (Helper::KeyBindHandler(Config.aimbot.AimKey.key)  && aimtarget && !processed_ents.empty()) {
+	if (Helper::KeyBindHandler(Config.aimbot.AimKey.key)  && aimtarget ) {
 		AimAt(aimtarget, "head");
+		delete tempplrdata;
 		return;
 	}
 
-	if (Helper::KeyBindHandler(Config.aimbot.AimKeyXp.key) && xp_target && !processed_ents.empty()) {
+	if (Helper::KeyBindHandler(Config.aimbot.AimKeyXp.key) && xp_target ) {
 		AimAtXp(xp_target);
+		delete tempplrdata;
 		return;
 	}
 
-	if (Helper::KeyBindHandler(Config.aimbot.AimKeyMinions.key) && minion_target && !processed_ents.empty()) {
+	if (Helper::KeyBindHandler(Config.aimbot.AimKeyMinions.key) && minion_target) {
 		AimAtMinions(minion_target);
+		delete tempplrdata;
 		return;
 	}
+
 
 }

@@ -32,11 +32,39 @@ void Misc::SimpleNoRecoil(){
 
 }
 
+void Misc::SpeedBoost(uint64_t localplayercontroller) {
+
+	static bool needfix = false;
+	uint64_t localplayer_pawn = Helper::GetPawn(localplayercontroller);
+	float* mag = (float*)(localplayer_pawn + C_CitadelPlayerPawn::m_angLockedEyeAngles);
+	if (mag == nullptr) return;
+
+	if (Helper::KeyBindHandler(Config.misc.SpeedBoostKey.key))
+	{
+		uint64_t CameraManager = *(uint64_t*)(ClientModuleBase + Offsets.o_CameraManager + 0x28);
+		float* ViewAngles = (float*)(CameraManager + 0x44); // RESET to 0x44
+		needfix = true;
+		mag[0] = 90;
+		mag[1] = ViewAngles[1];
+		mag[2] = 90;
+	}
+	else if (needfix)
+	{
+		needfix = false;
+		mag[0] = 16384;
+		mag[1] = 16384;
+		mag[2] = 16384;
+	}
+
+}
+
 
 
 Drawing testdraw;
 
 void testbed() {
+
+
 
 }
 

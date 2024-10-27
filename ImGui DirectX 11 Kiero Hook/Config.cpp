@@ -93,6 +93,9 @@ static ImVec4 JsonToImVec4(const json& j) {
 
     Config.misc.bNorecoil = j["misc"]["bNorecoil"].get<bool>();
     Config.misc.fovmodifier = j["misc"]["fovmodifier"].get<float>();
+    Config.misc.SpeedBoost = j["misc"]["SpeedBoost"].get<bool>();
+    Config.misc.SpeedBoostKey.key = j["misc"]["SpeedBoostKey"].get<int>();
+    Config.misc.SpeedBoostKey.name = j["misc"]["SpeedBoostKeyName"].get<std::string>();
 
     Config.shiv.AutoAimDagger = j["shiv"]["AutoAimDagger"].get<bool>();
     Config.shiv.AutoAimDash = j["shiv"]["AutoAimDash"].get<bool>();
@@ -101,9 +104,7 @@ static ImVec4 JsonToImVec4(const json& j) {
     Config.vindicta.AutoAimCrow = j["vindicta"]["AutoAimCrow"].get<bool>();
     Config.vindicta.AutoAimStake = j["vindicta"]["AutoAimStake"].get<bool>();
     Config.vindicta.AutoSnipe = j["vindicta"]["AutoSnipe"].get<bool>();
-
-
-
+    Config.vindicta.AutoUltHealthPercent = j["vindicta"]["AutoUltHealthPercent"].get<float>();
 
 }
 
@@ -166,6 +167,9 @@ static ImVec4 JsonToImVec4(const json& j) {
 
      j["misc"]["bNorecoil"] = Config.misc.bNorecoil;
      j["misc"]["fovmodifier"] = Config.misc.fovmodifier;
+     j["misc"]["SpeedBoost"] = Config.misc.SpeedBoost;
+     j["misc"]["SpeedBoostKey"] = Config.misc.SpeedBoostKey.key;
+     j["misc"]["SpeedBoostKeyName"] = Config.misc.SpeedBoostKey.name;
 
      j["shiv"]["AutoAimDagger"] = Config.shiv.AutoAimDagger;
      j["shiv"]["AutoAimDash"] = Config.shiv.AutoAimDash;
@@ -174,6 +178,7 @@ static ImVec4 JsonToImVec4(const json& j) {
      j["vindicta"]["AutoAimCrow"] = Config.vindicta.AutoAimCrow;
      j["vindicta"]["AutoAimStake"] = Config.vindicta.AutoAimStake;
      j["vindicta"]["AutoSnipe"] = Config.vindicta.AutoSnipe;
+     j["vindicta"]["AutoUltHealthPercent"] = Config.vindicta.AutoUltHealthPercent;
 
      const std::string path = "C:/LynchWare/";
 

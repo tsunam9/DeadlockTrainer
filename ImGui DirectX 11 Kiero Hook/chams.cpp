@@ -30,7 +30,7 @@ void Chams::DrawChams(material_data_t* matdata) {
 	if (!matdata)
 		return;
 
-	void* material = Chams::CreateMaterial("materials/debug/debugempty.vmat_c", texturedchams);
+	void* material = Chams::CreateMaterial("materials/brick/brick_wall01.vmat_c", flat);
 
 
 	matdata->pMaterial = material;

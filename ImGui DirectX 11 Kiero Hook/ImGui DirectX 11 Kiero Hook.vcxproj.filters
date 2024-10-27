@@ -159,9 +159,6 @@
     <ClCompile Include="shiv.cpp">
       <Filter>Source Files\Features\Heros\shiv</Filter>
     </ClCompile>
-    <ClCompile Include="vindicta.cpp">
-      <Filter>Source Files\Features\Heros\Vindicta</Filter>
-    </ClCompile>
     <ClCompile Include="chams.cpp">
       <Filter>Source Files\Features\Chams</Filter>
     </ClCompile>
@@ -170,6 +167,9 @@
     </ClCompile>
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="vindicta.cpp">
+      <Filter>Source Files\Features\Heros\Vindicta</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -137,7 +137,7 @@ void Menu::DrawConfigs() {
 void Menu::DrawMenu(FILE* fp) {
 
 
-	ImGui::Begin("LynchWare");
+	ImGui::Begin("LynchWare",NULL, ImGuiWindowFlags_NoResize + ImGuiWindowFlags_NoCollapse);
 
 	 
 
@@ -162,9 +162,9 @@ void Menu::DrawMenu(FILE* fp) {
 
 				ImGui::Checkbox("Auto Fire", &Config.aimbot.AutoFire);
 				static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
-				static int currentItem = 0; // Index of the currently selected item
-				ImGui::Combo("Target ", &currentItem, items, IM_ARRAYSIZE(items)); Config.aimbot.targetSelectionMode = currentItem;
-				ImGui::Text("Selected: %s", items[currentItem]);
+				//static int currentItem = 0; // Index of the currently selected item
+				ImGui::Combo("Target ", &Config.aimbot.targetSelectionMode, items, IM_ARRAYSIZE(items));
+				ImGui::Text("Selected: %s", items[Config.aimbot.targetSelectionMode]);
 				ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f, "%.1f");
 				ImGui::SliderFloat("FOV", &Config.aimbot.fov, 0.0f, 180.0f, "%.1f");
 				ImGui::SliderFloat("Smooth", &Config.aimbot.smooth, 0.0f, 100.0f, "%.1f");
@@ -188,8 +188,6 @@ void Menu::DrawMenu(FILE* fp) {
 		// Second tab
 		if (ImGui::BeginTabItem("Esp"))
 		{
-			ImVec2 availableSize = ImGui::GetContentRegionAvail();
-			float childHeight = availableSize.y * 0.5f; // Set to half
 			ImGui::Checkbox("Esp", &Config.esp.bEsp);
 			if (Config.esp.bEsp) {
 				ImGui::Checkbox("Box Esp", &Config.esp.boxEsp);
@@ -237,10 +235,6 @@ void Menu::DrawMenu(FILE* fp) {
 				}
 
 				ImGui::Checkbox("Draw Minions", &Config.esp.DrawMinions);
-				if (Config.esp.DrawMinions) {
-					ImGui::SameLine();
-					ImGui::ColorEdit4("Minion Indicator Color", (float*)&Config.colors.drawmonsterscol);
-				}
 
 				ImGui::Checkbox("Draw Aimbot Target", &Config.esp.DrawAimbotTarget);
 				if (Config.esp.DrawAimbotTarget) {
@@ -267,85 +261,116 @@ void Menu::DrawMenu(FILE* fp) {
 		}
 
 		if (ImGui::BeginTabItem("Heroes")) {
-			switch (Helper::get_player_data(Helper::get_local_player()).HeroID) {
+			PlayerData* plrdata = new PlayerData;
+			Helper::get_player_data(Helper::get_local_player(), plrdata);
+			switch (plrdata->HeroID) {
 
-			case Abrams:
+			case Abrams: {
 				ImGui::Text("Abrams");
 				break;
-			case Bebop:
+			}
+			case Bebop: {
 				ImGui::Text("Bebop");
 				break;
-			case Dynamo:
+			}
+			case Dynamo: {
 				ImGui::Text("Dynamo");
 				break;
-			case GreyTalon:
+			}
+			case GreyTalon: {
 				ImGui::Text("GreyTalon");
 				break;
-			case Haze:
+			}
+			case Haze: {
 				ImGui::Text("Haze");
 				break;
-			case Infernus:
+			}
+			case Infernus:{
 				ImGui::Text("Infernus");
 				break;
-			case Ivy:
+			}
+			case Ivy: {
 				ImGui::Text("Ivy");
 				break;
-			case Kelvin:
+			}
+			case Kelvin: {
 				ImGui::Text("Kelvin");
 				break;
-			case LadyGeist:
+			}
+			case LadyGeist: {
 				ImGui::Text("LadyGeist");
 				break;
-			case Lash:
+			}
+			case Lash: {
 				ImGui::Text("Lash");
 				break;
-			case McGinnis:
+			}
+			case McGinnis: {
 				ImGui::Text("McGinnis");
 				break;
-			case Mirage:
+			}
+			case Mirage: {
 				ImGui::Text("Mirage");
 				break;
-			case MoAndKrill:
+			}
+			case MoAndKrill: {
 				ImGui::Text("MoAndKrill");
 				break;
-			case Paradox:
+			}
+			case Paradox: {
 				ImGui::Text("Paradox");
 				break;
-			case Pocket:
+			}
+			case Pocket: {
 				ImGui::Text("Pocket");
 				break;
-			case Seven:
+			}
+			case Seven: {
 				ImGui::Text("Seven");
 				break;
-			case Shiv:
+			}
+			case Shiv: {
 				ImGui::Text("Shiv");
 				ImGui::Checkbox("Auto Aim Dagger", &Config.shiv.AutoAimDagger);
 				ImGui::Checkbox("Auto Aim Dash", &Config.shiv.AutoAimDash);
 				ImGui::Checkbox("Auto Execute", &Config.shiv.AutoExecute);
 				break;
-			case Vindicta:
+			}
+			case Vindicta: {
 				ImGui::Text("Vindicta");
 				ImGui::Checkbox("Auto Aim Stake", &Config.vindicta.AutoAimStake);
 				ImGui::Checkbox("Auto Aim Crow", &Config.vindicta.AutoAimCrow);
 				ImGui::Checkbox("Auto Snipe", &Config.vindicta.AutoSnipe);
+				// Directly use a temporary variable for the slider
+				float f = Config.vindicta.AutoUltHealthPercent * 100.0f; // Temporary variable
+				ImGui::SliderFloat("Auto Snipe Health %", &f, 0.0f, 100.0f, " %.0f%%");
+				// Update the config value after the slider adjustment
+				Config.vindicta.AutoUltHealthPercent = f / 100.0f;
 				break;
-			case Viscous:
+			}
+			case Viscous: {
 				ImGui::Text("Viscous");
 				break;
-			case Warden:
+			}
+			case Warden: {
 				ImGui::Text("Warden");
 				break;
-			case Wraith:
+			}
+			case Wraith: {
 				ImGui::Text("Wraith");
 				break;
-			case Yamato:
+			}
+			case Yamato: {
 				ImGui::Text("Yamato");
 				break;
-			default:
+			}
+			default: {
 				ImGui::Text("Please Enter A Game");
 				break;
 			}
+			}
 
+			delete plrdata;
 
 			ImGui::EndTabItem();
 		}
@@ -356,6 +381,10 @@ void Menu::DrawMenu(FILE* fp) {
 
 			ImGui::Checkbox("No Recoil", &Config.misc.bNorecoil);
 			ImGui::SliderFloat("Fov Multiplier", &Config.misc.fovmodifier, 0.1f, 2.0f, "%.3f");
+			ImGui::Checkbox("Speed Boost", &Config.misc.SpeedBoost);
+			if (Config.misc.SpeedBoost) {
+				Helper::HotKey(Config.misc.SpeedBoostKey);
+			}
 
 			ImGui::Checkbox("Test Checkbox", &Config.tempvalues.checkbox);
 			ImGui::SliderFloat("Slider1", &Config.tempvalues.slider1, 0.0f, 1000.0f);

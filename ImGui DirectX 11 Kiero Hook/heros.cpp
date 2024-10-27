@@ -3,7 +3,7 @@
 
 
 void Hero::OnTick() {
-	// do something
+
 }
 
 
@@ -11,7 +11,8 @@ void Hero::RunScript(CCitadelUserCmdPB* cmd) {
 
 	this->cmd = cmd;
 	this->LocalPlayer = Helper::get_local_player();
-	this->localplayerdata = Helper::get_player_data(this->LocalPlayer);
+	Helper::get_player_data(this->LocalPlayer, this->localplayerdata);
+
 	this->abilitiesarray = Helper::GetAbilities(Helper::GetPawn(this->LocalPlayer));
 	
 	if (cmd->buttons & IN_ABILITY1) {
@@ -34,4 +35,5 @@ void Hero::RunScript(CCitadelUserCmdPB* cmd) {
 		return;
 
 	OnTick();
+
 }

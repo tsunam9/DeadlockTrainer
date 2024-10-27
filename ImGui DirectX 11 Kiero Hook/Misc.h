@@ -10,5 +10,6 @@ public:
 
 	void DoMisc();
 	void SimpleNoRecoil();
+	static void SpeedBoost(uint64_t localplayercontroller);
 
 };

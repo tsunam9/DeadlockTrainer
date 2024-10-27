@@ -84,6 +84,9 @@ uint64_t Helper::get_Camera() {
 	uint64_t camera = (ClientModuleBase + Offsets.o_CameraManager + 0x28);
 	camera = *(uint64_t*)camera;
 	return camera;
+
+
+
 }
 
 uint64_t Helper::get_local_player() {
@@ -207,75 +210,71 @@ int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name)
 	return -1;
 }
 
-PlayerData Helper::get_player_data(uint64_t entity) {
+ bool Helper::get_player_data(uint64_t entity, PlayerData* outputPlrData){
 
 
-	
-	PlayerData ReturnObj;
-
-	if(!entity)
-		return ReturnObj;
+	 if (!entity)
+		 return false;
 
 	uint64_t PawnHandle = *(uint64_t*)(entity + CBasePlayerController::m_hPawn);
 	uint64_t Index = Helper::CHandle_get_entry_index(PawnHandle);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Index);
 	if (!Pawn)
-		return ReturnObj;
+		return outputPlrData;
 	uint64_t GameSceneNode = *(uint64_t*)(Pawn + C_BaseEntity::m_pGameSceneNode);
 	uint64_t PlayerDataGlobal = entity + CCitadelPlayerController::m_PlayerDataGlobal;
-	ReturnObj.m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
-	ReturnObj.m_vecVelocity= *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
-	ReturnObj.Health = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealth);
-	ReturnObj.MaxHealth = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealthMax);
-	ReturnObj.HeroID = *(int*)(PlayerDataGlobal + PlayerDataGlobal_t::m_nHeroID);
-	ReturnObj.TeamNum = *(int*)(Pawn + C_BaseEntity::m_iTeamNum);
-	ReturnObj.isalive = *(bool*)(PlayerDataGlobal + PlayerDataGlobal_t::m_bAlive);
-	ReturnObj.weaponservices = *(uint64_t*)(Pawn + C_BasePlayerPawn::m_pWeaponServices);
+	outputPlrData->m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
+	outputPlrData->m_vecVelocity= *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
+	outputPlrData->Health = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealth);
+	outputPlrData->MaxHealth = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealthMax);
+	outputPlrData->HeroID = *(int*)(PlayerDataGlobal + PlayerDataGlobal_t::m_nHeroID);
+	outputPlrData->TeamNum = *(int*)(Pawn + C_BaseEntity::m_iTeamNum);
+	outputPlrData->isalive = *(bool*)(PlayerDataGlobal + PlayerDataGlobal_t::m_bAlive);
+	outputPlrData->dormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
+	outputPlrData->weaponservices = *(uint64_t*)(Pawn + C_BasePlayerPawn::m_pWeaponServices);
 	
 
-	return ReturnObj;
+	return true;
 }
 
-xpData Helper::get_xp_data(uint64_t entity) {
+bool Helper::get_xp_data(uint64_t entity, xpData* xpdataobj) {
 
-	xpData xpdataobj;
 
 	if (!entity)
-		return xpdataobj;
+		return false;
 
 	uintptr_t GameSceneNode = *(uintptr_t*)(entity + C_BaseEntity::m_pGameSceneNode);
-	xpdataobj.m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
-	xpdataobj.m_bDormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
-	xpdataobj.m_flLaunchtime = *(float*)(entity + CItemXP::m_timeLaunch);
-	xpdataobj.CreationTime = *(float*)(entity + C_BaseEntity::m_flCreateTime);
+	xpdataobj->m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
+	xpdataobj->m_bDormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
+	xpdataobj->m_flLaunchtime = *(float*)(entity + CItemXP::m_timeLaunch);
+	xpdataobj->CreationTime = *(float*)(entity + C_BaseEntity::m_flCreateTime);
 
 
-	return xpdataobj;
+	return true;
 
 }
 
-NpcData Helper::get_npc_data(uint64_t entity) {
+bool Helper::get_npc_data(uint64_t entity, NpcData* npcdata) {
 
 
-	NpcData DataObj;
 
 	if (!entity)
-		return DataObj;
+		return false;
 
 
 
 	uintptr_t GameSceneNode = *(uintptr_t*)(entity + C_BaseEntity::m_pGameSceneNode);
 
-	DataObj.m_bMinion = *(bool*)(entity + C_AI_CitadelNPC::m_bMinion);
-	DataObj.m_iHealth = *(int*)(entity + C_BaseEntity::m_iHealth);
-	DataObj.m_iMaxHealth = *(int*)(entity + C_BaseEntity::m_iMaxHealth);
-	DataObj.m_ilifestate = *(int*)(entity + C_BaseEntity::m_lifeState);
-	DataObj.m_iteamnum = *(int*)(entity + C_BaseEntity::m_iTeamNum);
-	DataObj.m_bDormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
-	DataObj.m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
-	DataObj.m_szClassname = (char*)(GameSceneNode + CGameSceneNode::m_name);
+	npcdata->m_bMinion = *(bool*)(entity + C_AI_CitadelNPC::m_bMinion);
+	npcdata->m_iHealth = *(int*)(entity + C_BaseEntity::m_iHealth);
+	npcdata->m_iMaxHealth = *(int*)(entity + C_BaseEntity::m_iMaxHealth);
+	npcdata->m_ilifestate = *(int*)(entity + C_BaseEntity::m_lifeState);
+	npcdata->m_iteamnum = *(int*)(entity + C_BaseEntity::m_iTeamNum);
+	npcdata->m_bDormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
+	npcdata->m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
+	npcdata->m_szClassname = (char*)(GameSceneNode + CGameSceneNode::m_name);
 
-	return DataObj;
+	return true;
 
 }
 
@@ -367,20 +366,18 @@ bool Helper::CHandle_is_valid(uint64_t handle)
 }
 
 
-vec3 Helper::GetBonePosition(uintptr_t entity, const char* BoneName) {
+vec3 Helper::GetBonePosition(uintptr_t entity_controller, const char* BoneName) {
 
 	vec3 BonePos = { 0, 0, 0 };
 
-	if (!entity)
+	if (!entity_controller)
 		return BonePos;
 
 
-	//Get PlayerPawn
-	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
-	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
+	uintptr_t entity_pawn = Helper::GetPawn(entity_controller);
 	std::string bonechoice = BoneName;
-	int boneindex = Helper::get_bone_index(Pawn, bonechoice);
-	BonePos = Helper::GetBoneVectorFromIndex(Pawn, boneindex);
+	int boneindex = Helper::get_bone_index(entity_pawn, bonechoice);
+	BonePos = Helper::GetBoneVectorFromIndex(entity_pawn, boneindex);
 
 	return BonePos;
 }
@@ -598,9 +595,9 @@ uint64_t Helper::GetPawnHandle(uint64_t entity) {
 
 
 
-uint64_t Helper::GetPawn(uint64_t entity) {
+uint64_t Helper::GetPawn(uint64_t entity_controller) {
 
-	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
+	uint64_t PawnHandle = *(uint64_t*)(entity_controller + CCitadelPlayerController::m_hHeroPawn);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
 	return Pawn;
 
@@ -731,6 +728,10 @@ void Helper::CorrectMovement(CCitadelUserCmdPB* pCmd, float& fOldForward, float&
 		sidemove = 1.0f;
 	if (sidemove < -1.0f)
 		sidemove = -1.0f;
+
+	
+	pCmd->buttons |= IN_FORWARD;
+	pCmd->buttons |= IN_MOVELEFT;
 
 	pCmd->pBaseUserCMD->forwardMove = forwardmove;
 	pCmd->pBaseUserCMD->sideMove = sidemove;

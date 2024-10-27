@@ -11,7 +11,7 @@ public:
 	uint64_t o_EntityList;
 	uint64_t o_CameraManager;
 	uint64_t o_crosshairposfromcameramanager = 0xAC;
-	uint64_t o_HighestEntityIndex = 0x1520;
+	uint64_t o_HighestEntityIndex = 0x1530;
 	uint64_t o_entityInfo = 0x10;
 	uint64_t o_BoneArray = 0x80;
 	uint64_t o_Resolution;

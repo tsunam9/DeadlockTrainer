@@ -8,7 +8,6 @@ void Drawing::DrawBox(float x, float y, float width, float height, ImU32 color) 
 	// Draw the border first
 	ImU32 borderColor = IM_COL32(0, 0, 0, 75); // Black color for the border
 	draw_list->AddRect(ImVec2(x, y), ImVec2(x + width, y + height), borderColor, 0.0f, 0.0f, 1.0f);
-	// Draw the filled box
 	draw_list->AddRect(ImVec2(x + 1.0f, y + 1.0f),
 		ImVec2(x + width - 1.0f, y + height - 1.0f),
 		color);

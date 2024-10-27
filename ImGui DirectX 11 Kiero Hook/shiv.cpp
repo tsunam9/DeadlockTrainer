@@ -3,7 +3,7 @@
 
 namespace shiv {
 	uint64_t target;
-	PlayerData targetdata;
+	PlayerData* targetdata;
 }
 void ShivLogic::AutoUlt() {
 
@@ -14,12 +14,12 @@ void ShivLogic::AutoUlt() {
 	float UltimateExecutehealth = 0.2f;
 	if (rlevel >= 7)
 		UltimateExecutehealth = 0.28f;
-	if (shiv::targetdata.Health <= 0 || shiv::targetdata.MaxHealth <= 0)
+	if (shiv::targetdata->Health <= 0 || shiv::targetdata->Health <= 0)
 		return;
 
-	float targetpercent = (float)shiv::targetdata.Health / (float)shiv::targetdata.MaxHealth;
+	float targetpercent = (float)shiv::targetdata->Health / (float)shiv::targetdata->MaxHealth;
 	if (targetpercent < UltimateExecutehealth) {
-		vec2 angles = Aimbot::GetAimAngles(shiv::targetdata.m_vecOrigin);
+		vec2 angles = Aimbot::GetAimAngles(shiv::targetdata->m_vecOrigin);
 		this->cmd->cameraViewAngle->viewAngles.x = angles.x;
 		this->cmd->cameraViewAngle->viewAngles.y = angles.y;
 		this->cmd->buttons |= IN_ABILITY4;
@@ -75,9 +75,10 @@ void ShivLogic::OnAbility4() {
 void ShivLogic::OnTick() {
 
 
-	 shiv::target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
-	 if (!shiv::target) return;
-	 shiv::targetdata = Helper::get_player_data(shiv::target);
+	 this->target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
+	 if (!this->target)
+	 Helper::get_player_data(this->target, this->targetdata);
+
 
 	 vec3 old_viewangles = cmd->pBaseUserCMD->playerViewAngle->viewAngles;
 	 float old_forwardmove = cmd->pBaseUserCMD->forwardMove;
@@ -101,6 +102,7 @@ void ShivLogic::OnTick() {
 	 }
 
 	 Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
+
 	
 
 }

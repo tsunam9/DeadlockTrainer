@@ -1,23 +1,35 @@
 #include "vindicta.h"
 
-namespace vindicta {
-	uint64_t target;
-	PlayerData targetdata;
-}
 
 static bool CommandQuedNextTick = false;
-static bool justshot = true;
+static bool justshot = false;
+static bool checking = false;
 
 void VindictaLogic::AutoUlt() {
+
+	float scopetime = *(float*)(this->abilitiesarray[4] + CCitadel_Ability_Hornet_Snipe::m_flScopeStartTime);
+	float gametime = Helper::GetGameTime();
+
+	if (justshot) {
+		if (scopetime) {
+			checking = true;
+			cmd->buttons &= ~IN_ATTACK;
+			cmd->buttons |= IN_ZOOM;
+			CommandQuedNextTick = false;
+		}
+		if (checking) {
+			if (!scopetime) {
+				justshot = false;
+				checking = false;
+			}
+		}
+	}
+
+
 
 	if (Config.aimbot.magicbullet && Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key))
 		return;
 
-	float scopetime = *(float*)(this->abilitiesarray[4] + CCitadel_Ability_Hornet_Snipe::m_flScopeStartTime);
-	if (scopetime) {
-		this->cmd->buttons |= (1 << 11);
-		this->cmd->buttons &= ~(1 << 0);
-	}
 
 	if (*(bool*)(this->abilitiesarray[4] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
@@ -30,15 +42,16 @@ void VindictaLogic::AutoUlt() {
 	if (rechargetime)
 		return;
 	
-	if (vindicta::targetdata.Health <= 0 || vindicta::targetdata.MaxHealth <= 0)
+	if (this->targetdata->Health <= 0 || this->targetdata->MaxHealth <= 0)
 		return;
 
-	float targetpercent = (float)vindicta::targetdata.Health / (float)vindicta::targetdata.MaxHealth;
-	if (targetpercent < 0.50f) {
+
+	float targetpercent = (float)this->targetdata->Health / (float)this->targetdata->MaxHealth;
+	if (targetpercent < Config.vindicta.AutoUltHealthPercent) {
 
 		
 
-		vec2 angles = Aimbot::GetAimAngles(Helper::GetBonePosition(vindicta::target, "head"));
+		vec2 angles = Aimbot::GetAimAngles(Helper::GetBonePosition(this->target, "head"));
 		this->cmd->cameraViewAngle->viewAngles.x = angles.x;
 		this->cmd->cameraViewAngle->viewAngles.y = angles.y;
 
@@ -46,13 +59,14 @@ void VindictaLogic::AutoUlt() {
 			this->cmd->buttons &= ~IN_ATTACK;
 			this->cmd->buttons &= ~IN_ZOOM;
 			CommandQuedNextTick = true;
+			return;
 		}
 		else {
 			this->cmd->buttons |= IN_ATTACK;
 			this->cmd->buttons |= IN_ABILITY4;
-			this->cmd->buttons &= ~IN_ZOOM;
 			CommandQuedNextTick = false;
 			justshot = true;
+			return;
 		}
 	}
 }
@@ -105,9 +119,10 @@ void VindictaLogic::OnAbility4() {
 
 void VindictaLogic::OnTick() {
 
-	vindicta::target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
-	if (!vindicta::target) return;
-	vindicta::targetdata = Helper::get_player_data(vindicta::target);
+	this->target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
+	if (!(this->target)) return;
+	Helper::get_player_data(this->target, this->targetdata);
+
 
 	if (this->InputCasting1 || *(bool*)(VindictaLogic::abilitiesarray[1] + C_CitadelBaseAbility::m_bInCastDelay)) {
 		OnAbility1();
@@ -121,6 +136,8 @@ void VindictaLogic::OnTick() {
 	if (this->InputCasting4 || *(bool*)(VindictaLogic::abilitiesarray[4] + C_CitadelBaseAbility::m_bInCastDelay)) {
 		OnAbility4();
 	}
+
+	static bool checking = false;
 
 	if (Config.vindicta.AutoSnipe) {
 		AutoUlt();

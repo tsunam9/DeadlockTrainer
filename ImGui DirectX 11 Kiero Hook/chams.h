@@ -53,6 +53,11 @@ struct KV3ID_t
 	const char* szName;
 	std::uint64_t unk0;
 	std::uint64_t unk1;
+	KV3ID_t(const char* name, std::uint64_t unknown0, std::uint64_t unknown1) {
+		szName = name;
+		unk0 = unknown0;
+		unk1 = unknown1;
+	}
 };
 
 class CKeyValues3
@@ -89,8 +94,8 @@ bool CKeyValues3::LoadKV3(CUtlBuffer* buffer)
 	static const fnLoadKeyValues oLoadKeyValues = (fnLoadKeyValues)(hTier0 + (MEM::PatternScanFunc((void*)hTier0, "48 89 5c 24 ? 48 89 6c 24 ? 57 41 56 41 57 48 83 ec ? 4d 8b f9")));
 
 	const char* szName = "";
-	//KV3ID_t kv3ID = KV3ID_t("generic", 0x41B818518343427E, 0xB5F447C23C0CDF8C);
-	//return oLoadKeyValues(this, nullptr, buffer, &kv3ID, nullptr, nullptr, nullptr, nullptr, "");
+	KV3ID_t kv3ID = KV3ID_t("generic", 0x41B818518343427E, 0xB5F447C23C0CDF8C);
+	return oLoadKeyValues(this, nullptr, buffer, &kv3ID, nullptr, nullptr, nullptr, nullptr, "");
 	return false;
 }
 
@@ -271,30 +276,9 @@ public:
 
 static const char* flat = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
-	shader = "csgo_unlitgeneric.vfx"
+	shader = "toossls_2d_generic.vfx"
 	
-	F_IGNOREZ = 1
-	F_DISABLE_Z_WRITE = 1
-	F_DISABLE_Z_BUFFERING = 1
-	F_FLAT = 1
- 
-	MaterialLayerReferenceShaderId_1 =  -1
-	g_fLayerNormalStrength1 =    0
-	g_flDisplacementAmount1 =    0
-	g_flDisplacementMidlevel1 =  128
-	g_vColorTint1 =  [1, 1, 1, 1]
-	g_vLayerRoughnessContrastBrightness1 =   [1, 1, 1, 1]
-	TextureColor1 =  resource:"materials/default/default_color.tga"
-	TextureTintMask1 =   resource:"materials/default/default_fcc21737_mask.png"
-	TextureNormal1 =     resource:"materials/flat/flat_generic_03_normal.png"
-	TextureRoughness1 =  resource:"materials/flat/flat_generic_03_aab68adb_rough.png"
-	TextureAmbientOcclusion1 =   resource:"materials/default/default_ao.tga"
-	TextureMetalness1 =  resource:"materials/default/default_303cc73a_metal.png"
-	TextureDisplacement1 =   resource:"materials/default/default_303cc73a_disp.png"
- 
-	 g_tColor1 = resource:"materials/default/default_color_tga_fcc21737.vtex"
-	 g_tNormalRoughness1 =   resource:"materials/flat/flat_generic_03_normal_png_aab68adb.vtex"
-	 g_tPacked1 =    resource:"materials/default/default_ao_tga_303cc73a.vtex"
+	g_tColorTexture = resource:"materials/default/default_color_tga_22e6f7.vtex_c"
 })";
 
 static const char* texturedchams = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
@@ -312,17 +296,17 @@ static const char* texturedchams = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a
     MaterialLayerReferenceShaderId_1 = -1
     g_flDisplacementAmount1 =     0
     g_flDisplacementMidlevel1 =     128
-    TextureColor1 =                      resource:"materials/default/default_color.tga"
-    TextureTintMask1 =                  resource:"materials/default/default_fcc21737_mask.png"
-    TextureNormal1 =                  resource:"materials/flat/flat_generic_03_normal.png"
-    TextureRoughness1 =                  resource:"materials/flat/flat_generic_03_aab68adb_rough.png"
-    TextureAmbientOcclusion1 =          resource:"materials/default/default_ao.tga"
-    TextureMetalness1 =                  resource:"materials/default/default_303cc73a_metal.png"
-    TextureDisplacement1 =              resource:"materials/default/default_303cc73a_disp.png"
+    TextureColor1 =                      resource:"materials/default/default_color_tga_22e6f7.vtex_c"
+    TextureTintMask1 =                  resource:"materials/default/default_mask_tga_344101f8.vtex_c"
+    TextureNormal1 =                  resource:"materials/flat/flat_generic_03_normal_png_aab68adb.vtex_c"
+    TextureRoughness1 =                  resource:"materials/particle/abilities/archer/archer_charged_shot_vmat_g_tnormalroughness_d52512a9.vtex_c"
+    TextureAmbientOcclusion1 =          resource:"materials/default/default_ao_tga_303cc73a.vtex_c"
+    TextureMetalness1 =                  resource:"materials/default/default_metal_tga_c7502e1.vtex_c"
+    TextureDisplacement1 =              resource:"materials/concrete/concrete_trim_01_vmat_g_ttintmaskdisplacement_86a014fe.vtex_c"
     
-    g_tColor1 = resource:"materials/default/default_color_tga_fcc21737.vtex"
-    g_tNormalRoughness1 =   resource:"materials/flat/flat_generic_03_normal_png_aab68adb.vtex"
-    g_tPacked1 =    resource:"materials/default/default_ao_tga_303cc73a.vtex"
+    g_tColor1 = resource:"materials/default/default_color_tga_fcc21737.vtex_c"
+    g_tNormalRoughness1 =   resource:"materials/particle/abilities/archer/archer_charged_shot_vmat_g_tnormalroughness_d52512a9.vtex_c"
+    g_tPacked1 =    resource:"materials/default/default_ao_tga_303cc73a.vtex_c"
     
  
 })";

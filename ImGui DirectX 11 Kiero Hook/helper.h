@@ -512,6 +512,7 @@ struct PlayerData {
 	uint32_t Health;
 	uint32_t MaxHealth;
     bool isalive;
+    bool dormant;
     int HeroID;
     int TeamNum;
     uint64_t weaponservices;
@@ -540,6 +541,8 @@ struct  NpcData {
     bool m_bDormant;
 	vec3 m_vecOrigin;
     char* m_szClassname;
+
+
 
 };
 
@@ -756,7 +759,7 @@ public:
     static bool CHandle_is_valid(uint64_t handle);
     static uint64_t get_Camera();
     static uint64_t get_local_player();
-    static PlayerData get_player_data(uint64_t entity);
+    static bool get_player_data(uint64_t entity, PlayerData* outputPlrData);
     static uint64_t get_localplr_weapon();
     static uint64_t gettracemanager();
     static bool CheckLocationVisible(vec3 LocalPlayerPos, vec3 LocationCheck);
@@ -764,7 +767,7 @@ public:
     //Bone Stuff
     static int get_bone_index(uintptr_t target_entity, const std::string bone_name);
     static vec3 GetBoneVectorFromIndex(uintptr_t target_entity, int index);
-    static vec3 GetBonePosition(uintptr_t entity, const char* BoneName);
+    static vec3 GetBonePosition(uintptr_t entity_controller, const char* BoneName);
     static std::vector<BoneConnection> GetBoneConnections(uintptr_t playerpawn, int heroid);
 
     static std::string ReadString(uintptr_t address);
@@ -772,18 +775,18 @@ public:
     static float GetDistance(vec3 src, vec3 dst);
     static std::string GetHeroNameByID(int id);
     static float DegreesToRadians(float degrees);
-    static xpData get_xp_data(uint64_t entity);
+    static bool get_xp_data(uint64_t entity, xpData* xpdata);
     static vec2 GetResolution();
     static float GetGameTime();
     static CGlobalVarsBase* GetGlobals();
     static CCitadelUserCmdPB* GetCurrentUserCmd();
     static CCitadelUserCmdPB* ExperimentalGetUserCmd();
     static bool KeyBindHandler(int key);
-	static NpcData get_npc_data(uint64_t entity);
+	static bool get_npc_data(uint64_t entity, NpcData* npcdata);
     static bool __fastcall traceshape(void* dis, Ray_t* pRay, vec3* vecStart, vec3* vecEnd, TraceFilter_t* pFilter, GameTrace_t* pGameTrace);
     static void __fastcall ConstructFilter(__int64 a1, __int64 a2, __int64 a3, char a4, __int16 a5);
     static uint64_t GetPawnHandle(uint64_t entity);
-    static uint64_t GetPawn(uint64_t entity);
+    static uint64_t GetPawn(uint64_t entity_controller);
 	static void CorrectMovement(CCitadelUserCmdPB* pCmd, float &fOldForward, float &fOldSidemove, vec3 oldangles);
     static void CorrectViewAngles(CCitadelUserCmdPB* pCmd);
     static void HotKey(KeyBind& keybind);

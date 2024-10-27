@@ -70,7 +70,6 @@ Drawing drawtest;
 void detourCreateMove(__int64* a1, int a2, char a3) {
 
 	CreateMove(a1, a2, a3);
-
 	CCitadelUserCmdPB* cmd = Helper::GetCurrentUserCmd();
 
 	if (!cmd->pBaseUserCMD->playerViewAngle || !cmd->cameraViewAngle)
@@ -85,8 +84,10 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 		return CreateMove(a1, a2, a3);
 	}
 
-	PlayerData LocalPlayer = Helper::get_player_data(Helper::get_local_player());
-	uint64_t playerpawn = Helper::GetPawn(Helper::get_local_player());
+	uint64_t localplayercontroller = Helper::get_local_player();
+	PlayerData* LocalPlayer = new PlayerData;
+	Helper::get_player_data(localplayercontroller, LocalPlayer);
+	uint64_t playerpawn = Helper::GetPawn(localplayercontroller);
 
 	if (Config.aimbot.bAimbot) {
 		Aimbot::RunAimbot(cmd);
@@ -100,7 +101,7 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	ShivLogic shiv;
 	VindictaLogic vindicta;
 
-	switch (LocalPlayer.HeroID) {
+	switch (LocalPlayer->HeroID) {
 
 	case Shiv:
 		shiv.RunScript(cmd);
@@ -112,11 +113,15 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 		break;
 	}
 
-	Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
-	if (!Config.antiaim.bAntiAim) {
-		cmd->pBaseUserCMD->playerViewAngle->viewAngles = old_viewangles;
+	//Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
+	//if (!Config.antiaim.bAntiAim && !Config.misc.SpeedBoost) {
+		//cmd->pBaseUserCMD->playerViewAngle->viewAngles = old_viewangles;
+	//}
+	if (Config.misc.SpeedBoost) {
+		Misc::SpeedBoost(localplayercontroller);
 	}
-
+	
+	delete LocalPlayer;
 
 	return;
 }
@@ -157,9 +162,9 @@ void CreateHooks() {
 	MH_EnableHook((LPVOID)RenderStartTarget);
 	std::cout << "[+] RenderStart Hook Initialized!" << std::endl;
 
-	//MH_CreateHook((LPVOID)DrawModelTarget, &detourdrawmodel, reinterpret_cast<LPVOID*>(&DrawModel));
-	//MH_EnableHook((LPVOID)DrawModelTarget);
-	//std::cout << "[+] CreateMove Hook Initialized!" << std::endl;
+	MH_CreateHook((LPVOID)DrawModelTarget, &detourdrawmodel, reinterpret_cast<LPVOID*>(&DrawModel));
+	MH_EnableHook((LPVOID)DrawModelTarget);
+	std::cout << "[+] DrawModel Hook Initialized!" << std::endl;
 
 
 

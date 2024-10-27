@@ -65,6 +65,8 @@ public:
     struct MiscSettings {
         bool bNorecoil = false;
         bool modfovandaspect = false;
+        bool SpeedBoost = false;
+        KeyBind SpeedBoostKey;
         float fovmodifier = 1.0f;
         float aspectratio = 1.0f;
     } misc;
@@ -79,6 +81,7 @@ public:
         bool AutoAimStake = false;
         bool AutoAimCrow = false;
 		bool AutoSnipe = false;
+        float AutoUltHealthPercent = 0.5f;
     } vindicta;
 
 	struct AntiAimSettings {
