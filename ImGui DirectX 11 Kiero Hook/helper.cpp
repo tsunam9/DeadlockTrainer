@@ -237,6 +237,24 @@ int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name)
 	return true;
 }
 
+  bool Helper::getPawnData(uint64_t entity_pawn, PlayerData* outputPlrData){
+
+
+	 if (!entity_pawn)
+		 return false;
+
+
+	 uint64_t GameSceneNode = *(uint64_t*)(entity_pawn + C_BaseEntity::m_pGameSceneNode);
+	 outputPlrData->m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
+	 outputPlrData->m_vecVelocity = *(vec3*)(entity_pawn + C_BaseEntity::m_vecVelocity);
+	 outputPlrData->TeamNum = *(int*)(entity_pawn + C_BaseEntity::m_iTeamNum);
+	 outputPlrData->dormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
+	 outputPlrData->weaponservices = *(uint64_t*)(entity_pawn + C_BasePlayerPawn::m_pWeaponServices);
+
+
+	 return true;
+ }
+
 bool Helper::get_xp_data(uint64_t entity, xpData* xpdataobj) {
 
 
@@ -324,7 +342,7 @@ std::string Helper::GetHeroNameByID(int id) {
 
 
 
-std::string Helper::get_schema_name(const uintptr_t& entity)
+std::string Helper::get_schema_name(const uint64_t entity)
 {
 	uintptr_t entity_identity = *(uintptr_t*)(entity + CEntityInstance::m_pEntity);
 	if (!entity_identity)
@@ -597,6 +615,9 @@ uint64_t Helper::GetPawnHandle(uint64_t entity) {
 
 uint64_t Helper::GetPawn(uint64_t entity_controller) {
 
+	if (!entity_controller)
+		return 0;
+
 	uint64_t PawnHandle = *(uint64_t*)(entity_controller + CCitadelPlayerController::m_hHeroPawn);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
 	return Pawn;
@@ -730,8 +751,19 @@ void Helper::CorrectMovement(CCitadelUserCmdPB* pCmd, float& fOldForward, float&
 		sidemove = -1.0f;
 
 	
-	pCmd->buttons |= IN_FORWARD;
-	pCmd->buttons |= IN_MOVELEFT;
+	if (forwardmove >= 0) {
+		pCmd->buttons |= IN_FORWARD;
+	}
+	else {
+		pCmd->buttons |= IN_BACK;
+	}
+
+	if (sidemove >= 0) {
+		pCmd->buttons |= IN_MOVELEFT;
+	}
+	else {
+		pCmd->buttons |= IN_MOVERIGHT;
+	}
 
 	pCmd->pBaseUserCMD->forwardMove = forwardmove;
 	pCmd->pBaseUserCMD->sideMove = sidemove;
@@ -787,6 +819,5 @@ bool Helper::IsAbilityCasting(uintptr_t ability) {
 	return false;
 
 }
-
 
 

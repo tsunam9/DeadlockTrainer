@@ -754,12 +754,13 @@ public:
 	static int get_max_entities();
 	static uint64_t get_base_entity_from_index(int index);
 	static uint64_t* get_base_entityptr_from_index(int index);
-	static std::string get_schema_name(const uintptr_t& entity);
+	static std::string get_schema_name(const uint64_t entity);
     static uint64_t CHandle_get_entry_index(uint64_t handle);
     static bool CHandle_is_valid(uint64_t handle);
     static uint64_t get_Camera();
     static uint64_t get_local_player();
     static bool get_player_data(uint64_t entity, PlayerData* outputPlrData);
+    static bool getPawnData(uint64_t entity_pawn, PlayerData* outputPlrData);
     static uint64_t get_localplr_weapon();
     static uint64_t gettracemanager();
     static bool CheckLocationVisible(vec3 LocalPlayerPos, vec3 LocationCheck);
@@ -821,4 +822,3 @@ public:
         return Helper::traceshape(this, pRay, &vecStart, &vecEnd, pFilter, pGameTrace);
     }
 };
-

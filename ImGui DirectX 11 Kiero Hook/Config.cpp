@@ -57,7 +57,7 @@ static ImVec4 JsonToImVec4(const json& j) {
     Config.aimbot.silentaim = j["aimbot"]["silentaim"].get<bool>();
     Config.aimbot.smooth = j["aimbot"]["smoothfactor"].get<float>();
     Config.aimbot.targetSelectionMode = j["aimbot"]["targetselectionmode"].get<int>();
-    Config.aimbot.VisibleCheck = j["aimbot"]["visibilitycheck"].get<bool>();
+    Config.aimbot.MovementFix = j["aimbot"]["MovementFix"].get<bool>();
 
     Config.antiaim.AAtype = j["antiaim"]["aatype"].get<int>();
     Config.antiaim.bAntiAim = j["antiaim"]["bAntiAim"].get<bool>();
@@ -74,6 +74,8 @@ static ImVec4 JsonToImVec4(const json& j) {
     Config.colors.namecoloresp = JsonToImVec4(j["colors"]["namecoloresp"]);
     Config.colors.skeletoncol = JsonToImVec4(j["colors"]["skeletoncol"]);
     Config.colors.tracerscol = JsonToImVec4(j["colors"]["tracerscol"]);
+    Config.colors.ChamsCol = JsonToImVec4(j["colors"]["ChamsCol"]);
+    Config.colors.LocalChamsCol = JsonToImVec4(j["colors"]["LocalChamsCol"]);
     
     Config.esp.bEsp = j["esp"]["bEsp"].get<bool>();
     Config.esp.boneEsp = j["esp"]["boneEsp"].get<bool>();
@@ -90,6 +92,9 @@ static ImVec4 JsonToImVec4(const json& j) {
     Config.esp.HealthText = j["esp"]["HealthText"].get<bool>();
     Config.esp.NameEsp = j["esp"]["NameEsp"].get<bool>();
     Config.esp.Tracers = j["esp"]["Tracers"].get<bool>();
+    Config.esp.Chams = j["esp"]["Chams"].get<bool>();
+    Config.esp.LocalChams = j["esp"]["LocalChams"].get<bool>();
+    Config.esp.ModelChams = j["esp"]["ModelChams"].get<bool>();
 
     Config.misc.bNorecoil = j["misc"]["bNorecoil"].get<bool>();
     Config.misc.fovmodifier = j["misc"]["fovmodifier"].get<float>();
@@ -105,6 +110,9 @@ static ImVec4 JsonToImVec4(const json& j) {
     Config.vindicta.AutoAimStake = j["vindicta"]["AutoAimStake"].get<bool>();
     Config.vindicta.AutoSnipe = j["vindicta"]["AutoSnipe"].get<bool>();
     Config.vindicta.AutoUltHealthPercent = j["vindicta"]["AutoUltHealthPercent"].get<float>();
+
+    Config.MenuKey.key = j["menu"]["menukey"].get<int>();
+    Config.MenuKey.name = j["menu"]["menukeyname"].get<std::string>();
 
 }
 
@@ -131,7 +139,7 @@ static ImVec4 JsonToImVec4(const json& j) {
      j["aimbot"]["silentaim"] = Config.aimbot.silentaim;
      j["aimbot"]["smoothfactor"] = Config.aimbot.smooth;
      j["aimbot"]["targetselectionmode"] = Config.aimbot.targetSelectionMode;
-     j["aimbot"]["visibilitycheck"] = Config.aimbot.VisibleCheck;
+     j["aimbot"]["MovementFix"] = Config.aimbot.MovementFix;
 
      j["antiaim"]["aatype"] = Config.antiaim.AAtype;
      j["antiaim"]["bAntiAim"] = Config.antiaim.bAntiAim;
@@ -148,6 +156,8 @@ static ImVec4 JsonToImVec4(const json& j) {
      j["colors"]["namecoloresp"] = ImVec4ToJson(Config.colors.namecoloresp);
      j["colors"]["skeletoncol"] = ImVec4ToJson(Config.colors.skeletoncol);
      j["colors"]["tracerscol"] = ImVec4ToJson(Config.colors.tracerscol);
+     j["colors"]["ChamsCol"] = ImVec4ToJson(Config.colors.ChamsCol);
+     j["colors"]["LocalChamsCol"] = ImVec4ToJson(Config.colors.LocalChamsCol);
 
      j["esp"]["bEsp"] = Config.esp.bEsp;
      j["esp"]["boneEsp"] = Config.esp.boneEsp;
@@ -164,6 +174,9 @@ static ImVec4 JsonToImVec4(const json& j) {
      j["esp"]["HealthText"] = Config.esp.HealthText;
      j["esp"]["NameEsp"] = Config.esp.NameEsp;
      j["esp"]["Tracers"] = Config.esp.Tracers;
+     j["esp"]["Chams"] = Config.esp.Chams;
+     j["esp"]["LocalChams"] = Config.esp.LocalChams;
+     j["esp"]["ModelChams"] = Config.esp.ModelChams;
 
      j["misc"]["bNorecoil"] = Config.misc.bNorecoil;
      j["misc"]["fovmodifier"] = Config.misc.fovmodifier;
@@ -179,6 +192,9 @@ static ImVec4 JsonToImVec4(const json& j) {
      j["vindicta"]["AutoAimStake"] = Config.vindicta.AutoAimStake;
      j["vindicta"]["AutoSnipe"] = Config.vindicta.AutoSnipe;
      j["vindicta"]["AutoUltHealthPercent"] = Config.vindicta.AutoUltHealthPercent;
+
+     j["menu"]["menukey"] = Config.MenuKey.key;
+     j["menu"]["menukeyname"] = Config.MenuKey.name;
 
      const std::string path = "C:/LynchWare/";
 

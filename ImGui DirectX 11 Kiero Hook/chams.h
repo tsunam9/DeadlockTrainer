@@ -3,9 +3,11 @@
 #include "stdint.h"
 #include "helper.h"
 #include "mem.h"
+#include "gameinterface.h"
 
 static uint64_t particlesdllbase = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "particles.dll");
 static uint64_t hTier0 = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "tier0.dll");
+static uint64_t materialsystembase = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "materialsystem2.dll");
 
 template <typename T = std::uint8_t>
 [[nodiscard]] T* GetAbsoluteAddress(T* pRelativeAddress, int nPreOffset = 0x0, int nPostOffset = 0x0)
@@ -187,6 +189,22 @@ class CMaterial2
 public:
 	virtual const char* GetName() = 0;
 	virtual const char* GetShareName() = 0;
+
+	__int64* FindParam(const char* ParamName)
+	{
+		using fnFindParam = __int64* (_fastcall*)(__int64 a1, const char* a2);
+
+		static auto findparams = reinterpret_cast<fnFindParam>(materialsystembase + 0xCB70);
+
+		__int64 tempvalue; 
+
+
+		__int64* returnvalue = findparams((__int64)this, ParamName);
+
+		return returnvalue;
+	}
+
+
 };
 
 
@@ -207,10 +225,12 @@ struct MaterialKeyVar_t
 	uint64_t FindKey(const char* szName)
 	{
 		using fnFindKeyVar = uint64_t(_fastcall*)(const char*, unsigned int, int);
-		static auto oFindKeyVar = reinterpret_cast<fnFindKeyVar>(MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 ? 57 48 81 EC ? ? ? ? 33 C0 8B DA"));
+		static auto oFindKeyVar = reinterpret_cast<fnFindKeyVar>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 ? 57 48 81 EC ? ? ? ? 33 C0 8B DA"));
 
 		// idk those enum flags, just saw it called like that soooo yea
-		return oFindKeyVar(szName, 0x12, 0x31415926);
+		auto result = oFindKeyVar(szName, 8u, 826366246);
+		return result;
+		
 	}
 };
 
@@ -227,29 +247,26 @@ public:
 	{
 		// @ida: #STR: shader, spritecard.vfx
 		using fnSetMaterialShaderType = void(__fastcall*)(void*, MaterialKeyVar_t, const char*, int);
-		static auto oSetMaterialShaderType = reinterpret_cast<fnSetMaterialShaderType>(MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 0F B6 01 45 0F B6 F9 8B 2A 4D 8B E0 4C 8B 72 ? 48 8B F9 C0 E8 ? 24 ? 3C ? 74 ? 41 B0 ? B2 ? E8 ? ? ? ? 0F B6 07 33 DB C0 E8 ? 24 ? 3C ? 75 ? 48 8B 77 ? EB ? 48 8B F3 4C 8D 44 24 ? C7 44 24 ? ? ? ? ? 48 8D 54 24 ? 89 6C 24 ? 48 8B CE 4C 89 74 24 ? E8 ? ? ? ? 8B D0 83 F8 ? 75 ? 45 33 C9 89 6C 24 ? 4C 8D 44 24 ? 4C 89 74 24 ? 48 8B D7 48 8B CE E8 ? ? ? ? 8B D0 0F B6 0F C0 E9 ? 80 E1 ? 80 F9 ? 75 ? 48 8B 4F ? EB ? 48 8B CB 8B 41 ? 85 C0 74 ? 48 8D 59 ? 83 F8 ? 76 ? 48 8B 1B 48 63 C2 4D 85 E4"));
-
-#ifdef CS_PARANOID
-		CS_ASSERT(oSetMaterialShaderType != nullptr);
-#endif
+		static auto oSetMaterialShaderType = reinterpret_cast<fnSetMaterialShaderType>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 0F B6 01 45 0F B6 F9 8B 2A 4D 8B E0 4C 8B 72 ? 48 8B F9 C0 E8 ? 24 ? 3C ? 74 ? 41 B0 ? B2 ? E8 ? ? ? ? 0F B6 07 33 DB C0 E8 ? 24 ? 3C ? 75 ? 48 8B 77 ? EB ? 48 8B F3 4C 8D 44 24 ? C7 44 24 ? ? ? ? ? 48 8D 54 24 ? 89 6C 24 ? 48 8B CE 4C 89 74 24 ? E8 ? ? ? ? 8B D0 83 F8 ? 75 ? 45 33 C9 89 6C 24 ? 4C 8D 44 24 ? 4C 89 74 24 ? 48 8B D7 48 8B CE E8 ? ? ? ? 8B D0 0F B6 0F C0 E9 ? 80 E1 ? 80 F9 ? 75 ? 48 8B 4F ? EB ? 48 8B CB 8B 41 ? 85 C0 74 ? 48 8D 59 ? 83 F8 ? 76 ? 48 8B 1B 48 63 C2 4D 85 E4"));
 
 		MaterialKeyVar_t shaderVar(0x162C1777, "shader");
-		oSetMaterialShaderType(this, shaderVar, szShaderName, 0x18);
+		oSetMaterialShaderType(this, shaderVar, szShaderName, 0x1A);
 	}
 
 	void SetMaterialFunction(const char* szFunctionName, int nValue)
 	{
-		using fnSetMaterialFunction = void(__fastcall*)(void*, MaterialKeyVar_t, int, int);
-		static auto oSetMaterialFunction = reinterpret_cast<fnSetMaterialFunction>(MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 0F B6 01 45 0F B6 F9 8B 2A 48 8B F9"));
+		using fnSetMaterialFunction = void(__fastcall*)(void*, int* FunctionVar, __int64 value, __int8 a4);
+		static auto oSetMaterialFunction = reinterpret_cast<fnSetMaterialFunction>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 0F B6 01 45 0F B6 F9 8B 2A 48 8B F9"));
 
 		MaterialKeyVar_t functionVar(szFunctionName, true);
-		oSetMaterialFunction(this, functionVar, nValue, 0x18);
+		oSetMaterialFunction(this, (int*)&functionVar, nValue, 0x14u);
 	}
 
 	char pad01[0x18];
 	CSceneAnimatableObject* pSceneAnimatableObject; // 0x18
 	CMaterial2* pMaterial; // 0x20
-	char pad02[0x18];
+	CMaterial2* pMaterial2; // 0x28
+	char pad02[0x20];
 	Color_t colValue; // 0x40
 	char pad03[0x4];
 	CObjectInfo* pObjectInfo; // 0x48
@@ -258,14 +275,14 @@ public:
 class IMaterialSystem2
 {
 public:
-	CMaterial2*** FindOrCreateFromResource(CMaterial2*** pOutMaterial, const char* szMaterialName)
+	CMaterial2*** FindOrCreateFromResource(CMaterial2*** pOutMaterial, __int64 szMaterialName)
 	{
 		return CallVFunc<CMaterial2***, 14U>(this, pOutMaterial, szMaterialName);
 	}
 
 	CMaterial2** CreateMaterial(CMaterial2*** pOutMaterial, const char* szMaterialName, CMeshData* pData)
 	{
-		return CallVFunc<CMaterial2**, 29U>(this, pOutMaterial, szMaterialName, pData, 0, 0, 0, 0, 0, 1);
+		return CallVFunc<CMaterial2**, 29U>(this, pOutMaterial, szMaterialName, pData, 0, 1);
 	}
 
 	void SetCreateDataByMaterial(const void* pData, CMaterial2*** const pInMaterial)
@@ -274,12 +291,21 @@ public:
 	}
 };
 
-static const char* flat = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
-{
-	shader = "toossls_2d_generic.vfx"
-	
-	g_tColorTexture = resource:"materials/default/default_color_tga_22e6f7.vtex_c"
-})";
+static const char* flat = R"(R"#(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d}
+			format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+			{
+                shader = "generic.vfx"
+                g_tColor = resource:"materials/dev/primary_white_color_tga_4eaba099.vtex"
+                g_tNormal = resource:"materials/default/default_normal_tga_7652cb.vtex"
+                g_tRoughness = resource:"materials/default/default_normal_tga_794cb9ce.vtex"
+                g_tMetalness = resource:"materials/default/default_normal_tga_794cb9ce.vtex"
+                g_tAmbientOcclusion = resource:"materials/default/default_normal_tga_b3f4ec4c.vtex"
+                F_IGNOREZ = 0
+                F_DISABLE_Z_WRITE = 0
+                F_DISABLE_Z_BUFFERING = 0
+                F_RENDER_BACKFACES = 1
+                g_vColorTint = [1.0, 1.0, 1.0, 1.0]
+			} )#")";
 
 static const char* texturedchams = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
@@ -311,11 +337,88 @@ static const char* texturedchams = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a
  
 })";
 
+static const char* debugMatBuffer = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+    shader = "environment_layer.vfx"
+    
+    F_PAINT_VERTEX_COLORS = 1
+    F_TRANSLUCENT = 1
+    F_DISABLE_Z_BUFFERING = 1
+    F_BLEND_MODE = 1
+    
+    MaterialLayerReferenceShaderId_1 = -1
+    g_flDisplacementAmount1 = 0
+    g_flDisplacementMidlevel1 = 128
+    
+    TextureColor1 = resource:"materials/default/default_color_tga_22e6f7.vtex"
+    TextureTintMask1 = resource:"materials/default/default_mask_tga_344101f8.vtex"
+    
+    g_vAlbedoContrastSaturationBrightness1 = [1.0, 1.0, 0.5, 0.0]
+    g_vLayerRoughnessContrastBrightness1 = [0.0, 0.0, 0.0, 0.0]
+})";
+
+
+
 class Chams
 {
 public:
 
 	static CStrongHandle<CMaterial2> CreateMaterial(const char* szMaterialName, const char szVmatBuffer[]);
-	static void DrawChams(material_data_t* matdata);
+	static void DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn);
 
+};
+
+class CSceneObject
+{
+public:
+    char pad_0000[184]; //0x0000
+    uint8_t r; //0x00B8
+    uint8_t g; //0x00B9
+    uint8_t b; //0x00BA
+    uint8_t a; //0x00BB
+    char pad_00BC[196]; //0x00BC
+}; //Size: 0x0180
+
+class CBaseSceneData
+{
+public:
+    char pad_0000[0x18]; //0x0000
+    CSceneObject* sceneObject; //0x0018
+    CMaterial2* material; //0x0020
+    CMaterial2* material2; //0x0028
+    char pad_0030[0x20]; //0x0030
+    uint8_t r; //0x0040
+    uint8_t g; //0x0041
+    uint8_t b; //0x0042
+    uint8_t a; //0x0043
+    char pad_0044[36]; //0x0044
+}; //Size: 0x0068
+
+class C_AggregateSceneObjectData
+{
+public:
+	char pad_0000[56]; //0x0000
+	uint8_t r; //0x0038
+	uint8_t g; //0x0039
+	uint8_t b; //0x003A
+	uint8_t a; //0x003B
+}; 
+
+
+class C_AggregateSceneObject
+{
+public:
+	char pad_0000[288]; //0x0000
+	int64_t m_nCount; //0x0120
+	C_AggregateSceneObjectData* m_Pdata; //0x0128
+	char pad_0130[1808]; //0x0130
+}; //Size: 0x0840
+
+class C_SceneLightObject
+{
+public:
+    char pad_0000[0xE4]; // 0x0
+    float r; // 0xE4
+    float g; // 0xE4
+    float b; // 0xE4
 };

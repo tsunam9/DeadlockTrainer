@@ -18,6 +18,7 @@ ImFont* cascadia = nullptr;
 ImFont* Franklin = nullptr;
 ImFont* segoesc = nullptr;
 
+
 void InitImGui()
 {
 	ImGui::CreateContext();
@@ -26,7 +27,7 @@ void InitImGui()
 	ImGui_ImplWin32_Init(window);
 	ImGui_ImplDX11_Init(pDevice, pContext);
 	//cascadia = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\CascadiaMono.ttf", 20.0f, NULL, io.Fonts->GetGlyphRangesDefault());
-	segoesc = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\SEGOESC.ttf", 20.0f, NULL, io.Fonts->GetGlyphRangesDefault());
+	segoesc = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\CORBEL.ttf", 20.0f, NULL, io.Fonts->GetGlyphRangesDefault());
 	Franklin = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\FRAMD.ttf", 15.0f, NULL, io.Fonts->GetGlyphRangesDefault());
 
 	ImGui::SetColorEditOptions(196776);
@@ -96,7 +97,10 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	}
 
 	//toggle menu
-	if(GetAsyncKeyState(VK_INSERT) & 1)
+
+
+
+	if(GetAsyncKeyState(Config.MenuKey.key) & 1)
 		Config.MenuOpen = !Config.MenuOpen;
 
 	ImGui_ImplDX11_NewFrame();
@@ -108,7 +112,8 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	ImGui::PopFont();
 
 	if (Config.MenuOpen) {
-		Menu::DrawMenu(fp);
+		Menu::DrawNewMenu(fp, pDevice);
+		//Menu::DrawMenu(fp);
 	}
 	ImGui::Render();
 

@@ -14,7 +14,7 @@ void ShivLogic::AutoUlt() {
 	float UltimateExecutehealth = 0.2f;
 	if (rlevel >= 7)
 		UltimateExecutehealth = 0.28f;
-	if (shiv::targetdata->Health <= 0 || shiv::targetdata->Health <= 0)
+	if (shiv::targetdata->Health <= 0)
 		return;
 
 	float targetpercent = (float)shiv::targetdata->Health / (float)shiv::targetdata->MaxHealth;
@@ -101,7 +101,11 @@ void ShivLogic::OnTick() {
 		 AutoUlt();
 	 }
 
-	 Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
+	 if (Config.aimbot.MovementFix) {
+		 auto camera = Helper::get_Camera();
+		 vec3 OldAngles = *(vec3*)(camera + 0x44);
+		 Helper::CorrectMovement(cmd, cmd->pBaseUserCMD->forwardMove, cmd->pBaseUserCMD->sideMove, OldAngles);
+	 }
 
 	
 

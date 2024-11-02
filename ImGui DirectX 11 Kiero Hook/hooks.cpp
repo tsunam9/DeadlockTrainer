@@ -1,5 +1,7 @@
 #include "hooks.h"
 
+static CMaterial2* permamat;
+static bool foundmat = false;
 
 struct object_info_t {
 	enum e_id : int {
@@ -10,41 +12,71 @@ struct object_info_t {
 	// todo: id var here (176 offset)
 };
 
+uint64_t matsystemasbase = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "materialsystem2.dll");
+
+typedef CMaterial2*** (*f_findmat)(__int64 a1, __int64* a2, __int64 a3);
+f_findmat findmat = nullptr;
+f_findmat findmattarget = reinterpret_cast<f_findmat>(matsystemasbase + 0x2A640);
+
 static uint64_t scenesytembase = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "scenesystem.dll");
 typedef __int64(__fastcall* f_DrawModel)(
 	__int64 a1,
 	__int64 a2,
-	material_data_t* materialdata,
+	CMeshData* materialdata,
 	int a4,
 	__int64 a5,
 	__int64 a6,
 	__int64 a7,
 	__int64 a8);
 f_DrawModel DrawModel = nullptr;
-f_DrawModel DrawModelTarget = reinterpret_cast<f_DrawModel>(scenesytembase + 0x49540);
+f_DrawModel DrawModelTarget = reinterpret_cast<f_DrawModel>(scenesytembase + MEM::PatternScanFunc((void*)scenesytembase, "48 8b c4 48 89 50 ? 53"));
 
-void detourdrawmodel(__int64 a1, __int64 a2, material_data_t* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, __int64 a8) {
+void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, __int64 a8) {
 
-	static void* permamat = material_data->pMaterial;
+	//permamat = material_data->pMaterial;
+
+	if (!Config.esp.Chams) {
+		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+		return;
+	}
 
 	uint64_t hOwner = material_data->pSceneAnimatableObject->hOwner;
 	if (!hOwner) {
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
 		return;
 	}
+
+
 	uint64_t ownerobjindex = Helper::CHandle_get_entry_index(hOwner);
 	uint64_t ownerobj = Helper::get_base_entity_from_index(ownerobjindex);
-	uint64_t localpawn = Helper::GetPawn(Helper::get_local_player());
+	if (!ownerobj)
+		return;
 
-	if (ownerobj == localpawn) {
+	std::string objname = Helper::get_schema_name(ownerobj);
+
+	uint64_t localpawn = Helper::GetPawn(Helper::get_local_player());
+	if (!localpawn)
+		return;
+
+	if ((!localpawn) || localpawn == 0xCCCCCCCCCCCCCCCC) {
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
 		return;
 	}
 
-	std::string objname = Helper::get_schema_name(ownerobj);
+	
+		
 
 	if(objname == "C_CitadelPlayerPawn"){
-		Chams::DrawChams(material_data);
+
+		bool islocal = false;
+
+		if (ownerobj == localpawn) {
+			islocal = true;
+		}
+
+
+		Chams::DrawChams(material_data, islocal, ownerobj);
+
 	}
 
 	DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
@@ -113,10 +145,9 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 		break;
 	}
 
-	//Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
-	//if (!Config.antiaim.bAntiAim && !Config.misc.SpeedBoost) {
-		//cmd->pBaseUserCMD->playerViewAngle->viewAngles = old_viewangles;
-	//}
+	if (Config.aimbot.MovementFix) {
+		Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
+	}
 	if (Config.misc.SpeedBoost) {
 		Misc::SpeedBoost(localplayercontroller);
 	}
@@ -148,6 +179,183 @@ void __fastcall hkRenderStart(CViewRender* pViewRender)
 
 }
 
+
+CMaterial2*** __fastcall hkFindMat(__int64 a1, __int64* a2, __int64 a3)
+{
+	if (foundmat) {
+		return findmat(a1, a2, a3);
+	}
+	std::cout << "findmat called\n";
+	auto result = findmat(a1, a2, a3);
+	permamat = **result;
+	foundmat = true;
+	return result;
+}
+
+using fnSetMaterialFunction = void(__fastcall*)(unsigned __int64* a1, int* functionvar, __int64 value, unsigned __int8 a4);
+
+static auto oSetMaterialFunction = reinterpret_cast<fnSetMaterialFunction>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 0F B6 01 45 0F B6 F9 8B 2A 48 8B F9"));
+fnSetMaterialFunction SetMaterial = nullptr;
+
+void hkSetMaterial(unsigned __int64* a1,int* a2, __int64 a3, unsigned __int8 a4 ) {
+
+	std::cout << "SetMaterialVar Called \n";
+	SetMaterial(a1, a2, a3, a4);
+}
+
+using fnPotential = void(__fastcall*)(__int64 a1, __int64 a2, __int64* a3);
+static auto PotentialTarget = reinterpret_cast<fnPotential>(matsystemasbase + 0x6EE0);
+fnPotential ogPotential = nullptr;
+
+void hkpotential(__int64 a1, __int64 a2, __int64* a3){
+
+	std::cout << "Potential " << std::endl;
+	ogPotential(a1, a2, a3);
+	
+}
+
+
+using fnGetParams = __int64(__fastcall*)(__int64 firstparam, const char* param);
+static auto ParamTarget = reinterpret_cast<fnPotential>(matsystemasbase + 0x6EE0);
+fnGetParams ogFindParams = nullptr;
+
+__int64 __fastcall hkFindParam(__int64 firstparam, const char* param) {
+
+
+	std::cout << "FINDPARAMS CALLED\n";
+
+
+	return ogFindParams(firstparam, param);
+}
+
+
+using fnUpdateSceneObject = void(__fastcall*)(C_AggregateSceneObject* object, void* unk);
+fnUpdateSceneObject UpdateSceneObjectTarget = reinterpret_cast<fnUpdateSceneObject>(scenesytembase + MEM::PatternScanFunc((void*)scenesytembase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 4C 8B F9"));
+fnUpdateSceneObject ogUpdateSceneObject = nullptr;
+
+void __fastcall hkUpdateSceneObject(C_AggregateSceneObject* object, void* unk)
+{
+	ogUpdateSceneObject(object, unk);
+	return;
+
+
+	__try {
+		// First validate object pointer
+		if (!object || (uintptr_t)object < 0x10000) {
+			return;
+		}
+
+		// Read count first and validate before anything else
+		int count = 0;
+		__try {
+			count = object->m_nCount;
+			// Validate count is reasonable (assuming no object should have more than 1000 elements)
+			if (count <= 0 || count > 1000) {
+				return;
+			}
+		}
+		__except (EXCEPTION_EXECUTE_HANDLER) {
+			return;  // Exit if we can't even read the count
+		}
+
+		// Now check data pointer
+		void* dataPtr = nullptr;
+		__try {
+			dataPtr = object->m_Pdata;
+			if (!dataPtr || (uintptr_t)dataPtr < 0x10000) {
+				return;
+			}
+		}
+		__except (EXCEPTION_EXECUTE_HANDLER) {
+			return;  // Exit if we can't read the data pointer
+		}
+
+		// Call original function
+		ogUpdateSceneObject(object, unk);
+
+		// Validate again after original function
+		if (object->m_nCount != count || object->m_Pdata != dataPtr) {
+			return;  // Data changed during update, abort
+		}
+
+		// Now try to modify only objects with count == 1 first
+		// This helps us identify if the issue is with multi-element objects
+		if (count == 1) {
+			__try {
+				// Test read access first
+				volatile BYTE testRead = object->m_Pdata[0].r;
+
+				// If read succeeded, try write
+				object->m_Pdata[0].r = 255;
+				object->m_Pdata[0].g = 255;
+				object->m_Pdata[0].b = 255;
+			}
+			__except (EXCEPTION_EXECUTE_HANDLER) {
+				// Silent fail - we've validated what we can
+				return;
+			}
+		}
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER) {
+		return;
+	}
+}
+
+
+using fnLightSceneObject = void(__fastcall*)(void* ptr, C_SceneLightObject* object, void* unk);
+fnLightSceneObject LightSceneTarget = reinterpret_cast<fnLightSceneObject>(scenesytembase + MEM::PatternScanFunc((void*)scenesytembase, "48 89 54 24 ? 53 41 56 41 57"));
+fnLightSceneObject ogLightScene = nullptr;
+
+void __fastcall hkLightSceneObject(void* ptr, C_SceneLightObject * object, void* unk)
+{
+
+	ogLightScene(ptr, object, unk);
+
+		object->r = 0.0f;
+		object->g = 0.0f;
+		object->b = 0.0f;
+
+
+}
+
+enum ModelType_t : int
+{
+	MODEL_SUN,
+	MODEL_CLOUDS,
+	MODEL_EFFECTS,
+	MODEL_OTHER,
+};
+
+
+using fnDrawSceneObject = void(__fastcall*)(void* ptr, void* a2, CBaseSceneData* scene_data, int count, int a5, void* a6, void* a7, void* a8);
+fnDrawSceneObject DrawSceneObjectTarget = reinterpret_cast<fnDrawSceneObject>(scenesytembase + MEM::PatternScanFunc((void*)scenesytembase, "48 89 54 24 ? 53 41 56 41 57"));
+fnDrawSceneObject ogDrawSceneObject = nullptr;
+
+
+void hkDrawSceneObject(void* ptr, void* a2, CBaseSceneData* scene_data, int count, int a5, void* a6, void* a7, void* a8)
+{
+
+	ogDrawSceneObject(ptr, a2, scene_data, count, a5, a6, a7, a8);
+	return;
+
+		for (int i = 0; i < count; ++i)
+		{
+			auto scene_ptr = &scene_data[i];
+			if (scene_ptr)
+			{
+				scene_ptr->r = 0;
+				scene_ptr->g = 0;
+				scene_ptr->b = 0;
+				scene_ptr->a = 0;
+			}
+		}
+
+
+	ogDrawSceneObject(ptr, a2, scene_data, count, a5, a6, a7, a8);
+}
+
+
+
 void CreateHooks() {
 
 	static bool init = false;
@@ -165,6 +373,31 @@ void CreateHooks() {
 	MH_CreateHook((LPVOID)DrawModelTarget, &detourdrawmodel, reinterpret_cast<LPVOID*>(&DrawModel));
 	MH_EnableHook((LPVOID)DrawModelTarget);
 	std::cout << "[+] DrawModel Hook Initialized!" << std::endl;
+
+	//MH_CreateHook((LPVOID)UpdateSceneObjectTarget, &hkUpdateSceneObject, reinterpret_cast<LPVOID*>(&ogUpdateSceneObject));
+	//MH_EnableHook((LPVOID)UpdateSceneObjectTarget);
+	//std::cout << "[+] UpdateSceneObject Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)LightSceneTarget, &hkLightSceneObject, reinterpret_cast<LPVOID*>(&ogLightScene));
+	MH_EnableHook((LPVOID)LightSceneTarget);
+	std::cout << "[+] LightScene Hook Initialized!" << std::endl;
+
+	//MH_CreateHook((LPVOID)DrawSceneObjectTarget, &hkDrawSceneObject, reinterpret_cast<LPVOID*>(&ogDrawSceneObject));
+	//MH_EnableHook((LPVOID)DrawSceneObjectTarget);
+	//std::cout << "[+] DrawSceneObject Hook Initialized!" << std::endl;
+
+	//MH_CreateHook((LPVOID)ParamTarget, &hkFindParam, reinterpret_cast<LPVOID*>(&ogFindParams));
+	//MH_EnableHook((LPVOID)ParamTarget);
+	//std::cout << "[+] FindParams Hook Initialized!" << std::endl;
+
+
+	//MH_CreateHook((LPVOID)findmattarget, &hkFindMat, reinterpret_cast<LPVOID*>(&findmat));
+    //MH_EnableHook((LPVOID)findmattarget);
+	//std::cout << "[+] Findmat Hook Initialized!" << std::endl;
+
+	//MH_CreateHook((LPVOID)oSetMaterialFunction, &hkSetMaterial, reinterpret_cast<LPVOID*>(&SetMaterial));
+	//MH_EnableHook((LPVOID)oSetMaterialFunction);
+	//std::cout << "[+] SetMat Hook Initialized!" << std::endl;
 
 
 

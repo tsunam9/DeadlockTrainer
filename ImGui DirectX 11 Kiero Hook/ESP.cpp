@@ -198,8 +198,8 @@ void DrawMinionEsp(uintptr_t entity) {
 		return;
 	}
 	
-	uint64_t entteamnum = 263169 + LocalPlayerData->TeamNum;
-	if (EntInfo->m_iteamnum != entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
+	uint64_t entteamnum = 263168 + LocalPlayerData->TeamNum;
+	if (EntInfo->m_iteamnum == entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
 		delete EntInfo;
 		delete LocalPlayerData;
 		return;
@@ -322,14 +322,37 @@ const char* Vec3ToCString(const vec3& vec) {
 void Esp::DoEsp() {
 
 	processed_ents_esp.clear();
-	bool result = sort_esp_entities();
-	if (!result)
-		return;
+	GlobalVars.SortEnts();
+	processed_ents_esp = *GlobalVars.entlist.active;
 
 	if (Config.esp.DrawFov) {
 		DrawFov();
 	}
 
+
+	/*
+	
+		PlayerData* LocalPlrData = new PlayerData;
+	Helper::get_player_data(Helper::get_local_player(), LocalPlrData);
+	vec2* viewangles = (vec2*)(Helper::get_Camera() + 0x44);
+
+	char buffer[256];
+	snprintf(buffer, sizeof(buffer), "LocalPlayer: 0x%016llx", Helper::get_local_player());
+	draw.ncDrawText(50, 100, IM_COL32(255, 255, 255, 255), buffer);
+
+	snprintf(buffer, sizeof(buffer), "Team: %d", LocalPlrData->TeamNum);
+	draw.ncDrawText(50, 125, IM_COL32(255, 255, 255, 255), buffer);
+
+	snprintf(buffer, sizeof(buffer), "Velocity: X:%f , Y:%f , Z:%f  ", LocalPlrData->m_vecVelocity.x, LocalPlrData->m_vecVelocity.y, LocalPlrData->m_vecVelocity.z);
+	draw.ncDrawText(50, 150, IM_COL32(255, 255, 255, 255), buffer);
+
+	snprintf(buffer, sizeof(buffer), "Local Pos: X:%f , Y:%f , Z:%f ", LocalPlrData->m_vecOrigin.x, LocalPlrData->m_vecOrigin.y, LocalPlrData->m_vecOrigin.z);
+	draw.ncDrawText(50, 175, IM_COL32(255, 255, 255, 255), buffer);
+
+	snprintf(buffer, sizeof(buffer), "Local Angle: PITCH:%f , YAW:%f  ", viewangles->x, viewangles->y);
+	draw.ncDrawText(50, 200, IM_COL32(255, 255, 255, 255), buffer);
+	
+	*/
 
 
 /*
@@ -349,7 +372,7 @@ void Esp::DoEsp() {
 		bool check1vis = Helper::CheckLocationVisible(check1, targetheadpos);
 		bool check2vis = Helper::CheckLocationVisible(check2, targetheadpos);
 		bool check3vis = Helper::CheckLocationVisible(check3, targetheadpos);
-		bool check4vis = Helper::CheckLocationVisible(check4, targetheadpos);
+		bool check4vis = Helper::CheckLocationVisible(check4, targetheadpos);z
 		bool check5vis = Helper::CheckLocationVisible(check5, targetheadpos);
 
 		vec2 screen1;
@@ -469,10 +492,10 @@ void Esp::DrawEsp(uintptr_t Entity, PlayerData* EntInfo)
 	Helper::WorldToScreen(HeadPos, ScreenHead);
 
 	int height = ScreenFeet.y - ScreenHead.y;
-	int width = height / 1.75;
+	int width = height / 1.55;
 	vec2 BoxHead;
 	BoxHead.x = ScreenHead.x - width / 2;
-	BoxHead.y = ScreenHead.y - height / 10;
+	BoxHead.y = ScreenHead.y - height / 5;
 	vec2 resolution = Helper::GetResolution();
 
 	if (Config.esp.DrawAimbotTarget && Aimbot::GetCurrentAimbotTarget() == Entity) {
@@ -519,7 +542,7 @@ void Esp::DrawEsp(uintptr_t Entity, PlayerData* EntInfo)
 			delete LocalPlayerData;
 		}
 		if (Config.esp.NameEsp) {
-			draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y - 15.0f, ImColor(Config.colors.namecoloresp), Helper::GetHeroNameByID(EntInfo->HeroID).c_str());
+			draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2, ImColor(Config.colors.namecoloresp), Helper::GetHeroNameByID(EntInfo->HeroID).c_str());
 		}
 		if (Config.esp.HealthBar) {
 			float missinghealth = 1.0f - ((float)EntInfo->Health/ (float)EntInfo->MaxHealth);

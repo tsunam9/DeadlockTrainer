@@ -49,6 +49,12 @@ void Drawing::DrawText(float x, float y, ImU32 color, const char* text) {
 	draw_list->AddText(ImVec2(x, y), color, text);
 }
 
+void Drawing::ncDrawText(float x, float y, ImU32 color, const char* text) {
+
+	ImDrawList* draw_list = ImGui::GetBackgroundDrawList(); // Use the background draw list for ESP
+	draw_list->AddText(ImVec2(x, y), color, text);
+}
+
 void Drawing::DrawFilledBox(float x, float y, float width, float height, ImU32 color) {
 	ImDrawList* draw_list = ImGui::GetBackgroundDrawList(); // Use the background draw list for ESP
 	draw_list->AddRectFilled(ImVec2(x, y), ImVec2(x + width, y + height), color);

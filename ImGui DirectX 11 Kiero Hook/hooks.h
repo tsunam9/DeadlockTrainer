@@ -5,6 +5,7 @@
 #include "vindicta.h"
 #include "mem.h"
 #include "chams.h"
+#include "helper.h"
 
 
 static void* backup;

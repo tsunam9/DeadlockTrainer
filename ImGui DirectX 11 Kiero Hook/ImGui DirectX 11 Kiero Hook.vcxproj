@@ -152,7 +152,7 @@
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="ESP.cpp" />
     <ClCompile Include="gameinterface.cpp" />
-    <ClCompile Include="globals.cpp" />
+    <ClCompile Include="Globals.cpp" />
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="heros.cpp" />
     <ClCompile Include="hooks.cpp" />
@@ -193,7 +193,7 @@
     <ClInclude Include="Drawing.h" />
     <ClInclude Include="ESP.h" />
     <ClInclude Include="gameinterface.h" />
-    <ClInclude Include="globals.h" />
+    <ClInclude Include="Globals.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="heros.h" />
     <ClInclude Include="hooks.h" />

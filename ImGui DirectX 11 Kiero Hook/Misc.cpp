@@ -32,6 +32,8 @@ void Misc::SimpleNoRecoil(){
 
 }
 
+
+
 void Misc::SpeedBoost(uint64_t localplayercontroller) {
 
 	static bool needfix = false;
@@ -58,6 +60,25 @@ void Misc::SpeedBoost(uint64_t localplayercontroller) {
 
 }
 
+void Misc::DoSkyModulation(){
+
+	for (int i = 0; i < GlobalVars.entlist.active->size(); i++) {
+
+		uint64_t Entity = (*GlobalVars.entlist.active)[i];
+			if (!Entity)
+				return;
+
+		auto plrstring = Helper::get_schema_name(Entity);
+
+		if (!(plrstring == "CEnvSky"))
+			return;
+
+		std::cout << Entity << std::endl;
+
+
+	}
+}
+
 
 
 Drawing testdraw;
@@ -72,4 +93,5 @@ void testbed() {
 void Misc::DoMisc() {
 		SimpleNoRecoil();
 		testbed();
+		DoSkyModulation();
 }

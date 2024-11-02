@@ -12,6 +12,7 @@ struct KeyBind {
     std::string name = "Always";
     int key = 0;           // The key code
     bool waitingForKey = false; // Track if this keybind is waiting for a key press
+
 };
 
 
@@ -28,6 +29,7 @@ public:
 		KeyBind AimKey;
         KeyBind AimKeyXp;
         KeyBind AimKeyMinions;
+        bool MovementFix = false;
 		bool AimXp = false;
         bool AimMinions = false;
         int targetSelectionMode = 0; // 0, 1, 2... depending on your mode
@@ -36,7 +38,6 @@ public:
         float smooth = 0.0f;
         int aimBone = 0; // Example bone index
         bool silentaim = false;
-		bool VisibleCheck = false;
         bool AutoFire = false;
         bool magicbullet = false;
         KeyBind magicbulletkey;
@@ -60,6 +61,9 @@ public:
         bool DrawMonsters = false;
         bool DrawMinions = false;
         bool DrawAimbotTarget = false;
+        bool Chams = false;
+        bool ModelChams = false;
+        bool LocalChams = false;
     } esp;
 
     struct MiscSettings {
@@ -103,6 +107,8 @@ public:
         ImVec4 drawxpcol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
         ImVec4 drawmonsterscol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
         ImVec4 aimbotTargetcol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 ChamsCol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 LocalChamsCol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
         
 
 
@@ -113,7 +119,7 @@ public:
         float slider1 = 0.0f;
         float slider2 = 0.0f;
         float inputfloat = 0.0f;
-        int inputint = 0.0f;
+        int inputint = 0x20;
     }tempvalues;
 
     static void LoadConfig(const std::string& filename);
@@ -124,6 +130,7 @@ public:
 
 
     // General settings
+    KeyBind MenuKey = KeyBind("Insert", VK_INSERT);
     bool MenuOpen = true;
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "includes.h"
 #include "Config.h"
+#include "Globals.h"
 
 
 class Aimbot {

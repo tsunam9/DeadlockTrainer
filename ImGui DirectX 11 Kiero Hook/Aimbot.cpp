@@ -5,9 +5,6 @@
 
 #define M_PI 3.14159265358979323846
 
-
-std::vector<uint64_t> processed_ents;
-
 //get PlayerData
 static uint64_t LocalPlayerController;
 static PlayerData LocalPlayerData;
@@ -52,8 +49,14 @@ bool IsNpcVisible(uint64_t entity) {
 	Helper::get_npc_data(entity, TargetNpcData);
 	vec3 LocalCameraPos = *(vec3*)(CameraManager + 0x38);
 	vec3 LocalPlayerHead = Helper::GetBonePosition(Helper::get_local_player(), "head");
-	return Helper::CheckLocationVisible(LocalCameraPos, TargetNpcData->m_vecOrigin) && Helper::CheckLocationVisible(LocalPlayerHead, TargetNpcData->m_vecOrigin);
+	int boneindex = Helper::get_bone_index(entity, "head");
+	vec3 MinionHead = Helper::GetBoneVectorFromIndex(entity, boneindex);
+
+	
+
+	bool check1 = Helper::CheckLocationVisible(LocalCameraPos, MinionHead);
 	delete TargetNpcData;
+	return check1;
 }
 
 bool ClosestVisiblePosToTarget(vec3 localheadpos, vec3 target, vec3 &AimFromPos) {
@@ -104,31 +107,6 @@ bool ClosestVisiblePosToTarget(vec3 localheadpos, vec3 target, vec3 &AimFromPos)
 }
 
 
-inline void sort_entities()
-{
-	int max_ents = Helper::get_max_entities();
-
-	for (size_t i = 1; i <= static_cast<size_t>(max_ents); ++i)
-	{
-		uint64_t entity = Helper::get_base_entity_from_index(i);
-
-		if (!entity)
-			continue;
-
-		std::string EntName = Helper::get_schema_name(entity);
-
-		if (EntName == "CCitadelPlayerController" && !*(bool*)(entity + CBasePlayerController::m_bIsLocalPlayerController))
-			processed_ents.push_back(entity);
-		else if (Config.aimbot.AimXp && EntName == "CItemXP")
-			processed_ents.push_back(entity); // for optimizing silentaim
-		else if (Config.aimbot.AimMinions && EntName == "C_NPC_Trooper")
-			processed_ents.push_back(entity);
-
-		
-	}	
-}
-
-
 
 uint64_t Aimbot::GetCurrentAimbotTarget() {
 		return CurrentPlayerTarget;
@@ -145,16 +123,16 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 	int lowestfovindex = 999;
 
 	// Sort Entities
-	for (int i = 0; i < processed_ents.size(); i++) {
+	for (int i = 0; i < GlobalVars.entlist.active->size(); i++) {
 
-		if (processed_ents.empty() || !processed_ents[i])
+		if (GlobalVars.entlist.active->empty() || (!(*GlobalVars.entlist.active)[i]))
 			continue;
 
-		std::string entClass = Helper::get_schema_name(processed_ents[i]);
+		std::string entClass = Helper::get_schema_name((*GlobalVars.entlist.active)[i]);
 
 		if (TargetEntityType == "CCitadelPlayerController" && entClass == "CCitadelPlayerController") {
 			PlayerData* TargetPlayerData = new PlayerData;
-			Helper::get_player_data(processed_ents[i], TargetPlayerData);
+			Helper::get_player_data((*GlobalVars.entlist.active)[i], TargetPlayerData);
 
 
 			if (!TargetPlayerData->isalive) {
@@ -167,7 +145,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			}
 
 			if(!Config.aimbot.magicbullet || !Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key)){ // if magic bullet then obviously dont do vischeck 
-				if (Config.aimbot.VisibleCheck && IsPlayerVisible(processed_ents[i]) == false) {
+				if (IsPlayerVisible((*GlobalVars.entlist.active)[i]) == false) {
 					delete TargetPlayerData;
 					continue;
 				}
@@ -177,7 +155,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 
 
 			vec3 TargetPos = { 0, 0, 0 };
-			TargetPos = Helper::GetBonePosition(processed_ents[i], "head");
+			TargetPos = Helper::GetBonePosition((*GlobalVars.entlist.active)[i], "head");
 
 			if (TargetPos.x == 0 && TargetPos.y == 0 && TargetPos.z == 0) {
 				delete TargetPlayerData;
@@ -230,7 +208,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 		else if (entClass == "CItemXP" && TargetEntityType == "CItemXP") {
 
 			xpData* TargetXPData = new xpData;
-			Helper::get_xp_data(processed_ents[i], TargetXPData);
+			Helper::get_xp_data((*GlobalVars.entlist.active)[i], TargetXPData);
 			float GameTime = Helper::GetGameTime();
 			float launchtime = TargetXPData->m_flLaunchtime;
 
@@ -239,7 +217,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			if (GameTime < TargetXPData->m_flLaunchtime + 0.184)
 				continue;
 
-			if (Config.aimbot.VisibleCheck && IsXpVisible(processed_ents[i]) == false)
+			if (IsXpVisible((*GlobalVars.entlist.active)[i]) == false)
 				continue;
 
 			float xpdistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetXPData->m_vecOrigin);
@@ -272,26 +250,28 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 		else if (entClass == "C_NPC_Trooper" && TargetEntityType == "C_NPC_Trooper") {
 
 			NpcData* TargetNpcData = new NpcData;
-			Helper::get_npc_data(processed_ents[i], TargetNpcData);
+			Helper::get_npc_data((*GlobalVars.entlist.active)[i], TargetNpcData);
+
 
 			if (TargetNpcData->m_bDormant) {
 				delete TargetNpcData;
 				continue;
 			}
 
-			uint64_t entteamnum = 263169 + LocalPlayerData.TeamNum;
-			if (TargetNpcData->m_iteamnum != entteamnum) { // really awful terribleness because the number just happens to be this for minion teams
+			uint64_t entteamnum = 263168 + LocalPlayerData.TeamNum;
+			if (TargetNpcData->m_iteamnum == entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
 				delete TargetNpcData;
 				continue;
 			}
+
 			if (TargetNpcData->m_ilifestate != 0) {
 				delete TargetNpcData;
 				continue;
 			}
 
-			if (Config.aimbot.VisibleCheck && IsNpcVisible(processed_ents[i]) == false) {
+			if (IsNpcVisible((*GlobalVars.entlist.active)[i]) == false) {
 				delete TargetNpcData;
-				continue;
+				continue;	
 			}
 
 			float MinionDistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetNpcData->m_vecOrigin);
@@ -305,12 +285,13 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 				continue;
 			}
 
-			int boneindex = Helper::get_bone_index(processed_ents[i], "head");
+			int boneindex = Helper::get_bone_index((*GlobalVars.entlist.active)[i], "head");
 			if (!boneindex) {
 				delete TargetNpcData;
 				continue;
 			}
-			vec3 HeadPos = Helper::GetBoneVectorFromIndex(processed_ents[i], boneindex);  // No re-declaration of TargetPos here
+
+			vec3 HeadPos = Helper::GetBoneVectorFromIndex((*GlobalVars.entlist.active)[i], boneindex);  // No re-declaration of TargetPos here
 			vec2 LocalPlayerAngles = { ViewAngles->x, ViewAngles->y };
 			vec2 AimAngles = GetAimAngles(HeadPos);
 			vec2 angle_difference = AimAngles - LocalPlayerAngles;
@@ -326,6 +307,11 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			if (MinionDistance < ClosestDistance) {
 				ClosestDistance = MinionDistance;
 				ClosestIndex = i;
+			}
+
+			if (TargetNpcData->m_iHealth < LowestHealth) {
+				LowestHealth = TargetNpcData->m_iHealth;
+				LowestHealthIndex = i;
 			}
 
 			if (minionfov < LowestFov) {
@@ -348,22 +334,22 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 				CurrentPlayerTarget = 0;
 				return 0;
 			}
-			CurrentPlayerTarget = processed_ents[ClosestIndex];
-			return processed_ents[ClosestIndex];
+			CurrentPlayerTarget = (*GlobalVars.entlist.active)[ClosestIndex];
+			return (*GlobalVars.entlist.active)[ClosestIndex];
 		case 1:
 			if (LowestHealthIndex == 999) {
 				CurrentPlayerTarget = 0;
 				return 0;
 			}
-			CurrentPlayerTarget = processed_ents[LowestHealthIndex];
-			return processed_ents[LowestHealthIndex];
+			CurrentPlayerTarget = (*GlobalVars.entlist.active)[LowestHealthIndex];
+			return (*GlobalVars.entlist.active)[LowestHealthIndex];
 		case 2:
 			if (lowestfovindex == 999) {
 				CurrentPlayerTarget = 0;
 				return 0;
 			}
-			CurrentPlayerTarget = processed_ents[lowestfovindex];
-			return processed_ents[lowestfovindex];
+			CurrentPlayerTarget = (*GlobalVars.entlist.active)[lowestfovindex];
+			return (*GlobalVars.entlist.active)[lowestfovindex];
 		}
 	}
 
@@ -373,17 +359,17 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			if (ClosestIndex == 999) {
 				return 0;
 			}
-			return processed_ents[ClosestIndex];
+			return (*GlobalVars.entlist.active)[ClosestIndex];
 		case 1:
 			if (lowestfovindex == 999) {
 				return 0;
 			}
-			return processed_ents[lowestfovindex];
+			return (*GlobalVars.entlist.active)[lowestfovindex];
 		case 2:
 			if (lowestfovindex == 999) {
 				return 0;
 			}
-			return processed_ents[lowestfovindex];
+			return (*GlobalVars.entlist.active)[lowestfovindex];
 		}
 	}
 
@@ -393,17 +379,17 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			if (ClosestIndex == 999) {
 				return 0;
 			}
-			return processed_ents[ClosestIndex];
+			return (*GlobalVars.entlist.active)[ClosestIndex];
 		case 1:
 			if (LowestHealthIndex == 999) {
 				return 0;
 			}
-			return processed_ents[LowestHealthIndex];
+			return (*GlobalVars.entlist.active)[LowestHealthIndex];
 		case 2:
-			if (LowestHealthIndex == 999) {
+			if (lowestfovindex == 999) {
 				return 0;
 			}
-			return processed_ents[lowestfovindex];
+			return (*GlobalVars.entlist.active)[lowestfovindex];
 		}
 	}
 }
@@ -686,8 +672,9 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 		return;
 
 	CUserCmd = usercmd;
-	processed_ents.clear();
-	sort_entities();
+	GlobalVars.SortEnts();
+
+
 
 	crosshairposition = (vec2*)(CameraManager + Offsets.o_crosshairposfromcameramanager);
 	CameraManager = *(uint64_t*)(ClientModuleBase + Offsets.o_CameraManager + 0x28);
@@ -700,7 +687,7 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 	abilities = Helper::GetAbilities(Helper::GetPawn(Helper::get_local_player()));
 
 	
-	if (processed_ents.empty()) {
+	if (GlobalVars.entlist.active->empty()) {
 		delete tempplrdata;
 		return;
 	}
@@ -712,7 +699,7 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 	if(Config.aimbot.AimXp)
 		 xp_target = Aimbot::GetAimbotTarget("CItemXP");
 	if(Config.aimbot.AimMinions)
-		 minion_target = Aimbot::GetAimbotTarget("C_NPC_Trooper");
+	 minion_target = Aimbot::GetAimbotTarget("C_NPC_Trooper");
 
 
 	if (Config.aimbot.magicbullet && Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key) && aimtarget ) {

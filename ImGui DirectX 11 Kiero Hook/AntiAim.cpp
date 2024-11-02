@@ -10,6 +10,9 @@ int generateRandomNumber(int min, int max) {
 
 void AntiAim::DoAntiAim(CCitadelUserCmdPB* cmd) {
 
+	if (Config.misc.SpeedBoost && Helper::KeyBindHandler(Config.misc.SpeedBoostKey.key)) {
+		return;
+	}
 
 	uint64_t CameraManager = Helper::get_Camera();
 	vec2 ViewAngles = *(vec2*)(CameraManager + 0x44);

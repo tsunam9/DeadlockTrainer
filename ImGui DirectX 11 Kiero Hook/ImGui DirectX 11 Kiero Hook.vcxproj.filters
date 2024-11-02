@@ -76,6 +76,9 @@
     <Filter Include="Source Files\Menu">
       <UniqueIdentifier>{6ad05beb-af5a-469b-b3a8-e0b382a2efe8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Globals">
+      <UniqueIdentifier>{94802320-d0f6-4807-b39e-8f96257c1b61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kiero\minhook\src\buffer.c">
@@ -162,14 +165,14 @@
     <ClCompile Include="chams.cpp">
       <Filter>Source Files\Features\Chams</Filter>
     </ClCompile>
-    <ClCompile Include="globals.cpp">
-      <Filter>Source Files\Helper</Filter>
-    </ClCompile>
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files\Menu</Filter>
     </ClCompile>
     <ClCompile Include="vindicta.cpp">
       <Filter>Source Files\Features\Heros\Vindicta</Filter>
+    </ClCompile>
+    <ClCompile Include="Globals.cpp">
+      <Filter>Source Files\Globals</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,11 +289,11 @@
     <ClInclude Include="chams.h">
       <Filter>Source Files\Features\Chams</Filter>
     </ClInclude>
-    <ClInclude Include="globals.h">
-      <Filter>Source Files\Helper</Filter>
-    </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Source Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Source Files\Globals</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
