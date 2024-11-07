@@ -11,9 +11,8 @@ void GodFunction(){
 
 	CreateHooks();
 
-        if (Config.esp.bEsp) {
-            Main_ESPObj.DoEsp();
-		}
+        Main_ESPObj.DoEsp();
+		
 		Main_MiscObj.DoMisc();
 
 }

@@ -514,6 +514,7 @@ struct PlayerData {
     bool isalive;
     bool dormant;
     int HeroID;
+    int kills;
     int TeamNum;
     uint64_t weaponservices;
     uint64_t itemservices;

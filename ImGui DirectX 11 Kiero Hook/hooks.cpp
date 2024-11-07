@@ -35,6 +35,11 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 
 	//permamat = material_data->pMaterial;
 
+	if (!Config.esp.bEsp) {
+		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+		return;
+	}
+
 	if (!Config.esp.Chams) {
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
 		return;
@@ -147,6 +152,7 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 
 	if (Config.aimbot.MovementFix) {
 		Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
+		Helper::CorrectViewAngles(cmd);
 	}
 	if (Config.misc.SpeedBoost) {
 		Misc::SpeedBoost(localplayercontroller);

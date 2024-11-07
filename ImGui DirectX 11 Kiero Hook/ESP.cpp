@@ -175,6 +175,81 @@ void DrawMonsterEsp(uintptr_t entity) {
 
 }
 
+float GetSmoothedFPS() {
+	static float frameTimeAccum = 0;
+	static int frameCount = 0;
+	static float smoothedFPS = 0;
+	static float updateTimer = 0;
+	static const float UPDATE_INTERVAL = 0.1f;
+	float currentFrameTime = Helper::GetGlobals()->flAbsFrameTime;
+	updateTimer += currentFrameTime;
+	if (updateTimer >= UPDATE_INTERVAL) {
+		updateTimer = 0;
+		currentFrameTime *= 1000.0f;
+		if (currentFrameTime >= 1.0f && currentFrameTime <= 1000.0f) {
+			frameTimeAccum += currentFrameTime;
+			frameCount++;
+			if (frameCount >= 5) {
+				smoothedFPS = 1000.0f / (frameTimeAccum / frameCount);
+				frameTimeAccum = 0;
+				frameCount = 0;
+				if (smoothedFPS > 1000.0f) smoothedFPS = 1000.0f;
+				if (smoothedFPS < 1.0f) smoothedFPS = 1.0f;
+			}
+		}
+	}
+	return smoothedFPS;
+}
+void RenderWatermark() {
+	// Get current time safely
+	time_t now = time(nullptr);
+	struct tm timeinfo;
+#ifdef _WIN32
+	localtime_s(&timeinfo, &now);
+#else
+	localtime_r(&now, &timeinfo);
+#endif
+	PlayerData plrdata;
+	Helper::get_player_data(Helper::get_local_player(), &plrdata);
+	// Create the watermark text
+	char fullBuffer[256];
+	snprintf(fullBuffer, sizeof(fullBuffer), "Darks Slain : %d | FPS : %.0f | LYNCHWARE.NET ",
+		plrdata.kills, GetSmoothedFPS());
+	// Calculate text size
+	ImVec2 textSize = ImGui::CalcTextSize(fullBuffer);
+	float padding = 15.0f; // Adjust padding as needed
+	ImVec2 watermarkSize(textSize.x + padding * 2, textSize.y + padding); // Set height to text height plus padding
+	ImVec2 watermarkPos(ImGui::GetIO().DisplaySize.x - watermarkSize.x - 1, 1);
+	ImGui::SetNextWindowPos(watermarkPos, ImGuiCond_Always);
+	ImGui::SetNextWindowSize(watermarkSize, ImGuiCond_Always);
+	ImGui::SetNextWindowBgAlpha(0.8f);
+	ImGui::Begin("Watermark", nullptr,
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoInputs |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoScrollbar);
+	ImVec2 windowPos = ImGui::GetWindowPos();
+	// Draw background with exact size
+	ImGui::GetWindowDrawList()->AddRectFilled(
+		windowPos,
+		ImVec2(windowPos.x + watermarkSize.x, windowPos.y + watermarkSize.y),
+		IM_COL32(0, 0, 0, 255)
+	);
+	// Draw top border
+	float borderThickness = 2.0f;
+	ImVec2 start(windowPos.x, windowPos.y);
+	ImVec2 end(windowPos.x + watermarkSize.x, windowPos.y);
+	ImGui::GetWindowDrawList()->AddLine(start, end, IM_COL32(255, 20, 147, 255), borderThickness);
+	// Set text color
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0.12, 0.7, 1));
+	// Set cursor position to align text with padding
+	ImGui::SetCursorPos(ImVec2(padding, (watermarkSize.y - textSize.y) / 2)); // Center vertically
+	// Render the text
+	ImGui::Text("%s", fullBuffer);
+	ImGui::PopStyleColor();
+	ImGui::End();
+}
+
 void DrawMinionEsp(uintptr_t entity) {
 
 	if (!Config.esp.DrawMinions || !entity)
@@ -321,13 +396,15 @@ const char* Vec3ToCString(const vec3& vec) {
 
 void Esp::DoEsp() {
 
+	if (Config.esp.DrawFov) {
+		DrawFov();
+	}
+	RenderWatermark();
+
 	processed_ents_esp.clear();
 	GlobalVars.SortEnts();
 	processed_ents_esp = *GlobalVars.entlist.active;
 
-	if (Config.esp.DrawFov) {
-		DrawFov();
-	}
 
 
 	/*

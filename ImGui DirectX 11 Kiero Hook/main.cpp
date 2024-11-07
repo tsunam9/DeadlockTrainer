@@ -1,5 +1,6 @@
 ﻿#include "includes.h"
 #include "Menu.h"
+#include "IconsFontAwesome6.h"
 
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -17,6 +18,7 @@ FILE* fp;
 ImFont* cascadia = nullptr;
 ImFont* Franklin = nullptr;
 ImFont* segoesc = nullptr;
+ImFont* awesome = nullptr;
 
 
 void InitImGui()
@@ -54,6 +56,18 @@ void InitImGui()
 	colors[ImGuiCol_Tab] = ImVec4(0.65f, 0.00f, 0.40f, 1.00f);
 	colors[ImGuiCol_TabHovered] = ImVec4(1.00f, 0.00f, 0.62f, 1.00f);
 	colors[ImGuiCol_TabActive] = ImVec4(1.00f, 0.00f, 0.62f, 1.00f);
+
+	io.Fonts->AddFontDefault();
+	static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+	ImFontConfig icons_config;
+	icons_config.MergeMode = true;
+	icons_config.PixelSnapH = true;
+	//assert(std::filesystem::exists("assets/fonts/fa-regular-400.ttf"));
+	awesome = io.Fonts->AddFontFromFileTTF("c:\\Users\\Russ\\Appdata\\Local\\Microsoft\\Windows\\Fonts\\Font Awesome 6 Free-Solid-900.otf", 70.f, &icons_config, icons_ranges);
+
+	ImGuiStyle& style = ImGui::GetStyle(); // Get the global ImGui style
+	// Change default style variables
+	style.FrameRounding = 6.f;
 
 
 

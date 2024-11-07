@@ -228,6 +228,7 @@ int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name)
 	outputPlrData->Health = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealth);
 	outputPlrData->MaxHealth = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealthMax);
 	outputPlrData->HeroID = *(int*)(PlayerDataGlobal + PlayerDataGlobal_t::m_nHeroID);
+	outputPlrData->kills = *(int*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iPlayerKills);
 	outputPlrData->TeamNum = *(int*)(Pawn + C_BaseEntity::m_iTeamNum);
 	outputPlrData->isalive = *(bool*)(PlayerDataGlobal + PlayerDataGlobal_t::m_bAlive);
 	outputPlrData->dormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
@@ -725,8 +726,8 @@ void Helper::CorrectMovement(CCitadelUserCmdPB* pCmd, float& fOldForward, float&
 	float f2;
 
 
-		f1 = oldangles.y;
-		f2 = pCmd->cameraViewAngle->viewAngles.y;
+	f1 = oldangles.y;
+	f2 = pCmd->cameraViewAngle->viewAngles.y;
 
 
 	if (f2 < f1)
@@ -751,18 +752,27 @@ void Helper::CorrectMovement(CCitadelUserCmdPB* pCmd, float& fOldForward, float&
 		sidemove = -1.0f;
 
 	
+	uint64_t pbase = (uint64_t)pCmd->pBaseUserCMD;
 	if (forwardmove >= 0) {
 		pCmd->buttons |= IN_FORWARD;
+		pCmd->pBaseUserCMD->CInButtonStatePB->buttons |= IN_FORWARD;
+		*(uint64_t*)(pbase + 16) |= 0x20u;
 	}
 	else {
 		pCmd->buttons |= IN_BACK;
+		pCmd->pBaseUserCMD->CInButtonStatePB->buttons |= IN_BACK;
+		*(uint64_t*)(pbase + 16) |= 0x20u;
 	}
 
 	if (sidemove >= 0) {
 		pCmd->buttons |= IN_MOVELEFT;
+		pCmd->pBaseUserCMD->CInButtonStatePB->buttons |= IN_MOVELEFT;
+		*(uint64_t*)(pbase + 16) |= 0x40u;
 	}
 	else {
 		pCmd->buttons |= IN_MOVERIGHT;
+		pCmd->pBaseUserCMD->CInButtonStatePB->buttons |= IN_MOVERIGHT;
+		*(uint64_t*)(pbase + 16) |= 0x40u;
 	}
 
 	pCmd->pBaseUserCMD->forwardMove = forwardmove;

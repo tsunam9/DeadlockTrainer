@@ -1,4 +1,4 @@
-
+﻿
 #include "Menu.h"
 #include "D3D11.h"
 #include <wrl/client.h>
@@ -7,6 +7,86 @@
 
 using Microsoft::WRL::ComPtr;
 
+bool GlyphButton(const char* glyph, ImVec2 size, bool selecctedtab) {
+	// Create base button
+
+	if (selecctedtab) {
+		ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+	}
+
+	std::string GlyphStr = glyph;
+	std::string buttonID = "##Button" + GlyphStr;
+	bool clicked = ImGui::Button(buttonID.c_str(), size);
+
+	// Get button position and size
+	ImVec2 buttonPos = ImGui::GetItemRectMin();
+	ImVec2 buttonSize = ImGui::GetItemRectSize();
+
+	// Calculate button center
+	ImVec2 buttonCenter = ImVec2(
+		buttonPos.x + buttonSize.x * 0.5f,
+		buttonPos.y + buttonSize.y * 0.5f
+	);
+
+	// Get text size for centering
+	ImVec2 textSize = ImGui::CalcTextSize(glyph);
+
+	// Calculate offset for centering
+	float offsetX = buttonCenter.x - textSize.x * 0.5f;
+	float offsetY = buttonCenter.y + textSize.y * 1.0f;
+
+	// Convert to window-relative coordinates
+	ImVec2 windowPos = ImGui::GetWindowPos();
+	ImVec2 relativeOffset = ImVec2(
+		offsetX - windowPos.x,
+		offsetY - windowPos.y
+	);
+
+	// Save current cursor position
+	ImVec2 cursorPos = ImGui::GetCursorPos();
+
+	// Position and render the glyph
+	ImGui::SetCursorPos(relativeOffset);
+
+	if (selecctedtab) {
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+	}
+	else {
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25, 0.25f, 0.25f, 1.0f));
+	}
+
+
+	ImGui::Text(glyph);
+
+	ImGui::PopStyleColor();
+
+	ImGui::SetCursorPos(cursorPos);
+
+	if (selecctedtab) {
+		ImGui::PopStyleVar();
+	}
+
+	return clicked;
+}
+
+
+std::string ConvertUnicodeToMultiByte(const std::wstring& unicodeString) {
+	// Determine the required size for the multibyte string
+	int sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, unicodeString.c_str(), static_cast<int>(unicodeString.length()), nullptr, 0, nullptr, nullptr);
+
+	if (sizeNeeded <= 0) {
+		// Handle error
+		return "";
+	}
+
+	// Create a buffer to hold the multibyte string
+	std::string multibyteString(sizeNeeded, 0);
+
+	// Perform the conversion
+	WideCharToMultiByte(CP_UTF8, 0, unicodeString.c_str(), static_cast<int>(unicodeString.length()), &multibyteString[0], sizeNeeded, nullptr, nullptr);
+
+	return multibyteString;
+}
 
 
 ID3D11Texture2D* LoadTextureFromFile(ID3D11Device* device, const char* filename) {
@@ -69,7 +149,7 @@ void Menu::DrawConfigs() {
 	static bool showDeleteConfirmPopup = false;
 
 	static bool refreshed = false;
-	if(!refreshed)
+	if (!refreshed)
 		Config.RefreshConfigs(); refreshed = true;
 
 	if (ImGui::Button("Load Config")) {
@@ -96,14 +176,14 @@ void Menu::DrawConfigs() {
 	}
 
 	ImGui::InputTextWithHint("", "New Config", newConfigName, sizeof(newConfigName));
-	
+
 
 
 	for (int i = 0; i < Config.configs.size(); i++) {
 
 		auto config_name = Config.configs[i];
 		bool selected = (i == Config.selectedconfig);
-		 
+
 		if (ImGui::Selectable(config_name.c_str(), &selected)) {
 			Config.selectedconfig = i;
 		}
@@ -202,7 +282,7 @@ void Menu::DrawEspTab() {
 		ImGui::SameLine();
 		ImGui::ColorEdit4("Box Color", (float*)&Config.colors.boxespcol);
 	}
-	
+
 	ImGui::Checkbox("Skeleton Esp", &Config.esp.boneEsp);
 	if (Config.esp.boneEsp) {
 		ImGui::SameLine();
@@ -263,6 +343,7 @@ void Menu::DrawEspTab() {
 		ImGui::ColorEdit4("Aimbot Target Color", (float*)&Config.colors.aimbotTargetcol);
 	}
 
+
 	ImGui::EndChild();
 
 }
@@ -285,7 +366,7 @@ void Menu::DrawAntiAimTab() {
 	ImGui::SliderFloat("Upper Jitter", &Config.antiaim.upperjitter, Config.antiaim.lowerjitter, 180.0f, "%.1f");
 	ImGui::EndChild();
 
-		
+
 }
 
 void Menu::DrawHeroesTab() {
@@ -464,6 +545,7 @@ void Menu::DrawConfigTab(FILE* fp) {
 	ImGui::SliderFloat("Fov Multiplier", &Config.misc.fovmodifier, 0.1f, 2.0f, "%.3f");
 	ImGui::Checkbox("Speed Boost", &Config.misc.SpeedBoost);
 	if (Config.misc.SpeedBoost) {
+		ImGui::SameLine();
 		Helper::HotKey(Config.misc.SpeedBoostKey);
 	}
 
@@ -476,21 +558,9 @@ void Menu::DrawConfigTab(FILE* fp) {
 	ImVec2 ConfigtitlePos = ImVec2(ConfigchildPos.x + 5.0f, ConfigchildPos.y - ImGui::GetFontSize()); // Adjust Y for positioning above the border
 	ImGui::GetWindowDrawList()->AddText(ConfigtitlePos, IM_COL32(255, 255, 255, 255), "Configs");
 
-	ImGui::BeginChild("ConfigArea", ImVec2(0, 0),true);
+	ImGui::BeginChild("ConfigArea", ImVec2(0, 0), true);
 
-	// Set the cursor position for the button to ensure it aligns with the other content
-	ImGui::SetCursorPosY(ImGui::GetCursorPosY()); // Ensure we are at the same Y position
 
-	// Use SameLine with a custom offset to place it far to the right
-	ImGui::SameLine(ImGui::GetWindowWidth() - 200.0f); // Adjust for horizontal offset
-
-	if (ImGui::Button("Unload Lynchware :D"))
-	{
-
-		kiero::shutdown();
-		fclose(fp);
-		FreeConsole();
-	}
 
 
 	DrawConfigs();
@@ -500,6 +570,16 @@ void Menu::DrawConfigTab(FILE* fp) {
 	ImGui::Text("Menu Key");
 	ImGui::SameLine();
 	Helper::HotKey(Config.MenuKey);
+	ImGui::SameLine();
+	if (ImGui::Button("Unload Lynchware :D"))
+	{
+
+		kiero::shutdown();
+		fclose(fp);
+		FreeConsole();
+	}
+
+
 	ImGui::EndChild();
 
 
@@ -507,8 +587,8 @@ void Menu::DrawConfigTab(FILE* fp) {
 
 
 
-}
 
+}
 
 
 void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
@@ -544,348 +624,110 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
 	ImGui::SetNextWindowSizeConstraints(minsize, maxsize);
 
-	
+	const ImVec2 zero(0.0f, 0.0f);
+	const ImVec2 eight(8.0f, 8.0f);
 
-	if (ImGui::Begin("Vertical Tab Bar", NULL, ImGuiWindowFlags_NoCollapse)) {
-		// Get available width and height for buttons
-		float availableWidth = ImGui::GetContentRegionAvail().x;
-		float availableHeight = ImGui::GetContentRegionAvail().y;
-
-		// Total spacing height (5 pixels between buttons)
-		//float spacing = 5.0f;
-		//float totalSpacing = spacing * (numTabs + 1); // Space between buttons
-		float buttonHeight = (availableHeight * 0.6) / numTabs; // Adjust height to account for spacing
-
-		// Begin a vertical group for the buttons
-		ImGui::BeginChild("Button Area", ImVec2(buttonHeight * 1.3, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-
-		ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyleColorVec4(ImGuiCol_FrameBgActive));
-		ImGui::PushStyleColor(ImGuiCol_Border, ImGui::GetStyleColorVec4(ImGuiCol_ButtonHovered));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, zero);
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, zero);
 
 
-		if (ImGui::ImageButton(AimbotIconView, ImVec2(buttonHeight, buttonHeight), ImVec2(0, 0), ImVec2(1, 1))) {
-			selectedTab = 0;
+
+	if (ImGui::Begin("Sovereign", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
+		// Force all relevant style properties to zero
+
+
+		float availableWidth = ImGui::GetWindowWidth();
+		float availableHeight = ImGui::GetWindowHeight();
+		float buttonHeight = availableHeight / numTabs;
+		float buttonwidth = 130;
+
+		// Create button area child with explicit border flag off
+		ImGui::BeginChild("Button Area", ImVec2(buttonwidth, availableHeight), true,
+			ImGuiWindowFlags_NoScrollbar |
+			ImGuiWindowFlags_NoScrollWithMouse);
+
+		// Button styles
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
+
+
+
+		// Manually position each button
+		ImTextureID icons[] = { AimbotIconView, EspIconView, IdaLadyView, HeroIconView, ConfigIconView };
+
+		const char* glphs[] = { (const char*)u8"" , (const char*)u8"" , (const char*)u8"" , (const char*)u8"" , (const char*)u8"" };
+
+
+		if (buttonHeight < 80)
+			buttonHeight = 80;
+
+
+		ImGuiIO& io = ImGui::GetIO();           // Get the ImGui IO structure
+		ImFontAtlas* fontAtlas = io.Fonts;      // Get the font atlas
+		ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[2]);
+
+		for (int i = 0; i < numTabs; i++) {
+
+			bool selected = false;
+			if (i == selectedTab)
+				selected = true;
+
+			if (GlyphButton(glphs[i], ImVec2(buttonwidth, buttonHeight), selected)) {
+				selectedTab = i;
+			}
+
+
 		}
-		if (ImGui::ImageButton(EspIconView, ImVec2(buttonHeight, buttonHeight), ImVec2(0, 0), ImVec2(1, 1))) {
-			selectedTab = 1;
-		}
-		if (ImGui::ImageButton(IdaLadyView, ImVec2(buttonHeight, buttonHeight), ImVec2(0, 0), ImVec2(1, 1))) {
-			selectedTab = 2;
-		}
-		if (ImGui::ImageButton(HeroIconView, ImVec2(buttonHeight, buttonHeight), ImVec2(0, 0), ImVec2(1, 1))) {
-			selectedTab = 3;
-		}
-		if (ImGui::ImageButton(ConfigIconView, ImVec2(buttonHeight, buttonHeight), ImVec2(0, 0), ImVec2(1, 1))) {
-			selectedTab = 4;
-		}
 
-		ImGui::PopStyleColor(2);
-		ImGui::EndChild(); // End the button area
 
-		// Same line for content area
-		ImGui::SameLine();
 
-		// Begin a child for the content area
-		ImGui::BeginChild("Content Area", ImVec2(0, 0), false);
+		//ImGui::Text((const char*)u8"");
 
-		// Display content based on the selected tab
+		ImGui::PopFont();
+
+
+
+		// Draw separator at exact position
+		ImVec2 cursor_pos = ImGui::GetWindowPos();
+		ImGui::GetWindowDrawList()->AddLine(
+			ImVec2(cursor_pos.x + buttonwidth - 1, cursor_pos.y),
+			ImVec2(cursor_pos.x + buttonwidth - 1, cursor_pos.y + availableHeight),
+			IM_COL32(200, 200, 200, 255),
+			1.0f
+		);
+
+		ImGui::PopStyleColor(3);
+		ImGui::EndChild();
+
+		// Position content area precisely
+		ImGui::SetCursorPos(ImVec2(buttonwidth, 0));
+
+		// Content area with explicit dimensions
+		ImGui::BeginChild("Content Area", ImVec2(availableWidth - buttonwidth, availableHeight), false, ImGuiWindowFlags_NoResize);
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, eight);
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, eight);
+
+
 		switch (selectedTab) {
-		case 0:
-			DrawAimbotTab();
-			break;
-		case 1:
-			DrawEspTab();
-			break;
-		case 2:
-			DrawAntiAimTab();
-			break;
-		case 3:
-			DrawHeroesTab();
-			break;
-		case 4:
-			DrawConfigTab(fp);
-			break;
-		}
-
-		ImGui::EndChild(); // End the content area
-	}
-	ImGui::End(); // End the window
-
-}
-
-
-
-
-
-void Menu::DrawMenu(FILE* fp) {
-
-
-
-	ImGui::Begin("LynchWare",NULL, ImGuiWindowFlags_NoResize + ImGuiWindowFlags_NoCollapse);
-	if (ImGui::BeginTabBar("Cheat"))
-	{
-		// First tab
-		if (ImGui::BeginTabItem("Aimbot"))
-		{
-
-			ImGui::Checkbox("Aimbot", &Config.aimbot.bAimbot);
-			if (Config.aimbot.bAimbot) {
-				ImGui::SameLine();
-				Helper::HotKey(Config.aimbot.AimKey);
-				ImGui::SameLine();
-
-				ImGui::Checkbox("Silent Aim", &Config.aimbot.silentaim);
-
-				ImGui::Checkbox("Movement Fix", &Config.aimbot.MovementFix);
-
-				ImGui::Checkbox("Magic Bullet", &Config.aimbot.magicbullet);
-				ImGui::SameLine();
-				Helper::HotKey(Config.aimbot.magicbulletkey);
-
-				ImGui::Checkbox("Auto Fire", &Config.aimbot.AutoFire);
-				static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
-				//static int currentItem = 0; // Index of the currently selected item
-				ImGui::Combo("Target ", &Config.aimbot.targetSelectionMode, items, IM_ARRAYSIZE(items));
-				ImGui::Text("Selected: %s", items[Config.aimbot.targetSelectionMode]);
-				ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f, "%.1f");
-				ImGui::SliderFloat("FOV", &Config.aimbot.fov, 0.0f, 180.0f, "%.1f");
-				ImGui::SliderFloat("Smooth", &Config.aimbot.smooth, 0.0f, 100.0f, "%.1f");
-				ImGui::Checkbox("Aim at XP", &Config.aimbot.AimXp);
-				ImGui::SameLine();
-				Helper::HotKey(Config.aimbot.AimKeyXp);
-				ImGui::Checkbox("Aim At Minions", &Config.aimbot.AimMinions);
-				ImGui::SameLine();
-				Helper::HotKey(Config.aimbot.AimKeyMinions);
-
-			}
-
-			ImGui::EndTabItem();
+		case 0: DrawAimbotTab(); break;
+		case 1: DrawEspTab(); break;
+		case 2: DrawAntiAimTab(); break;
+		case 3: DrawHeroesTab(); break;
+		case 4: DrawConfigTab(fp); break;
 		}
 
 
 
-		if (ImGui::BeginTabItem("Esp"))
-		{
-			// Get the available width for the children
-			float halfWidth = ImGui::GetContentRegionAvail().x * 0.5f;
+		ImGui::PopStyleVar(2);
+		ImGui::EndChild();
 
-			// Layout for Player Visuals
-			ImGui::Text("Player Visuals");
-			ImGui::BeginChild("LeftSubview", ImVec2(halfWidth, 0), true); // Border added
-			ImGui::Checkbox("Esp", &Config.esp.bEsp);
-			if (Config.esp.bEsp) {
-				ImGui::Checkbox("Box Esp", &Config.esp.boxEsp);
-				if (Config.esp.boxEsp) {
-					ImGui::SameLine();
-					ImGui::ColorEdit4("Box Color", (float*)&Config.colors.boxespcol);
-				}
-
-				ImGui::Checkbox("Skeleton", &Config.esp.boneEsp);
-				if (Config.esp.boneEsp) {
-					ImGui::SameLine();
-					ImGui::ColorEdit4("Bone Color", (float*)&Config.colors.skeletoncol);
-				}
-
-				ImGui::Checkbox("Chams", &Config.esp.Chams);
-				if (Config.esp.Chams) {
-					ImGui::SameLine();
-					ImGui::Checkbox("Model Override", &Config.esp.ModelChams);
-					ImGui::SameLine();
-					ImGui::ColorEdit4("Chams Color", (float*)&Config.colors.ChamsCol);
-				}
-
-				ImGui::Checkbox("Health Bar", &Config.esp.HealthBar);
-				ImGui::Checkbox("Name Esp", &Config.esp.NameEsp);
-				ImGui::Checkbox("Health Text", &Config.esp.HealthEsp);
-				ImGui::Checkbox("Tracers", &Config.esp.Tracers);
-				if (Config.esp.Tracers) {
-					ImGui::SameLine();
-					ImGui::ColorEdit4("Tracers Color", (float*)&Config.colors.tracerscol);
-				}
-
-				ImGui::Checkbox("Distance Esp", &Config.esp.DistanceEsp);
-			}
-			ImGui::EndChild();
-
-			ImGui::SameLine(); // Move to the same line for the next child
-
-			// Layout for Misc Visuals
-			ImGui::Text("Misc Visuals");
-			ImGui::SameLine(); // Ensure "Misc Visuals" appears on the same line as "Player Visuals"
-			ImGui::BeginChild("RightSubView", ImVec2(halfWidth, 0), true); // Border added
-			if (Config.esp.bEsp) {
-				ImGui::Checkbox("Draw Fov", &Config.esp.DrawFov);
-				if (Config.esp.DrawFov) {
-					ImGui::SameLine();
-					ImGui::ColorEdit4("Fov Circle Color", (float*)&Config.colors.drawfovcol);
-				}
-
-				ImGui::Checkbox("Draw Xp", &Config.esp.DrawXp);
-				if (Config.esp.DrawXp) {
-					ImGui::SameLine();
-					ImGui::ColorEdit4("XP Color", (float*)&Config.colors.drawxpcol);
-				}
-
-				ImGui::Checkbox("Draw Monsters", &Config.esp.DrawMonsters);
-				if (Config.esp.DrawMonsters) {
-					ImGui::SameLine();
-					ImGui::ColorEdit4("Monster Indicator Color", (float*)&Config.colors.drawmonsterscol);
-				}
-
-				ImGui::Checkbox("Draw Minions", &Config.esp.DrawMinions);
-				ImGui::Checkbox("Draw Aimbot Target", &Config.esp.DrawAimbotTarget);
-				if (Config.esp.DrawAimbotTarget) {
-					ImGui::SameLine();
-					ImGui::ColorEdit4("Aimbot Indicator Color", (float*)&Config.colors.aimbotTargetcol);
-				}
-			}
-			ImGui::EndChild();
-
-			ImGui::EndTabItem();
-		}
-
-
-
-
-		if (ImGui::BeginTabItem("AntiAim")) {
-
-			ImGui::Checkbox("AntiAim", &Config.antiaim.bAntiAim);
-			static const char* items[] = { "Spin", "Jitter", "180 Treehouse" }; // Options for the dropdown
-			static int currentItem = 0; // Index of the currently selected item
-			ImGui::Combo("Target ", &currentItem, items, IM_ARRAYSIZE(items)); Config.antiaim.AAtype = currentItem;
-			ImGui::Text("Selected: %s", items[currentItem]);
-			ImGui::SliderFloat("Lower Jitter", &Config.antiaim.lowerjitter, -180, Config.antiaim.upperjitter, "%.1f");
-			ImGui::SliderFloat("Upper Jitter", &Config.antiaim.upperjitter, Config.antiaim.lowerjitter, 180.0f, "%.1f");
-			ImGui::EndTabItem();
-
-		}
-
-		if (ImGui::BeginTabItem("Heroes")) {
-			PlayerData* plrdata = new PlayerData;
-			Helper::get_player_data(Helper::get_local_player(), plrdata);
-			switch (plrdata->HeroID) {
-
-			case Abrams: {
-				ImGui::Text("Abrams");
-				break;
-			}
-			case Bebop: {
-				ImGui::Text("Bebop");
-				break;
-			}
-			case Dynamo: {
-				ImGui::Text("Dynamo");
-				break;
-			}
-			case GreyTalon: {
-				ImGui::Text("GreyTalon");
-				break;
-			}
-			case Haze: {
-				ImGui::Text("Haze");
-				break;
-			}
-			case Infernus:{
-				ImGui::Text("Infernus");
-				break;
-			}
-			case Ivy: {
-				ImGui::Text("Ivy");
-				break;
-			}
-			case Kelvin: {
-				ImGui::Text("Kelvin");
-				break;
-			}
-			case LadyGeist: {
-				ImGui::Text("LadyGeist");
-				break;
-			}
-			case Lash: {
-				ImGui::Text("Lash");
-				break;
-			}
-			case McGinnis: {
-				ImGui::Text("McGinnis");
-				break;
-			}
-			case Mirage: {
-				ImGui::Text("Mirage");
-				break;
-			}
-			case MoAndKrill: {
-				ImGui::Text("MoAndKrill");
-				break;
-			}
-			case Paradox: {
-				ImGui::Text("Paradox");
-				break;
-			}
-			case Pocket: {
-				ImGui::Text("Pocket");
-				break;
-			}
-			case Seven: {
-				ImGui::Text("Seven");
-				break;
-			}
-			case Shiv: {
-				ImGui::Text("Shiv");
-				ImGui::Checkbox("Auto Aim Dagger", &Config.shiv.AutoAimDagger);
-				ImGui::Checkbox("Auto Aim Dash", &Config.shiv.AutoAimDash);
-				ImGui::Checkbox("Auto Execute", &Config.shiv.AutoExecute);
-				break;
-			}
-			case Vindicta: {
-				ImGui::Text("Vindicta");
-				ImGui::Checkbox("Auto Aim Stake", &Config.vindicta.AutoAimStake);
-				ImGui::Checkbox("Auto Aim Crow", &Config.vindicta.AutoAimCrow);
-				ImGui::Checkbox("Auto Snipe", &Config.vindicta.AutoSnipe);
-				// Directly use a temporary variable for the slider
-				float f = Config.vindicta.AutoUltHealthPercent * 100.0f; // Temporary variable
-				ImGui::SliderFloat("Auto Snipe Health %", &f, 0.0f, 100.0f, " %.0f%%");
-				// Update the config value after the slider adjustment
-				Config.vindicta.AutoUltHealthPercent = f / 100.0f;
-				break;
-			}
-			case Viscous: {
-				ImGui::Text("Viscous");
-				break;
-			}
-			case Warden: {
-				ImGui::Text("Warden");
-				break;
-			}
-			case Wraith: {
-				ImGui::Text("Wraith");
-				break;
-			}
-			case Yamato: {
-				ImGui::Text("Yamato");
-				break;
-			}
-			default: {
-				ImGui::Text("Please Enter A Game");
-				break;
-			}
-			}
-
-			delete plrdata;
-
-			ImGui::EndTabItem();
-		}
-
-		// Third tab
-		if (ImGui::BeginTabItem("Misc"))
-		{
-
-			ImGui::EndTabItem();
-		}
-
-		ImGui::EndTabBar();
 	}
 	ImGui::End();
 
-
+	ImGui::PopStyleVar(2);
 
 }
+
+
