@@ -1,9 +1,14 @@
-﻿#include "includes.h"
+﻿#pragma once
+#include "includes.h"
 #include "Menu.h"
 #include "IconsFontAwesome6.h"
+#include "offsets.h"
+#include "mem.h"
 
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+offsets Offsets;
+
 
 Present oPresent;
 HWND window = NULL;
@@ -19,6 +24,7 @@ ImFont* cascadia = nullptr;
 ImFont* Franklin = nullptr;
 ImFont* segoesc = nullptr;
 ImFont* awesome = nullptr;
+
 
 
 void InitImGui()
@@ -143,7 +149,7 @@ void setConsoleColor(int textColor, int bgColor) {
 
 DWORD WINAPI MainThread(LPVOID lpReserved)
 {
-	//
+	
 	AllocConsole();
 	freopen_s(&fp, "CONOUT$", "w", stdout); // output only
 

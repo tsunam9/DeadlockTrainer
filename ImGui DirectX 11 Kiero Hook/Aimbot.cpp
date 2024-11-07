@@ -122,17 +122,21 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 	float LowestFov = 99999999999.0;
 	int lowestfovindex = 999;
 
-	// Sort Entities
-	for (int i = 0; i < GlobalVars.entlist.active->size(); i++) {
+	//(*globals::instance().entlist.active)
 
-		if (GlobalVars.entlist.active->empty() || (!(*GlobalVars.entlist.active)[i]))
+	// Sort Entities
+	for (int i = 0; i < globals::instance().entlist.active->size(); i++) {
+
+		if ( globals::instance().entlist.active->empty())
 			continue;
 
-		std::string entClass = Helper::get_schema_name((*GlobalVars.entlist.active)[i]);
+		
+
+		std::string entClass = Helper::get_schema_name((*globals::instance().entlist.active)[i]);
 
 		if (TargetEntityType == "CCitadelPlayerController" && entClass == "CCitadelPlayerController") {
 			PlayerData* TargetPlayerData = new PlayerData;
-			Helper::get_player_data((*GlobalVars.entlist.active)[i], TargetPlayerData);
+			Helper::get_player_data((*globals::instance().entlist.active)[i], TargetPlayerData);
 
 
 			if (!TargetPlayerData->isalive) {
@@ -145,7 +149,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			}
 
 			if(!Config.aimbot.magicbullet || !Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key)){ // if magic bullet then obviously dont do vischeck 
-				if (IsPlayerVisible((*GlobalVars.entlist.active)[i]) == false) {
+				if (IsPlayerVisible((*globals::instance().entlist.active)[i]) == false) {
 					delete TargetPlayerData;
 					continue;
 				}
@@ -155,7 +159,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 
 
 			vec3 TargetPos = { 0, 0, 0 };
-			TargetPos = Helper::GetBonePosition((*GlobalVars.entlist.active)[i], "head");
+			TargetPos = Helper::GetBonePosition((*globals::instance().entlist.active)[i], "head");
 
 			if (TargetPos.x == 0 && TargetPos.y == 0 && TargetPos.z == 0) {
 				delete TargetPlayerData;
@@ -208,8 +212,8 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 		else if (entClass == "CItemXP" && TargetEntityType == "CItemXP") {
 
 			xpData* TargetXPData = new xpData;
-			Helper::get_xp_data((*GlobalVars.entlist.active)[i], TargetXPData);
-			float GameTime = Helper::GetGameTime();
+			Helper::get_xp_data((*globals::instance().entlist.active)[i], TargetXPData);
+			float GameTime = globals::instance().Globals->flAbsCurTime;
 			float launchtime = TargetXPData->m_flLaunchtime;
 
 			if (TargetXPData->m_bDormant)
@@ -217,7 +221,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			if (GameTime < TargetXPData->m_flLaunchtime + 0.184)
 				continue;
 
-			if (IsXpVisible((*GlobalVars.entlist.active)[i]) == false)
+			if (IsXpVisible((*globals::instance().entlist.active)[i]) == false)
 				continue;
 
 			float xpdistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetXPData->m_vecOrigin);
@@ -250,7 +254,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 		else if (entClass == "C_NPC_Trooper" && TargetEntityType == "C_NPC_Trooper") {
 
 			NpcData* TargetNpcData = new NpcData;
-			Helper::get_npc_data((*GlobalVars.entlist.active)[i], TargetNpcData);
+			Helper::get_npc_data((*globals::instance().entlist.active)[i], TargetNpcData);
 
 
 			if (TargetNpcData->m_bDormant) {
@@ -269,7 +273,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 				continue;
 			}
 
-			if (IsNpcVisible((*GlobalVars.entlist.active)[i]) == false) {
+			if (IsNpcVisible((*globals::instance().entlist.active)[i]) == false) {
 				delete TargetNpcData;
 				continue;	
 			}
@@ -285,13 +289,13 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 				continue;
 			}
 
-			int boneindex = Helper::get_bone_index((*GlobalVars.entlist.active)[i], "head");
+			int boneindex = Helper::get_bone_index((*globals::instance().entlist.active)[i], "head");
 			if (!boneindex) {
 				delete TargetNpcData;
 				continue;
 			}
 
-			vec3 HeadPos = Helper::GetBoneVectorFromIndex((*GlobalVars.entlist.active)[i], boneindex);  // No re-declaration of TargetPos here
+			vec3 HeadPos = Helper::GetBoneVectorFromIndex((*globals::instance().entlist.active)[i], boneindex);  // No re-declaration of TargetPos here
 			vec2 LocalPlayerAngles = { ViewAngles->x, ViewAngles->y };
 			vec2 AimAngles = GetAimAngles(HeadPos);
 			vec2 angle_difference = AimAngles - LocalPlayerAngles;
@@ -334,22 +338,22 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 				CurrentPlayerTarget = 0;
 				return 0;
 			}
-			CurrentPlayerTarget = (*GlobalVars.entlist.active)[ClosestIndex];
-			return (*GlobalVars.entlist.active)[ClosestIndex];
+			CurrentPlayerTarget = (*globals::instance().entlist.active)[ClosestIndex];
+			return (*globals::instance().entlist.active)[ClosestIndex];
 		case 1:
 			if (LowestHealthIndex == 999) {
 				CurrentPlayerTarget = 0;
 				return 0;
 			}
-			CurrentPlayerTarget = (*GlobalVars.entlist.active)[LowestHealthIndex];
-			return (*GlobalVars.entlist.active)[LowestHealthIndex];
+			CurrentPlayerTarget = (*globals::instance().entlist.active)[LowestHealthIndex];
+			return (*globals::instance().entlist.active)[LowestHealthIndex];
 		case 2:
 			if (lowestfovindex == 999) {
 				CurrentPlayerTarget = 0;
 				return 0;
 			}
-			CurrentPlayerTarget = (*GlobalVars.entlist.active)[lowestfovindex];
-			return (*GlobalVars.entlist.active)[lowestfovindex];
+			CurrentPlayerTarget = (*globals::instance().entlist.active)[lowestfovindex];
+			return (*globals::instance().entlist.active)[lowestfovindex];
 		}
 	}
 
@@ -359,17 +363,17 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			if (ClosestIndex == 999) {
 				return 0;
 			}
-			return (*GlobalVars.entlist.active)[ClosestIndex];
+			return (*globals::instance().entlist.active)[ClosestIndex];
 		case 1:
 			if (lowestfovindex == 999) {
 				return 0;
 			}
-			return (*GlobalVars.entlist.active)[lowestfovindex];
+			return (*globals::instance().entlist.active)[lowestfovindex];
 		case 2:
 			if (lowestfovindex == 999) {
 				return 0;
 			}
-			return (*GlobalVars.entlist.active)[lowestfovindex];
+			return (*globals::instance().entlist.active)[lowestfovindex];
 		}
 	}
 
@@ -379,17 +383,17 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			if (ClosestIndex == 999) {
 				return 0;
 			}
-			return (*GlobalVars.entlist.active)[ClosestIndex];
+			return (*globals::instance().entlist.active)[ClosestIndex];
 		case 1:
 			if (LowestHealthIndex == 999) {
 				return 0;
 			}
-			return (*GlobalVars.entlist.active)[LowestHealthIndex];
+			return (*globals::instance().entlist.active)[LowestHealthIndex];
 		case 2:
 			if (lowestfovindex == 999) {
 				return 0;
 			}
-			return (*GlobalVars.entlist.active)[lowestfovindex];
+			return (*globals::instance().entlist.active)[lowestfovindex];
 		}
 	}
 }
@@ -487,6 +491,25 @@ void Aimbot::ShootMagicBullet(uint64_t entity, const char* bone) {
 	return;
 }
 
+bool readyToFire() {
+
+	float matchtime = globals::instance().Globals->iTickCount * constGlobalVars::tickinterval;
+	float gametime = globals::instance().Globals->flAbsCurTime;
+
+
+	uintptr_t localweapon = Helper::get_localplr_weapon();
+	if (localweapon == -1)
+		return false;
+	float NextAttack = *(float*)(localweapon + CCitadel_Ability_PrimaryWeapon::m_flNextPrimaryAttack);
+
+
+	if (NextAttack > matchtime)
+		return false;
+
+	return true;
+
+}
+
 void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 
 	float BulletSpeed = 30000.0f;
@@ -494,6 +517,8 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
 	vec3 vec_velocity = *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
+
+
 
 	if (!Config.aimbot.magicbullet || !Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key)) {
 		if (Config.aimbot.AutoFire) {
@@ -514,7 +539,7 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 			return;
 		}
 
-		uintptr_t localweapon = Helper::get_localplr_weapon();
+		/*		uintptr_t localweapon = Helper::get_localplr_weapon();
 		if (localweapon == -1)
 			return;
 		float NextAttack = *(float*)(localweapon + CCitadel_Ability_PrimaryWeapon::m_flNextPrimaryAttack);
@@ -522,7 +547,7 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 		NextAttack -= 0.017;
 
 		if (NextAttack > LocalPlayerSimTime)
-			 return;
+			 return;*/
 
 
 		CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
@@ -672,7 +697,8 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 		return;
 
 	CUserCmd = usercmd;
-	GlobalVars.SortEnts();
+
+	globals::instance().SortEnts();
 
 
 
@@ -680,15 +706,14 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 	CameraManager = *(uint64_t*)(ClientModuleBase + Offsets.o_CameraManager + 0x28);
 	ViewAngles = (vec2*)(CameraManager + 0x44); // RESET to 0x44
 	LocalPlayerController = Helper::get_local_player();
-	PlayerData* tempplrdata = new PlayerData;
-	Helper::get_player_data(LocalPlayerController, tempplrdata);
-	LocalPlayerData = *tempplrdata;	
+	PlayerData tempplrdata;
+	Helper::get_player_data(LocalPlayerController, &tempplrdata);
+	LocalPlayerData = tempplrdata;	
 
 	abilities = Helper::GetAbilities(Helper::GetPawn(Helper::get_local_player()));
 
 	
-	if (GlobalVars.entlist.active->empty()) {
-		delete tempplrdata;
+	if (globals::instance().entlist.active->empty()){
 		return;
 	}
 
@@ -704,25 +729,21 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 
 	if (Config.aimbot.magicbullet && Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key) && aimtarget ) {
 		ShootMagicBullet(aimtarget, "head");
-		delete tempplrdata;
 		return;
 	}
 
 	if (Helper::KeyBindHandler(Config.aimbot.AimKey.key)  && aimtarget ) {
 		AimAt(aimtarget, "head");
-		delete tempplrdata;
 		return;
 	}
 
 	if (Helper::KeyBindHandler(Config.aimbot.AimKeyXp.key) && xp_target ) {
 		AimAtXp(xp_target);
-		delete tempplrdata;
 		return;
 	}
 
 	if (Helper::KeyBindHandler(Config.aimbot.AimKeyMinions.key) && minion_target) {
 		AimAtMinions(minion_target);
-		delete tempplrdata;
 		return;
 	}
 

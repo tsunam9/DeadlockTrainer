@@ -62,9 +62,11 @@ void Misc::SpeedBoost(uint64_t localplayercontroller) {
 
 void Misc::DoSkyModulation(){
 
-	for (int i = 0; i < GlobalVars.entlist.active->size(); i++) {
+	for (int i = 0; i < globals::instance().entlist.active->size(); i++) {
 
-		uint64_t Entity = (*GlobalVars.entlist.active)[i];
+		
+
+		uint64_t Entity = (*globals::instance().entlist.active)[i];
 			if (!Entity)
 				return;
 

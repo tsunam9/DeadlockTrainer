@@ -79,6 +79,9 @@
     <Filter Include="Source Files\Globals">
       <UniqueIdentifier>{94802320-d0f6-4807-b39e-8f96257c1b61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ValveClasses">
+      <UniqueIdentifier>{d711d5e8-9a46-40ac-99e9-a9537ba62da1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kiero\minhook\src\buffer.c">
@@ -294,6 +297,9 @@
     </ClInclude>
     <ClInclude Include="Globals.h">
       <Filter>Source Files\Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="CGlobalVarsBase.h">
+      <Filter>Source Files\ValveClasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

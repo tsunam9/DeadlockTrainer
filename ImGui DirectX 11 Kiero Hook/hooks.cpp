@@ -12,13 +12,13 @@ struct object_info_t {
 	// todo: id var here (176 offset)
 };
 
-uint64_t matsystemasbase = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "materialsystem2.dll");
+uint64_t matsystemasbase = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "materialsystem2.dll");
 
 typedef CMaterial2*** (*f_findmat)(__int64 a1, __int64* a2, __int64 a3);
 f_findmat findmat = nullptr;
 f_findmat findmattarget = reinterpret_cast<f_findmat>(matsystemasbase + 0x2A640);
 
-static uint64_t scenesytembase = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "scenesystem.dll");
+static uint64_t scenesytembase = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "scenesystem.dll");
 typedef __int64(__fastcall* f_DrawModel)(
 	__int64 a1,
 	__int64 a2,
@@ -100,7 +100,7 @@ void printBinary(uint64_t num) {
 //CreateMove Hook
 typedef void(__fastcall* f_CreateMove)(__int64* a1, int a2, char a3);
 static f_CreateMove CreateMove = nullptr;
-static f_CreateMove CreateMoveTarget = reinterpret_cast<f_CreateMove>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "85 D2 0F 85 ? ? ? ? 48 8B C4 44 88 40"));
+static f_CreateMove CreateMoveTarget = reinterpret_cast<f_CreateMove>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "85 D2 0F 85 ? ? ? ? 48 8B C4 44 88 40"));
 
 Drawing drawtest;
 
@@ -122,8 +122,8 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	}
 
 	uint64_t localplayercontroller = Helper::get_local_player();
-	PlayerData* LocalPlayer = new PlayerData;
-	Helper::get_player_data(localplayercontroller, LocalPlayer);
+	PlayerData LocalPlayer;
+	Helper::get_player_data(localplayercontroller, &LocalPlayer);
 	uint64_t playerpawn = Helper::GetPawn(localplayercontroller);
 
 	if (Config.aimbot.bAimbot) {
@@ -138,16 +138,18 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	ShivLogic shiv;
 	VindictaLogic vindicta;
 
-	switch (LocalPlayer->HeroID) {
+	if (Config.aimbot.bAimbot) {
+		switch (LocalPlayer.HeroID) {
 
-	case Shiv:
-		shiv.RunScript(cmd);
-		break;
-	case Vindicta:
-		vindicta.RunScript(cmd);
-		break;
-	default:
-		break;
+		case Shiv:
+			shiv.RunScript(cmd);
+			break;
+		case Vindicta:
+			vindicta.RunScript(cmd);
+			break;
+		default:
+			break;
+		}
 	}
 
 	if (Config.aimbot.MovementFix) {
@@ -157,8 +159,6 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	if (Config.misc.SpeedBoost) {
 		Misc::SpeedBoost(localplayercontroller);
 	}
-	
-	delete LocalPlayer;
 
 	return;
 }
@@ -176,7 +176,8 @@ public:
 //RenderStart Hook
 typedef void(__fastcall* f_render)(CViewRender* pViewRender);
 f_render RenderStart = nullptr;
-f_render RenderStartTarget = reinterpret_cast<f_render>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "48 8b c4 53 55 56 57 41 55"));
+f_render RenderStartTarget = reinterpret_cast<f_render>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 8b c4 53 55 56 57 41 55"));
+
 void __fastcall hkRenderStart(CViewRender* pViewRender)
 {
 	RenderStart(pViewRender);

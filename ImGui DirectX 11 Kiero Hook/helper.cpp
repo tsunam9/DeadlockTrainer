@@ -17,47 +17,13 @@ std::string Helper::ReadString(uintptr_t address) {
 	return str;
 }
 
-uint64_t Helper::GetModuleBaseAddress(uint64_t procId, const char* modName) {
-	HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, procId);
-	MODULEENTRY32 modEntry;
-	modEntry.dwSize = sizeof(modEntry);
+uint64_t Helper::get_entity_list() {
 
-	do {
-		if (!strcmp(modEntry.szModule, modName)) {
-			CloseHandle(hSnap);
-			return (uint64_t)modEntry.modBaseAddr;
-		}
-	} while (Module32Next(hSnap, &modEntry));
+	static uint64_t tf = *(uintptr_t*)(ClientModuleBase + Offsets.o_EntityList); // Assign to the static tf
+	return tf;
 
-	CloseHandle(hSnap);
-	return 0;
 }
 
-uint64_t Helper::GetProcessIdByName(const char* processname) {
-	HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-	PROCESSENTRY32 procEntry;
-	procEntry.dwSize = sizeof(procEntry);
-
-	do {
-		if (!strcmp(procEntry.szExeFile, processname)) {
-			CloseHandle(hSnap);
-			return procEntry.th32ProcessID;
-		}
-	} while (Process32Next(hSnap, &procEntry));
-
-	CloseHandle(hSnap);
-	return 0;
-}
-
-uint64_t Helper::get_entity_list(){
-	uintptr_t tf = *(uintptr_t*)(ClientModuleBase + Offsets.o_EntityList);
-	return static_cast<uint64_t>(tf);
-}
-
-uint64_t Helper::GetClientBase() {
-	uint64_t Modulebaseaddress = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "client.dll");
-	return Modulebaseaddress;
-}
 
 std::string Helper::readstr(uintptr_t address){
 	std::string str;
@@ -72,7 +38,7 @@ std::string Helper::readstr(uintptr_t address){
 
 int Helper::get_max_entities()
 {
-	uint64_t entity_list = Helper::get_entity_list();
+	static uint64_t entity_list = Helper::get_entity_list();
 	int max_entities = *(int*)(entity_list + Offsets.o_HighestEntityIndex);
 	return max_entities;
 }
@@ -125,7 +91,7 @@ bool Helper::WorldToScreen(vec3 pos, vec2& screen) {
 uint64_t Helper::get_base_entity_from_index(int index)
 {
 	
-	uint64_t entity_list = Helper::get_entity_list();
+	static uint64_t entity_list = Helper::get_entity_list();
 
 	uint64_t entity_base = entity_list + 8LL * ((index & 0x7FFF) >> 9) + 16;
 	uint64_t entity = *(uint64_t*)(entity_base);
@@ -161,21 +127,6 @@ vec3 Helper::GetBoneVectorFromIndex(uintptr_t target_entity, int index) {
 
 	return bonepos;
 }
-
-float Helper::GetGameTime() {
-
-	CGlobalVarsBase* globals = *(CGlobalVarsBase**)(ClientModuleBase + Offsets.o_dwGlobalVars);
-	return globals->flCurtime;
-
-}
-
-CGlobalVarsBase* Helper::GetGlobals() {
-	return *(CGlobalVarsBase**)(ClientModuleBase + Offsets.o_dwGlobalVars);
-}
-
-
-
-
 
 int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name) { // entity = pawn
 																							
@@ -445,27 +396,17 @@ float Helper::DegreesToRadians(float degrees) {
 
 
 using fmGetUCmd = CCitadelUserCmdPB * (__fastcall*)(__int64 a1, int a2);
-static auto oGetUserCmd = reinterpret_cast<fmGetUCmd>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "40 53 48 83 ec ? 8b da 85 d2 78"));
+static auto oGetUserCmd = reinterpret_cast<fmGetUCmd>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "40 53 48 83 ec ? 8b da 85 d2 78"));
 
 using GetCommandIndex = __int64(__fastcall*)(__int64 a1, __int64 a2);
-static auto oGetCommandIndex = reinterpret_cast<GetCommandIndex>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "40 53 48 83 ec ? 4c 8b 41 ? 48 8b da 48 8b 0d"));
+static auto oGetCommandIndex = reinterpret_cast<GetCommandIndex>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "40 53 48 83 ec ? 4c 8b 41 ? 48 8b da 48 8b 0d"));
 
 using GetCUserCMDBASE = __int64(__fastcall*)(__int64 a1, int a2);
-static auto oGetCUserCmdBASE = reinterpret_cast<GetCUserCMDBASE>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "48 89 4c 24 ? 41 54 41 57"));
+static auto oGetCUserCmdBASE = reinterpret_cast<GetCUserCMDBASE>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 89 4c 24 ? 41 54 41 57"));
 
 using getcmdupdated = __int64(__fastcall*)(__int64 a1);
-static auto ogetcmdupdated = reinterpret_cast<getcmdupdated>(ClientModuleBase + MEM::PatternScanFunc((void*)ClientModuleBase, "48 83 ec ? e8 ? ? ? ? 8b 80"));
+static auto ogetcmdupdated = reinterpret_cast<getcmdupdated>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 83 ec ? e8 ? ? ? ? 8b 80"));
 			
-
-
-__int64 __fastcall GetLocalPlayerController(int a1)
-{
-	if (a1 == -1)
-		a1 = 0;
-
-	uint64_t* qword_2180328 = (uint64_t*)(0x2180308 + ClientModuleBase);
-	return qword_2180328[a1]; // Access the element at the index a1
-}
 
 CCitadelUserCmdPB* Helper::GetCurrentUserCmd()
 {
@@ -479,24 +420,6 @@ CCitadelUserCmdPB* Helper::GetCurrentUserCmd()
 	}
 	return nullptr;
 
-}
-
-CCitadelUserCmdPB* Helper::ExperimentalGetUserCmd() {
-
-	__int64 v18;
-	auto LocalPlr = GetLocalPlayerController(0);
-	auto v8 = LocalPlr;
-	if (LocalPlr)
-	{
-		oGetCommandIndex(LocalPlr, (__int64)&v18);
-		auto v9 = v18 - 1;
-		if (v18 == -1)
-			v9 = -1;
-		auto UserCmdBase = oGetCUserCmdBASE((__int64)ClientModuleBase + 0x1E36B58, v9);
-		auto UserCmd = oGetUserCmd(v8, *(uint64_t*)(UserCmdBase));
-		return UserCmd;
-	}
-	return nullptr;
 }
 
 /*
@@ -627,6 +550,7 @@ uint64_t Helper::GetPawn(uint64_t entity_controller) {
 
 bool __fastcall Helper::traceshape(void* dis, Ray_t* pRay, vec3* vecStart, vec3* vecEnd, TraceFilter_t* pFilter, GameTrace_t* pGameTrace) {
 
+
 	typedef bool(__fastcall* traceshape_fn)(void*, Ray_t*, vec3*, vec3*, TraceFilter_t*, GameTrace_t*);
 	traceshape_fn traceshape = (traceshape_fn)(ClientModuleBase + Offsets.o_ftraceShape);
 	bool result = traceshape(dis, pRay, vecStart, vecEnd, pFilter, pGameTrace);
@@ -634,6 +558,7 @@ bool __fastcall Helper::traceshape(void* dis, Ray_t* pRay, vec3* vecStart, vec3*
 }
 
 static void __fastcall ConstructFilter(void* thisptr, void* pSkip1, void* uMask, void* nlayer, void* unkNum) {
+
 
 	typedef void(__fastcall* ConfstructFilter_fn)(void*, void*, void*, void*, void*);
 	ConfstructFilter_fn filterconstruct = (ConfstructFilter_fn)(ClientModuleBase + Offsets.o_fConstructFilter);
@@ -822,7 +747,7 @@ std::vector<uintptr_t> Helper::GetAbilities(uint64_t entity_pawn) {
 bool Helper::IsAbilityCasting(uintptr_t ability) {
 
 	float completetime = *(float*)(ability + C_CitadelBaseAbility::m_bInCastDelay);
-	float gametime = Helper::GetGameTime();
+	float gametime = globals::instance().Globals->flAbsCurTime;
 	
 	if (completetime > gametime)
 		return true;

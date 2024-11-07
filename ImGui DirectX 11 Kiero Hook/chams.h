@@ -5,9 +5,10 @@
 #include "mem.h"
 #include "gameinterface.h"
 
-static uint64_t particlesdllbase = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "particles.dll");
-static uint64_t hTier0 = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "tier0.dll");
-static uint64_t materialsystembase = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "materialsystem2.dll");
+
+static uint64_t particlesdllbase = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "particles.dll");
+static uint64_t hTier0 = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "tier0.dll");
+static uint64_t materialsystembase = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "materialsystem2.dll");
 
 template <typename T = std::uint8_t>
 [[nodiscard]] T* GetAbsoluteAddress(T* pRelativeAddress, int nPreOffset = 0x0, int nPostOffset = 0x0)

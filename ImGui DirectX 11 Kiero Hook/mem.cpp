@@ -9,6 +9,46 @@
      *
      * @Returns Address of the first occurence
      */
+
+uint64_t MEM::GetProcessIdByName(const char* processname) {
+    HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    PROCESSENTRY32 procEntry;
+    procEntry.dwSize = sizeof(procEntry);
+
+    do {
+        if (!strcmp(procEntry.szExeFile, processname)) {
+            CloseHandle(hSnap);
+            return procEntry.th32ProcessID;
+        }
+    } while (Process32Next(hSnap, &procEntry));
+
+    CloseHandle(hSnap);
+    return 0;
+}
+
+uint64_t MEM::GetModuleBaseAddress(uint64_t procId, const char* modName) {
+    HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, procId);
+    MODULEENTRY32 modEntry;
+    modEntry.dwSize = sizeof(modEntry);
+
+    do {
+        if (!strcmp(modEntry.szModule, modName)) {
+            CloseHandle(hSnap);
+            return (uint64_t)modEntry.modBaseAddr;
+        }
+    } while (Module32Next(hSnap, &modEntry));
+
+    CloseHandle(hSnap);
+    return 0;
+}
+
+uint64_t MEM::GetClientBase() {
+    static uint64_t Modulebaseaddress = GetModuleBaseAddress(GetProcessIdByName("project8.exe"), "client.dll");
+    return Modulebaseaddress;
+}
+
+ uint64_t ClientModuleBase = MEM::GetClientBase();
+
 std::uint8_t* MEM::PatternScan(void* module, const char* signature)
 {
     static auto pattern_to_byte = [](const char* pattern) {
@@ -68,7 +108,7 @@ uint64_t MEM::PatternScanOffset(void* module, const char* signature, int offset,
     int32_t of;
 	of = *(int32_t*)(patternAddress + offset);
     uintptr_t result = patternAddress + of + extra;
-    return result - ClientModuleBase;
+    return result - (uint64_t)module;
 
 }
 

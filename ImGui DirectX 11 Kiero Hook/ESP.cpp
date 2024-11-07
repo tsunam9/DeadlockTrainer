@@ -2,41 +2,7 @@
 
 Drawing draw;
 
-
-std::vector<uint64_t> processed_ents_esp;
-
-inline bool sort_esp_entities()
-{
-	int max_ents = Helper::get_max_entities();
-
-	if (!(max_ents >= 0))
-		return false;
-
-	for (size_t i = 1; i <= static_cast<size_t>(max_ents); ++i)
-	{
-		uint64_t entity = Helper::get_base_entity_from_index(i);
-
-		if (!entity)
-			continue;
-
-		std::string EntName = Helper::get_schema_name(entity);
-
-		if (EntName == "CCitadelPlayerController" && !*(bool*)(entity + CBasePlayerController::m_bIsLocalPlayerController))
-			processed_ents_esp.push_back(entity);
-		if (EntName == "CItemXP" && Config.esp.DrawXp)
-			processed_ents_esp.push_back(entity);
-		if (EntName == "C_NPC_TrooperNeutral" && Config.esp.DrawMonsters)
-			processed_ents_esp.push_back(entity);
-		if (EntName == "C_NPC_Trooper" && Config.esp.DrawMinions)
-			processed_ents_esp.push_back(entity);
-
-	}
-
-	return true;
-}
-
-//impliment safety checks
-
+inline globals& globs = globals::instance();
 
 void DrawBoneEsp(uintptr_t entity) {
 
@@ -111,31 +77,27 @@ void DrawMonsterEsp(uintptr_t entity) {
 
 	if (!Config.esp.DrawMonsters || !entity)
 		return;
-	NpcData* EntInfo = new NpcData;
-	Helper::get_npc_data(entity, EntInfo);
-	PlayerData* LocalPlayerData = new PlayerData;
-	Helper::get_player_data(Helper::get_local_player(), LocalPlayerData);
+	NpcData EntInfo;
+	Helper::get_npc_data(entity, &EntInfo);
+	PlayerData LocalPlayerData;
+	Helper::get_player_data(Helper::get_local_player(), &LocalPlayerData);
 
-	float distance = Helper::GetDistance(LocalPlayerData->m_vecOrigin, EntInfo->m_vecOrigin);
+	float distance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, EntInfo.m_vecOrigin);
 
-	if (EntInfo->m_bDormant) {
-		delete EntInfo;
-		delete LocalPlayerData;
+	if (EntInfo.m_bDormant) {
 		return;
 	}
 
 	if (distance > 2000.0f) {
-		delete EntInfo;
-		delete LocalPlayerData;
 		return;
 	}
 
 
 	// im sorry
-	vec3 posleft = EntInfo->m_vecOrigin;
-	vec3 posright = EntInfo->m_vecOrigin;
-	vec3 posup = EntInfo->m_vecOrigin;
-	vec3 posdown = EntInfo->m_vecOrigin;
+	vec3 posleft = EntInfo.m_vecOrigin;
+	vec3 posright = EntInfo.m_vecOrigin;
+	vec3 posup = EntInfo.m_vecOrigin;
+	vec3 posdown = EntInfo.m_vecOrigin;
 
 	posleft.x += 50;
 	posright.x -= 50;
@@ -148,30 +110,20 @@ void DrawMonsterEsp(uintptr_t entity) {
 	vec2 limitdown;
 
 	if (!Helper::WorldToScreen(posleft, limitleft)) {
-		delete EntInfo;
-		delete LocalPlayerData;
 		return;
 	}
 	if (!Helper::WorldToScreen(posright, limitright)) {
-		delete EntInfo;
-		delete LocalPlayerData;
 		return;
 	}
 	if (!Helper::WorldToScreen(posup, limitup)) {
-		delete EntInfo;
-		delete LocalPlayerData;
 		return;
 	}
 	if (!Helper::WorldToScreen(posdown, limitdown)) {
-		delete EntInfo;
-		delete LocalPlayerData;
 		return;
 	}
 
 	draw.DrawQuad(limitup, limitright, limitdown, limitleft, ImColor(Config.colors.drawmonsterscol));
 
-	delete EntInfo;
-	delete LocalPlayerData;
 
 }
 
@@ -181,7 +133,8 @@ float GetSmoothedFPS() {
 	static float smoothedFPS = 0;
 	static float updateTimer = 0;
 	static const float UPDATE_INTERVAL = 0.1f;
-	float currentFrameTime = Helper::GetGlobals()->flAbsFrameTime;
+	globals& g = globals::instance();
+	float currentFrameTime = g.Globals->flAbsFrameTime;
 	updateTimer += currentFrameTime;
 	if (updateTimer >= UPDATE_INTERVAL) {
 		updateTimer = 0;
@@ -401,9 +354,7 @@ void Esp::DoEsp() {
 	}
 	RenderWatermark();
 
-	processed_ents_esp.clear();
-	GlobalVars.SortEnts();
-	processed_ents_esp = *GlobalVars.entlist.active;
+	globs.SortEntsEsp();
 
 
 
@@ -513,19 +464,20 @@ void Esp::DoEsp() {
 */
 
 
-	for (int i = 0; i < processed_ents_esp.size(); i++) {
+	for (int i = 0; i < globs.espEntList.active->size(); i++) {
 
-		if (processed_ents_esp.empty() || !processed_ents_esp[i])
+		if (globs.espEntList.active->empty() || !(*globs.espEntList.active)[i])
 			continue;
 
-		std::string EntName = Helper::get_schema_name(processed_ents_esp[i]);
+
+		std::string EntName = Helper::get_schema_name((*globs.espEntList.active)[i]);
 
 		if (EntName == "CCitadelPlayerController") {
 			PlayerData* LocalPlayerData = new PlayerData;
 			Helper::get_player_data(Helper::get_local_player(), LocalPlayerData);
 
 			PlayerData* TargetPlayerData = new PlayerData;
-			Helper::get_player_data(processed_ents_esp[i], TargetPlayerData);
+			Helper::get_player_data((*globs.espEntList.active)[i], TargetPlayerData);
 
 			
 			if (TargetPlayerData->dormant)
@@ -535,20 +487,20 @@ void Esp::DoEsp() {
 			if (TargetPlayerData->TeamNum == LocalPlayerData->TeamNum)
 				continue;
 
-			this->DrawEsp(processed_ents_esp[i], TargetPlayerData);
+			this->DrawEsp((*globs.espEntList.active)[i], TargetPlayerData);
 
 			delete LocalPlayerData;
 			delete TargetPlayerData;
 
 		}
 		else if (EntName == "CItemXP") {
-			DrawXPEsp(processed_ents_esp[i]);
+			DrawXPEsp((*globs.espEntList.active)[i]);
 		}
 		else if (EntName == "C_NPC_TrooperNeutral" && Config.esp.DrawMonsters) {
-			DrawMonsterEsp(processed_ents_esp[i]);
+			DrawMonsterEsp((*globs.espEntList.active)[i]);
 		}
 		else if (EntName == "C_NPC_Trooper" && Config.esp.DrawMinions) {
-			DrawMinionEsp(processed_ents_esp[i]);
+			DrawMinionEsp((*globs.espEntList.active)[i]);
 		}
 	}
 

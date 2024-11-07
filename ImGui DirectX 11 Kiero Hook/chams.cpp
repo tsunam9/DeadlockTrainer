@@ -24,7 +24,7 @@ struct CustomMaterial_t
 
 static CustomMaterial_t arrMaterials[0x32ull];
 
-uint64_t asdmatsystemasbase = Helper::GetModuleBaseAddress(Helper::GetProcessIdByName("project8.exe"), "materialsystem2.dll");
+uint64_t asdmatsystemasbase = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "materialsystem2.dll");
 typedef CMaterial2*** (*f_findmat)(__int64 a1, __int64* a2, __int64 a3);
 f_findmat drawfindmattarget = reinterpret_cast<f_findmat>(asdmatsystemasbase + 0x2A640);
 

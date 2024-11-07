@@ -1,6 +1,7 @@
 #pragma once
 #include "Windows.h"
 #include "mem.h"
+#include "helper.h"
 
 class offsets {
 
@@ -34,6 +35,7 @@ public:
 };
 
 extern offsets Offsets;
+
 
 
 /*

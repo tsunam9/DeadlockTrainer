@@ -1,7 +1,16 @@
 #include "offsets.h"
 
 offsets::offsets() {
-	void* clientdll = (void*)ClientModuleBase;
+
+	static int timescalled = 0;
+
+	if (timescalled > 0) {
+		std::cout << "EMERGENCY" << std::endl;
+	}
+
+	timescalled++;
+
+	static void* clientdll = (void*)MEM::GetClientBase();
 
 	o_LocalPlayerController = MEM::PatternScanOffset(clientdll, "48 8B 0D ? ? ? ? 48 85 C9 74 65 83 FF FF", 3, 7);
 	o_ViewMatrix = MEM::PatternScanOffset(clientdll, "48 8D ? ? ? ? ? 48 C1 E0 06 48 03 C1 C3", 3, 7);
@@ -22,7 +31,5 @@ offsets::offsets() {
 	o_oUserCmdArray = MEM::PatternScanOffset(clientdll, "48 8b 0d ? ? ? ? e8 ? ? ? ? 48 8b cf 4c 8b e8", 3, 7);
 	o_ftraceShape = MEM::PatternScanFunc(clientdll, "48 89 5c 24 ? 48 89 4c 24 ? 55 56 41 55");
 };
-
-offsets Offsets;
 
 

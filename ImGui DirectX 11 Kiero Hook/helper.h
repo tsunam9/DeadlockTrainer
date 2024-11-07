@@ -11,6 +11,9 @@
 #include "math.h"
 #include "Config.h"
 #include "mem.h"
+#include "globals.h"
+
+class globals;
 
 #define M_PI 3.14159265358979323846
 
@@ -711,45 +714,10 @@ public:
 
 static_assert(sizeof(TraceFilter_t) == 0x40);
 
-class CGlobalVarsBase
-{
-public:
-    float flRealTime; //0x0000 
-    std::uint32_t iFrameCount; //0x0004 
-    float flFrameTime; //0x0008 
-    float flAbsFrameTime; //0x000C 
-    std::uint32_t iMaxClients; //0x0010
-private:
-    [[maybe_unused]] float flUnkn1; //0x0014
-    [[maybe_unused]] char pad_0x0018[0x1C]; //0x0018
-public:
-    float flCurtime; //0x0034 
-    float flAbsCurTime; //0x0038 
-    float flSomeFraction; //0x003C
-private:
-    [[maybe_unused]] char pad_0x0040[0x8]; //0x0040
-public:
-    std::uint32_t iTickCount; //0x0048
-private:
-    [[maybe_unused]] char pad_0x004C[0x14]; //0x004C
-public:
-    void* pNetChannel; //0x0060
-private:
-    [[maybe_unused]] char pad_0x0068[0x118]; //0x0068
-public:
-    char* szCurrentMap; //0x0180 
-    char* szCurrentMapGame; //0x0188
-private:
-    [[maybe_unused]] char pad_0x0190[0x298]; //0x0190
-};
-
 class Helper {
 
 public:
    
-	static uint64_t GetModuleBaseAddress(uint64_t procId, const char* modName);
-    static uint64_t GetClientBase();
-	static uint64_t GetProcessIdByName(const char* processname);
 	static uint64_t get_entity_list();
 	static std::string readstr(uintptr_t address);
 	static int get_max_entities();
@@ -779,8 +747,6 @@ public:
     static float DegreesToRadians(float degrees);
     static bool get_xp_data(uint64_t entity, xpData* xpdata);
     static vec2 GetResolution();
-    static float GetGameTime();
-    static CGlobalVarsBase* GetGlobals();
     static CCitadelUserCmdPB* GetCurrentUserCmd();
     static CCitadelUserCmdPB* ExperimentalGetUserCmd();
     static bool KeyBindHandler(int key);
@@ -794,8 +760,6 @@ public:
     static void HotKey(KeyBind& keybind);
 	static std::vector<uintptr_t> GetAbilities(uint64_t entity_pawn);
 	static bool IsAbilityCasting(uintptr_t ability);
-
-
 
 };
 
@@ -813,7 +777,7 @@ template <typename T, std::size_t nIndex, typename CBaseClass, typename... Args>
     return fn(thisptr, std::forward<Args>(args)...);
 }
 
-static const uint64_t ClientModuleBase = Helper::GetClientBase();
+extern uint64_t ClientModuleBase;
 
 class CGameTraceManager
 {

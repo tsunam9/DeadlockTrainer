@@ -8,7 +8,7 @@ static bool checking = false;
 void VindictaLogic::AutoUlt() {
 
 	float scopetime = *(float*)(this->abilitiesarray[4] + CCitadel_Ability_Hornet_Snipe::m_flScopeStartTime);
-	float gametime = Helper::GetGameTime();
+	float gametime = globals::instance().Globals->flAbsCurTime;
 
 	if (justshot) {
 		if (scopetime) {
