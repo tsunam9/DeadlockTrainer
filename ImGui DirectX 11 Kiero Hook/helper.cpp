@@ -406,6 +406,11 @@ static auto oGetCUserCmdBASE = reinterpret_cast<GetCUserCMDBASE>(MEM::GetClientB
 
 using getcmdupdated = __int64(__fastcall*)(__int64 a1);
 static auto ogetcmdupdated = reinterpret_cast<getcmdupdated>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 83 ec ? e8 ? ? ? ? 8b 80"));
+
+typedef float(__fastcall* f_getBulletSpeed)(__int64 a1, __int64 a2);
+static f_getBulletSpeed getBulletSpeedFunction = reinterpret_cast<f_getBulletSpeed>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 89 5c 24 ? 57 48 81 ec ? ? ? ? 48 8b f9 0f 29 74 24 ? 48 8b 49"));
+
+
 			
 
 CCitadelUserCmdPB* Helper::GetCurrentUserCmd()
@@ -421,6 +426,7 @@ CCitadelUserCmdPB* Helper::GetCurrentUserCmd()
 	return nullptr;
 
 }
+
 
 /*
 	static uint64_t offset = ClientModuleBase + MEM::PatternScanOffset((void*)ClientModuleBase, "48 8b 0d ? ? ? ? e8 ? ? ? ? 48 8b cf 4c 8b e8", 3, 7);
@@ -753,6 +759,10 @@ bool Helper::IsAbilityCasting(uintptr_t ability) {
 		return true;
 	return false;
 
+}
+
+float Helper::getBulletSpeed(uint64_t BulletHandler) {
+	return getBulletSpeedFunction(BulletHandler, BulletHandler + 16);
 }
 
 

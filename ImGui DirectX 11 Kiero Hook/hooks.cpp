@@ -362,6 +362,56 @@ void hkDrawSceneObject(void* ptr, void* a2, CBaseSceneData* scene_data, int coun
 }
 
 
+//CreateMove Hook
+typedef float(__fastcall* f_getBulletSpeed)(__int64 a1, __int64 a2);
+static f_getBulletSpeed ogGetBulletSpeed = nullptr;
+static f_getBulletSpeed GetBulletSpeedTarget = reinterpret_cast<f_getBulletSpeed>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 89 5c 24 ? 57 48 81 ec ? ? ? ? 48 8b f9 0f 29 74 24 ? 48 8b 49"));
+
+float hkGetBulletSpeed(__int64 a1, __int64 a2) {
+
+	float speed = ogGetBulletSpeed(a1, a2);
+	return speed;
+
+}
+
+
+typedef __int64(__fastcall* f_createBullet)(__int64 a1, __int64 a2);
+static f_createBullet ogCreateBullet = nullptr;
+static f_createBullet createBulletTarget = reinterpret_cast<f_createBullet>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 89 5c 24 ? 48 89 74 24 ? 57 48 83 ec ? 48 8b fa 48 8b f1 0f b6 92"));
+
+__int64 khCreateBullet(__int64 a1, __int64 a2) {
+
+	auto result = ogCreateBullet(a1, a2);
+
+	if (*(BYTE*)(a2 + 196)) {
+		auto BulletArray = *(uint64_t*)(a1 + 40);
+		auto LocalBulletsInAir = *(int*)(a1 + 32);
+		Bullet* latestbullet = *(Bullet**)(BulletArray + 8ull * (LocalBulletsInAir - 1));
+		globals::instance().BulletVelocity = latestbullet->flatVelocity;
+	}
+	return result;
+}
+
+typedef __int64(__fastcall* f_levelinit)(__int64 a1, __int64 a2);
+static f_levelinit ogLevelInit = nullptr;
+static f_levelinit LevelInitTarget = reinterpret_cast<f_levelinit>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 89 5c 24 ? 56 48 83 ec ? 48 8b 0d ? ? ? ? 48 8b f2"));
+
+__int64 hkLevelInit(__int64 a1, __int64 a2) {
+	uint64_t globalsoffset = MEM::PatternScanOffset((void*)ClientModuleBase, "48 8B 05 ? ? ? ? 44 3B 40", 3, 7);
+	globals::instance().Globals = *(CGlobalVarsBase**)(ClientModuleBase + globalsoffset);
+	return ogLevelInit(a1, a2);
+}
+
+typedef __int64(__fastcall* f_levelshutdown)();
+static f_levelshutdown oglevelshutdown = nullptr;
+static f_levelshutdown levelshutdowntarget = reinterpret_cast<f_levelshutdown>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 83 ec ? 48 8b 0d ? ? ? ? 48 8d 15 ? ? ? ? 45 33 c9 45 33 c0 48 8b 01 ff 50 ? 48 85 c0 74 ? 48 8b 0d ? ? ? ? 48 8b d0 4c 8b 01 41 ff 50"));
+
+__int64 hkLevelShutdown(){
+	globals::instance().Globals = nullptr;
+	return oglevelshutdown();
+}
+
+
 
 void CreateHooks() {
 
@@ -388,6 +438,18 @@ void CreateHooks() {
 	MH_CreateHook((LPVOID)LightSceneTarget, &hkLightSceneObject, reinterpret_cast<LPVOID*>(&ogLightScene));
 	MH_EnableHook((LPVOID)LightSceneTarget);
 	std::cout << "[+] LightScene Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)createBulletTarget, &khCreateBullet, reinterpret_cast<LPVOID*>(&ogCreateBullet));
+	MH_EnableHook((LPVOID)createBulletTarget);
+	std::cout << "[+] CreateBullet Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)LevelInitTarget, &hkLevelInit, reinterpret_cast<LPVOID*>(&ogLevelInit));
+	MH_EnableHook((LPVOID)LevelInitTarget);
+	std::cout << "[+] LevelInit Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)levelshutdowntarget, &hkLevelShutdown, reinterpret_cast<LPVOID*>(&oglevelshutdown));
+	MH_EnableHook((LPVOID)levelshutdowntarget);
+	std::cout << "[+] LevelShutdown Hook Initialized!" << std::endl;
 
 	//MH_CreateHook((LPVOID)DrawSceneObjectTarget, &hkDrawSceneObject, reinterpret_cast<LPVOID*>(&ogDrawSceneObject));
 	//MH_EnableHook((LPVOID)DrawSceneObjectTarget);

@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Windows.h"
 
 template <typename Interface>
 Interface* GetInterface(const char* moduleName, const char* interfaceName)

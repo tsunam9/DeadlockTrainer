@@ -134,6 +134,10 @@ float GetSmoothedFPS() {
 	static float updateTimer = 0;
 	static const float UPDATE_INTERVAL = 0.1f;
 	globals& g = globals::instance();
+
+	if (!g.Globals)
+		return 0.0f;
+
 	float currentFrameTime = g.Globals->flAbsFrameTime;
 	updateTimer += currentFrameTime;
 	if (updateTimer >= UPDATE_INTERVAL) {
@@ -154,20 +158,22 @@ float GetSmoothedFPS() {
 	return smoothedFPS;
 }
 void RenderWatermark() {
-	// Get current time safely
-	time_t now = time(nullptr);
-	struct tm timeinfo;
-#ifdef _WIN32
-	localtime_s(&timeinfo, &now);
-#else
-	localtime_r(&now, &timeinfo);
-#endif
+
 	PlayerData plrdata;
 	Helper::get_player_data(Helper::get_local_player(), &plrdata);
 	// Create the watermark text
 	char fullBuffer[256];
-	snprintf(fullBuffer, sizeof(fullBuffer), "Darks Slain : %d | FPS : %.0f | LYNCHWARE.NET ",
-		plrdata.kills, GetSmoothedFPS());
+
+	if (iEngine->IsInGame()) {
+		snprintf(fullBuffer, sizeof(fullBuffer), "Darks Slain : %d | FPS : %.0f | LYNCHWARE.NET ",
+			plrdata.kills, GetSmoothedFPS());
+	}
+	else {
+		snprintf(fullBuffer, sizeof(fullBuffer), "Darks Slain : %d | FPS : %.0f | LYNCHWARE.NET ",
+			0, GetSmoothedFPS());
+	}
+
+
 	// Calculate text size
 	ImVec2 textSize = ImGui::CalcTextSize(fullBuffer);
 	float padding = 15.0f; // Adjust padding as needed

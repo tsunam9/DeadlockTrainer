@@ -6,6 +6,7 @@
 #include "mem.h"
 #include "chams.h"
 #include "helper.h"
+#include "CCitadelBulletManager.h"
 
 
 static void* backup;

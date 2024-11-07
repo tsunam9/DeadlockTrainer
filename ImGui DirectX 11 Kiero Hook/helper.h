@@ -760,22 +760,9 @@ public:
     static void HotKey(KeyBind& keybind);
 	static std::vector<uintptr_t> GetAbilities(uint64_t entity_pawn);
 	static bool IsAbilityCasting(uintptr_t ability);
+    static float getBulletSpeed(uint64_t BulletHandler);
 
 };
-
-template <typename T = void*>
-[[nodiscard]] constexpr T GetVFunc(const void* thisptr, std::size_t nIndex) {
-    // Retrieve the virtual function pointer from the vtable
-    return (*static_cast<T**>(const_cast<void*>(thisptr)))[nIndex];
-}
-
-template <typename T, std::size_t nIndex, typename CBaseClass, typename... Args>
-[[nodiscard]] constexpr T CallVFunc(CBaseClass* thisptr, Args&&... args) {
-    using VirtualFn_t = T(__thiscall*)(CBaseClass*, Args...);
-    // Get the virtual function pointer from the vtable
-    VirtualFn_t fn = GetVFunc<VirtualFn_t>(thisptr, nIndex);
-    return fn(thisptr, std::forward<Args>(args)...);
-}
 
 extern uint64_t ClientModuleBase;
 

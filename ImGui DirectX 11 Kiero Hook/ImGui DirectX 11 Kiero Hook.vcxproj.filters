@@ -301,6 +301,12 @@
     <ClInclude Include="CGlobalVarsBase.h">
       <Filter>Source Files\ValveClasses</Filter>
     </ClInclude>
+    <ClInclude Include="CCitadelBulletManager.h">
+      <Filter>Source Files\ValveClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="IEngineClient.h">
+      <Filter>Source Files\ValveClasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="kiero\minhook\dll_resources\MinHook.def">

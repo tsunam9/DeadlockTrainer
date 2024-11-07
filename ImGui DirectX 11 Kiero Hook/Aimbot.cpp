@@ -15,6 +15,7 @@ static Helper AimbotHelperObj;
 static Drawing aimbotdraw;
 static std::vector<uintptr_t> abilities;
 static CCitadelUserCmdPB* CUserCmd;
+globals& aimbotglobs = globals::instance();
 
 uint64_t CurrentPlayerTarget = 0;
 
@@ -115,6 +116,8 @@ uint64_t Aimbot::GetCurrentAimbotTarget() {
 uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 
 
+	
+
 	float ClosestDistance = 99999999999.0;
 	int ClosestIndex = 999;
 	int LowestHealth = 99999999999;
@@ -122,21 +125,21 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 	float LowestFov = 99999999999.0;
 	int lowestfovindex = 999;
 
-	//(*globals::instance().entlist.active)
+	//(*aimbotglobs.entlist.active)
 
 	// Sort Entities
-	for (int i = 0; i < globals::instance().entlist.active->size(); i++) {
+	for (int i = 0; i < aimbotglobs.entlist.active->size(); i++) {
 
-		if ( globals::instance().entlist.active->empty())
+		if ( aimbotglobs.entlist.active->empty())
 			continue;
 
 		
 
-		std::string entClass = Helper::get_schema_name((*globals::instance().entlist.active)[i]);
+		std::string entClass = Helper::get_schema_name((*aimbotglobs.entlist.active)[i]);
 
 		if (TargetEntityType == "CCitadelPlayerController" && entClass == "CCitadelPlayerController") {
 			PlayerData* TargetPlayerData = new PlayerData;
-			Helper::get_player_data((*globals::instance().entlist.active)[i], TargetPlayerData);
+			Helper::get_player_data((*aimbotglobs.entlist.active)[i], TargetPlayerData);
 
 
 			if (!TargetPlayerData->isalive) {
@@ -149,7 +152,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			}
 
 			if(!Config.aimbot.magicbullet || !Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key)){ // if magic bullet then obviously dont do vischeck 
-				if (IsPlayerVisible((*globals::instance().entlist.active)[i]) == false) {
+				if (IsPlayerVisible((*aimbotglobs.entlist.active)[i]) == false) {
 					delete TargetPlayerData;
 					continue;
 				}
@@ -159,7 +162,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 
 
 			vec3 TargetPos = { 0, 0, 0 };
-			TargetPos = Helper::GetBonePosition((*globals::instance().entlist.active)[i], "head");
+			TargetPos = Helper::GetBonePosition((*aimbotglobs.entlist.active)[i], "head");
 
 			if (TargetPos.x == 0 && TargetPos.y == 0 && TargetPos.z == 0) {
 				delete TargetPlayerData;
@@ -212,7 +215,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 		else if (entClass == "CItemXP" && TargetEntityType == "CItemXP") {
 
 			xpData* TargetXPData = new xpData;
-			Helper::get_xp_data((*globals::instance().entlist.active)[i], TargetXPData);
+			Helper::get_xp_data((*aimbotglobs.entlist.active)[i], TargetXPData);
 			float GameTime = globals::instance().Globals->flAbsCurTime;
 			float launchtime = TargetXPData->m_flLaunchtime;
 
@@ -221,7 +224,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			if (GameTime < TargetXPData->m_flLaunchtime + 0.184)
 				continue;
 
-			if (IsXpVisible((*globals::instance().entlist.active)[i]) == false)
+			if (IsXpVisible((*aimbotglobs.entlist.active)[i]) == false)
 				continue;
 
 			float xpdistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetXPData->m_vecOrigin);
@@ -254,7 +257,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 		else if (entClass == "C_NPC_Trooper" && TargetEntityType == "C_NPC_Trooper") {
 
 			NpcData* TargetNpcData = new NpcData;
-			Helper::get_npc_data((*globals::instance().entlist.active)[i], TargetNpcData);
+			Helper::get_npc_data((*aimbotglobs.entlist.active)[i], TargetNpcData);
 
 
 			if (TargetNpcData->m_bDormant) {
@@ -273,7 +276,7 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 				continue;
 			}
 
-			if (IsNpcVisible((*globals::instance().entlist.active)[i]) == false) {
+			if (IsNpcVisible((*aimbotglobs.entlist.active)[i]) == false) {
 				delete TargetNpcData;
 				continue;	
 			}
@@ -289,13 +292,13 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 				continue;
 			}
 
-			int boneindex = Helper::get_bone_index((*globals::instance().entlist.active)[i], "head");
+			int boneindex = Helper::get_bone_index((*aimbotglobs.entlist.active)[i], "head");
 			if (!boneindex) {
 				delete TargetNpcData;
 				continue;
 			}
 
-			vec3 HeadPos = Helper::GetBoneVectorFromIndex((*globals::instance().entlist.active)[i], boneindex);  // No re-declaration of TargetPos here
+			vec3 HeadPos = Helper::GetBoneVectorFromIndex((*aimbotglobs.entlist.active)[i], boneindex);  // No re-declaration of TargetPos here
 			vec2 LocalPlayerAngles = { ViewAngles->x, ViewAngles->y };
 			vec2 AimAngles = GetAimAngles(HeadPos);
 			vec2 angle_difference = AimAngles - LocalPlayerAngles;
@@ -338,22 +341,22 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 				CurrentPlayerTarget = 0;
 				return 0;
 			}
-			CurrentPlayerTarget = (*globals::instance().entlist.active)[ClosestIndex];
-			return (*globals::instance().entlist.active)[ClosestIndex];
+			CurrentPlayerTarget = (*aimbotglobs.entlist.active)[ClosestIndex];
+			return (*aimbotglobs.entlist.active)[ClosestIndex];
 		case 1:
 			if (LowestHealthIndex == 999) {
 				CurrentPlayerTarget = 0;
 				return 0;
 			}
-			CurrentPlayerTarget = (*globals::instance().entlist.active)[LowestHealthIndex];
-			return (*globals::instance().entlist.active)[LowestHealthIndex];
+			CurrentPlayerTarget = (*aimbotglobs.entlist.active)[LowestHealthIndex];
+			return (*aimbotglobs.entlist.active)[LowestHealthIndex];
 		case 2:
 			if (lowestfovindex == 999) {
 				CurrentPlayerTarget = 0;
 				return 0;
 			}
-			CurrentPlayerTarget = (*globals::instance().entlist.active)[lowestfovindex];
-			return (*globals::instance().entlist.active)[lowestfovindex];
+			CurrentPlayerTarget = (*aimbotglobs.entlist.active)[lowestfovindex];
+			return (*aimbotglobs.entlist.active)[lowestfovindex];
 		}
 	}
 
@@ -363,17 +366,17 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			if (ClosestIndex == 999) {
 				return 0;
 			}
-			return (*globals::instance().entlist.active)[ClosestIndex];
+			return (*aimbotglobs.entlist.active)[ClosestIndex];
 		case 1:
 			if (lowestfovindex == 999) {
 				return 0;
 			}
-			return (*globals::instance().entlist.active)[lowestfovindex];
+			return (*aimbotglobs.entlist.active)[lowestfovindex];
 		case 2:
 			if (lowestfovindex == 999) {
 				return 0;
 			}
-			return (*globals::instance().entlist.active)[lowestfovindex];
+			return (*aimbotglobs.entlist.active)[lowestfovindex];
 		}
 	}
 
@@ -383,17 +386,17 @@ uint64_t Aimbot::GetAimbotTarget(std::string TargetEntityType) {
 			if (ClosestIndex == 999) {
 				return 0;
 			}
-			return (*globals::instance().entlist.active)[ClosestIndex];
+			return (*aimbotglobs.entlist.active)[ClosestIndex];
 		case 1:
 			if (LowestHealthIndex == 999) {
 				return 0;
 			}
-			return (*globals::instance().entlist.active)[LowestHealthIndex];
+			return (*aimbotglobs.entlist.active)[LowestHealthIndex];
 		case 2:
 			if (lowestfovindex == 999) {
 				return 0;
 			}
-			return (*globals::instance().entlist.active)[lowestfovindex];
+			return (*aimbotglobs.entlist.active)[lowestfovindex];
 		}
 	}
 }
@@ -512,7 +515,7 @@ bool readyToFire() {
 
 void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 
-	float BulletSpeed = 30000.0f;
+	float BulletSpeed = globals::instance().BulletVelocity;
 	vec3 vec_target = Helper::GetBonePosition(entity, bone);
 	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
@@ -698,7 +701,8 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 
 	CUserCmd = usercmd;
 
-	globals::instance().SortEnts();
+
+	aimbotglobs.SortEnts();
 
 
 
@@ -706,14 +710,11 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 	CameraManager = *(uint64_t*)(ClientModuleBase + Offsets.o_CameraManager + 0x28);
 	ViewAngles = (vec2*)(CameraManager + 0x44); // RESET to 0x44
 	LocalPlayerController = Helper::get_local_player();
-	PlayerData tempplrdata;
-	Helper::get_player_data(LocalPlayerController, &tempplrdata);
-	LocalPlayerData = tempplrdata;	
-
+	Helper::get_player_data(LocalPlayerController, &LocalPlayerData);
 	abilities = Helper::GetAbilities(Helper::GetPawn(Helper::get_local_player()));
 
 	
-	if (globals::instance().entlist.active->empty()){
+	if (aimbotglobs.entlist.active->empty()){
 		return;
 	}
 

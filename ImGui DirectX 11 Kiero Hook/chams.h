@@ -278,17 +278,17 @@ class IMaterialSystem2
 public:
 	CMaterial2*** FindOrCreateFromResource(CMaterial2*** pOutMaterial, __int64 szMaterialName)
 	{
-		return CallVFunc<CMaterial2***, 14U>(this, pOutMaterial, szMaterialName);
+		return MEM::CallVFunc<CMaterial2***, 14U>(this, pOutMaterial, szMaterialName);
 	}
 
 	CMaterial2** CreateMaterial(CMaterial2*** pOutMaterial, const char* szMaterialName, CMeshData* pData)
 	{
-		return CallVFunc<CMaterial2**, 29U>(this, pOutMaterial, szMaterialName, pData, 0, 1);
+		return MEM::CallVFunc<CMaterial2**, 29U>(this, pOutMaterial, szMaterialName, pData, 0, 1);
 	}
 
 	void SetCreateDataByMaterial(const void* pData, CMaterial2*** const pInMaterial)
 	{
-		return CallVFunc<void, 37U>(this, pInMaterial, pData);
+		return MEM::CallVFunc<void, 37U>(this, pInMaterial, pData);
 	}
 };
 

@@ -1,7 +1,7 @@
 // Globals.cpp
 #include "Globals.h" 
 
-
+IEngineClient* iEngine = GetInterface<IEngineClient>("Engine2.dll", "Source2EngineToClient001");
 
 void globals::SortEnts() { // ONLY CALL IN AIMBOT
 
@@ -56,3 +56,4 @@ void globals::SortEntsEsp() { // ONLY CALL IN DOESP
     }
     this->espEntList.SwapBuffers();
 }
+

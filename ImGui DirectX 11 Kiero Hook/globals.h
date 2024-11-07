@@ -6,6 +6,8 @@
 #include "helper.h"
 #include "mem.h"
 #include <condition_variable>
+#include "IEngineClient.h"
+#include "gameinterface.h"
 
 using namespace cs2_dumper::schemas::client_dll;
 
@@ -43,6 +45,7 @@ public:
     EntityBuffer espEntList;
     CGlobalVarsBase* Globals;
     uint64_t clientbase;
+    float BulletVelocity = 30000.f;
 
     static globals& instance() {
         static globals single_instance;
@@ -68,3 +71,5 @@ private:
     globals& operator=(const globals&) = delete;
 
 };
+
+extern IEngineClient* iEngine;

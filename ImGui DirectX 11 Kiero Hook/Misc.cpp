@@ -1,6 +1,7 @@
 
 #include "Misc.h"
 
+#include "CCitadelBulletManager.h"
 
 
 void InitializeOriginalBytes(char(&original_bytes)[5]) {
@@ -81,19 +82,22 @@ void Misc::DoSkyModulation(){
 	}
 }
 
-
+/*	if (GetAsyncKeyState(VK_F3)) {
+		CCitadelBulletManager* bulletman = (CCitadelBulletManager*)(0x7ffb696eff50);
+		uint64_t bullet1 = *(uint64_t*)bulletman->BulletHandler->CurrentBullets;
+		float speed = Helper::getBulletSpeed(bullet1);
+		std::cout << speed << std::endl;
+	}*/
 
 Drawing testdraw;
 
 void testbed() {
-
-
 
 }
 
 
 void Misc::DoMisc() {
 		SimpleNoRecoil();
-		testbed();
-		DoSkyModulation();
+		//testbed();
+		//DoSkyModulation();
 }
