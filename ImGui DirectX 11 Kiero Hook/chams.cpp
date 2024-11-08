@@ -26,7 +26,7 @@ static CustomMaterial_t arrMaterials[0x32ull];
 
 uint64_t asdmatsystemasbase = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "materialsystem2.dll");
 typedef CMaterial2*** (*f_findmat)(__int64 a1, __int64* a2, __int64 a3);
-f_findmat drawfindmattarget = reinterpret_cast<f_findmat>(asdmatsystemasbase + 0x2A640);
+f_findmat drawfindmattarget = reinterpret_cast<f_findmat>(asdmatsystemasbase + MEM::PatternScanFunc((void*)asdmatsystemasbase, "4c 8b dc 49 89 5b ? 49 89 73 ? 57 48 81 ec ? ? ? ? 33 db"));
 
 typedef void(__fastcall* f_WrappedSetMaterial)(
 	unsigned __int64* CMeshDataThisPtr,
@@ -47,6 +47,7 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn) {
 	if (!matdata)
 		return;
 
+
 	PlayerData targetchamsdata;
 	PlayerData LocalPlayerData;
 	Helper::getPawnData(entity_pawn, &targetchamsdata);
@@ -60,6 +61,8 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn) {
 	auto test = (__int64)(str);
 	CMaterial2*** mymaterial = drawfindmattarget((__int64)mymatsystem, (__int64*)mymat2, test);
 
+
+
 	if (islocal && Config.esp.LocalChams) {
 		matdata->colValue.r = Config.colors.LocalChamsCol.x * 255;
 		matdata->colValue.g = Config.colors.LocalChamsCol.y * 255;
@@ -67,6 +70,7 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn) {
 		matdata->colValue.a = Config.colors.LocalChamsCol.w * 255;
 		if (Config.esp.ModelChams) {
 			matdata->pMaterial = **mymaterial;
+			matdata->pMaterial2 = **mymaterial;
 		}
 		goto LABEL_1;
 	}
@@ -80,8 +84,8 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn) {
 	matdata->colValue.a = Config.colors.ChamsCol.w * 255;
 	if (Config.esp.ModelChams) {
 		matdata->pMaterial = **mymaterial;
+		matdata->pMaterial2 = **mymaterial;
 	}
-
 
 
 
