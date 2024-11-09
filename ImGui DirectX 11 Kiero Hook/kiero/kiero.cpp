@@ -661,6 +661,8 @@ kiero::Status::Enum kiero::init(RenderType::Enum _renderType)
 	return Status::Success;
 }
 
+#include "../globals.h"
+
 void kiero::shutdown()
 {
 	if (g_renderType != RenderType::None)

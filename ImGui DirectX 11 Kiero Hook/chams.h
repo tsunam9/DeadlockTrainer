@@ -403,17 +403,21 @@ public:
 	uint8_t g; //0x0039
 	uint8_t b; //0x003A
 	uint8_t a; //0x003B
+	char pad0001[0x8];
 }; 
 
 
 class C_AggregateSceneObject
 {
+private:
+	char pad_0000[0x120];
 public:
-	char pad_0000[288]; //0x0000
-	int64_t m_nCount; //0x0120
-	C_AggregateSceneObjectData* m_Pdata; //0x0128
-	char pad_0130[1808]; //0x0130
-}; //Size: 0x0840
+	int m_nCount; // 0x120
+private:
+	char pad_0120[0x4];
+public:
+	C_AggregateSceneObjectData* m_pData; // 0x128
+};
 
 class C_SceneLightObject
 {

@@ -1,6 +1,5 @@
 
 #include "Misc.h"
-
 #include "CCitadelBulletManager.h"
 
 
@@ -91,13 +90,16 @@ void Misc::DoSkyModulation(){
 
 Drawing testdraw;
 
+
+
 void testbed() {
+
 
 }
 
 
 void Misc::DoMisc() {
 		SimpleNoRecoil();
-		//testbed();
+		testbed();
 		//DoSkyModulation();
 }

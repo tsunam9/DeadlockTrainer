@@ -97,12 +97,21 @@ void printBinary(uint64_t num) {
 	std::cout << std::endl; // New line after the binary output
 }
 
+unsigned long long createMask(const std::string& bitString) {
+	unsigned long long mask = 0;
+	for (int i = bitString.length() - 1, shift = 0; i >= 0; --i, ++shift) {
+		if (bitString[i] == '1') {
+			mask |= 1ULL << shift;  // Use 1ULL to ensure 64-bit shifting
+		}
+	}
+	return mask;
+}
+
 //CreateMove Hook
 typedef void(__fastcall* f_CreateMove)(__int64* a1, int a2, char a3);
 static f_CreateMove CreateMove = nullptr;
 static f_CreateMove CreateMoveTarget = reinterpret_cast<f_CreateMove>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "85 D2 0F 85 ? ? ? ? 48 8B C4 44 88 40"));
 
-Drawing drawtest;
 
 void detourCreateMove(__int64* a1, int a2, char a3) {
 
@@ -159,6 +168,15 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	if (Config.misc.SpeedBoost) {
 		Misc::SpeedBoost(localplayercontroller);
 	}
+
+	if (Config.MenuOpen) { // prevent anything except movement while menu open
+
+		static std::string bitString ="0000001000000001000000000000000000000000000000000000011000011100";
+		unsigned long long mask = createMask(bitString);
+		cmd->buttons = cmd->buttons & mask;
+		cmd->pBaseUserCMD->CInButtonStatePB->buttons = cmd->pBaseUserCMD->CInButtonStatePB->buttons & mask;
+	}
+
 
 	return;
 }
@@ -236,77 +254,30 @@ __int64 __fastcall hkFindParam(__int64 firstparam, const char* param) {
 }
 
 
-using fnUpdateSceneObject = void(__fastcall*)(C_AggregateSceneObject* object, void* unk);
+using fnUpdateSceneObject = __int64(__fastcall*)(C_AggregateSceneObject* object, __int64 unk);
 fnUpdateSceneObject UpdateSceneObjectTarget = reinterpret_cast<fnUpdateSceneObject>(scenesytembase + MEM::PatternScanFunc((void*)scenesytembase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 4C 8B F9"));
 fnUpdateSceneObject ogUpdateSceneObject = nullptr;
 
-void __fastcall hkUpdateSceneObject(C_AggregateSceneObject* object, void* unk)
+__int64 __fastcall hkUpdateSceneObject(C_AggregateSceneObject* object, __int64 unk)
 {
-	ogUpdateSceneObject(object, unk);
-	return;
+	__int64 result = ogUpdateSceneObject(object, unk);
 
+	if (Config.esp.ModWorld)
+	{
 
-	__try {
-		// First validate object pointer
-		if (!object || (uintptr_t)object < 0x10000) {
-			return;
-		}
+		for (int i = 0; i < object->m_nCount; i++)
+		{
+			object->m_pData[i].r = Config.colors.WorldModulationColor.x * 255;
+			object->m_pData[i].g = Config.colors.WorldModulationColor.y * 255;
+			object->m_pData[i].b = Config.colors.WorldModulationColor.z * 255;
+			object->m_pData[i].a = Config.colors.WorldModulationColor.w * 255;
 
-		// Read count first and validate before anything else
-		int count = 0;
-		__try {
-			count = object->m_nCount;
-			// Validate count is reasonable (assuming no object should have more than 1000 elements)
-			if (count <= 0 || count > 1000) {
-				return;
-			}
-		}
-		__except (EXCEPTION_EXECUTE_HANDLER) {
-			return;  // Exit if we can't even read the count
-		}
-
-		// Now check data pointer
-		void* dataPtr = nullptr;
-		__try {
-			dataPtr = object->m_Pdata;
-			if (!dataPtr || (uintptr_t)dataPtr < 0x10000) {
-				return;
-			}
-		}
-		__except (EXCEPTION_EXECUTE_HANDLER) {
-			return;  // Exit if we can't read the data pointer
-		}
-
-		// Call original function
-		ogUpdateSceneObject(object, unk);
-
-		// Validate again after original function
-		if (object->m_nCount != count || object->m_Pdata != dataPtr) {
-			return;  // Data changed during update, abort
-		}
-
-		// Now try to modify only objects with count == 1 first
-		// This helps us identify if the issue is with multi-element objects
-		if (count == 1) {
-			__try {
-				// Test read access first
-				volatile BYTE testRead = object->m_Pdata[0].r;
-
-				// If read succeeded, try write
-				object->m_Pdata[0].r = 255;
-				object->m_Pdata[0].g = 255;
-				object->m_Pdata[0].b = 255;
-			}
-			__except (EXCEPTION_EXECUTE_HANDLER) {
-				// Silent fail - we've validated what we can
-				return;
-			}
 		}
 	}
-	__except (EXCEPTION_EXECUTE_HANDLER) {
-		return;
-	}
+
+	return result;
 }
+
 
 
 using fnLightSceneObject = void(__fastcall*)(void* ptr, C_SceneLightObject* object, void* unk);
@@ -318,10 +289,11 @@ void __fastcall hkLightSceneObject(void* ptr, C_SceneLightObject * object, void*
 
 	ogLightScene(ptr, object, unk);
 
-		object->r = 0.0f;
-		object->g = 0.0f;
-		object->b = 0.0f;
-
+	if (Config.esp.ModLights) {
+		object->r = Config.colors.LightModColor.x;
+		object->g = Config.colors.LightModColor.y;
+		object->b = Config.colors.LightModColor.z;
+	}
 
 }
 
@@ -411,6 +383,30 @@ __int64 hkLevelShutdown(){
 	return oglevelshutdown();
 }
 
+typedef __int64(__fastcall* f_MouseInputEnabled)();
+static f_MouseInputEnabled ogMouseInputEnabled = nullptr;
+static f_MouseInputEnabled MouseInputEnabledTarget = reinterpret_cast<f_MouseInputEnabled>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 83 ec ? e8 ? ? ? ? 84 c0 0f 85")); // CCitadelInput 
+
+bool __fastcall hkMouseInputEnabled()
+{
+	return Config.MenuOpen ? false : ogMouseInputEnabled();
+}
+
+
+
+
+uint64_t engine = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "engine2.dll");
+typedef __int64(__fastcall* f_ConsoleCmd)(__int64 a1, unsigned int a2, const char* a3, char a4);
+static f_ConsoleCmd ogConsoleCmd = nullptr;
+static f_ConsoleCmd ConsoleCmdTarget = reinterpret_cast<f_ConsoleCmd>(engine + 0x6D700); // CCitadelInput 
+
+bool __fastcall hkConsoleCmd(__int64 a1, unsigned int a2, const char* a3, char a4)
+{
+	return ogConsoleCmd(a1, a2, a3, a4);
+}
+
+
+
 
 
 void CreateHooks() {
@@ -431,9 +427,9 @@ void CreateHooks() {
 	MH_EnableHook((LPVOID)DrawModelTarget);
 	std::cout << "[+] DrawModel Hook Initialized!" << std::endl;
 
-	//MH_CreateHook((LPVOID)UpdateSceneObjectTarget, &hkUpdateSceneObject, reinterpret_cast<LPVOID*>(&ogUpdateSceneObject));
-	//MH_EnableHook((LPVOID)UpdateSceneObjectTarget);
-	//std::cout << "[+] UpdateSceneObject Hook Initialized!" << std::endl;
+	MH_CreateHook((LPVOID)UpdateSceneObjectTarget, &hkUpdateSceneObject, reinterpret_cast<LPVOID*>(&ogUpdateSceneObject));
+	MH_EnableHook((LPVOID)UpdateSceneObjectTarget);
+	std::cout << "[+] UpdateSceneObject Hook Initialized!" << std::endl;
 
 	MH_CreateHook((LPVOID)LightSceneTarget, &hkLightSceneObject, reinterpret_cast<LPVOID*>(&ogLightScene));
 	MH_EnableHook((LPVOID)LightSceneTarget);
@@ -450,6 +446,15 @@ void CreateHooks() {
 	MH_CreateHook((LPVOID)levelshutdowntarget, &hkLevelShutdown, reinterpret_cast<LPVOID*>(&oglevelshutdown));
 	MH_EnableHook((LPVOID)levelshutdowntarget);
 	std::cout << "[+] LevelShutdown Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)MouseInputEnabledTarget, &hkMouseInputEnabled, reinterpret_cast<LPVOID*>(&ogMouseInputEnabled));
+	MH_EnableHook((LPVOID)MouseInputEnabledTarget);
+	std::cout << "[+] MouseInputEnabled Hook Initialized!" << std::endl;
+
+	//MH_CreateHook((LPVOID)ConsoleCmdTarget, &hkConsoleCmd, reinterpret_cast<LPVOID*>(&ogConsoleCmd));
+	//MH_EnableHook((LPVOID)ConsoleCmdTarget);
+	//std::cout << "[+] ConsoleCmd Hook Initialized!" << std::endl;
+
 
 	//MH_CreateHook((LPVOID)DrawSceneObjectTarget, &hkDrawSceneObject, reinterpret_cast<LPVOID*>(&ogDrawSceneObject));
 	//MH_EnableHook((LPVOID)DrawSceneObjectTarget);

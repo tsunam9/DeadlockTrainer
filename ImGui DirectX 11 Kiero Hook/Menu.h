@@ -16,6 +16,7 @@ public:
 
 
 	static void DrawMenu(FILE* fp);
+	static void DrawBackround();
 	static void DrawNewMenu(FILE* fp, ID3D11Device* dx11Device);
 	static void DrawConfigs();
 };

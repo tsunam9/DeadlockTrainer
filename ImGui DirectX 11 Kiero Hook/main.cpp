@@ -89,7 +89,11 @@ LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
 
-
+DWORD WINAPI UnloadThread(LPVOID lpParameter) {
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	FreeLibraryAndExitThread((HMODULE)lpParameter, 0);
+	return 0;
+}
 
 bool init = false;
 bool open = true;
@@ -116,24 +120,40 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			return oPresent(pSwapChain, SyncInterval, Flags);
 	}
 
-	//toggle menu
+	if (unloadRequested) {
 
+		iEngine->ClientCmd_Unrestricted("hud_free_cursor -1");
+		kiero::shutdown();
+		fclose(fp);
+		FreeConsole();
+		unloadRequested = false;
+		//CreateThread(nullptr, 0, UnloadThread, myhmod, 0, nullptr);
+		return oPresent(pSwapChain, SyncInterval, Flags);
+	}
 
-
-	if(GetAsyncKeyState(Config.MenuKey.key) & 1)
+	if (GetAsyncKeyState(Config.MenuKey.key) & 1) {
 		Config.MenuOpen = !Config.MenuOpen;
+	}
 
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+
+	// Set the background color HERE
 
 	ImGui::PushFont(Franklin);
 	GodFunction();
 	ImGui::PopFont();
 
 	if (Config.MenuOpen) {
+
+		Menu::DrawBackround();
+
 		Menu::DrawNewMenu(fp, pDevice);
-		//Menu::DrawMenu(fp);
+		iEngine->ClientCmd_Unrestricted("hud_free_cursor 1");
+	}
+	else {
+		iEngine->ClientCmd_Unrestricted("hud_free_cursor -1");
 	}
 	ImGui::Render();
 

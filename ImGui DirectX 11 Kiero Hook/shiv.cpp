@@ -1,10 +1,7 @@
 #include "shiv.h"
 
 
-namespace shiv {
-	uint64_t target;
-	PlayerData* targetdata;
-}
+
 void ShivLogic::AutoUlt() {
 
 	if (*(bool*)(this->abilitiesarray[5] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
@@ -14,12 +11,12 @@ void ShivLogic::AutoUlt() {
 	float UltimateExecutehealth = 0.2f;
 	if (rlevel >= 7)
 		UltimateExecutehealth = 0.28f;
-	if (shiv::targetdata->Health <= 0)
+	if (targetdata->Health <= 0)
 		return;
 
-	float targetpercent = (float)shiv::targetdata->Health / (float)shiv::targetdata->MaxHealth;
+	float targetpercent = (float)targetdata->Health / (float)targetdata->MaxHealth;
 	if (targetpercent < UltimateExecutehealth) {
-		vec2 angles = Aimbot::GetAimAngles(shiv::targetdata->m_vecOrigin);
+		vec2 angles = Aimbot::GetAimAngles(targetdata->m_vecOrigin);
 		this->cmd->cameraViewAngle->viewAngles.x = angles.x;
 		this->cmd->cameraViewAngle->viewAngles.y = angles.y;
 		this->cmd->buttons |= IN_ABILITY4;
@@ -34,9 +31,6 @@ void ShivLogic::OnAbility1() {
 	if (!Config.shiv.AutoAimDagger)
 		return;
 
-	uint64_t target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
-	if (!target)
-		return;
 	Aimbot::AimAbility(target, 1, this->abilitiesarray[2],5000.0f);
 }
 
@@ -48,9 +42,6 @@ void ShivLogic::OnAbility2() {
 	if (!Config.shiv.AutoAimDash)
 		return;
 
-	uint64_t target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
-	if (!target)
-		return;
 	vec3 vec_target = Helper::GetBonePosition(target, "head");
 	uint64_t PawnHandle = *(uint64_t*)(target + CCitadelPlayerController::m_hHeroPawn);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
@@ -77,6 +68,8 @@ void ShivLogic::OnTick() {
 
 	 this->target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
 	 if (!this->target)
+		 return;
+
 	 Helper::get_player_data(this->target, this->targetdata);
 
 
@@ -84,16 +77,16 @@ void ShivLogic::OnTick() {
 	 float old_forwardmove = cmd->pBaseUserCMD->forwardMove;
 	 float old_sidemove = cmd->pBaseUserCMD->sideMove;
 
-	 if (this->InputCasting1 || *(bool*)(ShivLogic::abilitiesarray[2] + C_CitadelBaseAbility::m_bInCastDelay)) {
+	 if (this->InputCasting1 || *(bool*)(ShivLogic::abilitiesarray[1] + C_CitadelBaseAbility::m_bInCastDelay)) {
 		 OnAbility1();
 	 }
-	 if (this->InputCasting2 || *(bool*)(ShivLogic::abilitiesarray[3] + C_CitadelBaseAbility::m_bInCastDelay)) {
+	 if (this->InputCasting2 || *(bool*)(ShivLogic::abilitiesarray[2] + C_CitadelBaseAbility::m_bInCastDelay)) {
 		 OnAbility2();
 	 }
-	 if (this->InputCasting3 || *(bool*)(ShivLogic::abilitiesarray[4] + C_CitadelBaseAbility::m_bInCastDelay)) {
+	 if (this->InputCasting3 || *(bool*)(ShivLogic::abilitiesarray[3] + C_CitadelBaseAbility::m_bInCastDelay)) {
 		 OnAbility3();
 	 }
-	 if (this->InputCasting4 || *(bool*)(ShivLogic::abilitiesarray[5] + C_CitadelBaseAbility::m_bInCastDelay)) {
+	 if (this->InputCasting4 || *(bool*)(ShivLogic::abilitiesarray[4] + C_CitadelBaseAbility::m_bInCastDelay)) {
 		 OnAbility4();
 	 }
 

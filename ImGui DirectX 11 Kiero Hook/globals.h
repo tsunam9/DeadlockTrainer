@@ -8,6 +8,7 @@
 #include <condition_variable>
 #include "IEngineClient.h"
 #include "gameinterface.h"
+#include "IEngineCvar.h"
 
 using namespace cs2_dumper::schemas::client_dll;
 
@@ -73,3 +74,6 @@ private:
 };
 
 extern IEngineClient* iEngine;
+extern IEngineCVar* VEngineCvar;
+
+extern bool unloadRequested;

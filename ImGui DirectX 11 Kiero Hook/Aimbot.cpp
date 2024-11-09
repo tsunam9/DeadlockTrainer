@@ -494,23 +494,16 @@ void Aimbot::ShootMagicBullet(uint64_t entity, const char* bone) {
 	return;
 }
 
+
 bool readyToFire() {
 
-	float matchtime = globals::instance().Globals->iTickCount * constGlobalVars::tickinterval;
-	float gametime = globals::instance().Globals->flAbsCurTime;
-
-
 	uintptr_t localweapon = Helper::get_localplr_weapon();
-	if (localweapon == -1)
-		return false;
 	float NextAttack = *(float*)(localweapon + CCitadel_Ability_PrimaryWeapon::m_flNextPrimaryAttack);
-
-
-	if (NextAttack > matchtime)
+	float LocalPlayerSimTime = *(float*)(Helper::get_local_player() + C_BaseEntity::m_flSimulationTime);
+	NextAttack -= 0.017;
+	if (NextAttack > LocalPlayerSimTime)
 		return false;
-
 	return true;
-
 }
 
 void Aimbot::AimAt(uintptr_t entity, const char* bone) {
@@ -520,7 +513,6 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
 	vec3 vec_velocity = *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
-
 
 
 	if (!Config.aimbot.magicbullet || !Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key)) {
@@ -542,15 +534,8 @@ void Aimbot::AimAt(uintptr_t entity, const char* bone) {
 			return;
 		}
 
-		/*		uintptr_t localweapon = Helper::get_localplr_weapon();
-		if (localweapon == -1)
+		if (!readyToFire())
 			return;
-		float NextAttack = *(float*)(localweapon + CCitadel_Ability_PrimaryWeapon::m_flNextPrimaryAttack);
-		float LocalPlayerSimTime = *(float*)(Helper::get_local_player() + C_BaseEntity::m_flSimulationTime);
-		NextAttack -= 0.017;
-
-		if (NextAttack > LocalPlayerSimTime)
-			 return;*/
 
 
 		CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;

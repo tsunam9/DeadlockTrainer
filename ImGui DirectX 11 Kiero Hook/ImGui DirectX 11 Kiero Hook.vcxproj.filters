@@ -82,6 +82,9 @@
     <Filter Include="Source Files\ValveClasses">
       <UniqueIdentifier>{d711d5e8-9a46-40ac-99e9-a9537ba62da1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Features\Heros\Abrams">
+      <UniqueIdentifier>{c99ddf8b-6443-47bb-a391-9994f641d5e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kiero\minhook\src\buffer.c">
@@ -176,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="Globals.cpp">
       <Filter>Source Files\Globals</Filter>
+    </ClCompile>
+    <ClCompile Include="Abrams.cpp">
+      <Filter>Source Files\Features\Heros\Abrams</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -306,6 +312,12 @@
     </ClInclude>
     <ClInclude Include="IEngineClient.h">
       <Filter>Source Files\ValveClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="IEngineCvar.h">
+      <Filter>Source Files\ValveClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Abrams.h">
+      <Filter>Source Files\Features\Heros\Abrams</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

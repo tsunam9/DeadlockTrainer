@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Abrams.cpp" />
     <ClCompile Include="Aimbot.cpp" />
     <ClCompile Include="AntiAim.cpp" />
     <ClCompile Include="chams.cpp" />
@@ -185,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Cs2Dumper\output\buttons.hpp" />
+    <ClInclude Include="Abrams.h" />
     <ClInclude Include="Aimbot.h" />
     <ClInclude Include="AntiAim.h" />
     <ClInclude Include="CCitadelBulletManager.h" />
@@ -200,6 +202,7 @@
     <ClInclude Include="heros.h" />
     <ClInclude Include="hooks.h" />
     <ClInclude Include="IEngineClient.h" />
+    <ClInclude Include="IEngineCvar.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />

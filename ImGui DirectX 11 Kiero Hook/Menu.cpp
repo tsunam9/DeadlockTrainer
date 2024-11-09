@@ -313,6 +313,19 @@ void Menu::DrawEspTab() {
 		}
 	}
 
+	ImVec2 childSize = ImGui::GetWindowSize();
+	ImGui::SetCursorPosY(childSize.y / 2);
+	ImGui::Separator();
+
+	ImGui::Checkbox("World Modulation", &Config.esp.ModWorld);
+	if (Config.esp.ModWorld) {
+		ImGui::ColorEdit4("World Color", (float*)&Config.colors.WorldModulationColor);
+	}
+	ImGui::Checkbox("Light Modulation", &Config.esp.ModLights);
+	if (Config.esp.ModWorld) {
+		ImGui::ColorEdit4("Lights Color", (float*)&Config.colors.LightModColor);
+	}
+
 	ImGui::EndChild();
 
 	ImGui::SameLine();
@@ -571,12 +584,9 @@ void Menu::DrawConfigTab(FILE* fp) {
 	ImGui::SameLine();
 	Helper::HotKey(Config.MenuKey);
 	ImGui::SameLine();
-	if (ImGui::Button("Unload Lynchware :D"))
+	if (ImGui::Button("Unload"))
 	{
-
-		kiero::shutdown();
-		fclose(fp);
-		FreeConsole();
+		unloadRequested = true;
 	}
 
 
@@ -728,6 +738,31 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
 	ImGui::PopStyleVar(2);
 
+}
+
+void Menu::DrawBackround() {
+	// Remove any padding or margins
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
+	// Create a child window that covers the entire viewport
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+	ImGui::Begin("Background", nullptr,
+		ImGuiWindowFlags_NoDecoration
+		| ImGuiWindowFlags_NoInputs |
+		ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoBackground);
+
+	ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+	// Draw semi-transparent dark background
+	drawList->AddRectFilled(
+		ImVec2(0, 0), ImGui::GetIO().DisplaySize, IM_COL32(0, 0, 0, 128)); // Semi-transparent black
+
+	ImGui::End(); // End the "Background" window
+
+	// Reset style variables (good practice)
+	ImGui::PopStyleVar(2);
 }
 
 

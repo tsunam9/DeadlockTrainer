@@ -64,6 +64,8 @@ public:
         bool Chams = false;
         bool ModelChams = false;
         bool LocalChams = false;
+        bool ModWorld = false;
+        bool ModLights = false;
     } esp;
 
     struct MiscSettings {
@@ -109,6 +111,8 @@ public:
         ImVec4 aimbotTargetcol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
         ImVec4 ChamsCol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
         ImVec4 LocalChamsCol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 WorldModulationColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 LightModColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
         
 
 
