@@ -103,6 +103,8 @@ uint64_t Helper::get_base_entity_from_index(int index)
 	return entity;
 }
 
+
+
 uint64_t* Helper::get_base_entityptr_from_index(int index)
 {
 
@@ -126,6 +128,30 @@ vec3 Helper::GetBoneVectorFromIndex(uintptr_t target_entity, int index) {
 	vec3 bonepos = *(vec3*)(BoneArray + index * 32);
 
 	return bonepos;
+}
+
+uint64_t Helper::FindFirstEntityWithName(std::string name) {
+
+
+	int max_ents = Helper::get_max_entities();
+	if (!(max_ents >= 0))
+		return 0;
+	for (size_t i = 1; i <= static_cast<size_t>(max_ents); ++i) {
+		uint64_t entity = Helper::get_base_entity_from_index(i);
+
+		if (!entity)
+			continue;
+
+		std::string EntName = Helper::get_schema_name(entity);
+
+		auto found = EntName.find("Projectile");
+		if (found != std::string::npos) {
+			return entity;
+		}
+
+	}
+	return 0;
+
 }
 
 int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name) { // entity = pawn
@@ -527,11 +553,12 @@ uint64_t Helper::get_localplr_weapon() {
 
 		std::string EntName = Helper::get_schema_name(entity);
 
-		if (EntName == "CCitadel_Ability_PrimaryWeapon_Empty")
-			return entity;
 
+		// Use std::string::find to check if the name starts with the target string
+		if (EntName.find("CCitadel_Ability_PrimaryWeapon") == 0)
+			return entity;
 	}
-	return -1;
+	return 0;
 }
 
 uint64_t Helper::GetPawnHandle(uint64_t entity) {

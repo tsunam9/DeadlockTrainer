@@ -232,7 +232,7 @@ void Menu::DrawConfigs() {
 		// Yes button
 		if (ImGui::Button("Yes")) {
 			ConfigSettings::LoadConfig(Config.configs[Config.selectedconfig]);
-			showloadConfirmPopup = false; // Close the popup
+			showloadConfirmPopup = false; // Close the popupn
 			ImGui::CloseCurrentPopup(); // Also closes the popup
 		}
 
@@ -401,6 +401,9 @@ void Menu::DrawHeroesTab() {
 	}
 	case Bebop: {
 		ImGui::Text("Bebop");
+		ImGui::Checkbox("Auto Aim Hook", &Config.bebop.AimHook);
+		ImGui::Checkbox("Auto Apply Bomb", &Config.bebop.AutoBomb);
+		ImGui::Checkbox("Auto UpperCut", &Config.bebop.AutoUppercut);
 		break;
 	}
 	case Dynamo: {
@@ -413,22 +416,29 @@ void Menu::DrawHeroesTab() {
 	}
 	case Haze: {
 		ImGui::Text("Haze");
+		ImGui::Checkbox("Aim Dagger", &Config.haze.AimDagger);
 		break;
 	}
 	case Infernus: {
 		ImGui::Text("Infernus");
+		ImGui::Checkbox("Aim Fire", &Config.infernus.AimCatalyst);
 		break;
 	}
 	case Ivy: {
 		ImGui::Text("Ivy");
+		ImGui::Checkbox("Aim Bomb", &Config.ivy.AimBomb);
 		break;
 	}
 	case Kelvin: {
 		ImGui::Text("Kelvin");
+		ImGui::Checkbox("Aim Grenade", &Config.kelvin.AimGrenade);
+		ImGui::Checkbox("Lockon Ice Beam", &Config.kelvin.LockBeam);
 		break;
 	}
 	case LadyGeist: {
 		ImGui::Text("LadyGeist");
+		ImGui::Checkbox("Aim Grenade", &Config.ladygeist.AimBomb);
+		ImGui::Checkbox("Aim Knives", &Config.ladygeist.AimMalice);
 		break;
 	}
 	case Lash: {
@@ -441,6 +451,8 @@ void Menu::DrawHeroesTab() {
 	}
 	case Mirage: {
 		ImGui::Text("Mirage");
+		ImGui::Checkbox("Aim Tornado",&Config.mirage.AimTornado);
+		ImGui::Checkbox("Aim Scarabs",&Config.mirage.AimScarabs);
 		break;
 	}
 	case MoAndKrill: {
@@ -449,14 +461,20 @@ void Menu::DrawHeroesTab() {
 	}
 	case Paradox: {
 		ImGui::Text("Paradox");
+		ImGui::Checkbox("Aim Grenade", &Config.paradox.AimGrenade);
+		ImGui::Checkbox("Aim Swap", &Config.paradox.AimSwap);
 		break;
 	}
 	case Pocket: {
 		ImGui::Text("Pocket");
+		ImGui::Checkbox("Aim Barrage", &Config.pocket.AimBarrage);
+		ImGui::Checkbox("Aim Cloak", &Config.pocket.AimCloak);
 		break;
 	}
 	case Seven: {
 		ImGui::Text("Seven");
+		ImGui::Checkbox("Aim Lighting Ball", &Config.seven.AimLightingBall);
+		ImGui::Checkbox("Auto Apply Static Charge", &Config.seven.AutoStaticCharge);
 		break;
 	}
 	case Shiv: {
@@ -480,10 +498,12 @@ void Menu::DrawHeroesTab() {
 	}
 	case Viscous: {
 		ImGui::Text("Viscous");
+		ImGui::Checkbox("Aim Grenade", &Config.viscous.AimGooGrenade);
 		break;
 	}
 	case Warden: {
 		ImGui::Text("Warden");
+		ImGui::Checkbox("Aim Grenade", &Config.warden.AimLightingGrenade);
 		break;
 	}
 	case Wraith: {
@@ -492,6 +512,8 @@ void Menu::DrawHeroesTab() {
 	}
 	case Yamato: {
 		ImGui::Text("Yamato");
+		ImGui::Checkbox("Aim Power Slash", &Config.yamato.AimPowerSlash);
+		ImGui::Checkbox("Aim Crimson Slash", &Config.yamato.AimCrimsonSlash);
 		break;
 	}
 	default: {
@@ -561,6 +583,7 @@ void Menu::DrawConfigTab(FILE* fp) {
 		ImGui::SameLine();
 		Helper::HotKey(Config.misc.SpeedBoostKey);
 	}
+	ImGui::SliderFloat("Temp Float", & Config.tempvalues.inputfloat, 0.f, 3000.f);
 
 	ImGui::EndChild();
 

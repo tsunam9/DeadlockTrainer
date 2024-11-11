@@ -16,7 +16,7 @@ public:
 	static vec3 PredictPosition(vec3 Target, vec3 Velocity, float bulletspeed);
 	static uint64_t GetAimbotTarget(std::string group);
 	static uint64_t GetCurrentAimbotTarget();
-	static void AimAbility(uintptr_t entity, int aimpos, uintptr_t ability, float projectilespeed);
+	static void AimAbility(uintptr_t entity, int aimpos, uintptr_t ability, float projectilespeed, bool projectile);
 
 
 };

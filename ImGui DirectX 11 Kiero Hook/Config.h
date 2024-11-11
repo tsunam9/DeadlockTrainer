@@ -90,6 +90,72 @@ public:
         float AutoUltHealthPercent = 0.5f;
     } vindicta;
 
+    struct BebopSettings {
+        bool AimHook = false;
+        bool AutoBomb = false;
+        bool AutoUppercut = false;
+    } bebop;
+
+    struct HazeSettings {
+        bool AimDagger = false;
+    }haze;
+
+    struct InfernusSettings {
+        bool AimCatalyst = false;
+    }infernus;
+
+    struct IvySettings {
+        bool AimBomb = false;
+    }ivy;
+
+    struct KelvinSettings {
+        bool AimGrenade = false;
+        bool LockBeam = false;
+    }kelvin;
+
+    struct LadyGeistSettings {
+        bool AimBomb = false;
+        bool AimMalice = false;
+
+    }ladygeist;
+
+    struct MirageSettings {
+        bool AimTornado = false;
+        bool AimScarabs = false;
+    }mirage;
+
+    struct ParadoxSettings {
+        bool AimGrenade = false;
+        bool AimSwap = false;
+    }paradox;
+
+    struct PocketSettings {
+        bool AimBarrage = false;
+        bool AimCloak = false;
+    }pocket;
+
+    struct SevenSettings {
+        bool AimLightingBall = false;
+        bool AutoStaticCharge = false;
+    }seven;
+
+    struct ViscousSettings {
+        bool AimGooGrenade = false;
+    }viscous;
+
+    struct WardenSettings {
+        bool AimLightingGrenade = false;
+    }warden;
+
+    struct WraithSettings {
+        bool AimCards = false;
+    }wraith;
+
+    struct YamatoSettings {
+        bool AimPowerSlash = false;
+        bool AimCrimsonSlash = false;
+    }yamato;
+
 	struct AntiAimSettings {
 		bool bAntiAim = false;
         int AAtype = 0;

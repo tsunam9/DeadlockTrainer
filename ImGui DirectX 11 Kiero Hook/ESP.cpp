@@ -362,6 +362,9 @@ void Esp::DoEsp() {
 
 	globs.SortEntsEsp();
 
+	if (!Config.esp.bEsp)
+		return;
+
 
 
 	/*

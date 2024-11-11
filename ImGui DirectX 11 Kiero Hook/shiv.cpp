@@ -31,7 +31,7 @@ void ShivLogic::OnAbility1() {
 	if (!Config.shiv.AutoAimDagger)
 		return;
 
-	Aimbot::AimAbility(target, 1, this->abilitiesarray[2],5000.0f);
+	Aimbot::AimAbility(target, 1, this->abilitiesarray[2],5000.0f, true);
 }
 
 void ShivLogic::OnAbility2() {
@@ -66,7 +66,7 @@ void ShivLogic::OnAbility4() {
 void ShivLogic::OnTick() {
 
 
-	 this->target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
+	 this->target = Aimbot::GetCurrentAimbotTarget();
 	 if (!this->target)
 		 return;
 

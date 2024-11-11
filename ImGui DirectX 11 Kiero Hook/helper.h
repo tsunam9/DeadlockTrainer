@@ -733,6 +733,7 @@ public:
     static uint64_t get_localplr_weapon();
     static uint64_t gettracemanager();
     static bool CheckLocationVisible(vec3 LocalPlayerPos, vec3 LocationCheck);
+    static uint64_t FindFirstEntityWithName(std::string name);
 
     //Bone Stuff
     static int get_bone_index(uintptr_t target_entity, const std::string bone_name);

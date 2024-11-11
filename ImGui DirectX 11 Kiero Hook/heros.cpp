@@ -1,5 +1,5 @@
 #pragma once
-#include "heros.h" x1`
+#include "heros.h"
 
 
 void Hero::OnTick() {
@@ -14,6 +14,7 @@ void Hero::RunScript(CCitadelUserCmdPB* cmd) {
 	Helper::get_player_data(this->LocalPlayer, this->localplayerdata);
 
 	this->abilitiesarray = Helper::GetAbilities(Helper::GetPawn(this->LocalPlayer));
+
 	
 	if (cmd->buttons & IN_ABILITY1) {
 		this->InputCasting1 = true;

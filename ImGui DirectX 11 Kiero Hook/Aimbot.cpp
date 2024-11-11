@@ -432,15 +432,15 @@ vec2 Aimbot::GetAimAngles(vec3 Target) {
 	return GetAim(CameraPos, Target);
 }
 
-void Aimbot::AimAbility(uintptr_t entity, int aimpos, uintptr_t ability, float projectilespeed) {
+void Aimbot::AimAbility(uintptr_t entity, int aimpos, uintptr_t ability, float projectilespeed, bool projectile) {
 
 	if (!entity)
 		return;
 	if (!ability)
 		return;
 
-	PlayerData* targetdata = new PlayerData;
-	Helper::get_player_data(entity, targetdata);
+	PlayerData targetdata;
+	Helper::get_player_data(entity, &targetdata);
 
 
 	vec3 vec_target;
@@ -451,15 +451,20 @@ void Aimbot::AimAbility(uintptr_t entity, int aimpos, uintptr_t ability, float p
 		vec_target = Helper::GetBonePosition(entity, "pelvis");
 	}
 	else {
-		vec_target = targetdata->m_vecOrigin;
+		vec_target = targetdata.m_vecOrigin;
 	}
 
-	vec3 predictedposition = Aimbot::PredictPosition(vec_target, targetdata->m_vecVelocity, projectilespeed);
+	if (!projectile) {
+		vec2 target_angles = Aimbot::GetAimAngles(vec_target);
+		CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
+		CUserCmd->cameraViewAngle->viewAngles.y = target_angles.y;
+		return;
+	}
+
+	vec3 predictedposition = Aimbot::PredictPosition(vec_target, targetdata.m_vecVelocity, projectilespeed);
 	vec2 target_angles = Aimbot::GetAimAngles(predictedposition);
 	CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
 	CUserCmd->cameraViewAngle->viewAngles.y = target_angles.y;
-
-	delete targetdata;
 
 }
 
@@ -498,6 +503,10 @@ void Aimbot::ShootMagicBullet(uint64_t entity, const char* bone) {
 bool readyToFire() {
 
 	uintptr_t localweapon = Helper::get_localplr_weapon();
+
+	if (!localweapon)
+		return false;
+
 	float NextAttack = *(float*)(localweapon + CCitadel_Ability_PrimaryWeapon::m_flNextPrimaryAttack);
 	float LocalPlayerSimTime = *(float*)(Helper::get_local_player() + C_BaseEntity::m_flSimulationTime);
 	NextAttack -= 0.017;
@@ -580,7 +589,7 @@ void Aimbot::AimAtXp(uintptr_t entity) {
 			return;
 		}
 
-		uintptr_t localweapon = Helper::get_localplr_weapon();
+		uint64_t localweapon = Helper::get_localplr_weapon();
 		float NextAttack = *(float*)(localweapon + CCitadel_Ability_PrimaryWeapon::m_flNextPrimaryAttack);
 		float LocalPlayerSimTime = *(float*)(Helper::get_local_player() + C_BaseEntity::m_flSimulationTime);
 		NextAttack -= 0.017;

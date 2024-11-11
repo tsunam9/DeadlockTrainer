@@ -80,10 +80,10 @@ void VindictaLogic::OnAbility1() {
 	if (!Config.vindicta.AutoAimStake)
 		return;
 
-	uint64_t target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
+	uint64_t target = Aimbot::GetCurrentAimbotTarget();
 	if (!target)
 		return;
-	Aimbot::AimAbility(target, 2, this->abilitiesarray[1],1000.0f);
+	Aimbot::AimAbility(target, 2, this->abilitiesarray[1],1000.0f,true);
 
 }
 
@@ -103,10 +103,10 @@ void VindictaLogic::OnAbility3() {
 	if (!Config.vindicta.AutoAimCrow)
 		return;
 
-	uint64_t target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
+	uint64_t target = Aimbot::GetCurrentAimbotTarget();
 	if (!target)
 		return;
-	Aimbot::AimAbility(target, 1, this->abilitiesarray[3],2500.0f);
+	Aimbot::AimAbility(target, 1, this->abilitiesarray[3],3500.f,true);
 
 }
 
@@ -119,7 +119,7 @@ void VindictaLogic::OnAbility4() {
 
 void VindictaLogic::OnTick() {
 
-	this->target = Aimbot::GetAimbotTarget("CCitadelPlayerController");
+	this->target = Aimbot::GetCurrentAimbotTarget();
 	if (!(this->target)) return;
 	Helper::get_player_data(this->target, this->targetdata);
 

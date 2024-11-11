@@ -111,6 +111,10 @@ static ImVec4 JsonToImVec4(const json& j) {
     Config.vindicta.AutoSnipe = j["vindicta"]["AutoSnipe"].get<bool>();
     Config.vindicta.AutoUltHealthPercent = j["vindicta"]["AutoUltHealthPercent"].get<float>();
 
+    Config.bebop.AimHook = j["bebop"]["AimHook"].get<bool>();
+    Config.bebop.AutoBomb = j["bebop"]["AutoBomb"].get<bool>();
+    Config.bebop.AutoUppercut = j["bebop"]["AutoUppercut"].get<bool>();
+
     Config.MenuKey.key = j["menu"]["menukey"].get<int>();
     Config.MenuKey.name = j["menu"]["menukeyname"].get<std::string>();
 
@@ -193,8 +197,14 @@ static ImVec4 JsonToImVec4(const json& j) {
      j["vindicta"]["AutoSnipe"] = Config.vindicta.AutoSnipe;
      j["vindicta"]["AutoUltHealthPercent"] = Config.vindicta.AutoUltHealthPercent;
 
+     j["bebop"]["AimHook"] = Config.bebop.AimHook;
+     j["bebop"]["AutoBomb"] = Config.bebop.AutoBomb;
+     j["bebop"]["AutoUppercut"] = Config.bebop.AutoUppercut;
+
      j["menu"]["menukey"] = Config.MenuKey.key;
      j["menu"]["menukeyname"] = Config.MenuKey.name;
+
+
 
      const std::string path = "C:/LynchWare/";
 

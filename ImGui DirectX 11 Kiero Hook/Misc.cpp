@@ -94,6 +94,13 @@ Drawing testdraw;
 
 void testbed() {
 
+	uint64_t hook = Helper::FindFirstEntityWithName("C_Citadel_Projectile_BloodBomb");
+	if (!hook)
+		return;
+
+	float speed = *(float*)(hook + C_CitadelProjectile::m_flProjectileSpeed);
+
+	std::cout << speed << std::endl;
 
 }
 

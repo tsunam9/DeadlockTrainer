@@ -60,9 +60,6 @@
     <Filter Include="Source Files\Features\Heros">
       <UniqueIdentifier>{2de12c44-f8e6-4bac-a68a-4e09b495bfdd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Features\Heros\shiv">
-      <UniqueIdentifier>{bbf72b9b-e122-4b39-8449-b39772486d69}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Features\Heros\Vindicta">
       <UniqueIdentifier>{18d71714-7ba0-4d82-8da6-5e8f9d32953a}</UniqueIdentifier>
     </Filter>
@@ -84,6 +81,51 @@
     </Filter>
     <Filter Include="Source Files\Features\Heros\Abrams">
       <UniqueIdentifier>{c99ddf8b-6443-47bb-a391-9994f641d5e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Abrams\shiv">
+      <UniqueIdentifier>{bbf72b9b-e122-4b39-8449-b39772486d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Bebop">
+      <UniqueIdentifier>{7b52edaa-9ccd-45aa-b71b-097fe8f290dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Haze">
+      <UniqueIdentifier>{4a216151-6a16-4975-9645-2b71510c2274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Infernus">
+      <UniqueIdentifier>{0657e111-cc36-4dd7-9747-5e46f3288e71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Ivy">
+      <UniqueIdentifier>{fea1e91c-2875-4d08-a6fb-29a3fd1c7e72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Kelvin">
+      <UniqueIdentifier>{6d577581-f2db-4bb7-9395-6012bd25d222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\LadyGeist">
+      <UniqueIdentifier>{0717eb99-26c8-4f0e-8955-adfb4cee2c02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Mirage">
+      <UniqueIdentifier>{22e6d39c-0465-46ac-b864-238f8db1a0dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Paradox">
+      <UniqueIdentifier>{dd42e7dc-8120-480f-bc5e-21a3daa9d965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Pocket">
+      <UniqueIdentifier>{837b182c-5ff2-474f-955f-55dd33beac6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Seven">
+      <UniqueIdentifier>{3e64ef47-d680-4e72-aaa4-c0066477a9bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Viscous">
+      <UniqueIdentifier>{d6dd4ab5-5f33-45c6-b9b0-8007335c1a3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Warden">
+      <UniqueIdentifier>{07a97290-caa9-4542-8472-ce589232f7a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Wraith">
+      <UniqueIdentifier>{7ee38b32-55a0-47c0-8cc0-c10378311a1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heros\Yamato">
+      <UniqueIdentifier>{78a8e2c5-82f0-4a12-b63c-9f8c5bd9d29b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +208,7 @@
       <Filter>Source Files\Features\Heros</Filter>
     </ClCompile>
     <ClCompile Include="shiv.cpp">
-      <Filter>Source Files\Features\Heros\shiv</Filter>
+      <Filter>Source Files\Features\Heros\Abrams\shiv</Filter>
     </ClCompile>
     <ClCompile Include="chams.cpp">
       <Filter>Source Files\Features\Chams</Filter>
@@ -182,6 +224,48 @@
     </ClCompile>
     <ClCompile Include="Abrams.cpp">
       <Filter>Source Files\Features\Heros\Abrams</Filter>
+    </ClCompile>
+    <ClCompile Include="Bebop.cpp">
+      <Filter>Source Files\Features\Heros\Bebop</Filter>
+    </ClCompile>
+    <ClCompile Include="Haze.cpp">
+      <Filter>Source Files\Features\Heros\Haze</Filter>
+    </ClCompile>
+    <ClCompile Include="Infernus.cpp">
+      <Filter>Source Files\Features\Heros\Infernus</Filter>
+    </ClCompile>
+    <ClCompile Include="Ivy.cpp">
+      <Filter>Source Files\Features\Heros\Ivy</Filter>
+    </ClCompile>
+    <ClCompile Include="Kelvin.cpp">
+      <Filter>Source Files\Features\Heros\Kelvin</Filter>
+    </ClCompile>
+    <ClCompile Include="LadyGeist.cpp">
+      <Filter>Source Files\Features\Heros\LadyGeist</Filter>
+    </ClCompile>
+    <ClCompile Include="Mirage.cpp">
+      <Filter>Source Files\Features\Heros\Mirage</Filter>
+    </ClCompile>
+    <ClCompile Include="Paradox.cpp">
+      <Filter>Source Files\Features\Heros\Paradox</Filter>
+    </ClCompile>
+    <ClCompile Include="Pocket.cpp">
+      <Filter>Source Files\Features\Heros\Pocket</Filter>
+    </ClCompile>
+    <ClCompile Include="Seven.cpp">
+      <Filter>Source Files\Features\Heros\Seven</Filter>
+    </ClCompile>
+    <ClCompile Include="Viscous.cpp">
+      <Filter>Source Files\Features\Heros\Viscous</Filter>
+    </ClCompile>
+    <ClCompile Include="Warden.cpp">
+      <Filter>Source Files\Features\Heros\Warden</Filter>
+    </ClCompile>
+    <ClCompile Include="Wraith.cpp">
+      <Filter>Source Files\Features\Heros\Wraith</Filter>
+    </ClCompile>
+    <ClCompile Include="Yamato.cpp">
+      <Filter>Source Files\Features\Heros\Yamato</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -290,7 +374,7 @@
       <Filter>Source Files\Features\Heros</Filter>
     </ClInclude>
     <ClInclude Include="shiv.h">
-      <Filter>Source Files\Features\Heros\shiv</Filter>
+      <Filter>Source Files\Features\Heros\Abrams\shiv</Filter>
     </ClInclude>
     <ClInclude Include="vindicta.h">
       <Filter>Source Files\Features\Heros\Vindicta</Filter>
@@ -318,6 +402,48 @@
     </ClInclude>
     <ClInclude Include="Abrams.h">
       <Filter>Source Files\Features\Heros\Abrams</Filter>
+    </ClInclude>
+    <ClInclude Include="Bebop.h">
+      <Filter>Source Files\Features\Heros\Bebop</Filter>
+    </ClInclude>
+    <ClInclude Include="Haze.h">
+      <Filter>Source Files\Features\Heros\Haze</Filter>
+    </ClInclude>
+    <ClInclude Include="Infernus.h">
+      <Filter>Source Files\Features\Heros\Infernus</Filter>
+    </ClInclude>
+    <ClInclude Include="Ivy.h">
+      <Filter>Source Files\Features\Heros\Ivy</Filter>
+    </ClInclude>
+    <ClInclude Include="Kelvin.h">
+      <Filter>Source Files\Features\Heros\Kelvin</Filter>
+    </ClInclude>
+    <ClInclude Include="LadyGeist.h">
+      <Filter>Source Files\Features\Heros\LadyGeist</Filter>
+    </ClInclude>
+    <ClInclude Include="Mirage.h">
+      <Filter>Source Files\Features\Heros\Mirage</Filter>
+    </ClInclude>
+    <ClInclude Include="Paradox.h">
+      <Filter>Source Files\Features\Heros\Paradox</Filter>
+    </ClInclude>
+    <ClInclude Include="Pocket.h">
+      <Filter>Source Files\Features\Heros\Pocket</Filter>
+    </ClInclude>
+    <ClInclude Include="Seven.h">
+      <Filter>Source Files\Features\Heros\Seven</Filter>
+    </ClInclude>
+    <ClInclude Include="Viscous.h">
+      <Filter>Source Files\Features\Heros\Viscous</Filter>
+    </ClInclude>
+    <ClInclude Include="Warden.h">
+      <Filter>Source Files\Features\Heros\Warden</Filter>
+    </ClInclude>
+    <ClInclude Include="Wraith.h">
+      <Filter>Source Files\Features\Heros\Wraith</Filter>
+    </ClInclude>
+    <ClInclude Include="Yamato.h">
+      <Filter>Source Files\Features\Heros\Yamato</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -148,12 +148,14 @@
     <ClCompile Include="Abrams.cpp" />
     <ClCompile Include="Aimbot.cpp" />
     <ClCompile Include="AntiAim.cpp" />
+    <ClCompile Include="Bebop.cpp" />
     <ClCompile Include="chams.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="ESP.cpp" />
     <ClCompile Include="gameinterface.cpp" />
     <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="Haze.cpp" />
     <ClCompile Include="helper.cpp" />
     <ClCompile Include="heros.cpp" />
     <ClCompile Include="hooks.cpp" />
@@ -163,20 +165,32 @@
     <ClCompile Include="imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Infernus.cpp" />
+    <ClCompile Include="Ivy.cpp" />
+    <ClCompile Include="Kelvin.cpp" />
     <ClCompile Include="kiero\kiero.cpp" />
     <ClCompile Include="kiero\minhook\src\buffer.c" />
     <ClCompile Include="kiero\minhook\src\hde\hde32.c" />
     <ClCompile Include="kiero\minhook\src\hde\hde64.c" />
     <ClCompile Include="kiero\minhook\src\hook.c" />
     <ClCompile Include="kiero\minhook\src\trampoline.c" />
+    <ClCompile Include="LadyGeist.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Mirage.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="mem.cpp" />
     <ClCompile Include="offsets.cpp" />
+    <ClCompile Include="Paradox.cpp" />
+    <ClCompile Include="Pocket.cpp" />
+    <ClCompile Include="Seven.cpp" />
     <ClCompile Include="shiv.cpp" />
     <ClCompile Include="vindicta.cpp" />
+    <ClCompile Include="Viscous.cpp" />
+    <ClCompile Include="Warden.cpp" />
+    <ClCompile Include="Wraith.cpp" />
+    <ClCompile Include="Yamato.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="kiero\minhook\dll_resources\MinHook.def" />
@@ -189,6 +203,7 @@
     <ClInclude Include="Abrams.h" />
     <ClInclude Include="Aimbot.h" />
     <ClInclude Include="AntiAim.h" />
+    <ClInclude Include="Bebop.h" />
     <ClInclude Include="CCitadelBulletManager.h" />
     <ClInclude Include="chams.h" />
     <ClInclude Include="client_dll.hpp" />
@@ -198,6 +213,7 @@
     <ClInclude Include="gameinterface.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="CGlobalVarsBase.h" />
+    <ClInclude Include="Haze.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="heros.h" />
     <ClInclude Include="hooks.h" />
@@ -212,6 +228,9 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="includes.h" />
+    <ClInclude Include="Infernus.h" />
+    <ClInclude Include="Ivy.h" />
+    <ClInclude Include="Kelvin.h" />
     <ClInclude Include="kiero\kiero.h" />
     <ClInclude Include="kiero\minhook\include\MinHook.h" />
     <ClInclude Include="kiero\minhook\src\buffer.h" />
@@ -221,13 +240,22 @@
     <ClInclude Include="kiero\minhook\src\hde\table32.h" />
     <ClInclude Include="kiero\minhook\src\hde\table64.h" />
     <ClInclude Include="kiero\minhook\src\trampoline.h" />
+    <ClInclude Include="LadyGeist.h" />
     <ClInclude Include="Logic.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Mirage.h" />
     <ClInclude Include="Misc.h" />
     <ClInclude Include="offsets.h" />
     <ClInclude Include="mem.h" />
+    <ClInclude Include="Paradox.h" />
+    <ClInclude Include="Pocket.h" />
+    <ClInclude Include="Seven.h" />
     <ClInclude Include="shiv.h" />
     <ClInclude Include="vindicta.h" />
+    <ClInclude Include="Viscous.h" />
+    <ClInclude Include="Warden.h" />
+    <ClInclude Include="Wraith.h" />
+    <ClInclude Include="Yamato.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

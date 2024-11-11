@@ -144,8 +144,22 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	}
 
 
+
 	ShivLogic shiv;
 	VindictaLogic vindicta;
+	BebopLogic bebop;
+	HazeLogic haze;
+	InfernusLogic infernus;
+	IvyLogic ivy;
+	KelvinLogic kelvin;
+	LadyGeistLogic ladygeist;
+	MirageLogic mirage;
+	ParadoxLogic paradox;
+	PocketLogic pocket;
+	SevenLogic seven;
+	ViscousLogic viscous;
+	WardenLogic warden;
+	YamatoLogic yamato;
 
 	if (Config.aimbot.bAimbot) {
 		switch (LocalPlayer.HeroID) {
@@ -155,6 +169,45 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 			break;
 		case Vindicta:
 			vindicta.RunScript(cmd);
+			break;
+		case Bebop:
+			bebop.RunScript(cmd);
+			break;
+		case Haze:
+			haze.RunScript(cmd);
+			break;
+		case Infernus:
+			infernus.RunScript(cmd);
+			break;
+		case Ivy:
+			ivy.RunScript(cmd);
+			break;
+		case Kelvin:
+			kelvin.RunScript(cmd);
+			break;
+		case LadyGeist:
+			ladygeist.RunScript(cmd);
+			break;
+		case Mirage:
+			mirage.RunScript(cmd);
+			break;
+		case Paradox:
+			paradox.RunScript(cmd);
+			break;
+		case Pocket:
+			pocket.RunScript(cmd);
+			break;
+		case Seven:
+			seven.RunScript(cmd);
+			break;
+		case Viscous:
+			viscous.RunScript(cmd);
+			break;
+		case Warden:
+			warden.RunScript(cmd);
+			break;
+		case Yamato:
+			yamato.RunScript(cmd);
 			break;
 		default:
 			break;
