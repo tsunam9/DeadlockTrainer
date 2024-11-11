@@ -750,7 +750,7 @@ public:
     static vec2 GetResolution();
     static CCitadelUserCmdPB* GetCurrentUserCmd();
     static CCitadelUserCmdPB* ExperimentalGetUserCmd();
-    static bool KeyBindHandler(int key);
+    static void KeyBindHandler(KeyBind bind);
 	static bool get_npc_data(uint64_t entity, NpcData* npcdata);
     static bool __fastcall traceshape(void* dis, Ray_t* pRay, vec3* vecStart, vec3* vecEnd, TraceFilter_t* pFilter, GameTrace_t* pGameTrace);
     static void __fastcall ConstructFilter(__int64 a1, __int64 a2, __int64 a3, char a4, __int16 a5);

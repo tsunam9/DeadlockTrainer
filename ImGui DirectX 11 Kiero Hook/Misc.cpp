@@ -41,7 +41,9 @@ void Misc::SpeedBoost(uint64_t localplayercontroller) {
 	float* mag = (float*)(localplayer_pawn + C_CitadelPlayerPawn::m_angLockedEyeAngles);
 	if (mag == nullptr) return;
 
-	if (Helper::KeyBindHandler(Config.misc.SpeedBoostKey.key))
+	Helper::KeyBindHandler(Config.misc.SpeedBoostKey);
+
+	if (Config.misc.SpeedBoost)
 	{
 		uint64_t CameraManager = *(uint64_t*)(ClientModuleBase + Offsets.o_CameraManager + 0x28);
 		float* ViewAngles = (float*)(CameraManager + 0x44); // RESET to 0x44

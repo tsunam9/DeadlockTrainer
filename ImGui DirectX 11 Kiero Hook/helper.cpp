@@ -476,7 +476,6 @@ CCitadelUserCmdPB* Helper::GetCurrentUserCmd()
 
 // Add a static variable to track the currently active keybind waiting for a key
 static KeyBind* activeKeybind = nullptr;
-std::vector<KeyBind> KeyBinds;
 
 void Helper::HotKey(KeyBind& keybind) {
 	// Use PushID with a unique identifier for each keybind
@@ -520,6 +519,28 @@ void Helper::HotKey(KeyBind& keybind) {
 		}
 	}
 
+	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
+		ImGui::OpenPopup("Keybind Options");
+	}
+
+	// Get the position of the button
+	ImVec2 buttonPos = ImGui::GetItemRectMin();
+
+	// Calculate the position for the popup
+	ImVec2 popupPos = buttonPos;
+	popupPos.x += ImGui::GetItemRectSize().x; // Position to the right of the button
+
+	// Create the subwindow
+	if (ImGui::BeginPopup("Keybind Options", ImGuiWindowFlags_NoMove)) {
+		ImGui::SetWindowPos(popupPos);
+
+		const char* items[] = { "Always", "Hold", "Toggle" };
+
+		ImGui::Combo("Mode", &keybind.keybindmode, items, IM_ARRAYSIZE(items));
+
+		ImGui::EndPopup();
+	}
+
 	// Pop the ID to restore the previous state
 	ImGui::PopID();
 }
@@ -528,15 +549,23 @@ void Helper::HotKey(KeyBind& keybind) {
 
 
 
-bool Helper::KeyBindHandler(int key) {
+void Helper::KeyBindHandler(KeyBind bind) {
 
-	if (key == 0) {
-		return true;
+	if (bind.keybindmode == 1) {
+
+		if (GetAsyncKeyState(bind.key) & 0x8000) {
+			*bind.varptr = true;
+		}
+		else {
+			*bind.varptr = false;
+		}
 	}
+	else if (bind.keybindmode == 2) {
 
-	if (GetAsyncKeyState(key) & 0x8000)
-		return true;
-	return false;
+		if (GetAsyncKeyState(bind.key) & 1) {
+			*bind.varptr = !*bind.varptr;
+		}
+	}
 }
 
 

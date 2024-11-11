@@ -8,6 +8,7 @@ void YamatoLogic::AimPowerSlash() {
 
 	if (!Config.yamato.AimPowerSlash)
 		return;
+	cmd->buttons &= ~IN_ATTACK;
 
 	Aimbot::AimAbility(target, 1, this->abilitiesarray[2], 0.f, false);
 

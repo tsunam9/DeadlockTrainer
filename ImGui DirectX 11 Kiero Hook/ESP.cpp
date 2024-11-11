@@ -127,6 +127,46 @@ void DrawMonsterEsp(uintptr_t entity) {
 
 }
 
+std::vector<KeyBind*> KeyBinds;
+
+void ShowKeyBindStatus() {
+
+	static bool init = false;
+	if (!init) {
+
+		KeyBinds.push_back(&Config.aimbot.AimKey);
+		KeyBinds.push_back(&Config.aimbot.AimKeyXp);
+		KeyBinds.push_back(&Config.aimbot.AimKeyMinions);
+		KeyBinds.push_back(&Config.aimbot.magicbulletkey);
+		KeyBinds.push_back(&Config.misc.SpeedBoostKey);
+		std::cout << "INITIALIZED" << std::endl;
+		init = true;
+	}
+
+	ImGui::SetNextWindowSize(ImVec2(150.f, ImGui::GetTextLineHeightWithSpacing() * KeyBinds.size()));
+
+	ImGui::Begin("KeyBinds", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoResize);
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
+
+	for (int i = 0; i < KeyBinds.size(); i++) {
+
+		if (*KeyBinds[i]->varptr) {
+			switch (KeyBinds[i]->keybindmode) {
+			case 1:
+				ImGui::Text("[HOLD] %s", KeyBinds[i]->BindName.c_str());
+				break;
+			case 2:
+				ImGui::Text("[TOGGLE] %s", KeyBinds[i]->BindName.c_str());
+				break;
+			}
+		}
+	}
+
+	ImGui::PopStyleVar();
+	ImGui::End();
+}
+
 float GetSmoothedFPS() {
 	static float frameTimeAccum = 0;
 	static int frameCount = 0;
@@ -359,6 +399,10 @@ void Esp::DoEsp() {
 		DrawFov();
 	}
 	RenderWatermark();
+	
+	if (Config.esp.ShowKeyBindList) {
+		ShowKeyBindStatus();
+	}
 
 	globs.SortEntsEsp();
 

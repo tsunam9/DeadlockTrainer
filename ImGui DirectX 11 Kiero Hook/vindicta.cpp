@@ -26,8 +26,8 @@ void VindictaLogic::AutoUlt() {
 	}
 
 
-
-	if (Config.aimbot.magicbullet && Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key))
+	Helper::KeyBindHandler(Config.aimbot.magicbulletkey);
+	if (Config.aimbot.magicbullet)
 		return;
 
 

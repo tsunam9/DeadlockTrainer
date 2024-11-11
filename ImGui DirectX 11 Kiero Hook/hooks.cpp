@@ -135,9 +135,7 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	Helper::get_player_data(localplayercontroller, &LocalPlayer);
 	uint64_t playerpawn = Helper::GetPawn(localplayercontroller);
 
-	if (Config.aimbot.bAimbot) {
-		Aimbot::RunAimbot(cmd);
-	}
+	Aimbot::RunAimbot(cmd); // always run aimbot 
 
 	if (Config.antiaim.bAntiAim) {
 		AntiAim::DoAntiAim(cmd);
@@ -161,7 +159,6 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	WardenLogic warden;
 	YamatoLogic yamato;
 
-	if (Config.aimbot.bAimbot) {
 		switch (LocalPlayer.HeroID) {
 
 		case Shiv:
@@ -212,15 +209,14 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 		default:
 			break;
 		}
-	}
 
 	if (Config.aimbot.MovementFix) {
 		Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
 		Helper::CorrectViewAngles(cmd);
 	}
-	if (Config.misc.SpeedBoost) {
-		Misc::SpeedBoost(localplayercontroller);
-	}
+
+	Misc::SpeedBoost(localplayercontroller); // needs to run to reset even if its not on
+
 
 	if (Config.MenuOpen) { // prevent anything except movement while menu open
 

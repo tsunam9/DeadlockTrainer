@@ -106,7 +106,8 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn) {
 }
 
 /*
-	if (Config.aimbot.bAimbot) {
+	if (Config.aimbot
+	) {
 
 
 

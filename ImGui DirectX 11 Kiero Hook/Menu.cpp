@@ -355,6 +355,7 @@ void Menu::DrawEspTab() {
 		ImGui::SameLine();
 		ImGui::ColorEdit4("Aimbot Target Color", (float*)&Config.colors.aimbotTargetcol);
 	}
+	ImGui::Checkbox("Show Keybind List", &Config.esp.ShowKeyBindList);
 
 
 	ImGui::EndChild();
@@ -532,6 +533,7 @@ void Menu::DrawRageBotTab() {
 
 	ImGui::BeginChild("RageBot General", ImVec2(0, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 	ImGui::Text("Aimbot");
+
 	ImGui::Checkbox("Enabled", &Config.aimbot.bAimbot);
 	ImGui::SameLine();
 	Helper::HotKey(Config.aimbot.AimKey);

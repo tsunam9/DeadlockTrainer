@@ -8,16 +8,19 @@
 #include <vector>
 
 
+
 struct KeyBind {
     std::string name = "-";
+    std::string BindName = "XD";
     int key = 0;           // The key code
     bool waitingForKey = false; // Track if this keybind is waiting for a key press
     int keybindmode = 0; // 0 == always 1 == hold 2 == toggle
 
     bool* varptr = nullptr;
 
-    KeyBind(bool* VariableToKeybind) {
+    KeyBind(bool* VariableToKeybind, std::string nameforbind) {
         varptr = VariableToKeybind;
+        BindName = nameforbind;
     }
 
     KeyBind(const char* varname, int bindkey) {
@@ -27,7 +30,9 @@ struct KeyBind {
 
     KeyBind() = default; 
 
+
 };
+
 
  
 
@@ -41,8 +46,8 @@ public:
 
     // Nested structure for Aimbot settings
     struct AimbotSettings {
-        bool bAimbot = false;;
-		KeyBind AimKey;
+        bool bAimbot = false;
+        KeyBind AimKey;
         KeyBind AimKeyXp;
         KeyBind AimKeyMinions;
         bool MovementFix = false;
@@ -54,6 +59,15 @@ public:
         bool silentaim = false;
         bool magicbullet = false;
         KeyBind magicbulletkey;
+
+        AimbotSettings() :
+            AimKey(&bAimbot, std::string("Aimbot")),
+            AimKeyXp(&AimXp, std::string("Aimbot XP")),
+            AimKeyMinions(&AimMinions, std::string("Aimbot Minions")),
+            magicbulletkey(&magicbullet, std::string("Magic Bullet"))
+        {}
+
+
 
     } aimbot;
 
@@ -78,6 +92,7 @@ public:
         bool DrawMonsters = false;
         bool DrawMinions = false;
         bool DrawAimbotTarget = false;
+        bool ShowKeyBindList = false;
         bool Chams = false;
         bool ModelChams = false;
         bool LocalChams = false;
@@ -92,6 +107,11 @@ public:
         KeyBind SpeedBoostKey;
         float fovmodifier = 1.0f;
         float aspectratio = 1.0f;
+
+        MiscSettings() :
+            SpeedBoostKey(&SpeedBoost, std::string("Speed Boost"))
+        {}
+
     } misc;
 
 	struct ShivSettings {

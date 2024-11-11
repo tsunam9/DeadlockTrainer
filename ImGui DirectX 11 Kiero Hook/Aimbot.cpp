@@ -150,8 +150,9 @@ uint64_t Aimbot::RageGetAimbotTarget(std::string TargetEntityType) {
 			if (TargetPlayerData.TeamNum == LocalPlayerData.TeamNum) {
 				continue;
 			}
-
-			if(!Config.aimbot.magicbullet || !Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key)){ // if magic bullet then obviously dont do vischeck 
+			
+			Helper::KeyBindHandler(Config.aimbot.magicbulletkey);
+			if(!Config.aimbot.magicbullet){ // if magic bullet then obviously dont do vischeck 
 				if (IsPlayerVisible((*aimbotglobs.entlist.active)[i]) == false) {
 					continue;
 				}
@@ -507,7 +508,7 @@ bool readyToFire() {
 
 void Aimbot::RageAimAt(uint64_t entity) {
 
-	if (Config.aimbot.magicbullet && Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key)) // dont interfere if magic bullet is currently shooting
+	if (Config.aimbot.magicbullet) // dont interfere if magic bullet is currently shooting
 		return;
 
 	float BulletSpeed = globals::instance().BulletVelocity;
@@ -656,42 +657,47 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 		if (Config.aimbot.AimMinions)
 			minion_target = Aimbot::RageGetAimbotTarget("C_NPC_Trooper");
 
-
-		if (Config.aimbot.magicbullet && Helper::KeyBindHandler(Config.aimbot.magicbulletkey.key) && aimtarget) {
+		Helper::KeyBindHandler(Config.aimbot.magicbulletkey);
+		if (Config.aimbot.magicbullet && aimtarget) {
 			ShootMagicBullet(aimtarget);
 			return;
 		}
 
-		if (Helper::KeyBindHandler(Config.aimbot.AimKey.key) && aimtarget) {
+		Helper::KeyBindHandler(Config.aimbot.AimKey);
+		if (Config.aimbot.bAimbot && aimtarget) {
 			RageAimAt(aimtarget);
 			return;
 		}
 
-		if (Config.aimbot.AimKeyXp.key == 0) {
-			if (Helper::KeyBindHandler(Config.aimbot.AimKey.key) && xp_target) {
+		if (Config.aimbot.AimKeyXp.keybindmode == 0) {
+			if (Config.aimbot.bAimbot && xp_target) {
 				RageAimAtXp(xp_target);
 				return;
 			}
 		}
 		else {
-			if (Helper::KeyBindHandler(Config.aimbot.AimKeyXp.key) && xp_target) {
+			Helper::KeyBindHandler(Config.aimbot.AimKeyXp);
+			if (Config.aimbot.AimXp && xp_target) {
 				RageAimAtXp(xp_target);
 				return;
 			}
 		}
 
-		if (Config.aimbot.AimKeyMinions.key == 0) {
-			if (Helper::KeyBindHandler(Config.aimbot.AimKey.key) && minion_target) {
+		if (Config.aimbot.AimKeyMinions.keybindmode == 0) {
+			if (Config.aimbot.bAimbot && minion_target) {
 				RageAimAtMinions(minion_target);
 				return;
 			}
 		}
 		else {
-			if (Helper::KeyBindHandler(Config.aimbot.AimKeyMinions.key) && minion_target) {
+			Helper::KeyBindHandler(Config.aimbot.AimKeyMinions);
+			if (Config.aimbot.AimMinions) {
 				RageAimAtMinions(minion_target);
 				return;
 			}
 		}
+
+
 
 	}
 

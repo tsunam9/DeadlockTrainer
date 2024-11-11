@@ -10,7 +10,8 @@ int generateRandomNumber(int min, int max) {
 
 void AntiAim::DoAntiAim(CCitadelUserCmdPB* cmd) {
 
-	if (Config.misc.SpeedBoost && Helper::KeyBindHandler(Config.misc.SpeedBoostKey.key)) {
+	Helper::KeyBindHandler(Config.misc.SpeedBoostKey);
+	if (Config.misc.SpeedBoost) {
 		return;
 	}
 

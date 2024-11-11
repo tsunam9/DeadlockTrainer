@@ -23,6 +23,20 @@ static ImVec4 JsonToImVec4(const json& j) {
     );
 }
 
+static json BindToJson(const KeyBind& bind) {
+     return json{ 
+      {"key", bind.key}, 
+      {"name", bind.name},
+      {"BindMode",bind.keybindmode}
+     };
+}
+
+static void JsonToBind(const json& j, KeyBind& bind) {
+    bind.key= j["key"].get<int>(),
+    bind.name = j["name"].get<std::string>(),
+    bind.keybindmode = j["BindMode"].get<int>();
+}
+
 
  void ConfigSettings::LoadConfig(const std::string& filename){
 
@@ -39,18 +53,16 @@ static ImVec4 JsonToImVec4(const json& j) {
     inputFile.close();
 
     Config.aimbot.bAimbot = j["aimbot"]["enabled"].get<bool>();
-    Config.aimbot.AimKey.key = j["aimbot"]["aimkey"].get<int>();
-    Config.aimbot.AimKey.name = j["aimbot"]["aimkeyname"].get<std::string>();
-    Config.aimbot.AimKeyMinions.key = j["aimbot"]["minionaimkey"].get<int>();
-    Config.aimbot.AimKeyMinions.name = j["aimbot"]["minionaimkeyname"].get<std::string>();
-    Config.aimbot.AimKeyXp.key = j["aimbot"]["xpaimkey"].get<int>();
-    Config.aimbot.AimKeyXp.name = j["aimbot"]["xpaimkeyname"].get<std::string>();
-    Config.aimbot.AimMinions = j["aimbot"]["aimminions"].get<bool>();
-    Config.aimbot.AimXp = j["aimbot"]["aimxp"].get<bool>();
+
+   JsonToBind(j["aimbot"]["AimKey"], Config.aimbot.AimKey);
+   JsonToBind(j["aimbot"]["AimKeyMinions"],Config.aimbot.AimKeyMinions);
+   JsonToBind(j["aimbot"]["AimKeyXp"],Config.aimbot.AimKeyXp);
+
     Config.aimbot.fov = j["aimbot"]["fov"].get<float>();
     Config.aimbot.magicbullet = j["aimbot"]["magicbullet"].get<bool>();
-    Config.aimbot.magicbulletkey.key = j["aimbot"]["magicbulletkey"].get<int>();
-    Config.aimbot.magicbulletkey.name = j["aimbot"]["magicbulletkeyname"].get<std::string>();
+
+    JsonToBind(j["aimbot"]["magicbulletkey"], Config.aimbot.magicbulletkey);
+
     Config.aimbot.MaxDistance = j["aimbot"]["maxdistance"].get<float>();
     Config.aimbot.silentaim = j["aimbot"]["silentaim"].get<bool>();
     Config.aimbot.targetSelectionMode = j["aimbot"]["targetselectionmode"].get<int>();
@@ -80,6 +92,7 @@ static ImVec4 JsonToImVec4(const json& j) {
     Config.esp.DistanceEsp = j["esp"]["DistanceEsp"].get<bool>();
     Config.esp.DrawAimbotPrediction = j["esp"]["DrawAimbotPrediction"].get<bool>();
     Config.esp.DrawAimbotTarget = j["esp"]["DrawAimbotTarget"].get<bool>();
+    Config.esp.ShowKeyBindList = j["esp"]["ShowKeyBindList"].get<bool>();
     Config.esp.DrawFov = j["esp"]["DrawFov"].get<bool>();
     Config.esp.DrawMinions = j["esp"]["DrawMinions"].get<bool>();
     Config.esp.DrawMonsters = j["esp"]["DrawMonsters"].get<bool>();
@@ -96,8 +109,7 @@ static ImVec4 JsonToImVec4(const json& j) {
     Config.misc.bNorecoil = j["misc"]["bNorecoil"].get<bool>();
     Config.misc.fovmodifier = j["misc"]["fovmodifier"].get<float>();
     Config.misc.SpeedBoost = j["misc"]["SpeedBoost"].get<bool>();
-    Config.misc.SpeedBoostKey.key = j["misc"]["SpeedBoostKey"].get<int>();
-    Config.misc.SpeedBoostKey.name = j["misc"]["SpeedBoostKeyName"].get<std::string>();
+    JsonToBind(j["misc"]["SpeedBoostKey"], Config.misc.SpeedBoostKey);
 
     Config.shiv.AutoAimDagger = j["shiv"]["AutoAimDagger"].get<bool>();
     Config.shiv.AutoAimDash = j["shiv"]["AutoAimDash"].get<bool>();
@@ -112,8 +124,7 @@ static ImVec4 JsonToImVec4(const json& j) {
     Config.bebop.AutoBomb = j["bebop"]["AutoBomb"].get<bool>();
     Config.bebop.AutoUppercut = j["bebop"]["AutoUppercut"].get<bool>();
 
-    Config.MenuKey.key = j["menu"]["menukey"].get<int>();
-    Config.MenuKey.name = j["menu"]["menukeyname"].get<std::string>();
+    JsonToBind(j["menu"]["MenuKey"], Config.MenuKey);
 
 }
 
@@ -122,18 +133,14 @@ static ImVec4 JsonToImVec4(const json& j) {
      json j;
 
      j["aimbot"]["enabled"] = Config.aimbot.bAimbot;
-     j["aimbot"]["aimkey"] = Config.aimbot.AimKey.key;
-     j["aimbot"]["aimkeyname"] = Config.aimbot.AimKey.name;
-     j["aimbot"]["minionaimkey"] = Config.aimbot.AimKeyMinions.key;
-     j["aimbot"]["minionaimkeyname"] = Config.aimbot.AimKeyMinions.name;
-     j["aimbot"]["xpaimkey"] = Config.aimbot.AimKeyXp.key;
-     j["aimbot"]["xpaimkeyname"] = Config.aimbot.AimKeyXp.name;
+     j["aimbot"]["AimKey"] = BindToJson(Config.aimbot.AimKey);
+     j["aimbot"]["AimKeyMinions"] = BindToJson(Config.aimbot.AimKeyMinions);
+     j["aimbot"]["AimKeyXp"] = BindToJson(Config.aimbot.AimKeyXp);
      j["aimbot"]["aimminions"] = Config.aimbot.AimMinions;
      j["aimbot"]["aimxp"] = Config.aimbot.AimXp;
      j["aimbot"]["fov"] = Config.aimbot.fov;
      j["aimbot"]["magicbullet"] = Config.aimbot.magicbullet;
-     j["aimbot"]["magicbulletkey"] = Config.aimbot.magicbulletkey.key;
-     j["aimbot"]["magicbulletkeyname"] = Config.aimbot.magicbulletkey.name;
+     j["aimbot"]["magicbulletkey"] = BindToJson(Config.aimbot.magicbulletkey);
      j["aimbot"]["maxdistance"] = Config.aimbot.MaxDistance;
      j["aimbot"]["silentaim"] = Config.aimbot.silentaim;
      j["aimbot"]["targetselectionmode"] = Config.aimbot.targetSelectionMode;
@@ -162,6 +169,7 @@ static ImVec4 JsonToImVec4(const json& j) {
      j["esp"]["boxEsp"] = Config.esp.boxEsp;
      j["esp"]["DistanceEsp"] = Config.esp.DistanceEsp;
      j["esp"]["DrawAimbotPrediction"] = Config.esp.DrawAimbotPrediction;
+     j["esp"]["ShowKeyBindList"] = Config.esp.ShowKeyBindList;
      j["esp"]["DrawAimbotTarget"] = Config.esp.DrawAimbotTarget;
      j["esp"]["DrawFov"] = Config.esp.DrawFov;
      j["esp"]["DrawMinions"] = Config.esp.DrawMinions;
@@ -179,8 +187,7 @@ static ImVec4 JsonToImVec4(const json& j) {
      j["misc"]["bNorecoil"] = Config.misc.bNorecoil;
      j["misc"]["fovmodifier"] = Config.misc.fovmodifier;
      j["misc"]["SpeedBoost"] = Config.misc.SpeedBoost;
-     j["misc"]["SpeedBoostKey"] = Config.misc.SpeedBoostKey.key;
-     j["misc"]["SpeedBoostKeyName"] = Config.misc.SpeedBoostKey.name;
+     j["misc"]["SpeedBoostKey"] = BindToJson(Config.misc.SpeedBoostKey);
 
      j["shiv"]["AutoAimDagger"] = Config.shiv.AutoAimDagger;
      j["shiv"]["AutoAimDash"] = Config.shiv.AutoAimDash;
@@ -195,8 +202,7 @@ static ImVec4 JsonToImVec4(const json& j) {
      j["bebop"]["AutoBomb"] = Config.bebop.AutoBomb;
      j["bebop"]["AutoUppercut"] = Config.bebop.AutoUppercut;
 
-     j["menu"]["menukey"] = Config.MenuKey.key;
-     j["menu"]["menukeyname"] = Config.MenuKey.name;
+     j["menu"]["MenuKey"] = BindToJson(Config.MenuKey);
 
 
 
