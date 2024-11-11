@@ -530,14 +530,7 @@ void Menu::DrawHeroesTab() {
 
 void Menu::DrawRageBotTab() {
 
-
-
-	ImGui::BeginChild("Ragebot General", ImVec2(0, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-	ImGui::Text("Rage");
-
-
-
-	ImGui::BeginChild("Aimbot General", ImVec2(0, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::BeginChild("RageBot General", ImVec2(0, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 	ImGui::Text("Aimbot");
 	ImGui::Checkbox("Enabled", &Config.aimbot.bAimbot);
 	ImGui::SameLine();
@@ -547,7 +540,6 @@ void Menu::DrawRageBotTab() {
 	ImGui::Checkbox("Magic Bullet", &Config.aimbot.magicbullet);
 	ImGui::SameLine();
 	Helper::HotKey(Config.aimbot.magicbulletkey);
-	ImGui::Checkbox("Auto Fire", &Config.aimbot.AutoFire);
 
 	static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
 	//static int currentItem = 0; // Index of the currently selected item
@@ -555,7 +547,6 @@ void Menu::DrawRageBotTab() {
 	ImGui::Text("Selected: %s", items[Config.aimbot.targetSelectionMode]);
 	ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f, "%.1f");
 	ImGui::SliderFloat("FOV", &Config.aimbot.fov, 0.0f, 180.0f, "%.1f");
-	ImGui::SliderFloat("Smooth", &Config.aimbot.smooth, 0.0f, 100.0f, "%.1f");
 	ImGui::Checkbox("Aim at Souls", &Config.aimbot.AimXp);
 	ImGui::SameLine();
 	Helper::HotKey(Config.aimbot.AimKeyXp);

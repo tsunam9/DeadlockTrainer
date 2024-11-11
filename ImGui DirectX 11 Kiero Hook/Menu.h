@@ -20,9 +20,6 @@ public:
 	static void DrawNewMenu(FILE* fp, ID3D11Device* dx11Device);
 	static void DrawConfigs();
 
-	static void CheckBox(const char* label, bool* v, KeyBind* keybind);
-
-
 	
 
 };

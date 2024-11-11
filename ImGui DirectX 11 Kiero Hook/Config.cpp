@@ -39,7 +39,6 @@ static ImVec4 JsonToImVec4(const json& j) {
     inputFile.close();
 
     Config.aimbot.bAimbot = j["aimbot"]["enabled"].get<bool>();
-    Config.aimbot.aimBone = j["aimbot"]["AimBone"].get<int>();
     Config.aimbot.AimKey.key = j["aimbot"]["aimkey"].get<int>();
     Config.aimbot.AimKey.name = j["aimbot"]["aimkeyname"].get<std::string>();
     Config.aimbot.AimKeyMinions.key = j["aimbot"]["minionaimkey"].get<int>();
@@ -48,14 +47,12 @@ static ImVec4 JsonToImVec4(const json& j) {
     Config.aimbot.AimKeyXp.name = j["aimbot"]["xpaimkeyname"].get<std::string>();
     Config.aimbot.AimMinions = j["aimbot"]["aimminions"].get<bool>();
     Config.aimbot.AimXp = j["aimbot"]["aimxp"].get<bool>();
-    Config.aimbot.AutoFire = j["aimbot"]["autofire"].get<bool>();
     Config.aimbot.fov = j["aimbot"]["fov"].get<float>();
     Config.aimbot.magicbullet = j["aimbot"]["magicbullet"].get<bool>();
     Config.aimbot.magicbulletkey.key = j["aimbot"]["magicbulletkey"].get<int>();
     Config.aimbot.magicbulletkey.name = j["aimbot"]["magicbulletkeyname"].get<std::string>();
     Config.aimbot.MaxDistance = j["aimbot"]["maxdistance"].get<float>();
     Config.aimbot.silentaim = j["aimbot"]["silentaim"].get<bool>();
-    Config.aimbot.smooth = j["aimbot"]["smoothfactor"].get<float>();
     Config.aimbot.targetSelectionMode = j["aimbot"]["targetselectionmode"].get<int>();
     Config.aimbot.MovementFix = j["aimbot"]["MovementFix"].get<bool>();
 
@@ -125,7 +122,6 @@ static ImVec4 JsonToImVec4(const json& j) {
      json j;
 
      j["aimbot"]["enabled"] = Config.aimbot.bAimbot;
-     j["aimbot"]["AimBone"] = Config.aimbot.aimBone;
      j["aimbot"]["aimkey"] = Config.aimbot.AimKey.key;
      j["aimbot"]["aimkeyname"] = Config.aimbot.AimKey.name;
      j["aimbot"]["minionaimkey"] = Config.aimbot.AimKeyMinions.key;
@@ -134,14 +130,12 @@ static ImVec4 JsonToImVec4(const json& j) {
      j["aimbot"]["xpaimkeyname"] = Config.aimbot.AimKeyXp.name;
      j["aimbot"]["aimminions"] = Config.aimbot.AimMinions;
      j["aimbot"]["aimxp"] = Config.aimbot.AimXp;
-     j["aimbot"]["autofire"] = Config.aimbot.AutoFire;
      j["aimbot"]["fov"] = Config.aimbot.fov;
      j["aimbot"]["magicbullet"] = Config.aimbot.magicbullet;
      j["aimbot"]["magicbulletkey"] = Config.aimbot.magicbulletkey.key;
      j["aimbot"]["magicbulletkeyname"] = Config.aimbot.magicbulletkey.name;
      j["aimbot"]["maxdistance"] = Config.aimbot.MaxDistance;
      j["aimbot"]["silentaim"] = Config.aimbot.silentaim;
-     j["aimbot"]["smoothfactor"] = Config.aimbot.smooth;
      j["aimbot"]["targetselectionmode"] = Config.aimbot.targetSelectionMode;
      j["aimbot"]["MovementFix"] = Config.aimbot.MovementFix;
 

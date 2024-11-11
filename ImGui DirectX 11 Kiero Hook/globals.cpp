@@ -24,11 +24,11 @@ void globals::SortEnts() { // ONLY CALL IN AIMBOT
 
             if (EntName == "CCitadelPlayerController" && !*(bool*)(entity + CBasePlayerController::m_bIsLocalPlayerController))
                 this->entlist.updating->push_back(entity);
-            if (EntName == "CItemXP" && Config.esp.DrawXp)
+            if (EntName == "CItemXP" && Config.aimbot.AimXp)
                 this->entlist.updating->push_back(entity);
-            if (EntName == "C_NPC_TrooperNeutral")
+            if (EntName == "C_NPC_TrooperNeutral" && Config.aimbot.AimMinions)
                 this->entlist.updating->push_back(entity);
-            if (EntName == "C_NPC_Trooper")
+            if (EntName == "C_NPC_Trooper" && Config.aimbot.AimMinions)
                 this->entlist.updating->push_back(entity);
         }
         this->entlist.SwapBuffers();

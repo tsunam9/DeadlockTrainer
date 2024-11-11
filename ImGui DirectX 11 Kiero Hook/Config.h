@@ -9,10 +9,10 @@
 
 
 struct KeyBind {
-    std::string name = "Always";
+    std::string name = "-";
     int key = 0;           // The key code
     bool waitingForKey = false; // Track if this keybind is waiting for a key press
-    int keybindmode = false; // 0 == always 1 == hold 2 == toggle
+    int keybindmode = 0; // 0 == always 1 == hold 2 == toggle
 
     bool* varptr = nullptr;
 
@@ -25,9 +25,11 @@ struct KeyBind {
         key = bindkey;
     }
 
-};
+    KeyBind() = default; 
 
 };
+
+ 
 
 
 class ConfigSettings
@@ -49,10 +51,7 @@ public:
         int targetSelectionMode = 0; // 0, 1, 2... depending on your mode
         float MaxDistance = 0.0f;
         float fov = 0.0f;
-        float smooth = 0.0f;
-        int aimBone = 0; // Example bone index
         bool silentaim = false;
-        bool AutoFire = false;
         bool magicbullet = false;
         KeyBind magicbulletkey;
 
