@@ -8,8 +8,8 @@
 class Menu {
 public:	
 
-	static void DrawAimbotTab();
-	static void DrawAntiAimTab();
+	static void DrawRageBotTab();
+	static void DrawLegitBotTab();
 	static void DrawHeroesTab();
 	static void DrawEspTab();
 	static void DrawConfigTab(FILE* fp);
@@ -19,4 +19,10 @@ public:
 	static void DrawBackround();
 	static void DrawNewMenu(FILE* fp, ID3D11Device* dx11Device);
 	static void DrawConfigs();
+
+	static void CheckBox(const char* label, bool* v, KeyBind* keybind);
+
+
+	
+
 };

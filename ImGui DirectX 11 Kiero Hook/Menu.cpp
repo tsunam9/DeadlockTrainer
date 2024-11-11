@@ -361,7 +361,7 @@ void Menu::DrawEspTab() {
 
 }
 
-void Menu::DrawAntiAimTab() {
+void DrawAntiAimTab() {
 
 	float topGap = 25.0f; // Adjust this value for the desired gap size
 	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + topGap);
@@ -528,7 +528,12 @@ void Menu::DrawHeroesTab() {
 
 }
 
-void Menu::DrawAimbotTab() {
+void Menu::DrawRageBotTab() {
+
+
+
+	ImGui::BeginChild("Ragebot General", ImVec2(0, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::Text("Rage");
 
 
 
@@ -559,6 +564,11 @@ void Menu::DrawAimbotTab() {
 	Helper::HotKey(Config.aimbot.AimKeyMinions);
 
 	ImGui::EndChild();
+
+}
+
+void Menu::DrawLegitBotTab() {
+
 
 }
 
@@ -689,7 +699,7 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 		// Manually position each button
 		ImTextureID icons[] = { AimbotIconView, EspIconView, IdaLadyView, HeroIconView, ConfigIconView };
 
-		const char* glphs[] = { (const char*)u8"" , (const char*)u8"" , (const char*)u8"" , (const char*)u8"" , (const char*)u8"" };
+		const char* glphs[] = { (const char*)u8"" , (const char*)u8"" , (const char*)u8"" , (const char*)u8"", (const char*)u8"" };
 
 
 		if (buttonHeight < 80)
@@ -744,9 +754,9 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
 
 		switch (selectedTab) {
-		case 0: DrawAimbotTab(); break;
-		case 1: DrawEspTab(); break;
-		case 2: DrawAntiAimTab(); break;
+		case 0: DrawRageBotTab(); break;
+		case 1: DrawLegitBotTab(); break;
+		case 2: DrawEspTab(); break;
 		case 3: DrawHeroesTab(); break;
 		case 4: DrawConfigTab(fp); break;
 		}

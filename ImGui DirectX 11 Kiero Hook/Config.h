@@ -12,6 +12,20 @@ struct KeyBind {
     std::string name = "Always";
     int key = 0;           // The key code
     bool waitingForKey = false; // Track if this keybind is waiting for a key press
+    int keybindmode = false; // 0 == always 1 == hold 2 == toggle
+
+    bool* varptr = nullptr;
+
+    KeyBind(bool* VariableToKeybind) {
+        varptr = VariableToKeybind;
+    }
+
+    KeyBind(const char* varname, int bindkey) {
+        name = varname;
+        key = bindkey;
+    }
+
+};
 
 };
 
@@ -43,6 +57,10 @@ public:
         KeyBind magicbulletkey;
 
     } aimbot;
+
+    struct LegitBotSettings {
+
+    }legitbot;
 
     // Nested structure for ESP settings
     struct EspSettings {
@@ -200,7 +218,9 @@ public:
 
 
     // General settings
-    KeyBind MenuKey = KeyBind("Insert", VK_INSERT);
+    const char* menukeyname = "VK_INSERT";
+    KeyBind MenuKey = KeyBind(menukeyname, VK_INSERT);
+
     bool MenuOpen = true;
 };
 

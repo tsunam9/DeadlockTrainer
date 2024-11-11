@@ -497,7 +497,7 @@ void Helper::HotKey(KeyBind& keybind) {
 			if (GetAsyncKeyState(Key) & 0x8000) { // Ensure the key is pressed down
 				if (Key == VK_ESCAPE) {
 					keybind.key = 0;
-					keybind.name = "Always";
+					keybind.name = "-";
 					keybind.waitingForKey = false;
 					activeKeybind = nullptr; // Reset active keybind
 					break;
