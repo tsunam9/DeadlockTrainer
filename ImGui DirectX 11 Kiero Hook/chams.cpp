@@ -61,7 +61,11 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn) {
 	auto test = (__int64)(str);
 	CMaterial2*** mymaterial = drawfindmattarget((__int64)mymatsystem, (__int64*)mymat2, test);
 
+	std::string matname = matdata->pMaterial->GetName();
 
+	if (matname.find("outline") != std::string::npos) {
+		return;
+	}
 
 	if (islocal && Config.esp.LocalChams) {
 		matdata->colValue.r = Config.colors.LocalChamsCol.x * 255;
@@ -70,22 +74,22 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn) {
 		matdata->colValue.a = Config.colors.LocalChamsCol.w * 255;
 		if (Config.esp.ModelChams) {
 			matdata->pMaterial = **mymaterial;
-			matdata->pMaterial2 = **mymaterial;
 		}
 		goto LABEL_1;
 	}
 
 	if (targetchamsdata.TeamNum == LocalPlayerData.TeamNum)
-		return;
+		//return; SETBACK
 
 	matdata->colValue.r = Config.colors.ChamsCol.x * 255;
 	matdata->colValue.g = Config.colors.ChamsCol.y * 255;
 	matdata->colValue.b = Config.colors.ChamsCol.z * 255;
 	matdata->colValue.a = Config.colors.ChamsCol.w * 255;
+
 	if (Config.esp.ModelChams) {
 		matdata->pMaterial = **mymaterial;
-		matdata->pMaterial2 = **mymaterial;
 	}
+
 
 
 

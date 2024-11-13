@@ -33,7 +33,6 @@ f_DrawModel DrawModelTarget = reinterpret_cast<f_DrawModel>(scenesytembase + MEM
 
 void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, __int64 a8) {
 
-	//permamat = material_data->pMaterial;
 
 	if (!Config.esp.bEsp) {
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
@@ -52,6 +51,8 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 	}
 
 
+
+
 	uint64_t ownerobjindex = Helper::CHandle_get_entry_index(hOwner);
 	uint64_t ownerobj = Helper::get_base_entity_from_index(ownerobjindex);
 	if (!ownerobj)
@@ -68,8 +69,7 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 		return;
 	}
 
-	
-		
+
 
 	if(objname == "C_CitadelPlayerPawn"){
 
@@ -83,6 +83,8 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 		Chams::DrawChams(material_data, islocal, ownerobj);
 
 	}
+
+
 
 	DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
 
@@ -158,6 +160,11 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	ViscousLogic viscous;
 	WardenLogic warden;
 	YamatoLogic yamato;
+	WraithLogic wraith;
+
+	if (Config.aimbot.MovementFix) {
+		Helper::CorrectViewAngles(cmd);
+	}
 
 		switch (LocalPlayer.HeroID) {
 
@@ -206,13 +213,15 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 		case Yamato:
 			yamato.RunScript(cmd);
 			break;
+		case Wraith:
+			wraith.RunScript(cmd);
+			break;
 		default:
 			break;
 		}
 
 	if (Config.aimbot.MovementFix) {
 		Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
-		Helper::CorrectViewAngles(cmd);
 	}
 
 	Misc::SpeedBoost(localplayercontroller); // needs to run to reset even if its not on
@@ -247,6 +256,7 @@ f_render RenderStartTarget = reinterpret_cast<f_render>(MEM::GetClientBase() + M
 
 void __fastcall hkRenderStart(CViewRender* pViewRender)
 {
+
 	RenderStart(pViewRender);
 	pViewRender->Fov *= Config.misc.fovmodifier;
 	pViewRender->nSomeFlags |= 2;
@@ -335,15 +345,12 @@ fnLightSceneObject ogLightScene = nullptr;
 
 void __fastcall hkLightSceneObject(void* ptr, C_SceneLightObject * object, void* unk)
 {
-
 	ogLightScene(ptr, object, unk);
-
 	if (Config.esp.ModLights) {
 		object->r = Config.colors.LightModColor.x;
 		object->g = Config.colors.LightModColor.y;
 		object->b = Config.colors.LightModColor.z;
 	}
-
 }
 
 enum ModelType_t : int
@@ -454,8 +461,147 @@ bool __fastcall hkConsoleCmd(__int64 a1, unsigned int a2, const char* a3, char a
 	return ogConsoleCmd(a1, a2, a3, a4);
 }
 
+typedef __int64(__fastcall* f_applyglow)(__int64 CGlowProperty, CSceneAnimatableObject* glowobject);
+static f_applyglow ogApplyGlow = nullptr;
+static f_applyglow applyglowtarget = reinterpret_cast<f_applyglow>(MEM::GetClientBase() + 0xD395D0); // ApplyGlow 
+
+__int64 __fastcall hkApplyGlow(__int64 CGlowProperty, CSceneAnimatableObject* glowobject)
+{
+
+	uint64_t hOwner = glowobject->hOwner;
+	if(!Helper::CHandle_is_valid(hOwner))
+		return ogApplyGlow(CGlowProperty, glowobject);
+
+	int ownerindex = Helper::CHandle_get_entry_index(hOwner);
+	uint64_t ownerobj = Helper::get_base_entity_from_index(ownerindex);
+	auto entname = Helper::get_schema_name(ownerobj);
 
 
+	if (entname == "C_CitadelPlayerPawn") {
+
+		*(uint32_t*)(CGlowProperty + 0x50) = 1;
+
+		PlayerData data;
+		PlayerData localdata;
+		uint64_t localpawn = Helper::GetPawn(Helper::get_local_player());
+
+		Helper::get_player_data(Helper::get_local_player(), &localdata);
+		Helper::getPawnData(ownerobj, &data);
+
+		uint64_t glowhelper = *(uint64_t*)(CGlowProperty + 0x28);
+
+		if (!glowhelper) {
+			uint64_t NewGlowHelper = iSceneSystem002->CreateCHlowHelperSceneObject((uint64_t)glowobject);
+			*(uint64_t*)(CGlowProperty + 0x28) = NewGlowHelper;
+		}
+
+		if (ownerobj == localpawn)
+			return ogApplyGlow(CGlowProperty, glowobject);
+
+
+		if (data.TeamNum == localdata.TeamNum)
+			return ogApplyGlow(CGlowProperty, glowobject);
+
+		//std::cout << std::hex << CGlowProperty << std::endl;
+		*(uint32_t*)(CGlowProperty + 0x5C) = data.TeamNum;
+		*(uint32_t*)(CGlowProperty + 0x30) = 3;
+		*(uint64_t*)(ownerobj + C_BaseEntity::m_iTeamNum) = localdata.TeamNum;
+		*(uint32_t*)(CGlowProperty + CGlowProperty::m_glowColorOverride) = 0xFFFFFF00;
+
+	}
+
+	return ogApplyGlow(CGlowProperty, glowobject);
+
+}
+
+using fn_AddGlowObject = void(__fastcall*)(__int64 GlowManager, __int64 GlowPropertyToAdd);
+static auto fnAddGlowObject = reinterpret_cast<fn_AddGlowObject>(MEM::GetClientBase() + 0xD5C330);
+
+
+typedef void(__fastcall* f_doglow)(__int64 a1);
+static f_doglow ogdoglow = nullptr;
+static f_doglow doglowtarget = reinterpret_cast<f_doglow>(MEM::GetClientBase() + 0xD56C20); // actual doglow
+
+void __fastcall hkDoGlow(__int64 a1) {
+
+	
+	if (!Config.esp.DrawFov)
+		return;
+
+	std::cout << std::hex << a1 << std::endl;
+
+	std::vector<uint64_t> Controllers;
+
+	PlayerData localdata;
+	Helper::get_player_data(Helper::get_local_player(), &localdata);
+
+	int max_ents = Helper::get_max_entities();
+	if (!(max_ents >= 0))
+		return;
+	for (size_t i = 1; i <= static_cast<size_t>(max_ents); ++i) {
+		uint64_t entity = Helper::get_base_entity_from_index(i);
+
+		if (!entity)
+			continue;
+
+		std::string EntName = Helper::get_schema_name(entity);
+
+		if (EntName == "CCitadelPlayerController" && !*(bool*)(entity + CBasePlayerController::m_bIsLocalPlayerController))
+			Controllers.push_back(entity);
+	}
+
+	for (int i = 0; i < Controllers.size(); i++) {
+
+		uint64_t pawn = Helper::GetPawn(Controllers[i]);
+
+		uint64_t glowProperty = pawn + 0x750; 
+
+
+
+		uint64_t glowhelper = *(uint64_t*)(glowProperty + 0x28);
+
+		if (!glowhelper) {
+			uint64_t NewGlowHelper = iSceneSystem002->CreateCHlowHelperSceneObject((uint64_t)pawn);
+			*(uint64_t*)(glowProperty + 0x28) = NewGlowHelper;
+		}
+
+		*(uint32_t*)(glowProperty + 0x50) = 1;
+		*(uint32_t*)(glowProperty + 0x30) = 3;
+
+		fnAddGlowObject(a1, glowProperty);
+
+	}
+
+	ogdoglow(a1);
+
+}
+
+typedef __int64(__fastcall* applyglowcaller)(__int64 a1, __int64 a2, __int64 a3, int a4);
+static applyglowcaller ogapplycaller = nullptr;
+static applyglowcaller applycallertarget = reinterpret_cast<applyglowcaller>(MEM::GetClientBase() + 0x62D2C0); // calls applyglow
+
+__int64 __fastcall hkApplyGlowCaller(__int64 a1, __int64 a2, __int64 a3, int a4) {
+
+	return ogapplycaller(a1, a2, a3, a4);
+
+}
+
+typedef __int64(__fastcall* verifyGlowObject)(__int64 a1, int a2, float a3);
+static verifyGlowObject ogverifyglowobject = nullptr;
+static verifyGlowObject verifyglowobjecttarget = reinterpret_cast<verifyGlowObject>(MEM::GetClientBase() + 0xD80EC0); // calls applyglow
+
+__int64 __fastcall hkVerifyGlowObject(__int64 a1, int a2, float a3) {
+
+	uint32_t oldMode = *(uint32_t*)(a1 + 0x30);
+
+	__int64 result = ogverifyglowobject(a1, a2, a3);
+
+	if (*(uint32_t*)(a1 + 0x30) != oldMode) {
+		*(uint32_t*)(a1 + 0x30) = oldMode;
+	}
+
+	return result;
+}
 
 
 void CreateHooks() {
@@ -499,6 +645,24 @@ void CreateHooks() {
 	MH_CreateHook((LPVOID)MouseInputEnabledTarget, &hkMouseInputEnabled, reinterpret_cast<LPVOID*>(&ogMouseInputEnabled));
 	MH_EnableHook((LPVOID)MouseInputEnabledTarget);
 	std::cout << "[+] MouseInputEnabled Hook Initialized!" << std::endl;
+
+	//MH_CreateHook((LPVOID)applyglowtarget, &hkApplyGlow, reinterpret_cast<LPVOID*>(&ogApplyGlow));
+	//MH_EnableHook((LPVOID)applyglowtarget);
+	//std::cout << "[+] ApplyGlow Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)doglowtarget, &hkDoGlow, reinterpret_cast<LPVOID*>(&ogdoglow));
+	MH_EnableHook((LPVOID)doglowtarget);
+	std::cout << "[+] DoGlow Hook Initialized!" << std::endl;
+
+
+	//MH_CreateHook((LPVOID)applycallertarget, &hkApplyGlowCaller, reinterpret_cast<LPVOID*>(&ogapplycaller));
+	//MH_EnableHook((LPVOID)applycallertarget);
+	//std::cout << "[+] ApplpyCaller Hook Initialized!" << std::endl;
+
+	//MH_CreateHook((LPVOID)verifyglowobjecttarget, &hkVerifyGlowObject, reinterpret_cast<LPVOID*>(&ogverifyglowobject));
+	//MH_EnableHook((LPVOID)verifyglowobjecttarget);
+	//std::cout << "[+] VerifyGlowObject Hook Initialized!" << std::endl;
+
 
 	//MH_CreateHook((LPVOID)ConsoleCmdTarget, &hkConsoleCmd, reinterpret_cast<LPVOID*>(&ogConsoleCmd));
 	//MH_EnableHook((LPVOID)ConsoleCmdTarget);

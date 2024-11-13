@@ -445,6 +445,9 @@
     <ClInclude Include="Yamato.h">
       <Filter>Source Files\Features\Heros\Yamato</Filter>
     </ClInclude>
+    <ClInclude Include="ISceneSystem.h">
+      <Filter>Source Files\ValveClasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="kiero\minhook\dll_resources\MinHook.def">

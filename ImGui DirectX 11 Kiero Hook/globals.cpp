@@ -3,6 +3,7 @@
 
 IEngineClient* iEngine = GetInterface<IEngineClient>("Engine2.dll", "Source2EngineToClient001");
 IEngineCVar* VEngineCvar = GetInterface<IEngineCVar>("tier0.dll", "VEngineCvar007");
+ISceneSystem* iSceneSystem002 = GetInterface<ISceneSystem>("scenesystem.dll", "SceneSystem_002");
 
 
 

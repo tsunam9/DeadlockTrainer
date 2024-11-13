@@ -191,20 +191,18 @@ public:
 	virtual const char* GetName() = 0;
 	virtual const char* GetShareName() = 0;
 
-	__int64* FindParam(const char* ParamName)
+	float FindParam(const char* ParamName)
 	{
-		using fnFindParam = __int64* (_fastcall*)(__int64 a1, const char* a2);
+		using fnFindParam = float(_fastcall*)(__int64 a1, __int64 a2, float a3);
 
-		static auto findparams = reinterpret_cast<fnFindParam>(materialsystembase + 0xCB70);
+		static auto findparams = reinterpret_cast<fnFindParam>(materialsystembase + 0xCA80);
 
-		__int64 tempvalue; 
+		float defaultfloat = 0.f;
 
-
-		__int64* returnvalue = findparams((__int64)this, ParamName);
+		float returnvalue = findparams((__int64)this, (__int64)"F_SHEEN", defaultfloat);
 
 		return returnvalue;
 	}
-
 
 };
 
@@ -229,7 +227,7 @@ struct MaterialKeyVar_t
 		static auto oFindKeyVar = reinterpret_cast<fnFindKeyVar>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 ? 57 48 81 EC ? ? ? ? 33 C0 8B DA"));
 
 		// idk those enum flags, just saw it called like that soooo yea
-		auto result = oFindKeyVar(szName, 8u, 826366246);
+		auto result = oFindKeyVar(szName, 8LL, 826366246LL);
 		return result;
 		
 	}
@@ -247,20 +245,20 @@ public:
 	void SetShaderType(const char* szShaderName)
 	{
 		// @ida: #STR: shader, spritecard.vfx
-		using fnSetMaterialShaderType = void(__fastcall*)(void*, MaterialKeyVar_t, const char*, int);
-		static auto oSetMaterialShaderType = reinterpret_cast<fnSetMaterialShaderType>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 0F B6 01 45 0F B6 F9 8B 2A 4D 8B E0 4C 8B 72 ? 48 8B F9 C0 E8 ? 24 ? 3C ? 74 ? 41 B0 ? B2 ? E8 ? ? ? ? 0F B6 07 33 DB C0 E8 ? 24 ? 3C ? 75 ? 48 8B 77 ? EB ? 48 8B F3 4C 8D 44 24 ? C7 44 24 ? ? ? ? ? 48 8D 54 24 ? 89 6C 24 ? 48 8B CE 4C 89 74 24 ? E8 ? ? ? ? 8B D0 83 F8 ? 75 ? 45 33 C9 89 6C 24 ? 4C 8D 44 24 ? 4C 89 74 24 ? 48 8B D7 48 8B CE E8 ? ? ? ? 8B D0 0F B6 0F C0 E9 ? 80 E1 ? 80 F9 ? 75 ? 48 8B 4F ? EB ? 48 8B CB 8B 41 ? 85 C0 74 ? 48 8D 59 ? 83 F8 ? 76 ? 48 8B 1B 48 63 C2 4D 85 E4"));
+		using fnSetMaterialShaderType = void(__fastcall*)(__int64 thisptr , int* , BYTE* a3, __int8 a4);
+		static auto oSetMaterialShaderType = reinterpret_cast<fnSetMaterialShaderType>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5c 24 ? 48 89 6c 24 ? 56 57 41 54 41 56 41 57 48 83 ec ? 0f b6 01 45 0f b6 f9 8b 2a 4d 8b e0 4c 8b 72 ? 48 8b d9 c0 e8 ? 24 ? 3c ? 74 ? 41 b0 ? b2 ? e8 ? ? ? ? 0f b6 03 33 ff c0 e8 ? 24 ? 3c ? 75 ? 48 8b 73 ? eb ? 48 8b f7 4c 8d 44 24 ? c7 44 24 ? ? ? ? ? 48 8d 54 24 ? 89 6c 24 ? 48 8b ce 4c 89 74 24 ? e8 ? ? ? ? 83 f8 ? 75 ? 45 33 c9 89 6c 24 ? 4c 8d 44 24 ? 4c 89 74 24 ? 48 8b d3 48 8b ce e8 ? ? ? ? 0f b6 0b c0 e9 ? 80 e1 ? 80 f9 ? 75 ? 48 8b 7b ? 80 7f ? ? 48 8d 57"));
 
 		MaterialKeyVar_t shaderVar(0x162C1777, "shader");
-		oSetMaterialShaderType(this, shaderVar, szShaderName, 0x1A);
+		oSetMaterialShaderType((__int64)this, (int*)&shaderVar.uKey, (BYTE*)szShaderName, 0x1A);	
 	}
 
 	void SetMaterialFunction(const char* szFunctionName, int nValue)
 	{
-		using fnSetMaterialFunction = void(__fastcall*)(void*, int* FunctionVar, __int64 value, __int8 a4);
-		static auto oSetMaterialFunction = reinterpret_cast<fnSetMaterialFunction>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 0F B6 01 45 0F B6 F9 8B 2A 48 8B F9"));
+		using fnSetMaterialFunction = unsigned __int64*(__fastcall*)(unsigned __int64* a1, int* a2, int a3, unsigned __int8 a4);
+		static auto oSetMaterialFunction = reinterpret_cast<fnSetMaterialFunction>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5c 24 ? 48 89 6c 24 ? 56 57 41 54 41 56 41 57 48 83 ec ? 0f b6 01 45 0f b6 f9 8b 2a 48 8b d9"));
 
 		MaterialKeyVar_t functionVar(szFunctionName, true);
-		oSetMaterialFunction(this, (int*)&functionVar, nValue, 0x14u);
+		oSetMaterialFunction((unsigned __int64*)this, (int*)&functionVar.uKey , nValue, 0x14u);
 	}
 
 	char pad01[0x18];
@@ -290,6 +288,10 @@ public:
 	{
 		return MEM::CallVFunc<void, 37U>(this, pInMaterial, pData);
 	}
+
+
+
+
 };
 
 static const char* flat = R"(R"#(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d}

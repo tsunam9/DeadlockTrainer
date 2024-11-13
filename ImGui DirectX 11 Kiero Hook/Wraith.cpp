@@ -1,14 +1,16 @@
 #include "Wraith.h"
 
 
-// WIP
-
 void WraithLogic::AutoAimCard() {
 
 	if (!(*(bool*)(this->abilitiesarray[1] + CCitadel_Ability_CardToss::m_bCardIsFlying)))
 		return;
 
+	vec2 angles = Aimbot::GetAimAngles(targetdata->m_vecOrigin);
+	cmd->cameraViewAngle->viewAngles.x = angles.x;
+	cmd->cameraViewAngle->viewAngles.y = angles.y;
 
+	return;
 }
 
 void WraithLogic::OnAbility1() {

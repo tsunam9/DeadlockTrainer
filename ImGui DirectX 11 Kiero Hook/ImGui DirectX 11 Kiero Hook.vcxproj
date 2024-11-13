@@ -229,6 +229,7 @@
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="Infernus.h" />
+    <ClInclude Include="ISceneSystem.h" />
     <ClInclude Include="Ivy.h" />
     <ClInclude Include="Kelvin.h" />
     <ClInclude Include="kiero\kiero.h" />

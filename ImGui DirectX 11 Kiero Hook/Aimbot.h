@@ -14,9 +14,14 @@ public:
 	static void ShootMagicBullet(uint64_t entity);
 	static void RunAimbot(CCitadelUserCmdPB* usercmd);
 	static vec3 PredictPosition(vec3 Target, vec3 Velocity, float bulletspeed);
-	static uint64_t RageGetAimbotTarget(std::string group);
+	static uint64_t RageGetAimbotTarget(uint32_t group);
 	static uint64_t GetCurrentAimbotTarget();
+	static bool IsAimbotting();
+	static bool IsRageBotting();
+	static bool IsLegitBotting();
 	static void AimAbility(uintptr_t entity, int aimpos, uintptr_t ability, float projectilespeed, bool projectile);
+
+	static uint64_t LegitGetAimbotTarget(uint32_t group);
 
 
 };

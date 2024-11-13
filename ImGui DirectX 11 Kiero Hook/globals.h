@@ -9,6 +9,8 @@
 #include "IEngineClient.h"
 #include "gameinterface.h"
 #include "IEngineCvar.h"
+#include "ISceneSystem.h"
+
 
 using namespace cs2_dumper::schemas::client_dll;
 
@@ -75,5 +77,6 @@ private:
 
 extern IEngineClient* iEngine;
 extern IEngineCVar* VEngineCvar;
+extern ISceneSystem* iSceneSystem002;
 
 extern bool unloadRequested;

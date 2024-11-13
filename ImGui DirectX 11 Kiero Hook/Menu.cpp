@@ -364,13 +364,9 @@ void Menu::DrawEspTab() {
 
 void DrawAntiAimTab() {
 
-	float topGap = 25.0f; // Adjust this value for the desired gap size
-	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + topGap);
-	ImVec2 childPos = ImGui::GetCursorScreenPos();
-	ImVec2 titlePos = ImVec2(childPos.x + 5.0f, childPos.y - ImGui::GetFontSize()); // Adjust Y for positioning above the border
-	ImGui::GetWindowDrawList()->AddText(titlePos, IM_COL32(255, 255, 255, 255), "Anti Aim");
 
 	ImGui::BeginChild("AntiAim", ImVec2(0, 0), true);
+	ImGui::Text("Anti Aim");
 	ImGui::Checkbox("Enabled", &Config.antiaim.bAntiAim);
 	static const char* items[] = { "Spin", "Jitter", "180 Treehouse" }; // Options for the dropdown
 	static int currentItem = 0; // Index of the currently selected item
@@ -509,6 +505,7 @@ void Menu::DrawHeroesTab() {
 	}
 	case Wraith: {
 		ImGui::Text("Wraith");
+		ImGui::Checkbox("Aim Cards", &Config.wraith.AimCards);
 		break;
 	}
 	case Yamato: {
@@ -531,8 +528,11 @@ void Menu::DrawHeroesTab() {
 
 void Menu::DrawRageBotTab() {
 
-	ImGui::BeginChild("RageBot General", ImVec2(0, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-	ImGui::Text("Aimbot");
+	float windowWidth = ImGui::GetWindowWidth();
+
+
+	ImGui::BeginChild("RageBot General", ImVec2(windowWidth * 0.5, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::Text("RageBot");
 
 	ImGui::Checkbox("Enabled", &Config.aimbot.bAimbot);
 	ImGui::SameLine();
@@ -558,10 +558,14 @@ void Menu::DrawRageBotTab() {
 
 	ImGui::EndChild();
 
+	ImGui::SameLine();
+
+	DrawAntiAimTab();
+
 }
 
 void Menu::DrawLegitBotTab() {
-
+	
 
 }
 

@@ -20,6 +20,7 @@
 #include "Viscous.h"
 #include "Warden.h"
 #include "Yamato.h"
+#include "Wraith.h"
 #include <variant> 
 
 static void* backup;

@@ -18,6 +18,15 @@ static CCitadelUserCmdPB* CUserCmd;
 globals& aimbotglobs = globals::instance();
 
 uint64_t CurrentPlayerTarget = 0;
+bool aim_Aimbotting = false;
+bool aim_RageBotting = false;
+bool aim_LegitBotting = false;
+
+enum AimGroups {
+	AimGroup_Player,
+	AimGroup_Soul,
+	AimGroup_Minion
+};
 
 bool IsPlayerVisible(uint64_t entity) {
 
@@ -113,7 +122,40 @@ uint64_t Aimbot::GetCurrentAimbotTarget() {
 		return CurrentPlayerTarget;
 }
 
-uint64_t Aimbot::RageGetAimbotTarget(std::string TargetEntityType) {
+bool Aimbot::IsAimbotting() {
+	return aim_Aimbotting;
+}
+
+bool Aimbot::IsRageBotting() {
+	return aim_RageBotting;
+}
+
+bool Aimbot::IsLegitBotting() {
+	return aim_LegitBotting;
+}
+
+uint64_t Aimbot::LegitGetAimbotTarget(uint32_t group) {
+
+	float ClosestDistance = 99999.f;
+	int ClosestIndex = 999;
+	int LowestHealth = 99999.f;
+	int LowestHealthIndex = 999;
+	float LowestFov = 99999.f;
+	int lowestfovindex = 999;
+
+	for (int i = 0; i < aimbotglobs.entlist.active->size(); i++) {
+
+
+
+
+
+
+	}
+
+	return 0;
+}
+
+uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 
 
 	
@@ -137,7 +179,7 @@ uint64_t Aimbot::RageGetAimbotTarget(std::string TargetEntityType) {
 
 		std::string entClass = Helper::get_schema_name((*aimbotglobs.entlist.active)[i]);
 
-		if (TargetEntityType == "CCitadelPlayerController" && entClass == "CCitadelPlayerController") {
+		if (entClass == "CCitadelPlayerController" && group == AimGroup_Player) {
 			PlayerData TargetPlayerData;
 			Helper::get_player_data((*aimbotglobs.entlist.active)[i], &TargetPlayerData);
 
@@ -205,7 +247,7 @@ uint64_t Aimbot::RageGetAimbotTarget(std::string TargetEntityType) {
 			}
 
 		}
-		else if (entClass == "CItemXP" && TargetEntityType == "CItemXP") {
+		else if (entClass == "CItemXP" && group == AimGroup_Soul) {
 
 			xpData* TargetXPData = new xpData;
 			Helper::get_xp_data((*aimbotglobs.entlist.active)[i], TargetXPData);
@@ -247,7 +289,7 @@ uint64_t Aimbot::RageGetAimbotTarget(std::string TargetEntityType) {
 			delete TargetXPData;
 
 		}
-		else if (entClass == "C_NPC_Trooper" && TargetEntityType == "C_NPC_Trooper") {
+		else if (entClass == "C_NPC_Trooper" && group == AimGroup_Minion) {
 
 			NpcData* TargetNpcData = new NpcData;
 			Helper::get_npc_data((*aimbotglobs.entlist.active)[i], TargetNpcData);
@@ -327,7 +369,7 @@ uint64_t Aimbot::RageGetAimbotTarget(std::string TargetEntityType) {
 
 
 
-	if (TargetEntityType == "CCitadelPlayerController") {
+	if (group == AimGroup_Player) {
 		switch (Config.aimbot.targetSelectionMode) {
 		case 0:
 			if (ClosestIndex == 999) {
@@ -352,7 +394,7 @@ uint64_t Aimbot::RageGetAimbotTarget(std::string TargetEntityType) {
 			return (*aimbotglobs.entlist.active)[lowestfovindex];
 		}
 	}
-	else if (TargetEntityType == "CItemXP") {
+	else if (group == AimGroup_Soul) {
 		switch (Config.aimbot.targetSelectionMode) {
 		case 0:
 			if (ClosestIndex == 999) {
@@ -371,7 +413,7 @@ uint64_t Aimbot::RageGetAimbotTarget(std::string TargetEntityType) {
 			return (*aimbotglobs.entlist.active)[lowestfovindex];
 		}
 	}
-	else if (TargetEntityType == "C_NPC_Trooper") {
+	else if (group == AimGroup_Minion) {
 		switch (Config.aimbot.targetSelectionMode) {
 		case 0:
 			if (ClosestIndex == 999) {
@@ -461,7 +503,7 @@ void Aimbot::AimAbility(uintptr_t entity, int aimpos, uintptr_t ability, float p
 
 void Aimbot::ShootMagicBullet(uint64_t entity) {
 
-	float BulletSpeed = 30000.0f;
+	float BulletSpeed = globals::instance().BulletVelocity;
 	vec3 vec_target = Helper::GetBonePosition(entity, "head");
 	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
@@ -476,6 +518,9 @@ void Aimbot::ShootMagicBullet(uint64_t entity) {
 
 
 		if (ClosestVisiblePosToTarget(localheadpos, predictedposition, AimFrom)) {
+
+			aim_RageBotting = true; 
+			aim_Aimbotting = true;
 
 			CUserCmd->buttons |= IN_ATTACK;
 			CUserCmd->origin->m_vecOrigin.x = AimFrom.x;
@@ -527,6 +572,9 @@ void Aimbot::RageAimAt(uint64_t entity) {
 		if (!readyToFire())
 			return;
 
+		aim_RageBotting = true;
+		aim_Aimbotting = true;
+
 		CUserCmd->buttons |= IN_ATTACK;
 		CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
 		CUserCmd->cameraViewAngle->viewAngles.y = target_angles.y;
@@ -537,6 +585,9 @@ void Aimbot::RageAimAt(uint64_t entity) {
 
 	if (!readyToFire())
 		return;
+
+	aim_RageBotting = true;
+	aim_Aimbotting = true;
 
 	ViewAngles->x = target_angles.x;
 	ViewAngles->y = target_angles.y;
@@ -554,6 +605,9 @@ void Aimbot::RageAimAtXp(uintptr_t entity) {
 		if (!readyToFire())
 			return;
 
+		aim_RageBotting = true;
+		aim_Aimbotting = true;
+
 		CUserCmd->buttons |= IN_ATTACK;
 
 		CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
@@ -563,6 +617,9 @@ void Aimbot::RageAimAtXp(uintptr_t entity) {
 
 	if (!readyToFire())
 		return;
+
+	aim_RageBotting = true;
+	aim_Aimbotting = true;
 
 	CUserCmd->buttons |= IN_ATTACK;
 
@@ -594,6 +651,9 @@ void Aimbot::RageAimAtMinions(uintptr_t entity) {
 		if (!readyToFire())
 			return;
 
+		aim_RageBotting = true;
+		aim_Aimbotting = true;
+
 		CUserCmd->buttons |= IN_ATTACK;
 		CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
 		CUserCmd->cameraViewAngle->viewAngles.y = target_angles.y;
@@ -603,6 +663,9 @@ void Aimbot::RageAimAtMinions(uintptr_t entity) {
 
 	if (!readyToFire())
 		return;
+
+	aim_RageBotting = true;
+	aim_Aimbotting = true;
 
 	ViewAngles->x = target_angles.x;
 	ViewAngles->y = target_angles.y;
@@ -648,14 +711,14 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 
 	if (true) { // ragebot
 
-		uint64_t aimtarget = Aimbot::RageGetAimbotTarget("CCitadelPlayerController");
+		uint64_t aimtarget = Aimbot::RageGetAimbotTarget(AimGroup_Player);
 		uint64_t xp_target = 0; // make sure unassigned is always zero 
 		uint64_t minion_target = 0;
 
 		if (Config.aimbot.AimXp)
-			xp_target = Aimbot::RageGetAimbotTarget("CItemXP");
+			xp_target = Aimbot::RageGetAimbotTarget(AimGroup_Soul);
 		if (Config.aimbot.AimMinions)
-			minion_target = Aimbot::RageGetAimbotTarget("C_NPC_Trooper");
+			minion_target = Aimbot::RageGetAimbotTarget(AimGroup_Minion);
 
 		Helper::KeyBindHandler(Config.aimbot.magicbulletkey);
 		if (Config.aimbot.magicbullet && aimtarget) {
@@ -698,8 +761,10 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 		}
 
 
-
+		return;
 	}
+
+
 
 
 
