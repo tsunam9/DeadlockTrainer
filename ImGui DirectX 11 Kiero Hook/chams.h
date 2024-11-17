@@ -4,7 +4,7 @@
 #include "helper.h"
 #include "mem.h"
 #include "gameinterface.h"
-
+#include <emmintrin.h> // Include header for SSE intrinsics
 
 static uint64_t particlesdllbase = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "particles.dll");
 static uint64_t hTier0 = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "tier0.dll");
@@ -191,16 +191,25 @@ public:
 	virtual const char* GetName() = 0;
 	virtual const char* GetShareName() = 0;
 
-	float FindParam(const char* ParamName)
+	uint64_t FindParam(const char* ParamName)
 	{
-		using fnFindParam = float(_fastcall*)(__int64 a1, __int64 a2, float a3);
+		using fnFindParam = uint64_t*(_fastcall*)(__int64 CMATthisPtr, uint64_t* Output, __int64 String);
 
-		static auto findparams = reinterpret_cast<fnFindParam>(materialsystembase + 0xCA80);
+		static auto findparams = reinterpret_cast<fnFindParam>(materialsystembase + 0xCBA0);
 
-		float defaultfloat = 0.f;
+		uint64_t output = 0;
 
-		float returnvalue = findparams((__int64)this, (__int64)"F_SHEEN", defaultfloat);
+		uint64_t* returnvalue = findparams((__int64)this, &output, (__int64)ParamName);
 
+		return output;
+	}
+
+	char __fastcall FindParamById(unsigned int id, uint64_t* output) {
+
+		using fnFindParamById = char(__fastcall*)(__m128i* a1, uint64_t* a2, unsigned int a3);
+		static auto findparambyid = reinterpret_cast<fnFindParamById>(materialsystembase + 0x75C0);
+
+		char returnvalue = findparambyid(reinterpret_cast<__m128i*>(this), output, id);
 		return returnvalue;
 	}
 
@@ -367,7 +376,7 @@ class Chams
 public:
 
 	static CStrongHandle<CMaterial2> CreateMaterial(const char* szMaterialName, const char szVmatBuffer[]);
-	static void DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn);
+	static void DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bool ignorez);
 
 };
 

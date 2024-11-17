@@ -762,6 +762,7 @@ public:
 	static std::vector<uintptr_t> GetAbilities(uint64_t entity_pawn);
 	static bool IsAbilityCasting(uintptr_t ability);
     static float getBulletSpeed(uint64_t BulletHandler);
+    static void DrawMultiSelectDropdown(const char* label, const char* previewText, const char** items, bool* selected, int itemCount);
 
 };
 

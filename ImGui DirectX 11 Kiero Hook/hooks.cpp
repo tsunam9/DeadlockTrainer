@@ -33,6 +33,10 @@ f_DrawModel DrawModelTarget = reinterpret_cast<f_DrawModel>(scenesytembase + MEM
 
 void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, __int64 a8) {
 
+	if (!(iEngine->IsInGame())) {
+		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+		return;
+	}
 
 	if (!Config.esp.bEsp) {
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
@@ -80,7 +84,9 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 		}
 
 
-		Chams::DrawChams(material_data, islocal, ownerobj);
+		Chams::DrawChams(material_data, islocal, ownerobj, false);
+		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+		return;
 
 	}
 
@@ -465,6 +471,20 @@ typedef __int64(__fastcall* f_applyglow)(__int64 CGlowProperty, CSceneAnimatable
 static f_applyglow ogApplyGlow = nullptr;
 static f_applyglow applyglowtarget = reinterpret_cast<f_applyglow>(MEM::GetClientBase() + 0xD395D0); // ApplyGlow 
 
+typedef __int64(__fastcall* f_addglowhelperobj)(__int64 a1, __int64 a2, __int64 a3, __int64 a4, __int64 a5);
+static f_addglowhelperobj ogaddglowhelper = nullptr;
+static f_addglowhelperobj addglowhelpertarget = reinterpret_cast<f_addglowhelperobj>(scenesytembase + 0xc81f0); // adds glowhelper obj
+
+__int64 __fastcall hkaddglowhelperobj(__int64 a1, __int64 a2, __int64 a3, __int64 a4, __int64 a5) {
+
+	std::cout << a2 << std::endl;
+
+	return ogaddglowhelper(a1, a2, a3, a4, a5);
+
+}
+
+
+
 __int64 __fastcall hkApplyGlow(__int64 CGlowProperty, CSceneAnimatableObject* glowobject)
 {
 
@@ -515,22 +535,21 @@ __int64 __fastcall hkApplyGlow(__int64 CGlowProperty, CSceneAnimatableObject* gl
 }
 
 using fn_AddGlowObject = void(__fastcall*)(__int64 GlowManager, __int64 GlowPropertyToAdd);
-static auto fnAddGlowObject = reinterpret_cast<fn_AddGlowObject>(MEM::GetClientBase() + 0xD5C330);
+static auto fnAddGlowObject = reinterpret_cast<fn_AddGlowObject>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 85 d2 0f 84 ? ? ? ? 55 41 56 48 83 ec ? 48 89 7c 24 ? 45 33 c0 4c 89 7c 24 ? 48 8b ea 4c 63 79 ? 4c 8b f1 45 85 ff 7e ? 49 8b 46 ? 41 8b c8 48 39 28 74 ? 41 ff c0 48 ff c1 48 83 c0 ? 49 3b cf 7c ? eb ? 41 83 f8 ? 0f 85 ? ? ? ? 45 3b 7e ? 0f 85 ? ? ? ? 41 f7 46 ? ? ? ? ? 0f 85 ? ? ? ? 41 8b 4e ? 48 89 5c 24 ? 48 89 74 24 ? 81 f9 ? ? ? ? 7e ? ba ? ? ? ? ff 15 ? ? ? ? 41 8b 4e ? 41 b9 ? ? ? ? 41 8b 56 ? 81 e2 ? ? ? ? 8d 71 ? 44 8b c6 ff 15 ? ? ? ? 8b d8 3b c6 7d ? 85 c0 75 ? 83 fe ? 7f ? 8d 58 ? eb ? 8d 04 33 99 2b c2 d1 f8 8b d8 3b c6 7c ? 4d 63 4e ? 49 8b 4e ? 49 c1 e1 ? 41 f7 46 ? ? ? ? ? 4c 63 c3 0f 94 c2 49 c1 e0 ? ff 15 ? ? ? ? 48 8b 74 24 ? 49 89 46 ? 41 8b 46 ? a9 ? ? ? ? 74 ? 25 ? ? ? ? 41 89 46 ? 41 89 5e ? 48 8b 5c 24 ? 41 ff 46 ? 49 8b 46 ? 4a 89 2c f8 48 8b 7c 24 ? 4c 8b 7c 24 ? 48 83 c4 ? 41 5e 5d c3 cc cc cc cc cc cc cc cc cc cc 48 89 5c 24"));
 
 
 typedef void(__fastcall* f_doglow)(__int64 a1);
 static f_doglow ogdoglow = nullptr;
-static f_doglow doglowtarget = reinterpret_cast<f_doglow>(MEM::GetClientBase() + 0xD56C20); // actual doglow
+static f_doglow doglowtarget = reinterpret_cast<f_doglow>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "41 57 48 83 ec ? 83 79 ? ? 4c 8b f9")); // actual doglow
 
 void __fastcall hkDoGlow(__int64 a1) {
 
-	
-	if (!Config.esp.DrawFov)
+	if (!Config.esp.GlowEsp)
 		return;
 
-	std::cout << std::hex << a1 << std::endl;
 
 	std::vector<uint64_t> Controllers;
+	std::vector<uint32_t> teamnums;
 
 	PlayerData localdata;
 	Helper::get_player_data(Helper::get_local_player(), &localdata);
@@ -546,27 +565,67 @@ void __fastcall hkDoGlow(__int64 a1) {
 
 		std::string EntName = Helper::get_schema_name(entity);
 
-		if (EntName == "CCitadelPlayerController" && !*(bool*)(entity + CBasePlayerController::m_bIsLocalPlayerController))
-			Controllers.push_back(entity);
+		if (EntName == "CCitadelPlayerController" && !*(bool*)(entity + CBasePlayerController::m_bIsLocalPlayerController)) {
+			PlayerData entdata;
+			Helper::get_player_data(entity, &entdata);
+
+			if (entdata.TeamNum != localdata.TeamNum) {
+				teamnums.push_back(entdata.TeamNum);
+				Controllers.push_back(entity);
+			}
+			else if (Config.esp.GlowTeam) {
+				teamnums.push_back(entdata.TeamNum);
+				Controllers.push_back(entity);
+			}
+		}
 	}
 
 	for (int i = 0; i < Controllers.size(); i++) {
 
 		uint64_t pawn = Helper::GetPawn(Controllers[i]);
 
-		uint64_t glowProperty = pawn + 0x750; 
+		if (!pawn)
+			continue;
 
+		uint64_t glowProperty = pawn + C_BaseModelEntity::m_Glow; 
 
 
 		uint64_t glowhelper = *(uint64_t*)(glowProperty + 0x28);
 
 		if (!glowhelper) {
-			uint64_t NewGlowHelper = iSceneSystem002->CreateCHlowHelperSceneObject((uint64_t)pawn);
-			*(uint64_t*)(glowProperty + 0x28) = NewGlowHelper;
+			if (teamnums[i] == localdata.TeamNum) {
+				if (!(Config.colors.GlowTeamCol.w == 0.f)) {
+					std::cout << "CALLED TEAM" << std::endl;
+					*(uint64_t*)(glowProperty + 0x28) = iSceneSystem002->CreateCHlowHelperSceneObject((uint64_t)pawn);
+				}
+			}
+			else {
+				if (!(Config.colors.GlowCol.w == 0.f)) {
+					std::cout << "CALLED ENEMY" << std::endl;
+					*(uint64_t*)(glowProperty + 0x28) = iSceneSystem002->CreateCHlowHelperSceneObject((uint64_t)pawn);
+				}
+			}
 		}
 
-		*(uint32_t*)(glowProperty + 0x50) = 1;
-		*(uint32_t*)(glowProperty + 0x30) = 3;
+		*(uint32_t*)(glowProperty + CGlowProperty::m_bGlowing) = 1; 
+		*(uint32_t*)(glowProperty + CGlowProperty::m_iGlowType) = 3;
+
+
+		if (teamnums[i] != localdata.TeamNum) {
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride) = Config.colors.GlowCol.x * 255;     // Red
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 1) = Config.colors.GlowCol.y * 255; // Green
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 2) = Config.colors.GlowCol.z * 255; // Blue
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 3) = Config.colors.GlowCol.w * 255; // Alpha
+		}
+		else {
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride) = Config.colors.GlowTeamCol.x * 255;     // Red
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 1) = Config.colors.GlowTeamCol.y * 255; // Green
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 2) = Config.colors.GlowTeamCol.z * 255; // Blue
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 3) = Config.colors.GlowTeamCol.w * 255; // Alpha
+		}
+
+
+		
 
 		fnAddGlowObject(a1, glowProperty);
 
@@ -645,6 +704,12 @@ void CreateHooks() {
 	MH_CreateHook((LPVOID)MouseInputEnabledTarget, &hkMouseInputEnabled, reinterpret_cast<LPVOID*>(&ogMouseInputEnabled));
 	MH_EnableHook((LPVOID)MouseInputEnabledTarget);
 	std::cout << "[+] MouseInputEnabled Hook Initialized!" << std::endl;
+
+	//MH_CreateHook((LPVOID)addglowhelpertarget, &hkaddglowhelperobj, reinterpret_cast<LPVOID*>(&ogaddglowhelper));
+	//MH_EnableHook((LPVOID)addglowhelpertarget);
+	//std::cout << "[+] AddGlowHelper Hook Initialized!" << std::endl;
+
+
 
 	//MH_CreateHook((LPVOID)applyglowtarget, &hkApplyGlow, reinterpret_cast<LPVOID*>(&ogApplyGlow));
 	//MH_EnableHook((LPVOID)applyglowtarget);

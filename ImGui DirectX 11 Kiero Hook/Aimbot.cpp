@@ -134,7 +134,7 @@ bool Aimbot::IsLegitBotting() {
 	return aim_LegitBotting;
 }
 
-uint64_t Aimbot::LegitGetAimbotTarget(uint32_t group) {
+bool Aimbot::LegitGetAimbotTarget(uint32_t group, int &closestbone, uint64_t& aimtarget) {
 
 	float ClosestDistance = 99999.f;
 	int ClosestIndex = 999;
@@ -145,14 +145,96 @@ uint64_t Aimbot::LegitGetAimbotTarget(uint32_t group) {
 
 	for (int i = 0; i < aimbotglobs.entlist.active->size(); i++) {
 
+		std::string entClass = Helper::get_schema_name((*aimbotglobs.entlist.active)[i]);
 
+		if (entClass == "CCitadelPlayerController" && group == AimGroup_Player) {
+
+			PlayerData TargetPlayerData;
+			Helper::get_player_data((*aimbotglobs.entlist.active)[i], &TargetPlayerData);
+
+
+			if (!TargetPlayerData.isalive) {
+				continue;
+			}
+
+			if (TargetPlayerData.TeamNum == LocalPlayerData.TeamNum) {
+				continue;
+			}
+
+			if (IsPlayerVisible((*aimbotglobs.entlist.active)[i]) == false) {
+				continue;
+			}
+
+			if (Config.legitbot.hitboxes.size() < 1) {
+				Config.legitbot.hitboxes.push_back("head");
+				Config.legitbot.hitboxes.push_back("neck_0");
+				Config.legitbot.hitboxes.push_back("pelvis");
+			}
+
+			float distance = 0.f;
+			int hitboxessize = Config.legitbot.hitboxes.size();
+
+			if (hitboxessize > 0) {
+
+				vec3 TargetPos = { 0, 0, 0 };
+				TargetPos = Helper::GetBonePosition((*aimbotglobs.entlist.active)[i], Config.legitbot.hitboxes[0].c_str());
+				if (TargetPos.x == 0 && TargetPos.y == 0 && TargetPos.z == 0) {
+					continue;
+				}
+				distance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetPos);
+			}
+			if (!(distance > 0.f || distance > 3000.f)) {
+				continue;
+			}
+
+			for (int hitboxindex = 0; hitboxindex < hitboxessize; hitboxindex++) {
+
+				vec3 TargetPos = { 0, 0, 0 };
+				TargetPos = Helper::GetBonePosition((*aimbotglobs.entlist.active)[i], Config.legitbot.hitboxes[hitboxindex].c_str());
+				if (TargetPos.x == 0 && TargetPos.y == 0 && TargetPos.z == 0) {
+					continue;
+				}
+
+				vec2 AimAngles = GetAimAngles(TargetPos);
+				vec2 angle_difference = AimAngles - *ViewAngles;
+				angle_difference = angle_difference.clamp();
+
+				float FOV = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
+
+				if (FOV > Config.legitbot.fov) {
+					continue; // Skip targets outside of the FOV
+				}
+
+				if (FOV < LowestFov) {
+					LowestFov = FOV; // Update the lowest FOV
+					lowestfovindex = i; // Update the index of the target with the lowest FOV
+					closestbone = hitboxindex;
+				}
+
+			}
+
+
+
+
+		}
 
 
 
 
 	}
 
-	return 0;
+	if (group == AimGroup_Player) {
+
+			if (lowestfovindex == 999) {
+				CurrentPlayerTarget = 0;
+				return false;
+			}
+			CurrentPlayerTarget = (*aimbotglobs.entlist.active)[lowestfovindex];
+			aimtarget = (*aimbotglobs.entlist.active)[lowestfovindex];
+			return true;
+	}
+
+	return false;
 }
 
 uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
@@ -673,6 +755,42 @@ void Aimbot::RageAimAtMinions(uintptr_t entity) {
 
 }
 
+void Aimbot::LegitAimAt(uint64_t entity, std::string bone) {
+
+
+	float BulletSpeed = globals::instance().BulletVelocity;
+	vec3 vec_target = Helper::GetBonePosition(entity, bone.c_str());
+	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
+	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
+	vec3 vec_velocity = *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
+
+
+	vec3 predictedposition = Aimbot::PredictPosition(vec_target, vec_velocity, BulletSpeed);
+	vec2 target_angles = Aimbot::GetAimAngles(predictedposition);
+
+	aim_LegitBotting = true;
+	aim_Aimbotting = true;
+
+	float delta_x = target_angles.x - ViewAngles->x;
+	float delta_y = target_angles.y - ViewAngles->y;
+	vec2 delta = { delta_x, delta_y };
+
+	vec2 final_delta = delta.clamp();
+
+	if (Config.legitbot.pitchcorrection) {
+		ViewAngles->x += (Config.legitbot.pitchcorrectammount) * (final_delta.x / Config.legitbot.smooth);
+	}
+	if (Config.legitbot.yawcorrection) {
+		ViewAngles->y += (Config.legitbot.yawcorrectammount) * (final_delta.y / Config.legitbot.smooth);
+	}
+
+	return;
+
+
+
+
+}
+
 
 
 float GetAngleDifference(float angle1, float angle2) {
@@ -709,7 +827,8 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 		return;
 	}
 
-	if (true) { // ragebot
+
+	if (Config.aimbot.bRageBotMasterSwitch) { // ragebot
 
 		uint64_t aimtarget = Aimbot::RageGetAimbotTarget(AimGroup_Player);
 		uint64_t xp_target = 0; // make sure unassigned is always zero 
@@ -763,9 +882,70 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 
 		return;
 	}
+	else {
+
+		if (!Config.legitbot.legitbotmasterswitch)
+			return;
+
+		int closestbone = 0;
+		uint64_t aimtarget = 0;
+
+		bool result = Aimbot::LegitGetAimbotTarget(AimGroup_Player, closestbone, aimtarget);
+
+		uint64_t xp_target = 0; // make sure unassigned is always zero 
+		uint64_t minion_target = 0;
+
+		static float timeaquiredtarget = 0.0f;
+		static bool settime = false;
+
+		if (aimtarget && !settime) {
+			timeaquiredtarget = aimbotglobs.Globals->flAbsCurTime;
+			settime = true;
+		}
+		else {
+			if (!aimtarget) {
+				timeaquiredtarget = 0.0f;
+				settime = false;
+			}
+		}
+
+		if (Config.legitbot.aimdelayinms != 0 && aimtarget) {
+
+			float delay = (float)(Config.legitbot.aimdelayinms / 1000.0f);
+			
+			if (!(aimbotglobs.Globals->flAbsCurTime > timeaquiredtarget + delay)) {
+				std::cout << "NO AIM" << "\n";
+				return;
+			}
+		}
+
+
+
+		if (Config.legitbot.LegitAimKey.keybindmode == 0) {
+			if (Config.legitbot.bLegitBot && aimtarget) {
+				LegitAimAt(aimtarget, Config.legitbot.hitboxes[closestbone]);
+				return;
+			}
+		}
+		else {
+			Helper::KeyBindHandler(Config.legitbot.LegitAimKey);
+			if (Config.legitbot.bLegitBot && aimtarget) {
+				LegitAimAt(aimtarget, Config.legitbot.hitboxes[closestbone]);
+				return;
+			}
+		}
+
+		return;
+
+
+
+	}
 
 
 
 
+
+
+	return;
 
 }

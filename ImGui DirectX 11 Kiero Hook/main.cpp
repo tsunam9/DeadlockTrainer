@@ -25,6 +25,8 @@ ImFont* Franklin = nullptr;
 ImFont* segoesc = nullptr;
 ImFont* awesome = nullptr;
 
+ImFont* minitext = nullptr;
+
 
 
 void InitImGui()
@@ -74,6 +76,8 @@ void InitImGui()
 	ImGuiStyle& style = ImGui::GetStyle(); // Get the global ImGui style
 	// Change default style variables
 	style.FrameRounding = 6.f;
+
+	minitext = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ARIAL.ttf", 10.f, NULL, io.Fonts->GetGlyphRangesDefault());
 
 
 

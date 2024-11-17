@@ -312,6 +312,16 @@ void Menu::DrawEspTab() {
 			ImGui::ColorEdit4("Local Chams Color", (float*)&Config.colors.LocalChamsCol);
 		}
 	}
+	ImGui::Checkbox("Glow", &Config.esp.GlowEsp);
+	if (Config.esp.GlowEsp) {
+		ImGui::SameLine();
+		ImGui::ColorEdit4("Glow Color", (float*)&Config.colors.GlowCol);
+		ImGui::Checkbox("Team Glow", &Config.esp.GlowTeam);
+		if (Config.esp.GlowTeam) {
+					ImGui::SameLine();
+		ImGui::ColorEdit4("Team Glow Color", (float*)&Config.colors.GlowTeamCol);
+		}
+	}
 
 	ImVec2 childSize = ImGui::GetWindowSize();
 	ImGui::SetCursorPosY(childSize.y / 2);
@@ -534,37 +544,71 @@ void Menu::DrawRageBotTab() {
 	ImGui::BeginChild("RageBot General", ImVec2(windowWidth * 0.5, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 	ImGui::Text("RageBot");
 
-	ImGui::Checkbox("Enabled", &Config.aimbot.bAimbot);
-	ImGui::SameLine();
-	Helper::HotKey(Config.aimbot.AimKey);
-	ImGui::Checkbox("Silent Aim", &Config.aimbot.silentaim);
-	ImGui::Checkbox("Movement Fix", &Config.aimbot.MovementFix);
-	ImGui::Checkbox("Magic Bullet", &Config.aimbot.magicbullet);
-	ImGui::SameLine();
-	Helper::HotKey(Config.aimbot.magicbulletkey);
+	ImGui::Checkbox("RageBot Master Switch", &Config.aimbot.bRageBotMasterSwitch);
 
-	static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
-	//static int currentItem = 0; // Index of the currently selected item
-	ImGui::Combo("Target ", &Config.aimbot.targetSelectionMode, items, IM_ARRAYSIZE(items));
-	ImGui::Text("Selected: %s", items[Config.aimbot.targetSelectionMode]);
-	ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f, "%.1f");
-	ImGui::SliderFloat("FOV", &Config.aimbot.fov, 0.0f, 180.0f, "%.1f");
-	ImGui::Checkbox("Aim at Souls", &Config.aimbot.AimXp);
-	ImGui::SameLine();
-	Helper::HotKey(Config.aimbot.AimKeyXp);
-	ImGui::Checkbox("Aim at Minions", &Config.aimbot.AimMinions);
-	ImGui::SameLine();
-	Helper::HotKey(Config.aimbot.AimKeyMinions);
+	if (Config.aimbot.bRageBotMasterSwitch) {
+		ImGui::Checkbox("Enabled", &Config.aimbot.bAimbot);
+		ImGui::SameLine();
+		Helper::HotKey(Config.aimbot.AimKey);
+		ImGui::Checkbox("Silent Aim", &Config.aimbot.silentaim);
+		ImGui::Checkbox("Movement Fix", &Config.aimbot.MovementFix);
+		ImGui::Checkbox("Magic Bullet", &Config.aimbot.magicbullet);
+		ImGui::SameLine();
+		Helper::HotKey(Config.aimbot.magicbulletkey);
+
+		static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
+		//static int currentItem = 0; // Index of the currently selected item
+		ImGui::Combo("Target ", &Config.aimbot.targetSelectionMode, items, IM_ARRAYSIZE(items));
+		ImGui::Text("Selected: %s", items[Config.aimbot.targetSelectionMode]);
+		ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f, "%.1f");
+		ImGui::SliderFloat("FOV", &Config.aimbot.fov, 0.0f, 180.0f, "%.1f");
+		ImGui::Checkbox("Aim at Souls", &Config.aimbot.AimXp);
+		ImGui::SameLine();
+		Helper::HotKey(Config.aimbot.AimKeyXp);
+		ImGui::Checkbox("Aim at Minions", &Config.aimbot.AimMinions);
+		ImGui::SameLine();
+		Helper::HotKey(Config.aimbot.AimKeyMinions);
+	}
+
 
 	ImGui::EndChild();
 
-	ImGui::SameLine();
-
-	DrawAntiAimTab();
+	if (Config.aimbot.bRageBotMasterSwitch) {
+		ImGui::SameLine();
+		DrawAntiAimTab();
+	}
 
 }
 
 void Menu::DrawLegitBotTab() {
+
+		ImGui::Checkbox("LegitBot", &Config.legitbot.legitbotmasterswitch);
+
+		if (Config.legitbot.legitbotmasterswitch) {
+			ImGui::Checkbox("Enabled", &Config.legitbot.bLegitBot);
+			ImGui::SameLine();
+			Helper::HotKey(Config.legitbot.LegitAimKey);
+
+			ImGui::Checkbox("Pitch Correction", &Config.legitbot.pitchcorrection);
+			if (Config.legitbot.pitchcorrection) {
+				ImGui::SameLine();
+
+				ImGui::SliderFloat("##PitchAmmount", &Config.legitbot.pitchcorrectammount, 0.0f, 1.0f, "%.2f");
+
+
+			}
+			ImGui::Checkbox("Yaw Correction", &Config.legitbot.yawcorrection);
+			if (Config.legitbot.yawcorrection) {
+				ImGui::SameLine();
+				ImGui::SliderFloat("##YawAmmount", &Config.legitbot.yawcorrectammount, 0.0f, 1.0f, "%.2f");
+			}
+
+			ImGui::SliderInt("Aim Delay(MS)", &Config.legitbot.aimdelayinms, 0, 1000);
+
+			ImGui::SliderFloat("FOV", &Config.legitbot.fov, 0.0f, 30.0f);
+			ImGui::SliderFloat("Smooth", &Config.legitbot.smooth, 1.0f, 200.0f);
+
+		}
 	
 
 }
@@ -591,6 +635,13 @@ void Menu::DrawConfigTab(FILE* fp) {
 		Helper::HotKey(Config.misc.SpeedBoostKey);
 	}
 	ImGui::SliderFloat("Temp Float", & Config.tempvalues.inputfloat, 0.f, 3000.f);
+	ImGui::InputInt("Temp Int", &Config.tempvalues.inputint);
+
+	ImGui::SliderFloat("1 Float", &Config.tempvalues.tempx, -360.f, 360.f);
+	ImGui::SliderFloat("2 Float", &Config.tempvalues.tempy, -360.f, 360.f);
+	ImGui::SliderFloat("3 Float", &Config.tempvalues.tempz, -360.f, 360.f);
+
+	
 
 	ImGui::EndChild();
 

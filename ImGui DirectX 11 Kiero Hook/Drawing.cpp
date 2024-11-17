@@ -13,9 +13,9 @@ void Drawing::DrawBox(float x, float y, float width, float height, ImU32 color) 
 		color);
 }
 
-void Drawing::DrawLine(float x1, float y1, float x2, float y2, ImU32 color) {
+void Drawing::DrawLine(float x1, float y1, float x2, float y2, ImU32 color, float thickness) {
 	ImDrawList* draw_list = ImGui::GetBackgroundDrawList(); // Use the background draw list for ESP
-	draw_list->AddLine(ImVec2(x1, y1), ImVec2(x2, y2), color, 1.0f);
+	draw_list->AddLine(ImVec2(x1, y1), ImVec2(x2, y2), color, thickness);
 }
 
 void Drawing::DrawCircle(float x, float y, float radius, ImU32 color) {

@@ -21,7 +21,9 @@ public:
 	static bool IsLegitBotting();
 	static void AimAbility(uintptr_t entity, int aimpos, uintptr_t ability, float projectilespeed, bool projectile);
 
-	static uint64_t LegitGetAimbotTarget(uint32_t group);
+	static bool LegitGetAimbotTarget(uint32_t group, int& closestbone, uint64_t& aimtarget);
+	static void LegitAimAt(uint64_t entity, std::string bone);
+
 
 
 };

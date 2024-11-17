@@ -139,7 +139,6 @@ void ShowKeyBindStatus() {
 		KeyBinds.push_back(&Config.aimbot.AimKeyMinions);
 		KeyBinds.push_back(&Config.aimbot.magicbulletkey);
 		KeyBinds.push_back(&Config.misc.SpeedBoostKey);
-		std::cout << "INITIALIZED" << std::endl;
 		init = true;
 	}
 
@@ -350,7 +349,14 @@ void DrawFov() {
 			return;
 
 		float pFov = *(float*)(CameraManager + 0x50);
-		float radius = tanf(Helper::DegreesToRadians(Config.aimbot.fov) / 2) / tanf(Helper::DegreesToRadians(pFov) / 2) * (resolution.x / 2);
+
+		float radius = 0;
+
+		if (Config.legitbot.legitbotmasterswitch) {
+			radius = tanf(Helper::DegreesToRadians(Config.legitbot.fov) / 2) / tanf(Helper::DegreesToRadians(pFov) / 2) * (resolution.x / 2);
+		}else if (Config.aimbot.bRageBotMasterSwitch) {
+			radius = tanf(Helper::DegreesToRadians(Config.aimbot.fov) / 2) / tanf(Helper::DegreesToRadians(pFov) / 2) * (resolution.x / 2);
+		}
 
 		draw.DrawCircle(resolution.x / 2, resolution.y / 2, radius, ImColor(Config.colors.drawfovcol));
 }
@@ -564,20 +570,27 @@ void Esp::DrawEsp(uintptr_t Entity, PlayerData* EntInfo)
 
 
 	vec2 ScreenFeet;
-	bool w2sresult = Helper::WorldToScreen(EntInfo->m_vecOrigin, ScreenFeet);
+	
+	vec3 feetpos = EntInfo->m_vecOrigin;
 
 	vec2 ScreenHead;
 	uint64_t PawnHandle = *(uint64_t*)(Entity + CCitadelPlayerController::m_hHeroPawn);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
 	uint64_t boneindex = Helper::get_bone_index(Pawn, "head");
 	vec3 HeadPos = Helper::GetBoneVectorFromIndex(Pawn, boneindex);  // No re-declaration of TargetPos here
+
+	bool w2sresult = Helper::WorldToScreen(feetpos, ScreenFeet);
 	Helper::WorldToScreen(HeadPos, ScreenHead);
 
-	int height = ScreenFeet.y - ScreenHead.y;
+	int height = (ScreenFeet.y + 5) - ScreenHead.y;
+	int boxheight = height * 1.2;
 	int width = height / 1.55;
 	vec2 BoxHead;
 	BoxHead.x = ScreenHead.x - width / 2;
 	BoxHead.y = ScreenHead.y - height / 5;
+
+
+
 	vec2 resolution = Helper::GetResolution();
 
 	if (Config.esp.DrawAimbotTarget && Aimbot::GetCurrentAimbotTarget() == Entity) {
@@ -627,9 +640,40 @@ void Esp::DrawEsp(uintptr_t Entity, PlayerData* EntInfo)
 			draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2, ImColor(Config.colors.namecoloresp), Helper::GetHeroNameByID(EntInfo->HeroID).c_str());
 		}
 		if (Config.esp.HealthBar) {
-			float missinghealth = 1.0f - ((float)EntInfo->Health/ (float)EntInfo->MaxHealth);
-			draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 2, height * 1.2, IM_COL32(0, 255, 0, 255));
-			draw.DrawFilledBox(BoxHead.x - 6, BoxHead.y, 2, height * 1.2 * missinghealth, IM_COL32(255, 0, 0, 255));
+			float health_ratio = (float)EntInfo->Health / (float)EntInfo->MaxHealth;
+			float scaled_height = height * 1.2f;
+
+			float bar_x = BoxHead.x - 6;
+			float top_y = BoxHead.y;
+			float bottom_y = top_y + scaled_height;
+			float health_y = bottom_y - (scaled_height * health_ratio);
+			draw.DrawLine(
+				bar_x, top_y,
+				bar_x, bottom_y,
+				IM_COL32(0, 0, 0, 85),
+				3.0f
+			);
+			draw.DrawLine(
+				bar_x, bottom_y,
+				bar_x, health_y,
+				IM_COL32(0, 255, 0, 255),
+				3.0f
+			);
+
+			auto io = ImGui::GetIO();
+			ImFontAtlas* fontAtlas = io.Fonts;      // Get the font atlas
+			ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[3]);
+
+			if (health_ratio < 1.0f) {
+				draw.DrawTextA(
+					bar_x,
+					health_y - 10,
+					IM_COL32(255, 255, 255, 255),
+					std::to_string((int)(health_ratio * 100)).c_str()
+				);
+			}
+
+			ImGui::PopFont();
 		}
 		if (Config.esp.boneEsp) {
 			DrawBoneEsp(Entity);

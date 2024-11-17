@@ -144,7 +144,7 @@ uint64_t Helper::FindFirstEntityWithName(std::string name) {
 
 		std::string EntName = Helper::get_schema_name(entity);
 
-		auto found = EntName.find("Projectile");
+		auto found = EntName.find(name);
 		if (found != std::string::npos) {
 			return entity;
 		}
@@ -819,6 +819,61 @@ bool Helper::IsAbilityCasting(uintptr_t ability) {
 
 float Helper::getBulletSpeed(uint64_t BulletHandler) {
 	return getBulletSpeedFunction(BulletHandler, BulletHandler + 16);
+}
+
+void Helper::DrawMultiSelectDropdown(const char* label, const char* previewText, const char** items, bool* selected, int itemCount) {
+	ImGuiComboFlags flags = ImGuiComboFlags_NoArrowButton;
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4, 3));
+
+	// Calculate preview text based on selected items
+	char preview[128] = "";
+	int selectedCount = 0;
+	for (int i = 0; i < itemCount; i++) {
+		if (selected[i]) {
+			if (selectedCount > 0) strcat_s(preview, ", ");
+			strcat_s(preview, items[i]);
+			selectedCount++;
+		}
+	}
+	if (selectedCount == 0) strcpy_s(preview, previewText);
+
+	bool isOpen = ImGui::BeginCombo(label, preview, flags);
+	ImGui::PopStyleVar();
+
+	if (isOpen) {
+		// Add "Select All" option
+		bool allSelected = true;
+		for (int i = 0; i < itemCount; i++) {
+			if (!selected[i]) {
+				allSelected = false;
+				break;
+			}
+		}
+
+		if (ImGui::Checkbox("Select All", &allSelected)) {
+			for (int i = 0; i < itemCount; i++) {
+				selected[i] = allSelected;
+			}
+		}
+
+		ImGui::Separator();
+
+		// Individual items
+		for (int i = 0; i < itemCount; i++) {
+			ImGui::PushID(i);
+			if (ImGui::Checkbox(items[i], &selected[i])) {
+				// Item was toggled, but we don't close the combo
+			}
+			ImGui::PopID();
+		}
+
+		// Keep focus to prevent closing when clicking items
+		if (ImGui::IsWindowFocused()) {
+			ImGui::SetNextWindowFocus();
+		}
+
+		ImGui::EndCombo();
+	}
 }
 
 

@@ -36,9 +36,6 @@
     <Filter Include="Source Files\Features">
       <UniqueIdentifier>{5bbbdbf2-334c-47f3-bf2d-14a2788f03ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Features\Misc">
-      <UniqueIdentifier>{ec49920a-12af-465f-bc20-990de62346da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Features\ESP">
       <UniqueIdentifier>{6f824638-cb05-4b44-90d4-9dbfa97bccd3}</UniqueIdentifier>
     </Filter>
@@ -50,9 +47,6 @@
     </Filter>
     <Filter Include="Source Files\Hooks">
       <UniqueIdentifier>{3712a731-ea13-462f-a753-87cd3b73bdc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Features\AntiAim">
-      <UniqueIdentifier>{db13c58b-dcea-4ea4-9963-85f28abbcee3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\SigScanner">
       <UniqueIdentifier>{a052dac5-42c7-494d-b7b5-599be03a3c09}</UniqueIdentifier>
@@ -127,6 +121,12 @@
     <Filter Include="Source Files\Features\Heros\Yamato">
       <UniqueIdentifier>{78a8e2c5-82f0-4a12-b63c-9f8c5bd9d29b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Globals\Misc">
+      <UniqueIdentifier>{ec49920a-12af-465f-bc20-990de62346da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Chams\AntiAim">
+      <UniqueIdentifier>{db13c58b-dcea-4ea4-9963-85f28abbcee3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kiero\minhook\src\buffer.c">
@@ -184,7 +184,7 @@
       <Filter>Source Files\Drawing</Filter>
     </ClCompile>
     <ClCompile Include="Misc.cpp">
-      <Filter>Source Files\Features\Misc</Filter>
+      <Filter>Source Files\Globals\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Config.cpp">
       <Filter>Source Files\Config</Filter>
@@ -193,7 +193,7 @@
       <Filter>Source Files\Hooks</Filter>
     </ClCompile>
     <ClCompile Include="AntiAim.cpp">
-      <Filter>Source Files\Features\AntiAim</Filter>
+      <Filter>Source Files\Features\Chams\AntiAim</Filter>
     </ClCompile>
     <ClCompile Include="mem.cpp">
       <Filter>Source Files\SigScanner</Filter>
@@ -350,7 +350,7 @@
       <Filter>Source Files\Logic</Filter>
     </ClInclude>
     <ClInclude Include="Misc.h">
-      <Filter>Source Files\Features\Misc</Filter>
+      <Filter>Source Files\Globals\Misc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Cs2Dumper\output\buttons.hpp">
       <Filter>Dump</Filter>
@@ -365,7 +365,7 @@
       <Filter>Source Files\Hooks</Filter>
     </ClInclude>
     <ClInclude Include="AntiAim.h">
-      <Filter>Source Files\Features\AntiAim</Filter>
+      <Filter>Source Files\Features\Chams\AntiAim</Filter>
     </ClInclude>
     <ClInclude Include="mem.h">
       <Filter>Source Files\SigScanner</Filter>

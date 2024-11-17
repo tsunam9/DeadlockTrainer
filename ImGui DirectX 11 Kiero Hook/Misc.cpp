@@ -96,7 +96,18 @@ Drawing testdraw;
 
 void testbed() {
 
-	std::cout << std::hex << iSceneSystem002 << std::endl;
+	if (!(iEngine->IsInGame()))
+		return;
+
+	auto weapon = Helper::get_localplr_weapon();
+
+	if (!weapon)
+		return;
+
+	std::cout << std::hex << weapon << std::endl;
+
+	
+
 
 }
 

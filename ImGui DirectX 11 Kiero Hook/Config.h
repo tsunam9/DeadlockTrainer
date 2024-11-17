@@ -46,6 +46,7 @@ public:
 
     // Nested structure for Aimbot settings
     struct AimbotSettings {
+        bool bRageBotMasterSwitch = false;
         bool bAimbot = false;
         KeyBind AimKey;
         KeyBind AimKeyXp;
@@ -61,9 +62,9 @@ public:
         KeyBind magicbulletkey;
 
         AimbotSettings() :
-            AimKey(&bAimbot, std::string("Aimbot")),
-            AimKeyXp(&AimXp, std::string("Aimbot XP")),
-            AimKeyMinions(&AimMinions, std::string("Aimbot Minions")),
+            AimKey(&bAimbot, std::string("RageBot")),
+            AimKeyXp(&AimXp, std::string("Aim Xp")),
+            AimKeyMinions(&AimMinions, std::string("Aim Minions")),
             magicbulletkey(&magicbullet, std::string("Magic Bullet"))
         {}
 
@@ -72,6 +73,32 @@ public:
     } aimbot;
 
     struct LegitBotSettings {
+
+        bool legitbotmasterswitch = false;
+        bool bLegitBot = false;
+        KeyBind LegitAimKey;
+        KeyBind LegitAimKeyXp;
+        KeyBind LegitAimKeyMinions;
+		bool LegitAimXp = false;
+        bool LegitAimMinions = false;
+        float fov = 0.0f;
+        float smooth = 1.0f;
+        int aimdelayinms = 0;
+        std::vector<std::string> hitboxes;
+
+        bool pitchcorrection = false;
+        float pitchcorrectammount = 1.0f;
+        bool yawcorrection = false;
+        float yawcorrectammount = 1.0f;
+
+        const char* HitboxNames[3] = { "Head", "Neck", "Pelvis" };
+        bool selectedHitboxes[3] = { false, false, false }; // Head, Neck_0, Pelvis;
+
+        LegitBotSettings() :
+            LegitAimKey(&bLegitBot, std::string("LegitBot")),
+            LegitAimKeyXp(&LegitAimXp, std::string("Aim XP")),
+            LegitAimKeyMinions(&LegitAimMinions, std::string("Aim Minions"))
+        {}
 
     }legitbot;
 
@@ -98,6 +125,8 @@ public:
         bool LocalChams = false;
         bool ModWorld = false;
         bool ModLights = false;
+        bool GlowEsp = false;
+        bool GlowTeam = false;
     } esp;
 
     struct MiscSettings {
@@ -216,6 +245,8 @@ public:
         ImVec4 LocalChamsCol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
         ImVec4 WorldModulationColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
         ImVec4 LightModColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 GlowCol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 GlowTeamCol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
         
 
 
@@ -227,6 +258,11 @@ public:
         float slider2 = 0.0f;
         float inputfloat = 0.0f;
         int inputint = 0x20;
+
+        float tempx;
+        float tempy; 
+        float tempz;
+
     }tempvalues;
 
     static void LoadConfig(const std::string& filename);

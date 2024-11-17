@@ -41,12 +41,25 @@ static auto oFindKeyVar = reinterpret_cast<fnFindKeyVar>(particlesdllbase + MEM:
 using fnFindPerameter = uint64_t(_fastcall*)(__int64 materialHandle, const char* parameterName);
 static auto Findparam = reinterpret_cast<fnFindPerameter>(asdmatsystemasbase + 0xCB70);
 
+#include <mutex>
 
-void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn) {
+static std::mutex printMutex; // Declare a mutex
+
+static void printBinary(uint64_t num) {
+	std::lock_guard<std::mutex> lock(printMutex); // Acquire the mutex lock
+
+	// Create a mask to check each bit
+	for (int i = 63; i >= 0; --i) {
+		// Print the bit at the current position
+		std::cout << ((num >> i) & 1);
+	}
+	std::cout << std::endl; // New line after the binary output
+}
+
+void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bool ignorez) {
 
 	if (!matdata)
 		return;
-
 
 	PlayerData targetchamsdata;
 	PlayerData LocalPlayerData;
@@ -57,11 +70,18 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn) {
 	static auto mymatsystem = GetInterface<IMaterialSystem2>("materialsystem2.dll", "VMaterialSystem2_001");
 
 	CMaterial2*** mymat2 = new CMaterial2**;
+	CMaterial2*** ignorezmat = new CMaterial2**;
 	const char* str = "materials/dev/primary_white.vmat";
-	auto test = (__int64)(str);
-	CMaterial2*** mymaterial = drawfindmattarget((__int64)mymatsystem, (__int64*)mymat2, test);
+	const char* str2 = "materials/dev/outlineproperty.vmat";
+	CMaterial2*** mymaterial = drawfindmattarget((__int64)mymatsystem, (__int64*)mymat2, (__int64)str);
+	CMaterial2*** ignorematerial = drawfindmattarget((__int64)mymatsystem, (__int64*)ignorezmat, (__int64)str2);
+
 
 	std::string matname = matdata->pMaterial->GetName();
+
+	if (!islocal) {
+		//std::cout << matname << "\n";
+	}
 
 	if (matname.find("outline") != std::string::npos) {
 		return;
@@ -79,7 +99,7 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn) {
 	}
 
 	if (targetchamsdata.TeamNum == LocalPlayerData.TeamNum)
-		//return; SETBACK
+		return;
 
 	matdata->colValue.r = Config.colors.ChamsCol.x * 255;
 	matdata->colValue.g = Config.colors.ChamsCol.y * 255;
@@ -87,24 +107,26 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn) {
 	matdata->colValue.a = Config.colors.ChamsCol.w * 255;
 
 	if (Config.esp.ModelChams) {
-		matdata->pMaterial = **mymaterial;
+		if (ignorez) {
+			matdata->pMaterial = **ignorezmat;
+		}
+		else {
+			matdata->pMaterial = **mymaterial;
+		}
 	}
 
+	if (!islocal) {
+		uint64_t output;
+		if (matdata->pMaterial->FindParamById(Config.tempvalues.inputint, &output))
+			std::cout << output << std::endl;
+	}
 
-
-
-
-
-
-	/*	auto ignorez = matdata->pMaterial->FindParam("F_DISABLE_Z_WRITE");
-	if (ignorez) {
-		std::cout << ignorez << std::endl;
-	}*/
 
 
 	LABEL_1:
 
 	delete mymat2;
+	delete ignorezmat;
 	return;
 
 }
