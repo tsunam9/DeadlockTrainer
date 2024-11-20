@@ -52,21 +52,36 @@ static void JsonToBind(const json& j, KeyBind& bind) {
     inputFile >> j;
     inputFile.close();
 
-    Config.aimbot.bAimbot = j["aimbot"]["enabled"].get<bool>();
 
+    Config.aimbot.bRageBotMasterSwitch = j["aimbot"]["masterswitch"].get<bool>();
+    Config.aimbot.bAimbot = j["aimbot"]["enabled"].get<bool>();
    JsonToBind(j["aimbot"]["AimKey"], Config.aimbot.AimKey);
    JsonToBind(j["aimbot"]["AimKeyMinions"],Config.aimbot.AimKeyMinions);
    JsonToBind(j["aimbot"]["AimKeyXp"],Config.aimbot.AimKeyXp);
-
     Config.aimbot.fov = j["aimbot"]["fov"].get<float>();
     Config.aimbot.magicbullet = j["aimbot"]["magicbullet"].get<bool>();
-
     JsonToBind(j["aimbot"]["magicbulletkey"], Config.aimbot.magicbulletkey);
-
     Config.aimbot.MaxDistance = j["aimbot"]["maxdistance"].get<float>();
     Config.aimbot.silentaim = j["aimbot"]["silentaim"].get<bool>();
     Config.aimbot.targetSelectionMode = j["aimbot"]["targetselectionmode"].get<int>();
     Config.aimbot.MovementFix = j["aimbot"]["MovementFix"].get<bool>();
+
+    Config.legitbot.legitbotmasterswitch = j["legitbot"]["masterswitch"].get<bool>();
+    Config.legitbot.bLegitBot = j["legitbot"]["enabled"].get<bool>();
+    JsonToBind(j["legitbot"]["LegitAimKey"], Config.legitbot.LegitAimKey);
+    JsonToBind(j["legitbot"]["LegitAimKeyMinions"], Config.legitbot.LegitAimKeyMinions);
+    JsonToBind(j["legitbot"]["LegitAimKeyXp"], Config.legitbot.LegitAimKeyXp);
+    Config.legitbot.LegitAimXp = j["legitbot"]["aimxp"].get<bool>();
+    Config.legitbot.LegitAimMinions = j["legitbot"]["aimminions"].get<bool>();
+    Config.legitbot.fov = j["legitbot"]["fov"].get<float>();
+    Config.legitbot.smooth = j["legitbot"]["smooth"].get<float>();
+    Config.legitbot.aimdelayinms = j["legitbot"]["aimdelay"].get<int>();
+    Config.legitbot.hitboxes = j["legitbot"]["hitboxes"].get<std::vector<std::string>>();
+    Config.legitbot.pitchcorrection = j["legitbot"]["pitchcorrection"].get<bool>();
+    Config.legitbot.pitchcorrectammount = j["legitbot"]["pitchcorrectammount"].get<float>();
+    Config.legitbot.yawcorrection = j["legitbot"]["yawcorrection"].get<bool>();
+    Config.legitbot.yawcorrectammount = j["legitbot"]["yawcorrectammount"].get<float>();
+
 
     Config.antiaim.AAtype = j["antiaim"]["aatype"].get<int>();
     Config.antiaim.bAntiAim = j["antiaim"]["bAntiAim"].get<bool>();
@@ -85,6 +100,8 @@ static void JsonToBind(const json& j, KeyBind& bind) {
     Config.colors.tracerscol = JsonToImVec4(j["colors"]["tracerscol"]);
     Config.colors.ChamsCol = JsonToImVec4(j["colors"]["ChamsCol"]);
     Config.colors.LocalChamsCol = JsonToImVec4(j["colors"]["LocalChamsCol"]);
+    Config.colors.GlowCol = JsonToImVec4(j["colors"]["GlowCol"]);
+    Config.colors.GlowTeamCol = JsonToImVec4(j["colors"]["GlowTeamCol"]);
     
     Config.esp.bEsp = j["esp"]["bEsp"].get<bool>();
     Config.esp.boneEsp = j["esp"]["boneEsp"].get<bool>();
@@ -105,6 +122,8 @@ static void JsonToBind(const json& j, KeyBind& bind) {
     Config.esp.Chams = j["esp"]["Chams"].get<bool>();
     Config.esp.LocalChams = j["esp"]["LocalChams"].get<bool>();
     Config.esp.ModelChams = j["esp"]["ModelChams"].get<bool>();
+    Config.esp.GlowEsp = j["esp"]["GlowEsp"].get<bool>();
+    Config.esp.GlowTeam = j["esp"]["GlowTeam"].get<bool>();
 
     Config.misc.bNorecoil = j["misc"]["bNorecoil"].get<bool>();
     Config.misc.fovmodifier = j["misc"]["fovmodifier"].get<float>();
@@ -132,6 +151,8 @@ static void JsonToBind(const json& j, KeyBind& bind) {
 
      json j;
 
+
+     j["aimbot"]["masterswitch"] = Config.aimbot.bRageBotMasterSwitch;
      j["aimbot"]["enabled"] = Config.aimbot.bAimbot;
      j["aimbot"]["AimKey"] = BindToJson(Config.aimbot.AimKey);
      j["aimbot"]["AimKeyMinions"] = BindToJson(Config.aimbot.AimKeyMinions);
@@ -145,6 +166,22 @@ static void JsonToBind(const json& j, KeyBind& bind) {
      j["aimbot"]["silentaim"] = Config.aimbot.silentaim;
      j["aimbot"]["targetselectionmode"] = Config.aimbot.targetSelectionMode;
      j["aimbot"]["MovementFix"] = Config.aimbot.MovementFix;
+
+     j["legitbot"]["masterswitch"] = Config.legitbot.legitbotmasterswitch;
+     j["legitbot"]["enabled"] = Config.legitbot.bLegitBot;
+     j["legitbot"]["LegitAimKey"] = BindToJson(Config.legitbot.LegitAimKey);
+     j["legitbot"]["LegitAimKeyMinions"] = BindToJson(Config.legitbot.LegitAimKeyMinions);
+     j["legitbot"]["LegitAimKeyXp"] = BindToJson(Config.legitbot.LegitAimKeyXp);
+     j["legitbot"]["aimxp"] = Config.legitbot.LegitAimXp;
+     j["legitbot"]["aimminions"] = Config.legitbot.LegitAimMinions;
+     j["legitbot"]["fov"] = Config.legitbot.fov;
+     j["legitbot"]["smooth"] = Config.legitbot.smooth;
+     j["legitbot"]["aimdelay"] = Config.legitbot.aimdelayinms;
+     j["legitbot"]["hitboxes"] = Config.legitbot.hitboxes;
+     j["legitbot"]["pitchcorrection"] = Config.legitbot.pitchcorrection;
+     j["legitbot"]["pitchcorrectammount"] = Config.legitbot.pitchcorrectammount;
+     j["legitbot"]["yawcorrection"] = Config.legitbot.yawcorrection;
+     j["legitbot"]["yawcorrectammount"] = Config.legitbot.yawcorrectammount;
 
      j["antiaim"]["aatype"] = Config.antiaim.AAtype;
      j["antiaim"]["bAntiAim"] = Config.antiaim.bAntiAim;
@@ -163,6 +200,8 @@ static void JsonToBind(const json& j, KeyBind& bind) {
      j["colors"]["tracerscol"] = ImVec4ToJson(Config.colors.tracerscol);
      j["colors"]["ChamsCol"] = ImVec4ToJson(Config.colors.ChamsCol);
      j["colors"]["LocalChamsCol"] = ImVec4ToJson(Config.colors.LocalChamsCol);
+     j["colors"]["GlowCol"] = ImVec4ToJson(Config.colors.GlowCol);
+     j["colors"]["GlowTeamCol"] = ImVec4ToJson(Config.colors.GlowTeamCol);
 
      j["esp"]["bEsp"] = Config.esp.bEsp;
      j["esp"]["boneEsp"] = Config.esp.boneEsp;
@@ -183,6 +222,8 @@ static void JsonToBind(const json& j, KeyBind& bind) {
      j["esp"]["Chams"] = Config.esp.Chams;
      j["esp"]["LocalChams"] = Config.esp.LocalChams;
      j["esp"]["ModelChams"] = Config.esp.ModelChams;
+     j["esp"]["GlowEsp"] = Config.esp.GlowEsp;
+     j["esp"]["GlowTeam"] = Config.esp.GlowTeam;
 
      j["misc"]["bNorecoil"] = Config.misc.bNorecoil;
      j["misc"]["fovmodifier"] = Config.misc.fovmodifier;

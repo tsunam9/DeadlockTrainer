@@ -22,6 +22,7 @@
 #include "Yamato.h"
 #include "Wraith.h"
 #include <variant> 
+#include "ESP.h"
 
 static void* backup;
 void CreateHooks();

@@ -99,21 +99,18 @@ void testbed() {
 	if (!(iEngine->IsInGame()))
 		return;
 
-	auto weapon = Helper::get_localplr_weapon();
-
-	if (!weapon)
-		return;
-
-	std::cout << std::hex << weapon << std::endl;
-
 	
+	//auto pawn = Helper::GetPawn(Helper::get_local_player());
 
+	//auto cameraservices = *(uint64_t*)(pawn + C_BaseEntity::m_pModifierProp);
+
+	//std::cout << std::hex << cameraservices << "\n";
 
 }
 
 
 void Misc::DoMisc() {
 		SimpleNoRecoil();
-		//testbed();
+		testbed();
 		//DoSkyModulation();
 }

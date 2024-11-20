@@ -252,6 +252,7 @@
     <ClInclude Include="Pocket.h" />
     <ClInclude Include="Seven.h" />
     <ClInclude Include="shiv.h" />
+    <ClInclude Include="source2client.h" />
     <ClInclude Include="vindicta.h" />
     <ClInclude Include="Viscous.h" />
     <ClInclude Include="Warden.h" />

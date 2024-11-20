@@ -397,6 +397,12 @@ void Menu::DrawHeroesTab() {
 	ImVec2 titlePos = ImVec2(childPos.x + 5.0f, childPos.y - ImGui::GetFontSize()); // Adjust Y for positioning above the border
 	ImGui::GetWindowDrawList()->AddText(titlePos, IM_COL32(255, 255, 255, 255), "Heroes");
 
+	if (!(iEngine->IsInGame())) {
+		ImGui::Text("Join a game to use the hero tab.");
+		return;
+	}
+
+
 	ImGui::BeginChild("Heroes", ImVec2(0, 0), true);
 	PlayerData* plrdata = new PlayerData;
 	Helper::get_player_data(Helper::get_local_player(), plrdata);

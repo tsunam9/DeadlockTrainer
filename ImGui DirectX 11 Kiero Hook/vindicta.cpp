@@ -121,6 +121,8 @@ void VindictaLogic::OnTick() {
 
 	this->target = Aimbot::GetCurrentAimbotTarget();
 	if (!(this->target)) return;
+
+
 	Helper::get_player_data(this->target, this->targetdata);
 
 

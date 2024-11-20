@@ -6,8 +6,8 @@ class Esp
 
 public:
 	
-	void DrawEsp(uintptr_t Entity, PlayerData* EntInfo);
-	void DoEsp();
+	static void DrawEsp(uintptr_t Entity, PlayerData* EntInfo);
+	static void DoEsp();
 
 };
 

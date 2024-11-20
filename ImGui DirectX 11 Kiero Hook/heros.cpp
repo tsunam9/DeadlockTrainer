@@ -9,6 +9,10 @@ void Hero::OnTick() {
 
 void Hero::RunScript(CCitadelUserCmdPB* cmd) {
 
+	if (!(Config.aimbot.bAimbot) && !(Config.legitbot.bLegitBot)) {
+		return;
+	}
+
 	this->cmd = cmd;
 	this->LocalPlayer = Helper::get_local_player();
 	Helper::get_player_data(this->LocalPlayer, this->localplayerdata);

@@ -139,6 +139,7 @@ void ShowKeyBindStatus() {
 		KeyBinds.push_back(&Config.aimbot.AimKeyMinions);
 		KeyBinds.push_back(&Config.aimbot.magicbulletkey);
 		KeyBinds.push_back(&Config.misc.SpeedBoostKey);
+		KeyBinds.push_back(&Config.legitbot.LegitAimKey);
 		init = true;
 	}
 
@@ -401,6 +402,7 @@ const char* Vec3ToCString(const vec3& vec) {
 
 void Esp::DoEsp() {
 
+
 	if (Config.esp.DrawFov) {
 		DrawFov();
 	}
@@ -532,24 +534,25 @@ void Esp::DoEsp() {
 		std::string EntName = Helper::get_schema_name((*globs.espEntList.active)[i]);
 
 		if (EntName == "CCitadelPlayerController") {
-			PlayerData* LocalPlayerData = new PlayerData;
-			Helper::get_player_data(Helper::get_local_player(), LocalPlayerData);
+			PlayerData LocalPlayerData;
+			Helper::get_player_data(Helper::get_local_player(), &LocalPlayerData);
 
-			PlayerData* TargetPlayerData = new PlayerData;
-			Helper::get_player_data((*globs.espEntList.active)[i], TargetPlayerData);
+			PlayerData TargetPlayerData;
+			if (!Helper::get_player_data((*globs.espEntList.active)[i], &TargetPlayerData)) {
+				continue;
+			}
 
-			
-			if (TargetPlayerData->dormant)
-				continue;
-			if (!TargetPlayerData->isalive)
-				continue;
-			if (TargetPlayerData->TeamNum == LocalPlayerData->TeamNum)
+			if (TargetPlayerData.dormant)
 				continue;
 
-			this->DrawEsp((*globs.espEntList.active)[i], TargetPlayerData);
+			if (!TargetPlayerData.isalive)
+				continue;
 
-			delete LocalPlayerData;
-			delete TargetPlayerData;
+			if (TargetPlayerData.TeamNum == LocalPlayerData.TeamNum)
+				continue;
+
+			Esp::DrawEsp((*globs.espEntList.active)[i], &TargetPlayerData);
+
 
 		}
 		else if (EntName == "CItemXP") {

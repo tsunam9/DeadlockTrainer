@@ -196,8 +196,10 @@ int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name)
 	uint64_t PawnHandle = *(uint64_t*)(entity + CBasePlayerController::m_hPawn);
 	uint64_t Index = Helper::CHandle_get_entry_index(PawnHandle);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Index);
+
 	if (!Pawn)
-		return outputPlrData;
+		return false;
+
 	uint64_t GameSceneNode = *(uint64_t*)(Pawn + C_BaseEntity::m_pGameSceneNode);
 	uint64_t PlayerDataGlobal = entity + CCitadelPlayerController::m_PlayerDataGlobal;
 	outputPlrData->m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
@@ -605,6 +607,10 @@ uint64_t Helper::GetPawn(uint64_t entity_controller) {
 		return 0;
 
 	uint64_t PawnHandle = *(uint64_t*)(entity_controller + CCitadelPlayerController::m_hHeroPawn);
+
+	if (!PawnHandle) {
+		return 0;
+	}
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
 	return Pawn;
 

@@ -4,6 +4,7 @@
 IEngineClient* iEngine = GetInterface<IEngineClient>("Engine2.dll", "Source2EngineToClient001");
 IEngineCVar* VEngineCvar = GetInterface<IEngineCVar>("tier0.dll", "VEngineCvar007");
 ISceneSystem* iSceneSystem002 = GetInterface<ISceneSystem>("scenesystem.dll", "SceneSystem_002");
+ISource2Client* source2client = GetInterface<ISource2Client>("client.dll", "Source2Client002");
 
 
 
@@ -59,6 +60,7 @@ void globals::SortEntsEsp() { // ONLY CALL IN DOESP
         if (EntName == "C_NPC_Trooper")
             this->espEntList.updating->push_back(entity);
     }
+
     this->espEntList.SwapBuffers();
 }
 

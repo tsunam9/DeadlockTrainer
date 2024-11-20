@@ -595,13 +595,11 @@ void __fastcall hkDoGlow(__int64 a1) {
 		if (!glowhelper) {
 			if (teamnums[i] == localdata.TeamNum) {
 				if (!(Config.colors.GlowTeamCol.w == 0.f)) {
-					std::cout << "CALLED TEAM" << std::endl;
 					*(uint64_t*)(glowProperty + 0x28) = iSceneSystem002->CreateCHlowHelperSceneObject((uint64_t)pawn);
 				}
 			}
 			else {
 				if (!(Config.colors.GlowCol.w == 0.f)) {
-					std::cout << "CALLED ENEMY" << std::endl;
 					*(uint64_t*)(glowProperty + 0x28) = iSceneSystem002->CreateCHlowHelperSceneObject((uint64_t)pawn);
 				}
 			}
@@ -662,6 +660,57 @@ __int64 __fastcall hkVerifyGlowObject(__int64 a1, int a2, float a3) {
 	return result;
 }
 
+typedef void(__fastcall* f_FrameStageNotify)(__int64 a1, __int64 a2);
+static f_FrameStageNotify ogFrameStageNotify = nullptr;
+static f_FrameStageNotify framestagenotifytarget = reinterpret_cast<f_FrameStageNotify>(MEM::GetClientBase() + 0x4DF000);
+
+void __fastcall hkFrameStageNotify(__int64 a1, __int64 a2) {
+
+
+	ogFrameStageNotify(a1, a2);
+
+}
+
+typedef void(__fastcall* f_ApplyRecoil)(__int64 a1, float a2, float a3, float a4, char a5);
+static f_ApplyRecoil ogapplyrecoil = nullptr;
+static f_ApplyRecoil applyrecoiltarget = reinterpret_cast<f_ApplyRecoil>(MEM::GetClientBase() + 0x38d910);
+
+void __fastcall hkApplyRecoil(__int64 a1, float a2, float a3, float a4, char a5) {
+
+	auto pawn = Helper::GetPawn(Helper::get_local_player());
+
+	auto cameraservices = *(uint64_t*)(pawn + C_BasePlayerPawn::m_pCameraServices);
+
+	vec3* punchangle = (vec3*)(cameraservices + CPlayer_CameraServices::m_vecPunchAngle);
+
+	punchangle->x = 0.f;
+
+	ogapplyrecoil(a1, a2, a3, a4, a5);
+
+}
+
+typedef __int64(__fastcall* f_FetchRecoil)(__int64 a1);
+static f_FetchRecoil ogfetchrecoil = nullptr;
+static f_FetchRecoil fetchrecoiltarget = reinterpret_cast<f_FetchRecoil>(MEM::GetClientBase() + 0x352C50);
+
+__int64 __fastcall hkFetchRecoil(__int64 a1) {
+
+	auto pawn = Helper::GetPawn(Helper::get_local_player());
+
+	auto cameraservices = *(uint64_t*)(pawn + C_BasePlayerPawn::m_pCameraServices);
+
+	vec3* punchangle = (vec3*)(cameraservices + CPlayer_CameraServices::m_vecPunchAngle);
+
+	punchangle->x = 0.f;
+
+	__int64 result = ogfetchrecoil(a1);
+
+	std::cout << std::hex << result << "\n";
+
+	return result;
+
+}
+
 
 void CreateHooks() {
 
@@ -683,7 +732,6 @@ void CreateHooks() {
 
 	MH_CreateHook((LPVOID)UpdateSceneObjectTarget, &hkUpdateSceneObject, reinterpret_cast<LPVOID*>(&ogUpdateSceneObject));
 	MH_EnableHook((LPVOID)UpdateSceneObjectTarget);
-	std::cout << "[+] UpdateSceneObject Hook Initialized!" << std::endl;
 
 	MH_CreateHook((LPVOID)LightSceneTarget, &hkLightSceneObject, reinterpret_cast<LPVOID*>(&ogLightScene));
 	MH_EnableHook((LPVOID)LightSceneTarget);
@@ -718,6 +766,18 @@ void CreateHooks() {
 	MH_CreateHook((LPVOID)doglowtarget, &hkDoGlow, reinterpret_cast<LPVOID*>(&ogdoglow));
 	MH_EnableHook((LPVOID)doglowtarget);
 	std::cout << "[+] DoGlow Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)framestagenotifytarget, &hkFrameStageNotify, reinterpret_cast<LPVOID*>(&ogFrameStageNotify));
+	//MH_EnableHook((LPVOID)framestagenotifytarget);
+	std::cout << "[+] FrameStageNotify Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)applyrecoiltarget, &hkApplyRecoil, reinterpret_cast<LPVOID*>(&ogapplyrecoil));
+	//MH_EnableHook((LPVOID)applyrecoiltarget);
+	std::cout << "[+] ApplyRecoil Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)fetchrecoiltarget, &hkFetchRecoil, reinterpret_cast<LPVOID*>(&ogfetchrecoil));
+	//MH_EnableHook((LPVOID)fetchrecoiltarget); 
+	std::cout << "[+] FetchRecoil Hook Initialized!" << std::endl;
 
 
 	//MH_CreateHook((LPVOID)applycallertarget, &hkApplyGlowCaller, reinterpret_cast<LPVOID*>(&ogapplycaller));

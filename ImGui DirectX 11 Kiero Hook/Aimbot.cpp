@@ -257,24 +257,27 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 		if ( aimbotglobs.entlist.active->empty())
 			continue;
 
-		
-
 		std::string entClass = Helper::get_schema_name((*aimbotglobs.entlist.active)[i]);
 
 		if (entClass == "CCitadelPlayerController" && group == AimGroup_Player) {
+
 			PlayerData TargetPlayerData;
-			Helper::get_player_data((*aimbotglobs.entlist.active)[i], &TargetPlayerData);
-
-
-			if (!TargetPlayerData.isalive) {
+			if (!Helper::get_player_data((*aimbotglobs.entlist.active)[i], &TargetPlayerData)) {
 				continue;
 			}
 
+			if (TargetPlayerData.dormant) {
+				continue;
+			}
+
+			if (!(TargetPlayerData.isalive)) {
+				continue;
+			}
 
 			if (TargetPlayerData.TeamNum == LocalPlayerData.TeamNum) {
 				continue;
 			}
-			
+
 			Helper::KeyBindHandler(Config.aimbot.magicbulletkey);
 			if(!Config.aimbot.magicbullet){ // if magic bullet then obviously dont do vischeck 
 				if (IsPlayerVisible((*aimbotglobs.entlist.active)[i]) == false) {
@@ -644,7 +647,6 @@ void Aimbot::RageAimAt(uint64_t entity) {
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
 	vec3 vec_velocity = *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
 
-
 	vec3 predictedposition = Aimbot::PredictPosition(vec_target, vec_velocity, BulletSpeed);
 	vec2 target_angles = Aimbot::GetAimAngles(predictedposition);
 
@@ -694,6 +696,7 @@ void Aimbot::RageAimAtXp(uintptr_t entity) {
 
 		CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
 		CUserCmd->cameraViewAngle->viewAngles.y = target_angles.y;
+
 		return;
 	}
 
@@ -707,6 +710,8 @@ void Aimbot::RageAimAtXp(uintptr_t entity) {
 
 	ViewAngles->x = target_angles.x;
 	ViewAngles->y = target_angles.y;
+
+
 	return;
 
 }
@@ -739,6 +744,8 @@ void Aimbot::RageAimAtMinions(uintptr_t entity) {
 		CUserCmd->buttons |= IN_ATTACK;
 		CUserCmd->cameraViewAngle->viewAngles.x = target_angles.x;
 		CUserCmd->cameraViewAngle->viewAngles.y = target_angles.y;
+
+
 		return;
 
 	}
@@ -751,7 +758,6 @@ void Aimbot::RageAimAtMinions(uintptr_t entity) {
 
 	ViewAngles->x = target_angles.x;
 	ViewAngles->y = target_angles.y;
-
 
 }
 
@@ -822,11 +828,12 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 	Helper::get_player_data(LocalPlayerController, &LocalPlayerData);
 	abilities = Helper::GetAbilities(Helper::GetPawn(Helper::get_local_player()));
 
+
+
 	
 	if (aimbotglobs.entlist.active->empty()){
 		return;
 	}
-
 
 	if (Config.aimbot.bRageBotMasterSwitch) { // ragebot
 
@@ -912,9 +919,7 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 		if (Config.legitbot.aimdelayinms != 0 && aimtarget) {
 
 			float delay = (float)(Config.legitbot.aimdelayinms / 1000.0f);
-			
 			if (!(aimbotglobs.Globals->flAbsCurTime > timeaquiredtarget + delay)) {
-				std::cout << "NO AIM" << "\n";
 				return;
 			}
 		}
