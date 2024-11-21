@@ -16,6 +16,7 @@ bool GlyphButton(const char* glyph, ImVec2 size, bool selecctedtab) {
 
 	std::string GlyphStr = glyph;
 	std::string buttonID = "##Button" + GlyphStr;
+
 	bool clicked = ImGui::Button(buttonID.c_str(), size);
 
 	// Get button position and size
@@ -52,7 +53,7 @@ bool GlyphButton(const char* glyph, ImVec2 size, bool selecctedtab) {
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 	else {
-		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25, 0.25f, 0.25f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.2, 0.2f, 0.2f, 1.0f));
 	}
 
 
@@ -270,122 +271,185 @@ void Menu::DrawConfigs() {
 
 }
 
-void Menu::DrawEspTab() {
+void DrawMiscEspTab(vec2 res) {
 
-	float availableWidth = ImGui::GetContentRegionAvail().x;
+	auto cursorposy = ImGui::GetCursorPosY();
 
-	ImGui::BeginChild("Esp Drawables", ImVec2(availableWidth * 0.33, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-	ImGui::Text("ESP");
-	ImGui::Checkbox("Enabled", &Config.esp.bEsp);
-	ImGui::Checkbox("Box Esp", &Config.esp.boxEsp);
-	if (Config.esp.boxEsp) {
-		ImGui::SameLine();
-		ImGui::ColorEdit4("Box Color", (float*)&Config.colors.boxespcol);
-	}
+	float spacing_x = res.x * 0.01;
+	float spacing_y = res.y * 0.02;
 
-	ImGui::Checkbox("Skeleton Esp", &Config.esp.boneEsp);
-	if (Config.esp.boneEsp) {
-		ImGui::SameLine();
-		ImGui::ColorEdit4("Skeleton Color", (float*)&Config.colors.skeletoncol);
-	}
+	ImGui::SetCursorPosX(spacing_x);
+	ImGui::SetCursorPosY(cursorposy + spacing_y);
 
-	ImGui::Checkbox("Health Bar", &Config.esp.HealthBar);
+	ImVec2 regionavailable = ImGui::GetContentRegionAvail();
 
-	ImGui::Checkbox("Tracers", &Config.esp.Tracers);
+	ImVec2 espmisctabsize = ImVec2(regionavailable.x - (spacing_x * 2), regionavailable.y - spacing_y);
 
-	ImGui::Checkbox("Name Esp", &Config.esp.NameEsp);
-
-	ImGui::EndChild();
-
-	ImGui::SameLine();
-
-	ImGui::BeginChild("Chams", ImVec2(availableWidth * 0.33, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-
-	ImGui::Checkbox("Chams", &Config.esp.Chams);
-	if (Config.esp.Chams) {
-		ImGui::SameLine();
-		ImGui::ColorEdit4("Chams Color", (float*)&Config.colors.ChamsCol);
-		ImGui::Checkbox("Override Model Material", &Config.esp.ModelChams);
-		ImGui::Checkbox("Local Chams", &Config.esp.LocalChams);
-		if (Config.esp.LocalChams) {
-			ImGui::SameLine();
-			ImGui::ColorEdit4("Local Chams Color", (float*)&Config.colors.LocalChamsCol);
-		}
-	}
-	ImGui::Checkbox("Glow", &Config.esp.GlowEsp);
-	if (Config.esp.GlowEsp) {
-		ImGui::SameLine();
-		ImGui::ColorEdit4("Glow Color", (float*)&Config.colors.GlowCol);
-		ImGui::Checkbox("Team Glow", &Config.esp.GlowTeam);
-		if (Config.esp.GlowTeam) {
-					ImGui::SameLine();
-		ImGui::ColorEdit4("Team Glow Color", (float*)&Config.colors.GlowTeamCol);
-		}
-	}
-
-	ImVec2 childSize = ImGui::GetWindowSize();
-	ImGui::SetCursorPosY(childSize.y / 2);
-	ImGui::Separator();
+	ImGui::BeginChild("Esp Misc", espmisctabsize, true);
 
 	ImGui::Checkbox("World Modulation", &Config.esp.ModWorld);
-	if (Config.esp.ModWorld) {
-		ImGui::ColorEdit4("World Color", (float*)&Config.colors.WorldModulationColor);
-	}
-	ImGui::Checkbox("Light Modulation", &Config.esp.ModLights);
-	if (Config.esp.ModWorld) {
-		ImGui::ColorEdit4("Lights Color", (float*)&Config.colors.LightModColor);
-	}
-
-	ImGui::EndChild();
-
 	ImGui::SameLine();
+	ImGui::ColorEdit4("World Color", (float*)&Config.colors.WorldModulationColor);
 
-	ImGui::BeginChild("Esp Misc", ImVec2(0, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::Checkbox("Light Modulation", &Config.esp.ModLights);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Lights Color", (float*)&Config.colors.LightModColor);
 
-	ImGui::Checkbox("Health Text", &Config.esp.HealthText);
-	ImGui::Checkbox("Distance Esp", &Config.esp.DistanceEsp);
-	ImGui::Checkbox("Draw Fov", &Config.esp.DrawFov);
-	if (Config.esp.DrawFov) {
-		ImGui::SameLine();
-		ImGui::ColorEdit4("Fov Circle Color", (float*)&Config.colors.drawfovcol);
-	}
-	ImGui::Checkbox("Draw Souls", &Config.esp.DrawXp);
-	if (Config.esp.DrawXp) {
-		ImGui::SameLine();
-		ImGui::ColorEdit4("Souls Esp Color", (float*)&Config.colors.drawxpcol);
-	}
-	ImGui::Checkbox("Draw Monsters", &Config.esp.DrawMonsters);
-	if (Config.esp.DrawMonsters) {
-		ImGui::SameLine();
-		ImGui::ColorEdit4("Monster Esp Color", (float*)&Config.colors.drawmonsterscol);
-	}
-	ImGui::Checkbox("Draw Minions", &Config.esp.DrawMinions);
-	ImGui::Checkbox("Draw Aimbot Target", &Config.esp.DrawAimbotTarget);
-	if (Config.esp.DrawAimbotTarget) {
-		ImGui::SameLine();
-		ImGui::ColorEdit4("Aimbot Target Color", (float*)&Config.colors.aimbotTargetcol);
-	}
+	ImGui::Checkbox("Aimbot Fov", &Config.esp.DrawFov);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Fov Circle Color", (float*)&Config.colors.drawfovcol);
+
+	ImGui::Checkbox("Souls", &Config.esp.DrawXp);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Souls Esp Color", (float*)&Config.colors.drawxpcol);
+
+	ImGui::Checkbox("Neutral Monsters", &Config.esp.DrawMonsters);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Monster Esp Color", (float*)&Config.colors.drawmonsterscol);
+
+	ImGui::Checkbox("Minions", &Config.esp.DrawMinions);
+
+	ImGui::Checkbox("Aimbot Target", &Config.esp.DrawAimbotTarget);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Aimbot Target Color", (float*)&Config.colors.aimbotTargetcol);
+
 	ImGui::Checkbox("Show Keybind List", &Config.esp.ShowKeyBindList);
 
+	ImGui::Spacing();
+
+	ImGui::Text("Menu Color");
+	ImGui::SameLine();
+	ImGui::ColorEdit3("Menu Color", (float*)&Config.colors.MenuColor);
 
 	ImGui::EndChild();
 
 }
 
-void DrawAntiAimTab() {
+void DrawPlayersEspTab(vec2 res) {
+
+	auto cursorposy = ImGui::GetCursorPosY();
+
+	float spacing_x = res.x * 0.01;
+	float spacing_y = res.y * 0.02;
+
+	ImGui::SetCursorPosX(spacing_x);
+	ImGui::SetCursorPosY(cursorposy + spacing_y);
 
 
-	ImGui::BeginChild("AntiAim", ImVec2(0, 0), true);
-	ImGui::Text("Anti Aim");
-	ImGui::Checkbox("Enabled", &Config.antiaim.bAntiAim);
-	static const char* items[] = { "Spin", "Jitter", "180 Treehouse" }; // Options for the dropdown
-	static int currentItem = 0; // Index of the currently selected item
-	ImGui::Combo("AAType", &currentItem, items, IM_ARRAYSIZE(items)); Config.antiaim.AAtype = currentItem;
-	ImGui::Text("Selected: %s", items[currentItem]);
-	ImGui::SliderFloat("Lower Jitter", &Config.antiaim.lowerjitter, -180, Config.antiaim.upperjitter, "%.1f");
-	ImGui::SliderFloat("Upper Jitter", &Config.antiaim.upperjitter, Config.antiaim.lowerjitter, 180.0f, "%.1f");
+	ImVec2 regionavailable = ImGui::GetContentRegionAvail();
+
+	ImVec2 drawablestabsize = ImVec2(regionavailable.x * 0.45, regionavailable.y - spacing_y);
+
+
+	ImGui::BeginChild("drawables", drawablestabsize, true);
+
+	ImGui::Checkbox("Enabled", &Config.esp.bEsp);
+
+	ImGui::Checkbox("Bounding Box", &Config.esp.boxEsp);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Box Color", (float*)&Config.colors.boxespcol);
+
+	ImGui::Checkbox("Health Bar", &Config.esp.HealthBar);
+	ImGui::Checkbox("Health Text", &Config.esp.HealthText);
+
+	ImGui::Checkbox("Skeleton", &Config.esp.boneEsp);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Skeleton Color", (float*)&Config.colors.skeletoncol);
+
+	ImGui::Checkbox("Name", &Config.esp.NameEsp);
+
+	ImGui::Checkbox("Tracers", &Config.esp.Tracers);
+
+	ImGui::Checkbox("Distance", &Config.esp.DistanceEsp);
+
 	ImGui::EndChild();
 
+	ImGui::SameLine(0.f, spacing_x * 2);
+
+	regionavailable = ImGui::GetContentRegionAvail();
+
+	ImGui::BeginChild("Models", ImVec2(regionavailable.x - (spacing_x * 2), regionavailable.y - spacing_y), true);
+
+	ImGui::Checkbox("Chams", &Config.esp.Chams);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Chams Color", (float*)&Config.colors.ChamsCol);
+
+	ImGui::Checkbox("Local Chams", &Config.esp.LocalChams);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Local Chams Color", (float*)&Config.colors.LocalChamsCol);
+	ImGui::Checkbox("Override Model Material", &Config.esp.ModelChams);
+
+	ImGui::Checkbox("Glow", &Config.esp.GlowEsp);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Glow Color", (float*)&Config.colors.GlowCol);
+
+	ImGui::Checkbox("Team Glow", &Config.esp.GlowTeam);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Team Glow Color", (float*)&Config.colors.GlowTeamCol);
+
+
+	ImGui::EndChild();
+
+
+
+	
+
+}
+
+void Menu::DrawEspTab() {
+
+
+	auto res = Helper::GetResolution();
+
+	ImGui::SetCursorPos(ImVec2(res.x * 0.01, res.y * 0.013));
+
+	ImVec2 regionavailable = ImGui::GetContentRegionAvail();
+
+	const char* tabs[] = { "Players", "Misc" };
+
+	int numtabs = 2;
+
+	static int selectedTab = 0;
+
+	//ImGui::Text((const char*)u8"");
+
+	ImVec2 esptabsize = ImVec2(regionavailable.x - res.x * 0.02, regionavailable.y * 0.1);
+
+	ImGui::BeginChild("Esp Tabs", esptabsize, true);
+
+	ImGuiIO& io = ImGui::GetIO();           // Get the ImGui IO structure
+	ImFontAtlas* fontAtlas = io.Fonts;      // Get the font atlas
+	ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[2]);
+
+	regionavailable = ImGui::GetContentRegionAvail();
+
+	float esptabbuttonspacing = res.x * 0.01;
+
+	for (int i = 0; i < numtabs; i++) {
+
+		bool selected = false;
+		if (i == selectedTab)
+			selected = true;
+
+		if (ImGui::Button(tabs[i], ImVec2(regionavailable.x * (1.f / numtabs) - esptabbuttonspacing, regionavailable.y))) {
+			selectedTab = i;
+		}
+
+		ImGui::SameLine(0.f, esptabbuttonspacing);
+
+	}
+
+	ImGui::PopFont();
+	ImGui::EndChild();
+
+	regionavailable = ImGui::GetContentRegionAvail();
+
+	if (selectedTab == 0) {
+		DrawPlayersEspTab(res);
+	}
+	else if (selectedTab == 1) {
+		DrawMiscEspTab(res);
+	}
 
 }
 
@@ -544,77 +608,137 @@ void Menu::DrawHeroesTab() {
 
 void Menu::DrawRageBotTab() {
 
-	float windowWidth = ImGui::GetWindowWidth();
 
+	auto res = Helper::GetResolution();
+	bool rageboton = Config.aimbot.bRageBotMasterSwitch;
 
-	ImGui::BeginChild("RageBot General", ImVec2(windowWidth * 0.5, 0), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
-	ImGui::Text("RageBot");
-
-	ImGui::Checkbox("RageBot Master Switch", &Config.aimbot.bRageBotMasterSwitch);
-
-	if (Config.aimbot.bRageBotMasterSwitch) {
-		ImGui::Checkbox("Enabled", &Config.aimbot.bAimbot);
-		ImGui::SameLine();
-		Helper::HotKey(Config.aimbot.AimKey);
-		ImGui::Checkbox("Silent Aim", &Config.aimbot.silentaim);
-		ImGui::Checkbox("Movement Fix", &Config.aimbot.MovementFix);
-		ImGui::Checkbox("Magic Bullet", &Config.aimbot.magicbullet);
-		ImGui::SameLine();
-		Helper::HotKey(Config.aimbot.magicbulletkey);
-
-		static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
-		//static int currentItem = 0; // Index of the currently selected item
-		ImGui::Combo("Target ", &Config.aimbot.targetSelectionMode, items, IM_ARRAYSIZE(items));
-		ImGui::Text("Selected: %s", items[Config.aimbot.targetSelectionMode]);
-		ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f, "%.1f");
-		ImGui::SliderFloat("FOV", &Config.aimbot.fov, 0.0f, 180.0f, "%.1f");
-		ImGui::Checkbox("Aim at Souls", &Config.aimbot.AimXp);
-		ImGui::SameLine();
-		Helper::HotKey(Config.aimbot.AimKeyXp);
-		ImGui::Checkbox("Aim at Minions", &Config.aimbot.AimMinions);
-		ImGui::SameLine();
-		Helper::HotKey(Config.aimbot.AimKeyMinions);
+	if (!rageboton) {
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
 	}
+
+
+
+	ImGui::SetCursorPos(ImVec2(res.x * 0.01, res.y * 0.013));
+
+	ImVec2 regionavailable = ImGui::GetContentRegionAvail();
+
+	float spacing = res.x * 0.02; 
+	float childWidth = (regionavailable.x - spacing) / 2; 
+
+	ImGui::BeginChild("MainRage", ImVec2(childWidth, regionavailable.y - res.y * 0.02), true);
+	ImGui::Checkbox("RageBot", &Config.aimbot.bRageBotMasterSwitch);
+	ImGui::Checkbox("Enabled", &Config.aimbot.bAimbot);
+	ImGui::SameLine();
+	Helper::HotKey(Config.aimbot.AimKey);
+	ImGui::Checkbox("Silent Aim", &Config.aimbot.silentaim);
+
+	static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
+	//static int currentItem = 0; // Index of the currently selected item
+	ImGui::Combo("Target ", &Config.aimbot.targetSelectionMode, items, IM_ARRAYSIZE(items));
+	ImGui::SliderFloat("Max Distance", &Config.aimbot.MaxDistance, 0.0f, 5000.0f, "%.1f");
+	ImGui::SliderFloat("FOV", &Config.aimbot.fov, 0.0f, 180.0f, "%.1f");
+	ImGui::Checkbox("Aim at Souls", &Config.aimbot.AimXp);
+	ImGui::SameLine();
+	Helper::HotKey(Config.aimbot.AimKeyXp);
+	ImGui::Checkbox("Aim at Minions", &Config.aimbot.AimMinions);
+	ImGui::SameLine();
+	Helper::HotKey(Config.aimbot.AimKeyMinions);
 
 
 	ImGui::EndChild();
 
-	if (Config.aimbot.bRageBotMasterSwitch) {
-		ImGui::SameLine();
-		DrawAntiAimTab();
+
+	ImGui::SameLine(0.f, spacing);
+
+	regionavailable = ImGui::GetContentRegionAvail();
+
+	float antiAimWidth = regionavailable.x - childWidth - spacing;
+
+	ImGui::BeginChild("AntiAim", ImVec2(antiAimWidth, regionavailable.y * 0.45), true);
+	ImGui::Text("Anti Aim");
+	ImGui::Checkbox("Enabled", &Config.antiaim.bAntiAim);
+	static const char* AAitems[] = { "Spin", "Jitter", "180 Treehouse" }; // Options for the dropdown
+	static int AAcurrentItem = 0; // Index of the currently selected item
+	ImGui::Combo("AAType", &AAcurrentItem, AAitems, IM_ARRAYSIZE(AAitems)); Config.antiaim.AAtype = AAcurrentItem;
+	ImGui::Text("Selected: %s", AAitems[AAcurrentItem]);
+	ImGui::SliderFloat("Lower Jitter", &Config.antiaim.lowerjitter, -180, Config.antiaim.upperjitter, "%.1f");
+	ImGui::SliderFloat("Upper Jitter", &Config.antiaim.upperjitter, Config.antiaim.lowerjitter, 180.0f, "%.1f");
+	ImGui::EndChild();
+
+	ImGui::SetCursorPos(ImVec2(childWidth + spacing * 1.5, regionavailable.y * 0.5));
+
+	regionavailable = ImGui::GetContentRegionAvail();
+
+	ImGui::BeginChild("RageBotMisc", ImVec2(antiAimWidth, regionavailable.y - (res.y * 0.02)), true);
+
+	ImGui::Checkbox("Movement Fix", &Config.aimbot.MovementFix);
+
+	ImGui::Checkbox("Magic Bullet", &Config.aimbot.magicbullet);
+	ImGui::SameLine();
+	Helper::HotKey(Config.aimbot.magicbulletkey);
+
+	ImGui::EndChild();
+
+
+	if (!rageboton) {
+		ImGui::PopStyleColor();
 	}
+
+
+
 
 }
 
 void Menu::DrawLegitBotTab() {
 
-		ImGui::Checkbox("LegitBot", &Config.legitbot.legitbotmasterswitch);
+	auto res = Helper::GetResolution();
 
-		if (Config.legitbot.legitbotmasterswitch) {
-			ImGui::Checkbox("Enabled", &Config.legitbot.bLegitBot);
-			ImGui::SameLine();
-			Helper::HotKey(Config.legitbot.LegitAimKey);
+	bool legitboton = Config.legitbot.legitbotmasterswitch;
 
-			ImGui::Checkbox("Pitch Correction", &Config.legitbot.pitchcorrection);
-			if (Config.legitbot.pitchcorrection) {
-				ImGui::SameLine();
+	if (!legitboton) {
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
+	}
 
-				ImGui::SliderFloat("##PitchAmmount", &Config.legitbot.pitchcorrectammount, 0.0f, 1.0f, "%.2f");
+	ImGui::SetCursorPos(ImVec2(res.x * 0.01, res.y * 0.013));
+
+	ImVec2 regionavailable = ImGui::GetContentRegionAvail();
+
+	float spacing = res.x * 0.02;
+	float childWidth = (regionavailable.x - spacing);
+
+	ImGui::BeginChild("MainLegit", ImVec2(childWidth, regionavailable.y - res.y * 0.02), true);
+
+	ImGui::Checkbox("LegitBot", &Config.legitbot.legitbotmasterswitch);
+
+	ImGui::Checkbox("Enabled", &Config.legitbot.bLegitBot);
+	ImGui::SameLine();
+	Helper::HotKey(Config.legitbot.LegitAimKey);
+
+	ImGui::Checkbox("Pitch Correction", &Config.legitbot.pitchcorrection);
+	if (Config.legitbot.pitchcorrection) {
+		ImGui::SameLine();
+
+		ImGui::SliderFloat("##PitchAmmount", &Config.legitbot.pitchcorrectammount, 0.0f, 1.0f, "%.2f");
 
 
-			}
-			ImGui::Checkbox("Yaw Correction", &Config.legitbot.yawcorrection);
-			if (Config.legitbot.yawcorrection) {
-				ImGui::SameLine();
-				ImGui::SliderFloat("##YawAmmount", &Config.legitbot.yawcorrectammount, 0.0f, 1.0f, "%.2f");
-			}
+	}
+	ImGui::Checkbox("Yaw Correction", &Config.legitbot.yawcorrection);
+	if (Config.legitbot.yawcorrection) {
+		ImGui::SameLine();
+		ImGui::SliderFloat("##YawAmmount", &Config.legitbot.yawcorrectammount, 0.0f, 1.0f, "%.2f");
+	}
 
-			ImGui::SliderInt("Aim Delay(MS)", &Config.legitbot.aimdelayinms, 0, 1000);
+	ImGui::SliderInt("Aim Delay(MS)", &Config.legitbot.aimdelayinms, 0, 1000);
 
-			ImGui::SliderFloat("FOV", &Config.legitbot.fov, 0.0f, 30.0f);
-			ImGui::SliderFloat("Smooth", &Config.legitbot.smooth, 1.0f, 200.0f);
+	ImGui::SliderFloat("FOV", &Config.legitbot.fov, 0.0f, 30.0f);
+	ImGui::SliderFloat("Smooth", &Config.legitbot.smooth, 1.0f, 200.0f);
 
-		}
+	ImGui::EndChild();
+
+	if (!legitboton) {
+		ImGui::PopStyleColor();
+	}
+
 	
 
 }
@@ -690,25 +814,34 @@ void Menu::DrawConfigTab(FILE* fp) {
 
 void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
-	static ID3D11Texture2D* AimbotIcon = LoadTextureFromFile(dx11Device, "C:/Users/Russ/Desktop/CheatIcons/menuicon_ragebot.jpg");
-	static ID3D11ShaderResourceView* AimbotIconView = CreateShaderResourceView(dx11Device, AimbotIcon);
 
-	static ID3D11Texture2D* EspIcon = LoadTextureFromFile(dx11Device, "C:/Users/Russ/Desktop/CheatIcons/menuicon_esp.jpg");
-	static ID3D11ShaderResourceView* EspIconView = CreateShaderResourceView(dx11Device, EspIcon);
+	ImVec4* colors = ImGui::GetStyle().Colors;
 
-	static ID3D11Texture2D* ConfigIcon = LoadTextureFromFile(dx11Device, "C:/Users/Russ/Desktop/CheatIcons/menuicon_config.jpg");
-	static ID3D11ShaderResourceView* ConfigIconView = CreateShaderResourceView(dx11Device, ConfigIcon);
-
-	static ID3D11Texture2D* HeroIcon = LoadTextureFromFile(dx11Device, "C:/Users/Russ/Desktop/CheatIcons/heroicon.png");
-	static ID3D11ShaderResourceView* HeroIconView = CreateShaderResourceView(dx11Device, HeroIcon);
-
-	static ID3D11Texture2D* IdaLady = LoadTextureFromFile(dx11Device, "C:/Users/Russ/Desktop/CheatIcons/idalady.png");
-	static ID3D11ShaderResourceView* IdaLadyView = CreateShaderResourceView(dx11Device, IdaLady);
+	ImVec4 menuColor = ImVec4(Config.colors.MenuColor.x, Config.colors.MenuColor.y, Config.colors.MenuColor.z, 1.0f); // Get the menu color
 
 
+	colors[ImGuiCol_Border] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.24f);
+	colors[ImGuiCol_FrameBg] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.54f);
+	colors[ImGuiCol_FrameBgHovered] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.40f);
+	colors[ImGuiCol_FrameBgActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.40f);
+	colors[ImGuiCol_TitleBg] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+	colors[ImGuiCol_TitleBgActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+	colors[ImGuiCol_CheckMark] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.85);
+	colors[ImGuiCol_SliderGrab] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.85);
+	colors[ImGuiCol_SliderGrabActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+	colors[ImGuiCol_Button] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.85);
+	colors[ImGuiCol_ButtonHovered] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.95);
+	colors[ImGuiCol_ButtonActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+	colors[ImGuiCol_Separator] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.50f);
+	colors[ImGuiCol_ResizeGrip] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.24f);
+	colors[ImGuiCol_ResizeGripHovered] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.24f);
+	colors[ImGuiCol_ResizeGripActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.68f);
+	colors[ImGuiCol_Tab] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+	colors[ImGuiCol_TabHovered] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+	colors[ImGuiCol_TabActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
 
+	colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.06f, 0.06f, 0.98f);
 
-	//ImGui::ShowStyleEditor();
 
 	// Variable to hold the selected tab
 	static int selectedTab = 0;
@@ -727,10 +860,10 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, zero);
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, zero);
 
-
-
 	if (ImGui::Begin("Sovereign", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
 		// Force all relevant style properties to zero
+
+
 
 
 		float availableWidth = ImGui::GetWindowWidth();
@@ -743,15 +876,13 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 			ImGuiWindowFlags_NoScrollbar |
 			ImGuiWindowFlags_NoScrollWithMouse);
 
+		ImGui::PopStyleVar(2); // padding and spacing
+
 		// Button styles
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
 
-
-
-		// Manually position each button
-		ImTextureID icons[] = { AimbotIconView, EspIconView, IdaLadyView, HeroIconView, ConfigIconView };
 
 		const char* glphs[] = { (const char*)u8"" , (const char*)u8"" , (const char*)u8"" , (const char*)u8"", (const char*)u8"" };
 
@@ -783,29 +914,19 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
 		ImGui::PopFont();
 
-
-
-		// Draw separator at exact position
-		ImVec2 cursor_pos = ImGui::GetWindowPos();
-		ImGui::GetWindowDrawList()->AddLine(
-			ImVec2(cursor_pos.x + buttonwidth - 1, cursor_pos.y),
-			ImVec2(cursor_pos.x + buttonwidth - 1, cursor_pos.y + availableHeight),
-			IM_COL32(200, 200, 200, 255),
-			1.0f
-		);
-
 		ImGui::PopStyleColor(3);
 		ImGui::EndChild();
 
-		// Position content area precisely
-		ImGui::SetCursorPos(ImVec2(buttonwidth, 0));
+		ImGui::SameLine();
 
 		// Content area with explicit dimensions
 		ImGui::BeginChild("Content Area", ImVec2(availableWidth - buttonwidth, availableHeight), false, ImGuiWindowFlags_NoResize);
 
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, eight);
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, eight);
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.f, 6.f));
 
+
+
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(Config.colors.MenuColor.x, Config.colors.MenuColor.y, Config.colors.MenuColor.z, 0.04f));
 
 		switch (selectedTab) {
 		case 0: DrawRageBotTab(); break;
@@ -815,15 +936,12 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 		case 4: DrawConfigTab(fp); break;
 		}
 
-
-
-		ImGui::PopStyleVar(2);
+		ImGui::PopStyleVar();
+		ImGui::PopStyleColor();
 		ImGui::EndChild();
 
 	}
 	ImGui::End();
-
-	ImGui::PopStyleVar(2);
 
 }
 

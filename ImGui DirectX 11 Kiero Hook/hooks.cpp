@@ -712,6 +712,20 @@ __int64 __fastcall hkFetchRecoil(__int64 a1) {
 }
 
 
+
+typedef __int64(__fastcall* f_applyspread)(__int64 a1, __int64 a2);
+static f_applyspread ogApplySpread = nullptr;
+static f_applyspread applyspreadtarget = reinterpret_cast<f_applyspread>(MEM::GetClientBase() + 0x108E720);
+
+
+// Hook function
+int64_t __fastcall hkApplySpread(int64_t a1, int64_t a2) {
+
+	return ogApplySpread(a1, a2);
+
+}
+
+
 void CreateHooks() {
 
 	static bool init = false;
@@ -778,6 +792,10 @@ void CreateHooks() {
 	MH_CreateHook((LPVOID)fetchrecoiltarget, &hkFetchRecoil, reinterpret_cast<LPVOID*>(&ogfetchrecoil));
 	//MH_EnableHook((LPVOID)fetchrecoiltarget); 
 	std::cout << "[+] FetchRecoil Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)applyspreadtarget, &hkApplySpread, reinterpret_cast<LPVOID*>(&ogApplySpread));
+	MH_EnableHook((LPVOID)applyspreadtarget);
+	std::cout << "[+] ApplySpread Hook Initialized!" << std::endl;
 
 
 	//MH_CreateHook((LPVOID)applycallertarget, &hkApplyGlowCaller, reinterpret_cast<LPVOID*>(&ogapplycaller));

@@ -247,6 +247,7 @@ public:
         ImVec4 LightModColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
         ImVec4 GlowCol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
         ImVec4 GlowTeamCol = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        ImVec4 MenuColor = ImVec4(1.00f, 0.00f, 0.53f, 1.0f);
         
 
 

@@ -43,27 +43,8 @@ void InitImGui()
 	ImGui::SetColorEditOptions(196776);
 
 	//colors
-	ImVec4* colors = ImGui::GetStyle().Colors;
-	colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.00f);
-	colors[ImGuiCol_Border] = ImVec4(1.00f, 0.00f, 0.53f, 0.24f);
-	colors[ImGuiCol_FrameBg] = ImVec4(0.24f, 0.24f, 0.24f, 0.54f);
-	colors[ImGuiCol_FrameBgHovered] = ImVec4(1.00f, 0.00f, 0.36f, 0.40f);
-	colors[ImGuiCol_FrameBgActive] = ImVec4(0.67f, 0.00f, 0.24f, 0.40f);
-	colors[ImGuiCol_TitleBg] = ImVec4(0.65f, 0.00f, 0.40f, 1.00f);
-	colors[ImGuiCol_TitleBgActive] = ImVec4(0.65f, 0.00f, 0.40f, 1.00f);
-	colors[ImGuiCol_CheckMark] = ImVec4(1.00f, 0.00f, 0.48f, 1.00f);
-	colors[ImGuiCol_SliderGrab] = ImVec4(0.72f, 0.11f, 0.35f, 1.00f);
-	colors[ImGuiCol_SliderGrabActive] = ImVec4(0.92f, 0.06f, 0.41f, 1.00f);
-	colors[ImGuiCol_Button] = ImVec4(0.72f, 0.11f, 0.35f, 1.00f);
-	colors[ImGuiCol_ButtonHovered] = ImVec4(1.00f, 0.00f, 0.40f, 1.00f);
-	colors[ImGuiCol_ButtonActive] = ImVec4(0.85f, 0.06f, 0.74f, 1.00f);
-	colors[ImGuiCol_Separator] = ImVec4(1.00f, 0.00f, 0.65f, 0.50f);
-	colors[ImGuiCol_ResizeGrip] = ImVec4(1.00f, 0.00f, 0.53f, 0.24f);
-	colors[ImGuiCol_ResizeGripHovered] = ImVec4(1.00f, 0.00f, 0.53f, 0.24f);
-	colors[ImGuiCol_ResizeGripActive] = ImVec4(1.00f, 0.00f, 0.53f, 0.68f);
-	colors[ImGuiCol_Tab] = ImVec4(0.65f, 0.00f, 0.40f, 1.00f);
-	colors[ImGuiCol_TabHovered] = ImVec4(1.00f, 0.00f, 0.62f, 1.00f);
-	colors[ImGuiCol_TabActive] = ImVec4(1.00f, 0.00f, 0.62f, 1.00f);
+
+
 
 	io.Fonts->AddFontDefault();
 	static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };

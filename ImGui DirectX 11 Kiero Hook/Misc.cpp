@@ -100,17 +100,16 @@ void testbed() {
 		return;
 
 	
-	//auto pawn = Helper::GetPawn(Helper::get_local_player());
+	auto weapon = Helper::get_localplr_weapon();
 
-	//auto cameraservices = *(uint64_t*)(pawn + C_BaseEntity::m_pModifierProp);
+	std::cout << std::hex << weapon << "\n";
 
-	//std::cout << std::hex << cameraservices << "\n";
 
 }
 
 
 void Misc::DoMisc() {
 		SimpleNoRecoil();
-		testbed();
+		//testbed();
 		//DoSkyModulation();
 }

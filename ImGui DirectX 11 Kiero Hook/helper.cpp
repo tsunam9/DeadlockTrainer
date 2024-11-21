@@ -280,9 +280,9 @@ vec2 Helper::GetResolution() {
 
 	vec2 resolution;
 
-	uint64_t resolutionptr = ClientModuleBase + Offsets.o_Resolution;
-	uint64_t resclassobj = *(uint64_t*)resolutionptr;
-	uint64_t resolutionaddress = resclassobj + 0x484;
+	static uint64_t resolutionptr = ClientModuleBase + Offsets.o_Resolution;
+	static uint64_t resclassobj = *(uint64_t*)resolutionptr;
+	static uint64_t resolutionaddress = resclassobj + 0x484;
 
 	resolution.x = *(int*)(resolutionaddress);
 	resolution.y = *(int*)(resolutionaddress + 0x8);
