@@ -77,7 +77,7 @@ public:
 	static CKeyValues3* CreateMaterialResource()
 	{
 		using fnSetTypeKV3 = CKeyValues3 * (_fastcall*)(CKeyValues3*, unsigned int, unsigned int);
-		static const fnSetTypeKV3 oSetTypeKV3 = reinterpret_cast<fnSetTypeKV3>(ClientModuleBase + (MEM::PatternScanFunc((void*)ClientModuleBase, "40 53 48 83 EC 20 48 8B 01 48 8B D9 44")));
+		static const fnSetTypeKV3 oSetTypeKV3 = reinterpret_cast<fnSetTypeKV3>(ClientModuleBase + (MEM::PatternScanFunc((void*)ClientModuleBase, "40 53 48 83 ec ? 48 8b 01 48 8b d9 44 0f b6 ca")));
 
 		CKeyValues3* pKeyValue = new CKeyValues3[0x10];
 		return oSetTypeKV3(pKeyValue, 1U, 6U);
@@ -87,14 +87,14 @@ public:
 void CKeyValues3::LoadFromBuffer(const char* szString)
 {
 	CUtlBuffer buffer(0, strlen(szString) + 10, 1);
-	buffer.PutString(szString);
+	buffer.PutString(szString); 
 	LoadKV3(&buffer);
 }
 
 bool CKeyValues3::LoadKV3(CUtlBuffer* buffer)
 {
 	using fnLoadKeyValues = bool(__fastcall*)(CKeyValues3*, void*, CUtlBuffer*, KV3ID_t*, void*, void*, void*, void*, const char*);
-	static const fnLoadKeyValues oLoadKeyValues = (fnLoadKeyValues)(hTier0 + (MEM::PatternScanFunc((void*)hTier0, "48 89 5c 24 ? 48 89 6c 24 ? 57 41 56 41 57 48 83 ec ? 4d 8b f9")));
+	static const fnLoadKeyValues oLoadKeyValues = (fnLoadKeyValues)(hTier0 + (MEM::PatternScanFunc((void*)hTier0, "48 89 5c 24 ? 48 89 6c 24 ? 48 89 7c 24 ? 41 54 41 56 41 57 48 83 ec ? 45 33 e4")));
 
 	const char* szName = "";
 	KV3ID_t kv3ID = KV3ID_t("generic", 0x41B818518343427E, 0xB5F447C23C0CDF8C);
@@ -185,32 +185,21 @@ struct material_data_t {
 	void* pObjectInfo; // 0x48
 };
 
-class CMaterial2
+
+
+struct CMaterial2
 {
-public:
 	virtual const char* GetName() = 0;
 	virtual const char* GetShareName() = 0;
 
-	uint64_t FindParam(const char* ParamName)
+	__int64 GetAttributes()
 	{
-		using fnFindParam = uint64_t*(_fastcall*)(__int64 CMATthisPtr, uint64_t* Output, __int64 String);
-
-		static auto findparams = reinterpret_cast<fnFindParam>(materialsystembase + 0xCBA0);
-
-		uint64_t output = 0;
-
-		uint64_t* returnvalue = findparams((__int64)this, &output, (__int64)ParamName);
-
-		return output;
+		return MEM::CallVFunc<__int64, 24>(this);
 	}
 
-	char __fastcall FindParamById(unsigned int id, uint64_t* output) {
-
-		using fnFindParamById = char(__fastcall*)(__m128i* a1, uint64_t* a2, unsigned int a3);
-		static auto findparambyid = reinterpret_cast<fnFindParamById>(materialsystembase + 0x75C0);
-
-		char returnvalue = findparambyid(reinterpret_cast<__m128i*>(this), output, id);
-		return returnvalue;
+	__int64 GetVertexShaderInputSignature()
+	{
+		return MEM::CallVFunc<__int64, 18>(this);
 	}
 
 };
@@ -236,8 +225,7 @@ struct MaterialKeyVar_t
 		static auto oFindKeyVar = reinterpret_cast<fnFindKeyVar>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 ? 57 48 81 EC ? ? ? ? 33 C0 8B DA"));
 
 		// idk those enum flags, just saw it called like that soooo yea
-		auto result = oFindKeyVar(szName, 8LL, 826366246LL);
-		return result;
+		return oFindKeyVar(szName, 0x12, 0x31415926);
 		
 	}
 };
@@ -261,13 +249,14 @@ public:
 		oSetMaterialShaderType((__int64)this, (int*)&shaderVar.uKey, (BYTE*)szShaderName, 0x1A);	
 	}
 
-	void SetMaterialFunction(const char* szFunctionName, int nValue)
+	void SetMaterialFunction(const char* szFunctionName, int nValue, void* pData)
 	{
-		using fnSetMaterialFunction = unsigned __int64*(__fastcall*)(unsigned __int64* a1, int* a2, int a3, unsigned __int8 a4);
-		static auto oSetMaterialFunction = reinterpret_cast<fnSetMaterialFunction>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5c 24 ? 48 89 6c 24 ? 56 57 41 54 41 56 41 57 48 83 ec ? 0f b6 01 45 0f b6 f9 8b 2a 48 8b d9"));
+		using fnSetMaterialFunction = unsigned __int64*(__fastcall*)(unsigned __int64* a1, MaterialKeyVar_t, __int64 a3, unsigned __int8 a4);
+		static auto oSetMaterialFunction = reinterpret_cast<fnSetMaterialFunction>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 08 48 89 6C 24 10 56 57 41 54"));
 
 		MaterialKeyVar_t functionVar(szFunctionName, true);
-		oSetMaterialFunction((unsigned __int64*)this, (int*)&functionVar.uKey , nValue, 0x14u);
+
+		oSetMaterialFunction((unsigned __int64*)pData, functionVar , nValue, 0x12);
 	}
 
 	char pad01[0x18];
@@ -283,23 +272,23 @@ public:
 class IMaterialSystem2
 {
 public:
-	CMaterial2*** FindOrCreateFromResource(CMaterial2*** pOutMaterial, __int64 szMaterialName)
+
+
+
+	CMaterial2*** FindOrCreateFromResource(CMaterial2*** pOutMaterial, __int64 materialnameptr)
 	{
-		return MEM::CallVFunc<CMaterial2***, 14U>(this, pOutMaterial, szMaterialName);
+		return MEM::CallVFunc<CMaterial2***, 14U>(this, (__int64*)pOutMaterial, (__int64)materialnameptr);
 	}
 
-	CMaterial2** CreateMaterial(CMaterial2*** pOutMaterial, const char* szMaterialName, CMeshData* pData)
+	CMaterial2** CreateMaterial(CMaterial2*** pOutMaterial, const std::string_view new_material_name, void* pData)
 	{
-		return MEM::CallVFunc<CMaterial2**, 29U>(this, pOutMaterial, szMaterialName, pData, 0, 1);
+		return MEM::CallVFunc<CMaterial2**, 29U>(this, pOutMaterial, new_material_name.data(), pData, 0, 1);
 	}
 
 	void SetCreateDataByMaterial(const void* pData, CMaterial2*** const pInMaterial)
 	{
 		return MEM::CallVFunc<void, 37U>(this, pInMaterial, pData);
 	}
-
-
-
 
 };
 
@@ -319,54 +308,68 @@ static const char* flat = R"(R"#(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41
                 g_vColorTint = [1.0, 1.0, 1.0, 1.0]
 			} )#")";
 
-static const char* texturedchams = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+static constexpr char szVMatBufferWhiteVisible[] =
+R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
-    shader = "environment_layer.vfx"
-    IS_LEGACY = 1
-    F_IGNOREZ = 1
-    F_DISABLE_Z_WRITE = 1
-    F_DISABLE_Z_BUFFERING = 1
-    F_PAINT_VERTEX_COLORS = 1
-    F_TRANSLUCENT = 1
-    F_BLEND_MODE = 1
-    
-    
-    MaterialLayerReferenceShaderId_1 = -1
-    g_flDisplacementAmount1 =     0
-    g_flDisplacementMidlevel1 =     128
-    TextureColor1 =                      resource:"materials/default/default_color_tga_22e6f7.vtex_c"
-    TextureTintMask1 =                  resource:"materials/default/default_mask_tga_344101f8.vtex_c"
-    TextureNormal1 =                  resource:"materials/flat/flat_generic_03_normal_png_aab68adb.vtex_c"
-    TextureRoughness1 =                  resource:"materials/particle/abilities/archer/archer_charged_shot_vmat_g_tnormalroughness_d52512a9.vtex_c"
-    TextureAmbientOcclusion1 =          resource:"materials/default/default_ao_tga_303cc73a.vtex_c"
-    TextureMetalness1 =                  resource:"materials/default/default_metal_tga_c7502e1.vtex_c"
-    TextureDisplacement1 =              resource:"materials/concrete/concrete_trim_01_vmat_g_ttintmaskdisplacement_86a014fe.vtex_c"
-    
-    g_tColor1 = resource:"materials/default/default_color_tga_fcc21737.vtex_c"
-    g_tNormalRoughness1 =   resource:"materials/particle/abilities/archer/archer_charged_shot_vmat_g_tnormalroughness_d52512a9.vtex_c"
-    g_tPacked1 =    resource:"materials/default/default_ao_tga_303cc73a.vtex_c"
-    
- 
+	shader = "generic.vfx"
+
+	F_PAINT_VERTEX_COLORS = 1
+	F_TRANSLUCENT = 1
+	F_BLEND_MODE = 1
+
+	g_vColorTint = [1, 1, 1, 1]
+
+	TextureAmbientOcclusion = resource:"materials/default/default_mask_tga_8d0774e6.vtex"
+	g_tAmbientOcclusion = resource:"materials/default/default_mask_tga_8d0774e6.vtex"
+	g_tColor = resource:"materials/default/default_mask_tga_8d0774e6.vtex"
+	g_tNormal = resource:"materials/default/default_mask_tga_8d0774e6.vtex"
+	g_tTintMask = resource:"materials/default/default_mask_tga_8d0774e6.vtex"
+
 })";
 
-static const char* debugMatBuffer = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+static const char* textured = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
-    shader = "environment_layer.vfx"
-    
-    F_PAINT_VERTEX_COLORS = 1
-    F_TRANSLUCENT = 1
-    F_DISABLE_Z_BUFFERING = 1
-    F_BLEND_MODE = 1
-    
-    MaterialLayerReferenceShaderId_1 = -1
-    g_flDisplacementAmount1 = 0
-    g_flDisplacementMidlevel1 = 128
-    
-    TextureColor1 = resource:"materials/default/default_color_tga_22e6f7.vtex"
-    TextureTintMask1 = resource:"materials/default/default_mask_tga_344101f8.vtex"
-    
-    g_vAlbedoContrastSaturationBrightness1 = [1.0, 1.0, 0.5, 0.0]
-    g_vLayerRoughnessContrastBrightness1 = [0.0, 0.0, 0.0, 0.0]
+    shader = "tools_solid.vfx"
+
+	F_UNLIT = 1
+	g_flPhongExp = 0.100000
+
+})";
+
+
+
+static constexpr char szVMatBufferWhiteInvisible[] =
+R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	shader = "pbr.vfx"
+
+	
+
+	g_tAmbientOcclusion = resource:"materials/default/default_ao_tga_559f1ac6.vtex"
+	g_tColor = resource:"models/heroes_staging/gen_man/materials/gen_man_color_psd_66eccf52.vtex"
+	g_tNormalRoughness = resource:"materials/default/default_normal_tga_7be61377.vtex"
+    g_tSelfIllumMask = resource:"materials/default/default_mask_tga_344101f8.vtex"
+    g_tTintMask = resource:"materials/default/default_mask_tga_344101f8.vtex"
+
+
+})";
+
+static constexpr char outlinetest[] =
+R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+                shader = "tools_wireframe.vfx"
+				
+				F_WIREFRAME = 1
+				F_TRANSLUCENT = 1
+				
+
+	            g_tColor = resource:"materials/dev/primary_white_color_tga_e79cd79d.vtex"
+                g_tNormal = resource:"materials/default/default_normal_tga_7be61377.vtex"
+                g_tRoughness = resource:"materials/default/default_ao_tga_559f1ac6.vtex"
+                g_tMetalness = resource:"materials/default/default_ao_tga_559f1ac6.vtex"
+                g_tAmbientOcclusion = resource:"materials/default/default_ao_tga_559f1ac6.vtex"
+                g_vColorTint = [1.0, 1.0, 1.0, 1.0]
+
 })";
 
 

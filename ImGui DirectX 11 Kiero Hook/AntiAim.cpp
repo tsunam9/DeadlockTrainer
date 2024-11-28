@@ -10,25 +10,34 @@ int generateRandomNumber(int min, int max) {
 
 void AntiAim::DoAntiAim(CCitadelUserCmdPB* cmd) {
 
-	Helper::KeyBindHandler(Config.misc.SpeedBoostKey);
-	if (Config.misc.SpeedBoost) {
-		return;
-	}
-
 	uint64_t CameraManager = Helper::get_Camera();
 	vec2 ViewAngles = *(vec2*)(CameraManager + 0x44);
 
-	if (Config.antiaim.AAtype == 0) { // spin
-		cmd->pBaseUserCMD->playerViewAngle->viewAngles.x = 89.0f;
+	if (Config.antiaim.AAtype == 0) {
+		static float yawAngle = 89.0f;
+		static float yawDirection = -1.0f;
+		static float spinAngle = 0.0f;
 
-		float yangle = cmd->pBaseUserCMD->playerViewAngle->viewAngles.y;
-		yangle += 180.0f;
-		if (yangle >= 360.0f) {
-			yangle -= 360.0f; // Wrap around if necessary
+		// Yaw spin (up and down)
+		yawAngle += Config.antiaim.SpinPitchChange * yawDirection;
+		if (yawAngle > 89.0f) {
+			yawAngle = 89.0f;
+			yawDirection = -1.0f;
 		}
-		cmd->pBaseUserCMD->playerViewAngle->viewAngles.y = yangle;
-		return;
+		else if (yawAngle < -89.0f) {
+			yawAngle = -89.0f;
+			yawDirection = 1.0f;
+		}
+		cmd->pBaseUserCMD->playerViewAngle->viewAngles.x = yawAngle;
+
+		// Spin around (left and right)
+		spinAngle += Config.antiaim.SpinYawChange;
+		if (spinAngle > 360.0f) {
+			spinAngle = fmod(spinAngle, 360.0f);
+		}
+		cmd->pBaseUserCMD->playerViewAngle->viewAngles.y = spinAngle;
 	}
+
 	else if (Config.antiaim.AAtype == 1) { // jitter
 		// Flip the view angle
 		float flippedAngleY = ViewAngles.y + 180.0f;

@@ -23,6 +23,7 @@
 #include "Wraith.h"
 #include <variant> 
 #include "ESP.h"
+#include <d3d11.h>"
 
 static void* backup;
 void CreateHooks();

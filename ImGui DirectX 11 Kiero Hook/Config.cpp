@@ -127,8 +127,6 @@ static void JsonToBind(const json& j, KeyBind& bind) {
 
     Config.misc.bNorecoil = j["misc"]["bNorecoil"].get<bool>();
     Config.misc.fovmodifier = j["misc"]["fovmodifier"].get<float>();
-    Config.misc.SpeedBoost = j["misc"]["SpeedBoost"].get<bool>();
-    JsonToBind(j["misc"]["SpeedBoostKey"], Config.misc.SpeedBoostKey);
 
     Config.shiv.AutoAimDagger = j["shiv"]["AutoAimDagger"].get<bool>();
     Config.shiv.AutoAimDash = j["shiv"]["AutoAimDash"].get<bool>();
@@ -227,8 +225,6 @@ static void JsonToBind(const json& j, KeyBind& bind) {
 
      j["misc"]["bNorecoil"] = Config.misc.bNorecoil;
      j["misc"]["fovmodifier"] = Config.misc.fovmodifier;
-     j["misc"]["SpeedBoost"] = Config.misc.SpeedBoost;
-     j["misc"]["SpeedBoostKey"] = BindToJson(Config.misc.SpeedBoostKey);
 
      j["shiv"]["AutoAimDagger"] = Config.shiv.AutoAimDagger;
      j["shiv"]["AutoAimDash"] = Config.shiv.AutoAimDash;

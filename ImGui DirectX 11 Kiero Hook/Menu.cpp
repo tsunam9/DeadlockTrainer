@@ -661,8 +661,16 @@ void Menu::DrawRageBotTab() {
 	static int AAcurrentItem = 0; // Index of the currently selected item
 	ImGui::Combo("AAType", &AAcurrentItem, AAitems, IM_ARRAYSIZE(AAitems)); Config.antiaim.AAtype = AAcurrentItem;
 	ImGui::Text("Selected: %s", AAitems[AAcurrentItem]);
-	ImGui::SliderFloat("Lower Jitter", &Config.antiaim.lowerjitter, -180, Config.antiaim.upperjitter, "%.1f");
-	ImGui::SliderFloat("Upper Jitter", &Config.antiaim.upperjitter, Config.antiaim.lowerjitter, 180.0f, "%.1f");
+
+	if (Config.antiaim.AAtype == 0) {
+		ImGui::SliderFloat("Pitch Speed", &Config.antiaim.SpinPitchChange, 1.0f, 100.0f);
+		ImGui::SliderFloat("Yaw Speed", &Config.antiaim.SpinYawChange,1.0f,100.0f);
+	}
+	else if (Config.antiaim.AAtype == 1) {
+		ImGui::SliderFloat("Lower Jitter", &Config.antiaim.lowerjitter, -180, Config.antiaim.upperjitter, "%.1f");
+		ImGui::SliderFloat("Upper Jitter", &Config.antiaim.upperjitter, Config.antiaim.lowerjitter, 180.0f, "%.1f");
+	}
+
 	ImGui::EndChild();
 
 	ImGui::SetCursorPos(ImVec2(childWidth + spacing * 1.5, regionavailable.y * 0.5));
@@ -759,11 +767,6 @@ void Menu::DrawConfigTab(FILE* fp) {
 
 	ImGui::Checkbox("No Recoil", &Config.misc.bNorecoil);
 	ImGui::SliderFloat("Fov Multiplier", &Config.misc.fovmodifier, 0.1f, 2.0f, "%.3f");
-	ImGui::Checkbox("Speed Boost", &Config.misc.SpeedBoost);
-	if (Config.misc.SpeedBoost) {
-		ImGui::SameLine();
-		Helper::HotKey(Config.misc.SpeedBoostKey);
-	}
 	ImGui::SliderFloat("Temp Float", & Config.tempvalues.inputfloat, 0.f, 3000.f);
 	ImGui::InputInt("Temp Int", &Config.tempvalues.inputint);
 

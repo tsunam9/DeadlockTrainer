@@ -132,14 +132,8 @@ public:
     struct MiscSettings {
         bool bNorecoil = false;
         bool modfovandaspect = false;
-        bool SpeedBoost = false;
-        KeyBind SpeedBoostKey;
         float fovmodifier = 1.0f;
         float aspectratio = 1.0f;
-
-        MiscSettings() :
-            SpeedBoostKey(&SpeedBoost, std::string("Speed Boost"))
-        {}
 
     } misc;
 
@@ -225,6 +219,10 @@ public:
 	struct AntiAimSettings {
 		bool bAntiAim = false;
         int AAtype = 0;
+
+        float SpinYawChange = 1.0f;
+        float SpinPitchChange = 1.0f;
+
         float lowerjitter = -90.0f;
         float upperjitter = 90.0f;
 	} antiaim;
@@ -258,7 +256,7 @@ public:
         float slider1 = 0.0f;
         float slider2 = 0.0f;
         float inputfloat = 0.0f;
-        int inputint = 0x20;
+        int inputint = 0;
 
         float tempx;
         float tempy; 

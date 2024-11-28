@@ -12,6 +12,5 @@ public:
 	void DoMisc();
 	void SimpleNoRecoil();
 	void DoSkyModulation();
-	static void SpeedBoost(uint64_t localplayercontroller);
 
 };

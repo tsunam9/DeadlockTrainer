@@ -612,7 +612,7 @@ class CCitadelUserCmdPB {
 public:
 	char pad[0x8];
 	DWORD commandNumber;
-	char pad1[0x1C];
+	char pad1[0x3C];
 	CBaseUserCMD* pBaseUserCMD;
     CMsgVector* origin;
 	CMsgQAngle* cameraViewAngle;

@@ -11,6 +11,7 @@ CStrongHandle<CMaterial2> Chams::CreateMaterial(const char* szMaterialName, cons
 	pKeyValues3->LoadFromBuffer(szVmatBuffer);
 
 	CStrongHandle<CMaterial2> pCustomMaterial = {};
+
 	creatematerial(nullptr, &pCustomMaterial, szMaterialName, pKeyValues3, 0, 1);
 
 	return pCustomMaterial;
@@ -56,6 +57,35 @@ static void printBinary(uint64_t num) {
 	std::cout << std::endl; // New line after the binary output
 }
 
+CMaterial2* create_material(const std::string_view material_name) {
+	std::array< byte*, 0x200 > buffer{ };
+
+	static auto mymatsystem = GetInterface<IMaterialSystem2>("materialsystem2.dll", "VMaterialSystem2_001");
+
+	const struct set_material_data_t {
+		explicit constexpr set_material_data_t(void* data) : m_data(data) {}
+
+
+		[[nodiscard]] auto get_data() const noexcept { return this->m_data; }
+	private:
+		void* m_data{ };
+	} material(buffer.data() + 0x50);
+
+	CMaterial2** material_prototype;
+
+	const char* str = "materials/dev/primary_white.vmat";
+
+	mymatsystem->FindOrCreateFromResource(&material_prototype, (__int64)str);
+	mymatsystem->SetCreateDataByMaterial(material.get_data(), &material_prototype);
+
+
+	CMaterial2** custom_material;
+	mymatsystem->CreateMaterial(&custom_material, material_name, material.get_data());
+
+	return *custom_material;
+
+}
+
 void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bool ignorez) {
 
 	if (!matdata)
@@ -76,13 +106,12 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 	CMaterial2*** mymaterial = drawfindmattarget((__int64)mymatsystem, (__int64*)mymat2, (__int64)str);
 	CMaterial2*** ignorematerial = drawfindmattarget((__int64)mymatsystem, (__int64*)ignorezmat, (__int64)str2);
 
+	__int64 vertexinput = matdata->pMaterial->GetVertexShaderInputSignature();
+	__int64 attributes = matdata->pMaterial->GetAttributes();
+
+	static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
 
 	std::string matname = matdata->pMaterial->GetName();
-
-	if (!islocal) {
-		//std::cout << matname << "\n";
-	}
-
 	if (matname.find("outline") != std::string::npos) {
 		return;
 	}
@@ -111,14 +140,10 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 			matdata->pMaterial = **ignorezmat;
 		}
 		else {
-			matdata->pMaterial = **mymaterial;
+			if (setmat) {
+				matdata->pMaterial = setmat;
+			}
 		}
-	}
-
-	if (!islocal) {
-		uint64_t output;
-		if (matdata->pMaterial->FindParamById(Config.tempvalues.inputint, &output))
-			std::cout << output << std::endl;
 	}
 
 

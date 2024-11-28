@@ -31,7 +31,19 @@ typedef __int64(__fastcall* f_DrawModel)(
 f_DrawModel DrawModel = nullptr;
 f_DrawModel DrawModelTarget = reinterpret_cast<f_DrawModel>(scenesytembase + MEM::PatternScanFunc((void*)scenesytembase, "48 8b c4 48 89 50 ? 53"));
 
+//a1 : Animatablesceneobjectdesc
+//a2 : dx device
+// a3 : cmeshdata
+// a4 : idk
+// a5 : CSceneView
+// a6 : CSceneLayer
+// a7 : idk
+// a8 : idk
+
+class CRenderContextBase;
+
 void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, __int64 a8) {
+
 
 	if (!(iEngine->IsInGame())) {
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
@@ -74,20 +86,26 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 	}
 
 
-
 	if(objname == "C_CitadelPlayerPawn"){
 
 		bool islocal = false;
 
 		if (ownerobj == localpawn) {
 			islocal = true;
+			if (Config.esp.LocalChams && Config.colors.LocalChamsCol.w == 0.f) {
+				return;
+			}
 		}
 
-
 		Chams::DrawChams(material_data, islocal, ownerobj, false);
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-		return;
 
+		int value = Config.tempvalues.inputint;
+
+
+		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+
+
+		return;
 	}
 
 
@@ -125,6 +143,7 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 
 	CreateMove(a1, a2, a3);
 	CCitadelUserCmdPB* cmd = Helper::GetCurrentUserCmd();
+
 
 	if (!cmd->pBaseUserCMD->playerViewAngle || !cmd->cameraViewAngle)
 		return;
@@ -167,10 +186,6 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	WardenLogic warden;
 	YamatoLogic yamato;
 	WraithLogic wraith;
-
-	if (Config.aimbot.MovementFix) {
-		Helper::CorrectViewAngles(cmd);
-	}
 
 		switch (LocalPlayer.HeroID) {
 
@@ -229,8 +244,6 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	if (Config.aimbot.MovementFix) {
 		Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
 	}
-
-	Misc::SpeedBoost(localplayercontroller); // needs to run to reset even if its not on
 
 
 	if (Config.MenuOpen) { // prevent anything except movement while menu open
@@ -319,13 +332,13 @@ __int64 __fastcall hkFindParam(__int64 firstparam, const char* param) {
 }
 
 
-using fnUpdateSceneObject = __int64(__fastcall*)(C_AggregateSceneObject* object, __int64 unk);
-fnUpdateSceneObject UpdateSceneObjectTarget = reinterpret_cast<fnUpdateSceneObject>(scenesytembase + MEM::PatternScanFunc((void*)scenesytembase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 4C 8B F9"));
+using fnUpdateSceneObject = __int64(__fastcall*)(C_AggregateSceneObject* object, __int64 unk, char a3);
+fnUpdateSceneObject UpdateSceneObjectTarget = reinterpret_cast<fnUpdateSceneObject>(scenesytembase + MEM::PatternScanFunc((void*)scenesytembase, "48 89 5c 24 ? 48 89 6c 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 ec ? 4c 8b f9 33 ff"));
 fnUpdateSceneObject ogUpdateSceneObject = nullptr;
 
-__int64 __fastcall hkUpdateSceneObject(C_AggregateSceneObject* object, __int64 unk)
+__int64 __fastcall hkUpdateSceneObject(C_AggregateSceneObject* object, __int64 unk, char a3)
 {
-	__int64 result = ogUpdateSceneObject(object, unk);
+	__int64 result = ogUpdateSceneObject(object, unk, a3);
 
 	if (Config.esp.ModWorld)
 	{
@@ -431,6 +444,7 @@ static f_levelinit ogLevelInit = nullptr;
 static f_levelinit LevelInitTarget = reinterpret_cast<f_levelinit>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 89 5c 24 ? 56 48 83 ec ? 48 8b 0d ? ? ? ? 48 8b f2"));
 
 __int64 hkLevelInit(__int64 a1, __int64 a2) {
+
 	uint64_t globalsoffset = MEM::PatternScanOffset((void*)ClientModuleBase, "48 8B 05 ? ? ? ? 44 3B 40", 3, 7);
 	globals::instance().Globals = *(CGlobalVarsBase**)(ClientModuleBase + globalsoffset);
 	return ogLevelInit(a1, a2);
@@ -544,7 +558,7 @@ static f_doglow doglowtarget = reinterpret_cast<f_doglow>(MEM::GetClientBase() +
 
 void __fastcall hkDoGlow(__int64 a1) {
 
-	if (!Config.esp.GlowEsp)
+	if (!Config.esp.GlowEsp || !Config.esp.bEsp)
 		return;
 
 

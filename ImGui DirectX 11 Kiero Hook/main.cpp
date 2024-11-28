@@ -182,7 +182,7 @@ MMMMMMMMMMM      .88                            MMMMMMMMMMMMMM
 
 		                                                                                                                                                       
 
-	bool init_hook = false;
+	static bool init_hook = false;
 	do
 	{
 		if (kiero::init(kiero::RenderType::D3D11) == kiero::Status::Success)

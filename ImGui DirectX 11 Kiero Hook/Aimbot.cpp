@@ -667,12 +667,11 @@ void Aimbot::RageAimAt(uint64_t entity) {
 
 	}
 
-	if (!readyToFire())
-		return;
 
 	aim_RageBotting = true;
 	aim_Aimbotting = true;
 
+	CUserCmd->buttons |= IN_ATTACK;
 	ViewAngles->x = target_angles.x;
 	ViewAngles->y = target_angles.y;
 	return;
@@ -750,12 +749,11 @@ void Aimbot::RageAimAtMinions(uintptr_t entity) {
 
 	}
 
-	if (!readyToFire())
-		return;
 
 	aim_RageBotting = true;
 	aim_Aimbotting = true;
 
+	CUserCmd->buttons |= IN_ATTACK;
 	ViewAngles->x = target_angles.x;
 	ViewAngles->y = target_angles.y;
 

@@ -1,5 +1,5 @@
 // Generated using https://github.com/a2x/cs2-dumper
-// 2024-11-12 14:37:20.795578500 UTC
+// 2024-11-22 02:07:43.648435200 UTC
 
 #pragma once
 
@@ -8,7 +8,7 @@
 namespace cs2_dumper {
     namespace schemas {
         // Module: client.dll
-        // Class count: 1920
+        // Class count: 1980
         // Enum count: 15
         namespace client_dll {
             // Alignment: 4
@@ -28,13 +28,7 @@ namespace cs2_dumper {
                 PORTRAIT_SCALE_VERSUS_LOADOUT = 0x4
             };
             // Alignment: 4
-            // Member count: 2
-            enum class ProfileTabs_t : uint32_t {
-                EProfileTabStats = 0x0,
-                EProfileTabRankHistory = 0x1
-            };
-            // Alignment: 4
-            // Member count: 111
+            // Member count: 117
             enum class EGCCitadelClientMessages : uint32_t {
                 k_EMsgClientToGCStartMatchmaking = 0x2332,
                 k_EMsgClientToGCStartMatchmakingResponse = 0x2333,
@@ -146,7 +140,13 @@ namespace cs2_dumper {
                 k_EMsgClientToGCDevRequestCheatReports = 0x240E,
                 k_EMsgClientToGCDevRequestCheatReportsResponse = 0x240F,
                 k_EMsgClientToGCDevBan = 0x2410,
-                k_EMsgClientToGCDevBanResponse = 0x2411
+                k_EMsgClientToGCDevBanResponse = 0x2411,
+                k_EMsgClientToGCGetHeroMMRRankings = 0x2412,
+                k_EMsgClientToGCGetHeroMMRRankingsResponse = 0x2413,
+                k_EMsgClientToGCGetLeaderboard = 0x2414,
+                k_EMsgClientToGCGetLeaderboardResponse = 0x2415,
+                k_EMsgClientToGCGetAccountLeaderboards = 0x2416,
+                k_EMsgClientToGCGetAccountLeaderboardsResponse = 0x2417
             };
             // Alignment: 4
             // Member count: 7
@@ -315,6 +315,12 @@ namespace cs2_dumper {
                 k_eDevBanReason_MovementAssist = 0x3
             };
             // Alignment: 4
+            // Member count: 2
+            enum class HeroSortingType_t : uint32_t {
+                EProfileSortGamesPlayed = 0x0,
+                EProfileSortRankedPerformance = 0x1
+            };
+            // Alignment: 4
             // Member count: 5
             enum class PortraitDisplayMode_t : uint32_t {
                 PORTRAIT_DISPLAY_MODE_INVALID = 0xFFFFFFFFFFFFFFFF,
@@ -324,7 +330,7 @@ namespace cs2_dumper {
                 PORTRAIT_DISPLAY_MODE_TREASURE_SMALL = 0x3
             };
             // Alignment: 4
-            // Member count: 17
+            // Member count: 18
             enum class EChooseHeroRosterContext : uint32_t {
                 None = 0x0,
                 Matchmake = 0x1,
@@ -342,7 +348,8 @@ namespace cs2_dumper {
                 BotMatchMedium = 0xD,
                 PrivateLobby = 0xE,
                 RankedMatchmake = 0xF,
-                HeroLabsMatchmake = 0x10
+                HeroLabsMatchmake = 0x10,
+                DashboardBuilds = 0x11
             };
             // Alignment: 4
             // Member count: 1
@@ -368,7 +375,7 @@ namespace cs2_dumper {
             // MNetworkIncludeByName
             // NetworkVarNames: m_eLootType (int)
             namespace C_ItemCrate {
-                constexpr std::ptrdiff_t m_eLootType = 0xC98; // 
+                constexpr std::ptrdiff_t m_eLootType = 0xC90; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -381,14 +388,18 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_RadianceVData {
-                constexpr std::ptrdiff_t m_RadianceFxParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_RadianceDamageParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ClientsideDamageParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_RadianceFxParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_RadianceDamageParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_ClientsideDamageParticle = 0x7C8; // 
                 constexpr std::ptrdiff_t m_strDamageRecievedSound = 0x8A8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_Warden_RiotProtocol_CastDelay {
+            }
+            // Parent: CCitadelModifier
+            // Field count: 0
+            namespace CCitadel_Modifier_Upgrade_SpiritSnatch_Buff {
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -413,8 +424,8 @@ namespace cs2_dumper {
             namespace CModifier_SiphonBullets_VData {
                 constexpr std::ptrdiff_t m_StealWatcherModifier = 0x638; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_HealModifier = 0x648; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_TracerParticle = 0x658; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x738; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TracerParticle = 0x658; // 
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x738; // 
                 constexpr std::ptrdiff_t m_ExplodeSound = 0x818; // 
             }
             // Parent: CitadelItemVData
@@ -429,6 +440,10 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_Modifier_LingeringAssist {
             }
+            // Parent: C_BaseTrigger
+            // Field count: 0
+            namespace C_TriggerLerpObject {
+            }
             // Parent: C_BaseToggle
             // Field count: 0
             namespace C_FuncMover {
@@ -439,10 +454,6 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_hTrackedEntity = 0xAC0; // 
                 constexpr std::ptrdiff_t m_nTrackedEntity = 0xAC4; // 
             }
-            // Parent: C_BaseTrigger
-            // Field count: 0
-            namespace C_TriggerLerpObject {
-            }
             // Parent: CitadelAbilityVData
             // Field count: 7
             //
@@ -451,11 +462,11 @@ namespace cs2_dumper {
             namespace CAbility_Rutger_ForceField_VData {
                 constexpr std::ptrdiff_t m_AuraModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_VictimPushModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_SlowModifier = 0x1580; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_SlowModifier = 0x1580; // 
                 constexpr std::ptrdiff_t m_strDomeCreated = 0x1590; // 
                 constexpr std::ptrdiff_t m_strChargeUpSound = 0x15A0; // 
                 constexpr std::ptrdiff_t m_strPushAndDamage = 0x15B0; // 
-                constexpr std::ptrdiff_t m_ChronoSphereChargeParticle = 0x15C0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChronoSphereChargeParticle = 0x15C0; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 9
@@ -463,10 +474,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Tokamak_CrimsonCannonVData {
-                constexpr std::ptrdiff_t m_LaserShot = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ChargeParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CasterOnlyTargetParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_EnemyTargetedParticle = 0x1800; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LaserShot = 0x1560; // 
+                constexpr std::ptrdiff_t m_ChargeParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_CasterOnlyTargetParticle = 0x1720; // 
+                constexpr std::ptrdiff_t m_EnemyTargetedParticle = 0x1800; // 
                 constexpr std::ptrdiff_t m_strEnemyBeenTargetedSound = 0x18E0; // 
                 constexpr std::ptrdiff_t m_strCasterTargetSelectedSound = 0x18F0; // 
                 constexpr std::ptrdiff_t m_strFireSound = 0x1900; // 
@@ -490,7 +501,7 @@ namespace cs2_dumper {
             namespace CCitadel_Modifier_TechOverflowProcWatcherVData {
                 constexpr std::ptrdiff_t m_BuildUpModifier = 0x638; // 
                 constexpr std::ptrdiff_t m_ProcModifier = 0x648; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_BuildupSuccessEffect = 0x658; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuildupSuccessEffect = 0x658; // 
             }
             // Parent: None
             // Field count: 6
@@ -516,7 +527,12 @@ namespace cs2_dumper {
             // Metadata:
             // NetworkVarNames: m_iszSoundName (string_t)
             namespace C_TriggerItemShop {
-                constexpr std::ptrdiff_t m_iszSoundName = 0x868; // 
+                constexpr std::ptrdiff_t m_iszSoundName = 0x9A0; // 
+            }
+            // Parent: CBaseFilter
+            // Field count: 1
+            namespace CFilterName {
+                constexpr std::ptrdiff_t m_iFilterName = 0x5C0; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -536,7 +552,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Viper_DebuffDaggerVData {
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifierVData
@@ -545,8 +561,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_CloakingDevice_Active_Ambush_VData {
-                constexpr std::ptrdiff_t m_InvisRevealedParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AmbushParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_InvisRevealedParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_AmbushParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_strActivateAmbushSound = 0x7C8; // 
             }
             // Parent: CCitadelModifier
@@ -567,7 +583,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Mirage_SandPhantom_ProcReady_VData {
-                constexpr std::ptrdiff_t m_ProcReadyParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ProcReadyParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_strProcReadySound = 0x6E8; // 
             }
             // Parent: CitadelAbilityVData
@@ -578,7 +594,7 @@ namespace cs2_dumper {
             namespace CAbility_Synth_Blitz_VData {
                 constexpr std::ptrdiff_t m_BlitzModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_TechAmpModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_SlowParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SlowParticle = 0x1580; // 
                 constexpr std::ptrdiff_t m_strProcSound = 0x1660; // 
             }
             // Parent: C_CitadelBaseAbility
@@ -595,7 +611,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ChainLightningVData {
-                constexpr std::ptrdiff_t m_TracerParticle = 0x738; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TracerParticle = 0x738; // 
                 constexpr std::ptrdiff_t m_ChainModifier = 0x818; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifier
@@ -608,8 +624,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityMedicHealVData {
-                constexpr std::ptrdiff_t m_HealBeamParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HealTargetParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_HealBeamParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_HealTargetParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_strHealCastSound = 0x1720; // 
             }
             // Parent: C_BaseEntity
@@ -622,7 +638,7 @@ namespace cs2_dumper {
             // Metadata:
             // NetworkVarNames: m_flTurnSolidTime (GameTime_t)
             namespace C_Citadel_Ice_Dome_Blocker {
-                constexpr std::ptrdiff_t m_flTurnSolidTime = 0xB08; // 
+                constexpr std::ptrdiff_t m_flTurnSolidTime = 0xB00; // 
             }
             // Parent: CCitadelModifierAuraVData
             // Field count: 0
@@ -637,7 +653,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Thumper_BulletWatcherVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_ExplodeSound = 0x6E8; // 
             }
             // Parent: CitadelAbilityVData
@@ -646,7 +662,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Protection_RacketVData {
-                constexpr std::ptrdiff_t m_CastOtherParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastOtherParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_ArmorModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CBodyComponent
@@ -656,6 +672,13 @@ namespace cs2_dumper {
             // NetworkVarNames: m_skeletonInstance (CSkeletonInstance)
             namespace CBodyComponentSkeletonInstance {
                 constexpr std::ptrdiff_t m_skeletonInstance = 0x80; // 
+            }
+            // Parent: CBaseFilter
+            // Field count: 3
+            namespace FilterHealth {
+                constexpr std::ptrdiff_t m_bAdrenalineActive = 0x5C0; // 
+                constexpr std::ptrdiff_t m_iHealthMin = 0x5C4; // 
+                constexpr std::ptrdiff_t m_iHealthMax = 0x5C8; // 
             }
             // Parent: C_CitadelProjectile
             // Field count: 2
@@ -687,8 +710,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityPowerSurgeVData {
-                constexpr std::ptrdiff_t m_ChainParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CastHitParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChainParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_CastHitParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_BuffModifier = 0x1720; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ChainModifier = 0x1730; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -709,16 +732,11 @@ namespace cs2_dumper {
             }
             // Parent: CCitadelModifier
             // Field count: 0
-            namespace CCitadel_Modifier_AirDamping {
+            namespace CCitadel_Modifier_ScalingPowerUp {
             }
-            // Parent: CCitadel_Modifier_InvisVData
-            // Field count: 2
-            //
-            // Metadata:
-            // MGetKV3ClassDefaults
-            namespace CCitadel_Modifier_ReefdwellerHarpoon_LatchedVData {
-                constexpr std::ptrdiff_t m_flMaxCameraAngleForSeeing = 0x8D0; // 
-                constexpr std::ptrdiff_t m_flMaxDistanceForSeeing = 0x8D4; // 
+            // Parent: CCitadelModifier
+            // Field count: 0
+            namespace CCitadel_Modifier_AirDamping {
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -732,8 +750,8 @@ namespace cs2_dumper {
             namespace CCitadelModifierShadowStepVData {
                 constexpr std::ptrdiff_t m_SilenceModifier = 0x8D0; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ArmorDebuff = 0x8E0; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_InvisChangedEffect = 0x8F0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ShadowRevealedEffect = 0x9D0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_InvisChangedEffect = 0x8F0; // 
+                constexpr std::ptrdiff_t m_ShadowRevealedEffect = 0x9D0; // 
                 constexpr std::ptrdiff_t m_flMinInvisDuration = 0xAB0; // 
             }
             // Parent: CCitadelModifier
@@ -746,14 +764,14 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_PowerSurgeVData {
-                constexpr std::ptrdiff_t m_TracerParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_WeaponFxParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TracerParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_WeaponFxParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_strWeaponShootSound = 0x7C8; // 
                 constexpr std::ptrdiff_t m_strBulletWhizSound = 0x7D8; // 
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x7E8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: C_CitadelBaseAbility
-            // Field count: 19
+            // Field count: 20
             //
             // Metadata:
             // NetworkVarNames: m_flTimeStartZipping (GameTime_t)
@@ -771,6 +789,7 @@ namespace cs2_dumper {
             // NetworkVarNames: m_iAttachedZipLineLane (int)
             // NetworkVarNames: m_bDroppedFromZipline (bool)
             // NetworkVarNames: m_vAttachZipLineOffset (Vector)
+            // NetworkVarNames: m_flZiplineAirDrag (float)
             namespace CCitadel_Ability_ZipLine {
                 constexpr std::ptrdiff_t m_flActivatePressTime = 0x1098; // 
                 constexpr std::ptrdiff_t m_bThinking = 0x109C; // 
@@ -791,6 +810,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bDroppedFromZipline = 0x1118; // 
                 constexpr std::ptrdiff_t m_hAttachZipLine = 0x1119; // 
                 constexpr std::ptrdiff_t m_vAttachZipLineOffset = 0x111C; // 
+                constexpr std::ptrdiff_t m_flZiplineAirDrag = 0x1128; // 
             }
             // Parent: CCitadelBaseAbilityServerOnly
             // Field count: 0
@@ -802,8 +822,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_TeamRelativeParticleVData {
-                constexpr std::ptrdiff_t m_ParentViewParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_OtherPlayerViewParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ParentViewParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_OtherPlayerViewParticle = 0x6E8; // 
             }
             // Parent: CCitadelModifierAuraVData
             // Field count: 1
@@ -830,10 +850,6 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_iszEnemyEffectName = 0xE30; // 
                 constexpr std::ptrdiff_t m_iFriendlyEffectIndex = 0xE38; // 
                 constexpr std::ptrdiff_t m_iEnemyEffectIndex = 0xE40; // 
-            }
-            // Parent: CCitadel_Modifier_PowerUp
-            // Field count: 0
-            namespace CCitadel_Modifier_BreakablePropCooldownReduction {
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -926,7 +942,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_BulletFlurryVData {
-                constexpr std::ptrdiff_t m_ChannelParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChannelParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_BulletFlurryModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifier
@@ -986,8 +1002,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Item_TechDamagePulseVData {
-                constexpr std::ptrdiff_t m_PulseParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TargetParticle = 0x1688; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_PulseParticle = 0x15A8; // 
+                constexpr std::ptrdiff_t m_TargetParticle = 0x1688; // 
                 constexpr std::ptrdiff_t m_strPulseTickSound = 0x1768; // 
                 constexpr std::ptrdiff_t m_iMaxTargets = 0x1778; // 
             }
@@ -1020,7 +1036,7 @@ namespace cs2_dumper {
             // NetworkVarNames: m_flFlurryEndTime (CCitadelAutoScaledTime)
             namespace CCitadel_Ability_BulletFlurry {
                 constexpr std::ptrdiff_t m_flFlurryEndTime = 0xCA0; // 
-                constexpr std::ptrdiff_t m_vecShootTargets = 0xDD0; // 
+                constexpr std::ptrdiff_t m_vecShootTargets = 0xDD0; // CUtlVector<CHandle<C_BaseEntity>>
                 constexpr std::ptrdiff_t m_nNumPlayersKilled = 0xDE8; // 
                 constexpr std::ptrdiff_t m_nShootIndex = 0xDEC; // 
                 constexpr std::ptrdiff_t m_nShootIndexNPC = 0xDF0; // 
@@ -1038,12 +1054,12 @@ namespace cs2_dumper {
             // NetworkVarNames: m_hTargetedEnemy (EHANDLE)
             // NetworkVarNames: m_nElectricBeamCasts (int)
             namespace C_NPC_Boss_Tier2 {
-                constexpr std::ptrdiff_t m_iLane = 0x1478; // 
-                constexpr std::ptrdiff_t m_flFadeOutStart = 0x147C; // 
-                constexpr std::ptrdiff_t m_flFadeOutEnd = 0x1480; // 
-                constexpr std::ptrdiff_t m_hTargetedEnemy = 0x1484; // 
-                constexpr std::ptrdiff_t m_vecElectricBeamLookTarget = 0x1488; // 
-                constexpr std::ptrdiff_t m_nElectricBeamCasts = 0x14A0; // 
+                constexpr std::ptrdiff_t m_iLane = 0x1470; // 
+                constexpr std::ptrdiff_t m_flFadeOutStart = 0x1474; // 
+                constexpr std::ptrdiff_t m_flFadeOutEnd = 0x1478; // 
+                constexpr std::ptrdiff_t m_hTargetedEnemy = 0x147C; // 
+                constexpr std::ptrdiff_t m_vecElectricBeamLookTarget = 0x1480; // 
+                constexpr std::ptrdiff_t m_nElectricBeamCasts = 0x1498; // 
             }
             // Parent: CCitadelModifierAuraVData
             // Field count: 1
@@ -1051,11 +1067,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadelModifierAirLiftExplodeAuraVData {
-                constexpr std::ptrdiff_t m_empWaveParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-            }
-            // Parent: CCitadelModifier
-            // Field count: 0
-            namespace CCitadel_Modifier_BreakablePropExtraGoldPickup {
+                constexpr std::ptrdiff_t m_empWaveParticle = 0x648; // 
             }
             // Parent: C_BaseEntity
             // Field count: 26
@@ -1150,6 +1162,19 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Cadence_Crescendo_PostAOE_VData {
             }
+            // Parent: CCitadel_Modifier_BaseBulletPreRollProcVData
+            // Field count: 6
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Modifier_SalvoBulletVData {
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x738; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_ExplosionParticle = 0x748; // 
+                constexpr std::ptrdiff_t m_ExplosionVictimParticle = 0x828; // 
+                constexpr std::ptrdiff_t m_SalvoWeaponParticle = 0x908; // 
+                constexpr std::ptrdiff_t m_ShotVictimSound = 0x9E8; // 
+                constexpr std::ptrdiff_t m_ShotConfirmationSound = 0x9F8; // 
+            }
             // Parent: CCitadelModifierVData
             // Field count: 0
             //
@@ -1163,7 +1188,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityCrowdControlVData {
-                constexpr std::ptrdiff_t m_CastParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_SlowModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -1174,12 +1199,12 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_ProximityRitual_VData {
                 constexpr std::ptrdiff_t m_PredatoryStatueModel = 0x1560; // 
-                constexpr std::ptrdiff_t m_CatReappearParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CatDisappearParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CatEyesParticle = 0x1800; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CatSummonParticle = 0x18E0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CatRecallParticle = 0x19C0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_RecallLineParticle = 0x1AA0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CatReappearParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_CatDisappearParticle = 0x1720; // 
+                constexpr std::ptrdiff_t m_CatEyesParticle = 0x1800; // 
+                constexpr std::ptrdiff_t m_CatSummonParticle = 0x18E0; // 
+                constexpr std::ptrdiff_t m_CatRecallParticle = 0x19C0; // 
+                constexpr std::ptrdiff_t m_RecallLineParticle = 0x1AA0; // 
                 constexpr std::ptrdiff_t m_strRecallSound = 0x1B80; // 
                 constexpr std::ptrdiff_t m_strKilledSound = 0x1B90; // 
                 constexpr std::ptrdiff_t m_PredatoryStatueModifier = 0x1BA0; // CEmbeddedSubclass<CCitadelModifier>
@@ -1235,20 +1260,22 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_ClimbCount = 0xD34; // 
             }
             // Parent: C_Team
-            // Field count: 5
+            // Field count: 6
             //
             // Metadata:
             // NetworkVarNames: m_hPayload (EHANDLE)
             // NetworkVarNames: m_nBossesAlive (int)
             // NetworkVarNames: m_nBossesMax (int)
             // NetworkVarNames: m_nFlexSlotsUnlocked (EFlexSlotTypes_t)
+            // NetworkVarNames: m_nBaseGuardianLanesCleared (int)
             // NetworkVarNames: m_vecFOWEntities (STeamFOWEntity)
             namespace C_CitadelTeam {
                 constexpr std::ptrdiff_t m_hPayload = 0x620; // 
                 constexpr std::ptrdiff_t m_nBossesAlive = 0x624; // 
                 constexpr std::ptrdiff_t m_nBossesMax = 0x628; // 
                 constexpr std::ptrdiff_t m_nFlexSlotsUnlocked = 0x62C; // 
-                constexpr std::ptrdiff_t m_vecFOWEntities = 0x630; // C_UtlVectorEmbeddedNetworkVar<STeamFOWEntity>
+                constexpr std::ptrdiff_t m_nBaseGuardianLanesCleared = 0x630; // 
+                constexpr std::ptrdiff_t m_vecFOWEntities = 0x638; // C_UtlVectorEmbeddedNetworkVar<STeamFOWEntity>
             }
             // Parent: C_BaseEntity
             // Field count: 1
@@ -1290,9 +1317,9 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flParryStunTime = 0x15B0; // 
                 constexpr std::ptrdiff_t m_flParryCooldown = 0x15B4; // 
                 constexpr std::ptrdiff_t m_AirMeleeUpScale = 0x15B8; // 
-                constexpr std::ptrdiff_t m_HoldBeginEffect = 0x15C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_SuccessfulParryParticle = 0x16A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ParryActivateParticle = 0x1788; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_HoldBeginEffect = 0x15C8; // 
+                constexpr std::ptrdiff_t m_SuccessfulParryParticle = 0x16A8; // 
+                constexpr std::ptrdiff_t m_ParryActivateParticle = 0x1788; // 
                 constexpr std::ptrdiff_t m_cameraSequenceHoldStart = 0x1868; // CitadelCameraOperationsSequence_t
                 constexpr std::ptrdiff_t m_cameraSequenceHitImpact = 0x18F0; // CitadelCameraOperationsSequence_t
                 constexpr std::ptrdiff_t m_strHoldBegin = 0x1978; // 
@@ -1321,60 +1348,81 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAI_NPC_TrooperVData {
-                constexpr std::ptrdiff_t m_TrooperType = 0xFB0; // 
-                constexpr std::ptrdiff_t m_flTrooperDamageResistPct = 0xFB4; // 
-                constexpr std::ptrdiff_t m_flT1BossDamageResistPct = 0xFB8; // 
-                constexpr std::ptrdiff_t m_flT2BossDamageResistPct = 0xFBC; // 
-                constexpr std::ptrdiff_t m_flBarrackGuardianDamageResistPct = 0xFC0; // 
-                constexpr std::ptrdiff_t m_flNearDeathDuration = 0xFC4; // 
-                constexpr std::ptrdiff_t m_flFlySpeed = 0xFC8; // 
-                constexpr std::ptrdiff_t m_flFlyHeight = 0xFCC; // 
-                constexpr std::ptrdiff_t m_flMeleeDamage = 0xFD0; // 
-                constexpr std::ptrdiff_t m_flMeleeDuration = 0xFD4; // 
-                constexpr std::ptrdiff_t m_flMeleeChargeRange = 0xFD8; // 
-                constexpr std::ptrdiff_t m_flAttackT1BossMaxRange = 0xFDC; // 
-                constexpr std::ptrdiff_t m_flAttackTrooperMaxRange = 0xFE0; // 
-                constexpr std::ptrdiff_t m_flShieldDamageResistPct = 0xFE4; // 
-                constexpr std::ptrdiff_t m_flHealthBarOffsetDucking = 0xFE8; // 
-                constexpr std::ptrdiff_t m_flTrooperDPS = 0xFEC; // 
-                constexpr std::ptrdiff_t m_flPlayerDPS = 0xFF0; // 
-                constexpr std::ptrdiff_t m_flT1BossDPS = 0xFF4; // 
-                constexpr std::ptrdiff_t m_flT1BossDPSBaseResist = 0xFF8; // 
-                constexpr std::ptrdiff_t m_flT1BossDPSMaxResist = 0xFFC; // 
-                constexpr std::ptrdiff_t m_flT1BossDPSMaxResistTimeInSeconds = 0x1000; // 
-                constexpr std::ptrdiff_t m_flT2BossDPS = 0x1004; // 
-                constexpr std::ptrdiff_t m_flT2BossDPSBaseResist = 0x1008; // 
-                constexpr std::ptrdiff_t m_flT2BossDPSMaxResist = 0x100C; // 
-                constexpr std::ptrdiff_t m_flT2BossDPSMaxResistTimeInSeconds = 0x1010; // 
-                constexpr std::ptrdiff_t m_flT3BossDPS = 0x1014; // 
-                constexpr std::ptrdiff_t m_flBarrackBossDPS = 0x1018; // 
-                constexpr std::ptrdiff_t m_flGeneratorBossDPS = 0x101C; // 
-                constexpr std::ptrdiff_t m_BossAttackParticle = 0x1020; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_LastHitParticle = 0x1100; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TargetingLaserParticle = 0x11E0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TargetingEyeFlashParticle = 0x12C0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sZiplineContainerBreakFromDamageParticle = 0x13A0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sZiplineContainerBreakFromLandingParticle = 0x1480; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_MedicHealActiveParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sPlayerLastHitSound = 0x1640; // 
-                constexpr std::ptrdiff_t m_sCelebrationSound = 0x1650; // 
-                constexpr std::ptrdiff_t m_sZiplineContainerBreakSound = 0x1660; // 
-                constexpr std::ptrdiff_t m_NearDeathModifier = 0x1670; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_TrooperBossInvulnModifier = 0x1680; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_TrooperType = 0x10D8; // 
+                constexpr std::ptrdiff_t m_flTrooperDamageResistPct = 0x10DC; // 
+                constexpr std::ptrdiff_t m_flT1BossDamageResistPct = 0x10E0; // 
+                constexpr std::ptrdiff_t m_flT2BossDamageResistPct = 0x10E4; // 
+                constexpr std::ptrdiff_t m_flBarrackGuardianDamageResistPct = 0x10E8; // 
+                constexpr std::ptrdiff_t m_flNearDeathDuration = 0x10EC; // 
+                constexpr std::ptrdiff_t m_flFlySpeed = 0x10F0; // 
+                constexpr std::ptrdiff_t m_flFlyHeight = 0x10F4; // 
+                constexpr std::ptrdiff_t m_flMeleeDamage = 0x10F8; // 
+                constexpr std::ptrdiff_t m_flMeleeDuration = 0x10FC; // 
+                constexpr std::ptrdiff_t m_flMeleeChargeRange = 0x1100; // 
+                constexpr std::ptrdiff_t m_flAttackT1BossMaxRange = 0x1104; // 
+                constexpr std::ptrdiff_t m_flAttackTrooperMaxRange = 0x1108; // 
+                constexpr std::ptrdiff_t m_flShieldDamageResistPct = 0x110C; // 
+                constexpr std::ptrdiff_t m_flHealthBarOffsetDucking = 0x1110; // 
+                constexpr std::ptrdiff_t m_flTrooperDPS = 0x1114; // 
+                constexpr std::ptrdiff_t m_flPlayerDPS = 0x1118; // 
+                constexpr std::ptrdiff_t m_flT1BossDPS = 0x111C; // 
+                constexpr std::ptrdiff_t m_flT1BossDPSBaseResist = 0x1120; // 
+                constexpr std::ptrdiff_t m_flT1BossDPSMaxResist = 0x1124; // 
+                constexpr std::ptrdiff_t m_flT1BossDPSMaxResistTimeInSeconds = 0x1128; // 
+                constexpr std::ptrdiff_t m_flT2BossDPS = 0x112C; // 
+                constexpr std::ptrdiff_t m_flT2BossDPSBaseResist = 0x1130; // 
+                constexpr std::ptrdiff_t m_flT2BossDPSMaxResist = 0x1134; // 
+                constexpr std::ptrdiff_t m_flT2BossDPSMaxResistTimeInSeconds = 0x1138; // 
+                constexpr std::ptrdiff_t m_flT3BossDPS = 0x113C; // 
+                constexpr std::ptrdiff_t m_flBarrackBossDPS = 0x1140; // 
+                constexpr std::ptrdiff_t m_flGeneratorBossDPS = 0x1144; // 
+                constexpr std::ptrdiff_t m_BossAttackParticle = 0x1148; // 
+                constexpr std::ptrdiff_t m_LastHitParticle = 0x1228; // 
+                constexpr std::ptrdiff_t m_TargetingLaserParticle = 0x1308; // 
+                constexpr std::ptrdiff_t m_TargetingEyeFlashParticle = 0x13E8; // 
+                constexpr std::ptrdiff_t m_sZiplineContainerBreakFromDamageParticle = 0x14C8; // 
+                constexpr std::ptrdiff_t m_sZiplineContainerBreakFromLandingParticle = 0x15A8; // 
+                constexpr std::ptrdiff_t m_MedicHealActiveParticle = 0x1688; // 
+                constexpr std::ptrdiff_t m_sPlayerLastHitSound = 0x1768; // 
+                constexpr std::ptrdiff_t m_sCelebrationSound = 0x1778; // 
+                constexpr std::ptrdiff_t m_sZiplineContainerBreakSound = 0x1788; // 
+                constexpr std::ptrdiff_t m_NearDeathModifier = 0x1798; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_TrooperBossInvulnModifier = 0x17A8; // CEmbeddedSubclass<CCitadelModifier>
+            }
+            // Parent: CCitadel_Modifier_ScalingPowerUp
+            // Field count: 1
+            namespace CCitadel_Modifier_PowerUp_Movement {
+                constexpr std::ptrdiff_t m_bFilled = 0xC0; // 
+            }
+            // Parent: CitadelAbilityVData
+            // Field count: 9
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CAbility_Fathom_ReefdwellerHarpoon_VData {
+                constexpr std::ptrdiff_t m_DetachBuff = 0x1560; // CEmbeddedSubclass<CCitadel_Modifier_ReefdwellerHarpoon_DetachBuff>
+                constexpr std::ptrdiff_t m_strSwapStarted = 0x1570; // 
+                constexpr std::ptrdiff_t m_cameraSequenceFlying = 0x1580; // CitadelCameraOperationsSequence_t
+                constexpr std::ptrdiff_t m_flAirSpeedMax = 0x1608; // 
+                constexpr std::ptrdiff_t m_flFallSpeedMax = 0x160C; // 
+                constexpr std::ptrdiff_t m_flAirDrag = 0x1610; // 
+                constexpr std::ptrdiff_t m_flInitialSlowSpeed = 0x1614; // 
+                constexpr std::ptrdiff_t m_flInitialSpeedBias = 0x1618; // 
+                constexpr std::ptrdiff_t m_flMaxSurfacePitch = 0x161C; // 
+            }
+            // Parent: CCitadelModifier
+            // Field count: 0
+            namespace CModifier_Mirage_SandPhantom_WhirlwindEvasion {
             }
             // Parent: CitadelAbilityVData
             // Field count: 3
             //
             // Metadata:
             // MGetKV3ClassDefaults
-            namespace CAbility_Fathom_ReefdwellerHarpoon_VData {
-                constexpr std::ptrdiff_t m_AttachedToWallModifier = 0x1560; // CEmbeddedSubclass<CCitadel_Modifier_ReefdwellerHarpoon_Latched>
-                constexpr std::ptrdiff_t m_RegenModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_strSwapStarted = 0x1580; // 
-            }
-            // Parent: CCitadelModifier
-            // Field count: 0
-            namespace CModifier_Mirage_SandPhantom_WhirlwindEvasion {
+            namespace CCitadel_Ability_Gunslinger_SalvoVData {
+                constexpr std::ptrdiff_t m_BulletWarningParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_ProcWatcherModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_VictimWarningModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -1386,8 +1434,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_StaticChargeVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ZapParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_ZapParticle = 0x6E8; // 
             }
             // Parent: CitadelItemVData
             // Field count: 1
@@ -1395,7 +1443,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CItemRefresherVData {
-                constexpr std::ptrdiff_t m_RefreshParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_RefreshParticle = 0x15A8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -1411,10 +1459,6 @@ namespace cs2_dumper {
             }
             // Parent: CCitadelModifier
             // Field count: 0
-            namespace CCitadel_Modifier_AirLift_LandBuff {
-            }
-            // Parent: CCitadelModifier
-            // Field count: 0
             namespace CCitadel_Modifier_ChargingGun {
             }
             // Parent: CCitadelModifierVData
@@ -1423,8 +1467,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CItemSmokeBombPreCastModifierVData {
-                constexpr std::ptrdiff_t m_SmokeAreaParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CasterParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SmokeAreaParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_CasterParticle = 0x6E8; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
@@ -1437,24 +1481,16 @@ namespace cs2_dumper {
             // MNetworkExcludeByUserGroup
             // NetworkVarNames: m_hMyWearables (CHandle<C_EconWearable>)
             namespace C_BaseCombatCharacter {
-                constexpr std::ptrdiff_t m_hMyWearables = 0xCA0; // 
-                constexpr std::ptrdiff_t m_leftFootAttachment = 0xCB8; // 
-                constexpr std::ptrdiff_t m_rightFootAttachment = 0xCB9; // 
-                constexpr std::ptrdiff_t m_nWaterWakeMode = 0xCBC; // C_BaseCombatCharacter::WaterWakeMode_t
-                constexpr std::ptrdiff_t m_flWaterWorldZ = 0xCC0; // 
-                constexpr std::ptrdiff_t m_flWaterNextTraceTime = 0xCC4; // 
+                constexpr std::ptrdiff_t m_hMyWearables = 0xC98; // 
+                constexpr std::ptrdiff_t m_leftFootAttachment = 0xCB0; // 
+                constexpr std::ptrdiff_t m_rightFootAttachment = 0xCB1; // 
+                constexpr std::ptrdiff_t m_nWaterWakeMode = 0xCB4; // C_BaseCombatCharacter::WaterWakeMode_t
+                constexpr std::ptrdiff_t m_flWaterWorldZ = 0xCB8; // 
+                constexpr std::ptrdiff_t m_flWaterNextTraceTime = 0xCBC; // 
             }
             // Parent: CCitadelBaseTriggerAbility
             // Field count: 0
             namespace CCitadel_Ability_WreckingBallThrow {
-            }
-            // Parent: CCitadelModifierVData
-            // Field count: 1
-            //
-            // Metadata:
-            // MGetKV3ClassDefaults
-            namespace CCitadel_Modifier_BreakablePropFireRatePickupVData {
-                constexpr std::ptrdiff_t m_flFireRate = 0x608; // 
             }
             // Parent: CEnvSoundscape
             // Field count: 0
@@ -1490,8 +1526,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadelBulletTimeWarpVData {
-                constexpr std::ptrdiff_t m_TimeWallHitParticle = 0x28; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TimeWallHitTimerParticle = 0x108; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TimeWallHitParticle = 0x28; // 
+                constexpr std::ptrdiff_t m_TimeWallHitTimerParticle = 0x108; // 
             }
             // Parent: C_DynamicProp
             // Field count: 0
@@ -1541,8 +1577,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Tokamak_DyingStarVData {
-                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FlameAuraParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_FlameAuraParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_strInFlightAnimGraphParam = 0x1720; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x1728; // 
                 constexpr std::ptrdiff_t m_InFlightModifier = 0x1738; // CEmbeddedSubclass<CCitadelModifier>
@@ -1558,7 +1594,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_strBeamLoopSound1 = 0x15C8; // 
                 constexpr std::ptrdiff_t m_strBeamLoopSound2 = 0x15D8; // 
                 constexpr std::ptrdiff_t m_strBeamStopSound = 0x15E8; // 
-                constexpr std::ptrdiff_t m_szWeaponBeamParticle = 0x15F8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_szWeaponBeamParticle = 0x15F8; // 
                 constexpr std::ptrdiff_t m_flWindupRepeatCycle = 0x16D8; // 
             }
             // Parent: CCitadelModifierVData
@@ -1567,10 +1603,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ProjectMindVData {
-                constexpr std::ptrdiff_t m_TeleportStartParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TeleportEndParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TeleportTrailParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TeleportModelParticle = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TeleportStartParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_TeleportEndParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_TeleportTrailParticle = 0x7C8; // 
+                constexpr std::ptrdiff_t m_TeleportModelParticle = 0x8A8; // 
                 constexpr std::ptrdiff_t m_ShieldModifier = 0x988; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadel_Modifier_BaseEventProc
@@ -1583,7 +1619,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Item_Stasis_BombVData {
-                constexpr std::ptrdiff_t m_AuraModifier = 0x16A8; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_AuraModifier = 0x16A8; // 
             }
             // Parent: CPlayerPawnComponent
             // Field count: 21
@@ -1619,6 +1655,10 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_hActivePostProcessingVolume = 0x214; // CHandle<C_PostProcessingVolume>
                 constexpr std::ptrdiff_t m_angDemoViewAngles = 0x218; // 
             }
+            // Parent: C_BaseTrigger
+            // Field count: 0
+            namespace C_TriggerMultiple {
+            }
             // Parent: C_FuncBrush
             // Field count: 8
             //
@@ -1645,9 +1685,9 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_Modifier_PowerGenerator {
             }
-            // Parent: C_BaseTrigger
+            // Parent: CCitadel_Modifier_Burning
             // Field count: 0
-            namespace C_TriggerMultiple {
+            namespace CCitadel_Modifier_SpreadingFire_DOT {
             }
             // Parent: CitadelAbilityVData
             // Field count: 3
@@ -1678,7 +1718,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flAuraRadius = 0x60C; // 
                 constexpr std::ptrdiff_t m_flAuraEntityBoundsScale = 0x61C; // 
                 constexpr std::ptrdiff_t m_nAmbientParticleRadiusControlPoint = 0x62C; // 
-                constexpr std::ptrdiff_t m_modifierProvidedByAura = 0x630; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_modifierProvidedByAura = 0x630; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 1
@@ -1686,7 +1726,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Synth_Pulse_Escape_VData {
-                constexpr std::ptrdiff_t m_SatchelParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SatchelParticle = 0x608; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 8
@@ -1694,10 +1734,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadelAbilityTangoTetherVData {
-                constexpr std::ptrdiff_t m_TetherModifier = 0x1560; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_GrappleTargetModifier = 0x1570; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_BulletGrappleTracerParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_EnemyGrappleParticle = 0x1660; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TetherModifier = 0x1560; // 
+                constexpr std::ptrdiff_t m_GrappleTargetModifier = 0x1570; // 
+                constexpr std::ptrdiff_t m_BulletGrappleTracerParticle = 0x1580; // 
+                constexpr std::ptrdiff_t m_EnemyGrappleParticle = 0x1660; // 
                 constexpr std::ptrdiff_t m_strDamageTarget = 0x1740; // 
                 constexpr std::ptrdiff_t m_strGrappleHitTarget = 0x1750; // 
                 constexpr std::ptrdiff_t m_strGrappleHitWorld = 0x1760; // 
@@ -1725,11 +1765,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_DivinersKevlarBuff_VData {
-                constexpr std::ptrdiff_t m_KevlarChannelParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-            }
-            // Parent: CCitadel_Modifier_BaseShield
-            // Field count: 0
-            namespace CCitadel_Modifier_RegeneratingTechShield {
+                constexpr std::ptrdiff_t m_KevlarChannelParticle = 0x608; // 
             }
             // Parent: CitadelItemVData
             // Field count: 2
@@ -1738,7 +1774,11 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CItem_Infuser_VData {
                 constexpr std::ptrdiff_t m_BuffModifier = 0x15A8; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_CastParticle = 0x15B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x15B8; // 
+            }
+            // Parent: CCitadel_Modifier_BaseShield
+            // Field count: 0
+            namespace CCitadel_Modifier_RegeneratingTechShield {
             }
             // Parent: CEntityComponent
             // Field count: 2
@@ -1776,7 +1816,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_StunnedVData {
-                constexpr std::ptrdiff_t m_StunnedParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_StunnedParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -1785,11 +1825,6 @@ namespace cs2_dumper {
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_ItemPickupAuraTarget {
-            }
-            // Parent: CCitadelModifier
-            // Field count: 1
-            namespace CCitadel_Modifier_BreakablePropClipSizePickup {
-                constexpr std::ptrdiff_t nClipRemaining = 0xC0; // 
             }
             // Parent: C_BaseModelEntity
             // Field count: 8
@@ -1827,8 +1862,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityCrackshotVData {
-                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplosionVictimParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_ExplosionVictimParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1720; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_CrackshotImmuneModifier = 0x1730; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_HeadShotVictimSound = 0x1740; // 
@@ -1861,9 +1896,9 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_PullDownModifier = 0x15B8; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_CasterModifier = 0x15C8; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x15D8; // 
-                constexpr std::ptrdiff_t m_CastParticle = 0x15E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x16C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BuffParticle = 0x17A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x15E8; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x16C8; // 
+                constexpr std::ptrdiff_t m_BuffParticle = 0x17A8; // 
                 constexpr std::ptrdiff_t m_flTeleportDistance = 0x1888; // 
                 constexpr std::ptrdiff_t m_flVelocityScale = 0x188C; // 
             }
@@ -1874,6 +1909,10 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAbilityMantleVData {
                 constexpr std::ptrdiff_t m_vecMantleTypes = 0x1560; // 
+            }
+            // Parent: CCitadel_Modifier_RegeneratingTechShield
+            // Field count: 0
+            namespace CCitadel_ModifierTempTechShield {
             }
             // Parent: CCitadelModifier
             // Field count: 5
@@ -1960,7 +1999,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Item_DPS_Aura_VData {
-                constexpr std::ptrdiff_t m_AOECastParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AOECastParticle = 0x15A8; // 
                 constexpr std::ptrdiff_t m_ActiveModifier = 0x1688; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifier
@@ -1978,30 +2017,34 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_BerserkerDamageStackVData {
-                constexpr std::ptrdiff_t m_BuffStatusParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BuffStatusParticleEnemy = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffStatusParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_BuffStatusParticleEnemy = 0x6E8; // 
             }
             // Parent: CBaseAnimGraph
             // Field count: 14
             namespace C_ClientRagdoll {
-                constexpr std::ptrdiff_t m_bFadeOut = 0xB08; // 
-                constexpr std::ptrdiff_t m_bImportant = 0xB09; // 
-                constexpr std::ptrdiff_t m_flEffectTime = 0xB0C; // 
-                constexpr std::ptrdiff_t m_gibDespawnTime = 0xB10; // 
-                constexpr std::ptrdiff_t m_iCurrentFriction = 0xB14; // 
-                constexpr std::ptrdiff_t m_iMinFriction = 0xB18; // 
-                constexpr std::ptrdiff_t m_iMaxFriction = 0xB1C; // 
-                constexpr std::ptrdiff_t m_iFrictionAnimState = 0xB20; // 
-                constexpr std::ptrdiff_t m_bReleaseRagdoll = 0xB24; // 
-                constexpr std::ptrdiff_t m_iEyeAttachment = 0xB25; // 
-                constexpr std::ptrdiff_t m_bFadingOut = 0xB26; // 
-                constexpr std::ptrdiff_t m_flScaleEnd = 0xB28; // 
-                constexpr std::ptrdiff_t m_flScaleTimeStart = 0xB50; // 
-                constexpr std::ptrdiff_t m_flScaleTimeEnd = 0xB78; // 
+                constexpr std::ptrdiff_t m_bFadeOut = 0xB00; // 
+                constexpr std::ptrdiff_t m_bImportant = 0xB01; // 
+                constexpr std::ptrdiff_t m_flEffectTime = 0xB04; // 
+                constexpr std::ptrdiff_t m_gibDespawnTime = 0xB08; // 
+                constexpr std::ptrdiff_t m_iCurrentFriction = 0xB0C; // 
+                constexpr std::ptrdiff_t m_iMinFriction = 0xB10; // 
+                constexpr std::ptrdiff_t m_iMaxFriction = 0xB14; // 
+                constexpr std::ptrdiff_t m_iFrictionAnimState = 0xB18; // 
+                constexpr std::ptrdiff_t m_bReleaseRagdoll = 0xB1C; // 
+                constexpr std::ptrdiff_t m_iEyeAttachment = 0xB1D; // 
+                constexpr std::ptrdiff_t m_bFadingOut = 0xB1E; // 
+                constexpr std::ptrdiff_t m_flScaleEnd = 0xB20; // 
+                constexpr std::ptrdiff_t m_flScaleTimeStart = 0xB48; // 
+                constexpr std::ptrdiff_t m_flScaleTimeEnd = 0xB70; // 
             }
             // Parent: CCitadel_Item_TrackingProjectileApplyModifier
             // Field count: 0
             namespace CCitadel_Item_Containment {
+            }
+            // Parent: C_CitadelBaseAbility
+            // Field count: 0
+            namespace CCitadel_Ability_Magician_Escape {
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 2
@@ -2054,6 +2097,12 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flModelScale = 0x108; // 
                 constexpr std::ptrdiff_t m_cGlowColor = 0x10C; // 
             }
+            // Parent: CCitadel_Modifier_Invis
+            // Field count: 2
+            namespace CCitadel_Modifier_LurkersAmbush_Invis {
+                constexpr std::ptrdiff_t m_mapStartLookTime = 0x268; // 
+                constexpr std::ptrdiff_t m_flStartSpotted = 0x290; // 
+            }
             // Parent: CitadelAbilityVData
             // Field count: 2
             //
@@ -2069,7 +2118,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Tengu_UrnVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_AuraModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ExplodeSound = 0x1650; // 
             }
@@ -2098,8 +2147,8 @@ namespace cs2_dumper {
             // NetworkVarNames: m_flProgress (float)
             // NetworkVarNames: m_nNumPushers (int)
             namespace C_CitadelPayload {
-                constexpr std::ptrdiff_t m_flProgress = 0xB10; // 
-                constexpr std::ptrdiff_t m_nNumPushers = 0xB14; // 
+                constexpr std::ptrdiff_t m_flProgress = 0xB08; // 
+                constexpr std::ptrdiff_t m_nNumPushers = 0xB0C; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 2
@@ -2132,11 +2181,6 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CItem_WitheringWhip {
             }
-            // Parent: CCitadel_Modifier_PowerUp
-            // Field count: 1
-            namespace CCitadel_Modifier_BreakablePropExtraStamina {
-                constexpr std::ptrdiff_t m_bFilled = 0xC0; // 
-            }
             // Parent: CCitadelModifier
             // Field count: 1
             namespace CCitadel_Modifier_Haze_StackingDamage {
@@ -2148,7 +2192,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Item_ModDisruptorVData {
-                constexpr std::ptrdiff_t m_DetonateParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DetonateParticle = 0x15A8; // 
                 constexpr std::ptrdiff_t m_DisruptModifier = 0x1688; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_flWaveSpeed = 0x1698; // 
             }
@@ -2158,8 +2202,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_UnstoppableVData {
-                constexpr std::ptrdiff_t m_ShieldParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PlayerShieldParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ShieldParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_PlayerShieldParticle = 0x6E8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -2227,8 +2271,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_GalvanicStormTechShieldVData {
-                constexpr std::ptrdiff_t m_BuffModifier = 0x608; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffModifier = 0x608; // 
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x618; // 
                 constexpr std::ptrdiff_t m_flExplodeSpeed = 0x6F8; // 
             }
             // Parent: CCitadelModifier
@@ -2243,11 +2287,11 @@ namespace cs2_dumper {
             namespace CModifierVData {
                 constexpr std::ptrdiff_t m_flDuration = 0x28; // 
                 constexpr std::ptrdiff_t m_bKeepMaximumDurationOnRefresh = 0x38; // 
-                constexpr std::ptrdiff_t m_strParticleEffect = 0x40; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_strParticleEffect = 0x40; // 
                 constexpr std::ptrdiff_t m_strParticleEffectConfig = 0x120; // 
-                constexpr std::ptrdiff_t m_strParticleStatusEffect = 0x128; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_strParticleStatusEffect = 0x128; // 
                 constexpr std::ptrdiff_t m_strParticleStatusEffectConfig = 0x208; // 
-                constexpr std::ptrdiff_t m_strScreenParticleEffect = 0x210; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_strScreenParticleEffect = 0x210; // 
                 constexpr std::ptrdiff_t m_strScreenParticleEffectConfig = 0x2F0; // 
                 constexpr std::ptrdiff_t m_nStatusEffectPriority = 0x2F8; // 
                 constexpr std::ptrdiff_t m_vecRenderAttributes = 0x300; // CUtlVector<ModifierRenderAttribute_t>
@@ -2302,7 +2346,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CItemPowerShardVData {
-                constexpr std::ptrdiff_t m_RefreshParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_RefreshParticle = 0x15A8; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 4
@@ -2310,7 +2354,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Tier2Boss_RocketBarrageVData {
-                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_ExplosionSound = 0x1640; // 
                 constexpr std::ptrdiff_t m_RocketFireSound = 0x1650; // 
                 constexpr std::ptrdiff_t m_AuraModifier = 0x1660; // CEmbeddedSubclass<CCitadelModifier>
@@ -2330,7 +2374,11 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ThrowSandDebuffVData {
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // 
+            }
+            // Parent: CCitadelModifier
+            // Field count: 0
+            namespace CCitadel_Modifier_Upgrade_SpiritSnatch_Debuff {
             }
             // Parent: C_BasePlayerPawn
             // Field count: 0
@@ -2361,7 +2409,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityLashVData {
-                constexpr std::ptrdiff_t m_LashParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LashParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_BuffModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_strVictimCastSound = 0x1650; // 
             }
@@ -2371,7 +2419,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ChargedBombVData {
-                constexpr std::ptrdiff_t m_ChargeParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChargeParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_strBeepSound = 0x6E8; // 
             }
             // Parent: C_CitadelProjectile
@@ -2379,7 +2427,7 @@ namespace cs2_dumper {
             namespace C_Citadel_Projectile_Viscous_GooGrenade {
                 constexpr std::ptrdiff_t m_nBounces = 0x8E8; // 
                 constexpr std::ptrdiff_t m_tNextDetonateTime = 0x8EC; // 
-                constexpr std::ptrdiff_t m_vecProjectileHitTargets = 0x8F0; // 
+                constexpr std::ptrdiff_t m_vecProjectileHitTargets = 0x8F0; // CUtlVector<CHandle<C_BaseEntity>>
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -2403,6 +2451,10 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_cGlowColor = 0x108; // 
             }
             // Parent: C_CitadelBaseAbility
+            // Field count: 0
+            namespace CCitadel_Ability_WreckerGarbageSuck {
+            }
+            // Parent: C_CitadelBaseAbility
             // Field count: 1
             //
             // Metadata:
@@ -2423,24 +2475,32 @@ namespace cs2_dumper {
             // NetworkVarNames: m_attachmentPointBoneSpace (Vector)
             // NetworkVarNames: m_attachmentPointRagdollSpace (Vector)
             namespace C_RagdollPropAttached {
-                constexpr std::ptrdiff_t m_boneIndexAttached = 0xB80; // 
-                constexpr std::ptrdiff_t m_ragdollAttachedObjectIndex = 0xB84; // 
-                constexpr std::ptrdiff_t m_attachmentPointBoneSpace = 0xB88; // 
-                constexpr std::ptrdiff_t m_attachmentPointRagdollSpace = 0xB94; // 
-                constexpr std::ptrdiff_t m_vecOffset = 0xBA0; // 
-                constexpr std::ptrdiff_t m_parentTime = 0xBAC; // 
-                constexpr std::ptrdiff_t m_bHasParent = 0xBB0; // 
+                constexpr std::ptrdiff_t m_boneIndexAttached = 0xB78; // 
+                constexpr std::ptrdiff_t m_ragdollAttachedObjectIndex = 0xB7C; // 
+                constexpr std::ptrdiff_t m_attachmentPointBoneSpace = 0xB80; // 
+                constexpr std::ptrdiff_t m_attachmentPointRagdollSpace = 0xB8C; // 
+                constexpr std::ptrdiff_t m_vecOffset = 0xB98; // 
+                constexpr std::ptrdiff_t m_parentTime = 0xBA4; // 
+                constexpr std::ptrdiff_t m_bHasParent = 0xBA8; // 
             }
             // Parent: C_BaseToggle
-            // Field count: 2
+            // Field count: 11
             //
             // Metadata:
             // MNetworkIncludeByName
             // NetworkVarNames: m_bDisabled (bool)
-            // NetworkVarNames: m_bClientSidePredicted (bool)
             namespace C_BaseTrigger {
-                constexpr std::ptrdiff_t m_bDisabled = 0x860; // 
-                constexpr std::ptrdiff_t m_bClientSidePredicted = 0x861; // 
+                constexpr std::ptrdiff_t m_OnStartTouch = 0x860; // 
+                constexpr std::ptrdiff_t m_OnStartTouchAll = 0x888; // 
+                constexpr std::ptrdiff_t m_OnEndTouch = 0x8B0; // 
+                constexpr std::ptrdiff_t m_OnEndTouchAll = 0x8D8; // 
+                constexpr std::ptrdiff_t m_OnTouching = 0x900; // 
+                constexpr std::ptrdiff_t m_OnTouchingEachEntity = 0x928; // 
+                constexpr std::ptrdiff_t m_OnNotTouching = 0x950; // 
+                constexpr std::ptrdiff_t m_hTouchingEntities = 0x978; // CUtlVector<CHandle<C_BaseEntity>>
+                constexpr std::ptrdiff_t m_iFilterName = 0x990; // 
+                constexpr std::ptrdiff_t m_hFilter = 0x998; // 
+                constexpr std::ptrdiff_t m_bDisabled = 0x99C; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 1
@@ -2455,21 +2515,17 @@ namespace cs2_dumper {
             namespace CCitadel_Modifier_ZiplineBoost {
                 constexpr std::ptrdiff_t m_bIsBoosting = 0xC0; // 
             }
-            // Parent: CCitadelModifierVData
-            // Field count: 2
-            //
-            // Metadata:
-            // MGetKV3ClassDefaults
-            namespace CCitadel_Modifier_BreakablePropSpeedPickupVData {
-                constexpr std::ptrdiff_t m_flSpeedBoost = 0x608; // 
-                constexpr std::ptrdiff_t m_flSprintBoost = 0x60C; // 
-            }
             // Parent: None
             // Field count: 3
             namespace C_EconEntity__AttachedParticleInfo_t {
                 constexpr std::ptrdiff_t m_nAttachedParticleIndex = 0x0; // 
                 constexpr std::ptrdiff_t m_customType = 0x4; // 
                 constexpr std::ptrdiff_t m_bShouldDestroyImmediately = 0x8; // 
+            }
+            // Parent: CCitadel_Modifier_BaseBulletPreRollProc
+            // Field count: 1
+            namespace CCitadel_Modifier_SalvoBullet {
+                constexpr std::ptrdiff_t m_BuffedShotId = 0x1F8; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 2
@@ -2545,6 +2601,13 @@ namespace cs2_dumper {
             // Parent: C_CitadelBaseAbility
             // Field count: 0
             namespace CCitadel_Ability_Cadence_GrandFinale {
+            }
+            // Parent: C_CitadelBaseAbility
+            // Field count: 3
+            namespace CCitadel_Ability_Gunslinger_Salvo {
+                constexpr std::ptrdiff_t m_CastTarget = 0xCA4; // 
+                constexpr std::ptrdiff_t m_iCurrentShots = 0xCA8; // 
+                constexpr std::ptrdiff_t m_iTotalShots = 0xCAC; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -2664,7 +2727,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_MagicCarpet_SummonVData {
-                constexpr std::ptrdiff_t m_SummonParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SummonParticle = 0x608; // 
             }
             // Parent: CCitadelBaseAbilityServerOnly
             // Field count: 0
@@ -2694,36 +2757,38 @@ namespace cs2_dumper {
             namespace CCitadel_Ability_SpiderShield {
             }
             // Parent: CitadelAbilityVData
-            // Field count: 25
+            // Field count: 27
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_ZipLine_VData {
-                constexpr std::ptrdiff_t m_flMinButtonHoldTimeToActivate = 0x1560; // 
-                constexpr std::ptrdiff_t m_flCrouchDropSpeedFraction = 0x1564; // 
-                constexpr std::ptrdiff_t m_flCrouchDropAirDragSuppressDuration = 0x1568; // 
-                constexpr std::ptrdiff_t m_flDetachDisallowedTime = 0x156C; // 
-                constexpr std::ptrdiff_t m_flCameraWobbleIntensity = 0x1570; // 
-                constexpr std::ptrdiff_t m_DOFWhileZiplining = 0x1574; // 
-                constexpr std::ptrdiff_t m_ZipLinePreviewParticle = 0x1588; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ZipLineSpeedParticle = 0x1668; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ZipLineTetherParticle = 0x1748; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ZipLineTetherAttachParticle = 0x1828; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ZipLineEnemyKnockdownProtectionParticle = 0x1908; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ZipLineSelfKnockdownProtectionParticle = 0x19E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ZipLineKnockdownProtectionStatusParticle = 0x1AC8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_strZipLineSummonSound = 0x1BA8; // 
-                constexpr std::ptrdiff_t m_strZipLineLatchedSound = 0x1BB8; // 
-                constexpr std::ptrdiff_t m_strZipLineStartSound = 0x1BC8; // 
-                constexpr std::ptrdiff_t m_RidingZipLineModifier = 0x1BD8; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_KnockedOffSlowModifier = 0x1BE8; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ZipLineIntroModifier = 0x1BF8; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ZipLineKnockdownImmuneModifier = 0x1C08; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ZipLineSlowModifier = 0x1C18; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_cameraSequenceAwaitingTether = 0x1C28; // CitadelCameraOperationsSequence_t
-                constexpr std::ptrdiff_t m_cameraSequenceLatched = 0x1CB0; // CitadelCameraOperationsSequence_t
-                constexpr std::ptrdiff_t m_cameraSequenceAttached = 0x1D38; // CitadelCameraOperationsSequence_t
-                constexpr std::ptrdiff_t m_cameraSequenceClear = 0x1DC0; // CitadelCameraOperationsSequence_t
+                constexpr std::ptrdiff_t m_flZiplineAirDrag = 0x1560; // 
+                constexpr std::ptrdiff_t m_flMinButtonHoldTimeToActivate = 0x1564; // 
+                constexpr std::ptrdiff_t m_flCrouchDropSpeedFraction = 0x1568; // 
+                constexpr std::ptrdiff_t m_flCrouchDropAirDragSuppressDuration = 0x156C; // 
+                constexpr std::ptrdiff_t m_flDetachDisallowedTime = 0x1570; // 
+                constexpr std::ptrdiff_t m_flCameraWobbleIntensity = 0x1574; // 
+                constexpr std::ptrdiff_t m_DOFWhileZiplining = 0x1578; // 
+                constexpr std::ptrdiff_t m_ZipLinePreviewParticle = 0x1588; // 
+                constexpr std::ptrdiff_t m_ZipLineSpeedParticle = 0x1668; // 
+                constexpr std::ptrdiff_t m_ZipLineTetherParticle = 0x1748; // 
+                constexpr std::ptrdiff_t m_ZipLineTetherAttachParticle = 0x1828; // 
+                constexpr std::ptrdiff_t m_ZipLineTetherStartParticle = 0x1908; // 
+                constexpr std::ptrdiff_t m_ZipLineEnemyKnockdownProtectionParticle = 0x19E8; // 
+                constexpr std::ptrdiff_t m_ZipLineSelfKnockdownProtectionParticle = 0x1AC8; // 
+                constexpr std::ptrdiff_t m_ZipLineKnockdownProtectionStatusParticle = 0x1BA8; // 
+                constexpr std::ptrdiff_t m_strZipLineSummonSound = 0x1C88; // 
+                constexpr std::ptrdiff_t m_strZipLineLatchedSound = 0x1C98; // 
+                constexpr std::ptrdiff_t m_strZipLineStartSound = 0x1CA8; // 
+                constexpr std::ptrdiff_t m_RidingZipLineModifier = 0x1CB8; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_KnockedOffSlowModifier = 0x1CC8; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_ZipLineIntroModifier = 0x1CD8; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_ZipLineKnockdownImmuneModifier = 0x1CE8; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_ZipLineSlowModifier = 0x1CF8; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_cameraSequenceAwaitingTether = 0x1D08; // CitadelCameraOperationsSequence_t
+                constexpr std::ptrdiff_t m_cameraSequenceLatched = 0x1D90; // CitadelCameraOperationsSequence_t
+                constexpr std::ptrdiff_t m_cameraSequenceAttached = 0x1E18; // CitadelCameraOperationsSequence_t
+                constexpr std::ptrdiff_t m_cameraSequenceClear = 0x1EA0; // CitadelCameraOperationsSequence_t
             }
             // Parent: CitadelItemVData
             // Field count: 1
@@ -2744,7 +2809,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierGlitchVData {
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // 
             }
             // Parent: C_CitadelProjectile
             // Field count: 0
@@ -2764,7 +2829,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_ViperVenomVData {
                 constexpr std::ptrdiff_t m_VenomModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_CastVenomParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastVenomParticle = 0x1570; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -2776,8 +2841,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_FissureWallVData {
-                constexpr std::ptrdiff_t m_DebrisParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_SpikeParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebrisParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_SpikeParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_WallSpawnSound = 0x7C8; // 
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x7D8; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_EnemyVisionModifier = 0x7E8; // CEmbeddedSubclass<CCitadelModifier>
@@ -2793,13 +2858,17 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bEnabled = 0xC0; // 
                 constexpr std::ptrdiff_t m_bWasEnabled = 0xC1; // 
             }
+            // Parent: CCitadelModifier
+            // Field count: 0
+            namespace CCitadel_Modifier_ThermalDetonator_Debuff {
+            }
             // Parent: CCitadel_Modifier_BaseEventProcVData
             // Field count: 1
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_EscalatingExposureProcWatcherVData {
-                constexpr std::ptrdiff_t m_DebuffModifier = 0x638; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x638; // 
             }
             // Parent: CCitadelBaseAbilityServerOnly
             // Field count: 0
@@ -2813,6 +2882,10 @@ namespace cs2_dumper {
             // Field count: 1
             namespace CCitadel_Item_PowerShard {
                 constexpr std::ptrdiff_t m_hLastSignatureToActivate = 0xCB8; // 
+            }
+            // Parent: CCitadel_Modifier_ScalingPowerUp
+            // Field count: 0
+            namespace CCitadel_Modifier_PowerUp_Casting {
             }
             // Parent: C_BaseToggle
             // Field count: 3
@@ -2829,11 +2902,6 @@ namespace cs2_dumper {
             // Parent: CCitadel_Modifier_StatStealBase
             // Field count: 0
             namespace CCitadel_Modifier_Mirage_FireScarabs_Watcher {
-            }
-            // Parent: CCitadelModifier
-            // Field count: 1
-            namespace CModifier_Synth_Pulse_BulletShield {
-                constexpr std::ptrdiff_t m_fBulletShield = 0xC0; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 2
@@ -2865,6 +2933,10 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_vLaunchPosition = 0xCA0; // 
                 constexpr std::ptrdiff_t m_qLaunchAngle = 0xCAC; // 
                 constexpr std::ptrdiff_t m_flCastStartTime = 0xCB8; // 
+            }
+            // Parent: C_CitadelBaseAbility
+            // Field count: 0
+            namespace CCitadel_Ability_Gunslinger_SpreadingFire {
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -2904,9 +2976,9 @@ namespace cs2_dumper {
             // NetworkVarNames: m_flAttackRange (float)
             // NetworkVarNames: m_flAimPitch (float)
             namespace C_NPC_ShieldedSentry {
-                constexpr std::ptrdiff_t m_CCitadelAbilityComponent = 0xB10; // 
-                constexpr std::ptrdiff_t m_flAttackRange = 0xCB4; // 
-                constexpr std::ptrdiff_t m_flAimPitch = 0xCB8; // 
+                constexpr std::ptrdiff_t m_CCitadelAbilityComponent = 0xB08; // 
+                constexpr std::ptrdiff_t m_flAttackRange = 0xCAC; // 
+                constexpr std::ptrdiff_t m_flAimPitch = 0xCB0; // 
             }
             // Parent: CEnvSoundscapeProxy
             // Field count: 0
@@ -2997,9 +3069,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbility_Synth_PlasmaFlux_VData {
-                constexpr std::ptrdiff_t m_WeaponDamageBonusModifier = 0x1560; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_TeleportTrailParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1650; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_WeaponDamageBonusModifier = 0x1560; // 
+                constexpr std::ptrdiff_t m_TeleportTrailParticle = 0x1570; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1650; // 
                 constexpr std::ptrdiff_t m_strCasterLoopingSound = 0x1730; // 
                 constexpr std::ptrdiff_t m_strProjectileExpireSound = 0x1740; // 
                 constexpr std::ptrdiff_t m_strImpactSound = 0x1750; // 
@@ -3037,8 +3109,8 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadelModifierAerialAssaultVData {
                 constexpr std::ptrdiff_t m_FireRateModifier = 0x608; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TracerParticle = 0x6F8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x618; // 
+                constexpr std::ptrdiff_t m_TracerParticle = 0x6F8; // 
                 constexpr std::ptrdiff_t m_ExplodeSound = 0x7D8; // 
                 constexpr std::ptrdiff_t m_flAirDrag = 0x7E8; // 
                 constexpr std::ptrdiff_t m_flAirSpeed = 0x7EC; // 
@@ -3058,7 +3130,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ActiveDisarm_SpiritSteal_VData {
-                constexpr std::ptrdiff_t m_SpiritStealParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SpiritStealParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -3079,8 +3151,8 @@ namespace cs2_dumper {
             // NetworkVarNames: m_flAttackRange (float)
             // NetworkVarNames: m_flAimPitch (float)
             namespace C_NPC_FieldSentry {
-                constexpr std::ptrdiff_t m_flAttackRange = 0xB14; // 
-                constexpr std::ptrdiff_t m_flAimPitch = 0xB18; // 
+                constexpr std::ptrdiff_t m_flAttackRange = 0xB0C; // 
+                constexpr std::ptrdiff_t m_flAimPitch = 0xB10; // 
             }
             // Parent: CCitadelAnimatingModelEntity
             // Field count: 0
@@ -3097,12 +3169,12 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Mirage_SandPhantom_Passive_Victim_VData {
                 constexpr std::ptrdiff_t m_SlowModifier = 0x608; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_DebuffStatusPlayerParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DebuffStatusVictimParticle = 0x6F8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DebuffStatusNPCParticle = 0x7D8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_StackDamageParticle = 0x8B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_StackReadyParticle = 0x998; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_StackAppliedParticle = 0xA78; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffStatusPlayerParticle = 0x618; // 
+                constexpr std::ptrdiff_t m_DebuffStatusVictimParticle = 0x6F8; // 
+                constexpr std::ptrdiff_t m_DebuffStatusNPCParticle = 0x7D8; // 
+                constexpr std::ptrdiff_t m_StackDamageParticle = 0x8B8; // 
+                constexpr std::ptrdiff_t m_StackReadyParticle = 0x998; // 
+                constexpr std::ptrdiff_t m_StackAppliedParticle = 0xA78; // 
                 constexpr std::ptrdiff_t m_ConsumeMaxStacksSound = 0xB58; // 
                 constexpr std::ptrdiff_t m_ConsumeMaxStacksNonHeroSound = 0xB68; // 
                 constexpr std::ptrdiff_t m_ApplyStackSound = 0xB78; // 
@@ -3161,8 +3233,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_BigBoltVData {
-                constexpr std::ptrdiff_t m_AuraModifier = 0x608; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_ShieldParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AuraModifier = 0x608; // 
+                constexpr std::ptrdiff_t m_ShieldParticle = 0x618; // 
                 constexpr std::ptrdiff_t m_flModelScale = 0x6F8; // 
             }
             // Parent: C_CitadelBaseAbility
@@ -3182,7 +3254,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_vecTackleDir = 0xEA4; // 
                 constexpr std::ptrdiff_t m_vecLastPosition = 0xEB0; // 
                 constexpr std::ptrdiff_t m_nStuckFramesCount = 0xEBC; // 
-                constexpr std::ptrdiff_t m_vecHitEnemies = 0xEC0; // 
+                constexpr std::ptrdiff_t m_vecHitEnemies = 0xEC0; // CUtlVector<CHandle<C_BaseEntity>>
                 constexpr std::ptrdiff_t m_nDistancePreview = 0xED8; // 
             }
             // Parent: CitadelAbilityVData
@@ -3192,7 +3264,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadelAbilityChargedBombVData {
                 constexpr std::ptrdiff_t m_ChargeBombModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1570; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x1650; // 
                 constexpr std::ptrdiff_t m_flChargeForMaxDamage = 0x1660; // 
                 constexpr std::ptrdiff_t m_flMinDamagePercent = 0x1664; // 
@@ -3213,37 +3285,44 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flSpreadDuration = 0xE8; // 
             }
             // Parent: CAI_CitadelNPCVData
-            // Field count: 26
+            // Field count: 33
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CNPC_Boss_Tier2VData {
-                constexpr std::ptrdiff_t m_flPlayerInitialSightRange = 0xFB0; // 
-                constexpr std::ptrdiff_t m_strWIPModelName = 0xFB8; // 
-                constexpr std::ptrdiff_t m_vecWeakPoints = 0x1098; // 
-                constexpr std::ptrdiff_t m_BeamChargingEffect = 0x10B0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BeamPreviewEffect = 0x1190; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BeamActiveEffect = 0x1270; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_StompImpactEffect = 0x1350; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_StompWarningEffect = 0x1430; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_flTossSpeed = 0x1510; // 
-                constexpr std::ptrdiff_t m_flStompDamage = 0x1514; // 
-                constexpr std::ptrdiff_t m_flStompTossUpMagnitude = 0x1518; // 
-                constexpr std::ptrdiff_t m_flStunDuration = 0x151C; // 
-                constexpr std::ptrdiff_t m_flStompImpactRadius = 0x1520; // 
-                constexpr std::ptrdiff_t m_flStompImpactHeight = 0x1524; // 
-                constexpr std::ptrdiff_t m_flSweepRadius = 0x1528; // 
-                constexpr std::ptrdiff_t m_flSweepSpeed = 0x152C; // 
-                constexpr std::ptrdiff_t m_flSweepZScale = 0x1530; // 
-                constexpr std::ptrdiff_t m_flSweepMaxAngle = 0x1534; // 
-                constexpr std::ptrdiff_t m_flSweepMaxRange = 0x1538; // 
-                constexpr std::ptrdiff_t m_flSweepAdjustSpeed = 0x153C; // 
-                constexpr std::ptrdiff_t m_flBurstDuration = 0x1540; // 
-                constexpr std::ptrdiff_t m_flBurstCooldown = 0x1544; // 
-                constexpr std::ptrdiff_t m_BackdoorProtectionModifier = 0x1548; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_flBackDoorProtectionRange = 0x1558; // 
-                constexpr std::ptrdiff_t m_InvulModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_flInvulModifierRange = 0x1570; // 
+                constexpr std::ptrdiff_t m_flPlayerInitialSightRange = 0x10D8; // 
+                constexpr std::ptrdiff_t m_strWIPModelName = 0x10E0; // 
+                constexpr std::ptrdiff_t m_vecWeakPoints = 0x11C0; // 
+                constexpr std::ptrdiff_t m_BeamChargingEffect = 0x11D8; // 
+                constexpr std::ptrdiff_t m_BeamPreviewEffect = 0x12B8; // 
+                constexpr std::ptrdiff_t m_BeamActiveEffect = 0x1398; // 
+                constexpr std::ptrdiff_t m_StompImpactEffect = 0x1478; // 
+                constexpr std::ptrdiff_t m_StompWarningEffect = 0x1558; // 
+                constexpr std::ptrdiff_t m_flTossSpeed = 0x1638; // 
+                constexpr std::ptrdiff_t m_flStompDamage = 0x163C; // 
+                constexpr std::ptrdiff_t m_flStompDamageMaxHealthPercent = 0x1640; // 
+                constexpr std::ptrdiff_t m_flStompTossUpMagnitude = 0x1644; // 
+                constexpr std::ptrdiff_t m_flStunDuration = 0x1648; // 
+                constexpr std::ptrdiff_t m_flStompImpactRadius = 0x164C; // 
+                constexpr std::ptrdiff_t m_flStompImpactHeight = 0x1650; // 
+                constexpr std::ptrdiff_t m_flSweepRadius = 0x1654; // 
+                constexpr std::ptrdiff_t m_flSweepSpeed = 0x1658; // 
+                constexpr std::ptrdiff_t m_flSweepZScale = 0x165C; // 
+                constexpr std::ptrdiff_t m_flSweepMaxAngle = 0x1660; // 
+                constexpr std::ptrdiff_t m_flSweepMaxRange = 0x1664; // 
+                constexpr std::ptrdiff_t m_flSweepAdjustSpeed = 0x1668; // 
+                constexpr std::ptrdiff_t m_flBurstDuration = 0x166C; // 
+                constexpr std::ptrdiff_t m_flBurstCooldown = 0x1670; // 
+                constexpr std::ptrdiff_t m_BackdoorProtectionModifier = 0x1678; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_flBackDoorProtectionRange = 0x1688; // 
+                constexpr std::ptrdiff_t m_InvulModifier = 0x1690; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_flInvulModifierRange = 0x16A0; // 
+                constexpr std::ptrdiff_t m_FriendlyAuraModifier = 0x16A8; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_flRangeArmorMaxResist = 0x16B8; // 
+                constexpr std::ptrdiff_t m_flRangeArmorMinResist = 0x16BC; // 
+                constexpr std::ptrdiff_t m_flRangeArmorMaxDist = 0x16C0; // 
+                constexpr std::ptrdiff_t m_flRangeArmorMinDist = 0x16C4; // 
+                constexpr std::ptrdiff_t m_NearbyEnemyResist = 0x16C8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: C_SoundAreaEntityBase
             // Field count: 2
@@ -3271,6 +3350,15 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CModifier_SiphonBullets_HealthLoss {
             }
+            // Parent: CCitadelModifierVData
+            // Field count: 2
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CModifier_Upgrade_ArcaneSurge_VData {
+                constexpr std::ptrdiff_t m_WeaponBuffModifier = 0x608; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_AbilityWatcherModifier = 0x618; // CEmbeddedSubclass<CCitadelModifier>
+            }
             // Parent: CCitadel_Modifier_BaseEventProcVData
             // Field count: 1
             //
@@ -3285,7 +3373,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierDelayedStunVData {
-                constexpr std::ptrdiff_t m_HitParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_HitParticle = 0x608; // 
             }
             // Parent: CCitadelAnimatingModelEntity
             // Field count: 0
@@ -3317,6 +3405,10 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_Modifier_IdolReturnTimer {
             }
+            // Parent: CCitadel_Modifier_ScalingPowerUp
+            // Field count: 0
+            namespace CCitadel_Modifier_PowerUp_Gun {
+            }
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_ShadowClone {
@@ -3331,8 +3423,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierRiotProtocolBuffVData {
-                constexpr std::ptrdiff_t m_LaserParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PulseHitEnemyParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LaserParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_PulseHitEnemyParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_EnemyDebuffModifier = 0x7C8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifierVData
@@ -3341,7 +3433,15 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierCrowdControlDebuffVData {
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // 
+            }
+            // Parent: CCitadel_Modifier_Stunned
+            // Field count: 4
+            namespace CCitadel_Modifier_GarbageAuraTarget {
+                constexpr std::ptrdiff_t m_flMaxDist = 0x138; // 
+                constexpr std::ptrdiff_t m_vecOffsetDir = 0x13C; // 
+                constexpr std::ptrdiff_t m_vecStartPosition = 0x148; // 
+                constexpr std::ptrdiff_t m_flAOERadius = 0x154; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
@@ -3353,7 +3453,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadelModifierIdolReturnTimerVData {
-                constexpr std::ptrdiff_t m_ChannelParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChannelParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -3381,10 +3481,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CNPC_TrooperNeutralNodeMoverVData {
-                constexpr std::ptrdiff_t m_bEnableMovementToNodes = 0x1318; // 
-                constexpr std::ptrdiff_t m_flExposedDuration = 0x131C; // 
-                constexpr std::ptrdiff_t m_flHideDuration = 0x1324; // 
-                constexpr std::ptrdiff_t m_HidingModifier = 0x1330; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_bEnableMovementToNodes = 0x1440; // 
+                constexpr std::ptrdiff_t m_flExposedDuration = 0x1444; // 
+                constexpr std::ptrdiff_t m_flHideDuration = 0x144C; // 
+                constexpr std::ptrdiff_t m_HidingModifier = 0x1458; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: C_SoundOpvarSetPointBase
             // Field count: 0
@@ -3427,8 +3527,8 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ShakedownPulseVData {
                 constexpr std::ptrdiff_t m_strFireSound = 0x608; // 
-                constexpr std::ptrdiff_t m_ShakeParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ChainParticle = 0x6F8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ShakeParticle = 0x618; // 
+                constexpr std::ptrdiff_t m_ChainParticle = 0x6F8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -3494,32 +3594,32 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_ArmorUpgrade_PersonalRejuvenatorVData {
-                constexpr std::ptrdiff_t m_DeployParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_RespawnParticle = 0x1688; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DeployParticle = 0x15A8; // 
+                constexpr std::ptrdiff_t m_RespawnParticle = 0x1688; // 
                 constexpr std::ptrdiff_t m_sDeploySound = 0x1768; // 
                 constexpr std::ptrdiff_t m_sRespawnSound = 0x1778; // 
             }
             // Parent: CCitadelModifier
             // Field count: 18
             namespace CCitadel_Modifier_Tier2Boss_LaserBeam {
-                constexpr std::ptrdiff_t m_bPreview = 0x130; // 
-                constexpr std::ptrdiff_t m_flSoundStartTime = 0x13C; // 
-                constexpr std::ptrdiff_t m_vStart = 0x144; // 
-                constexpr std::ptrdiff_t m_vEnd = 0x150; // 
-                constexpr std::ptrdiff_t m_vPrevEnd = 0x15C; // 
-                constexpr std::ptrdiff_t m_flAngleBetweenTrace = 0x168; // 
-                constexpr std::ptrdiff_t m_flDamagePerTick = 0x16C; // 
-                constexpr std::ptrdiff_t m_flCreepDamagePerTick = 0x170; // 
-                constexpr std::ptrdiff_t m_flNextDamageTick = 0x174; // 
-                constexpr std::ptrdiff_t m_vecEntitiesHit = 0x178; // 
-                constexpr std::ptrdiff_t m_flDamageTickRate = 0x190; // 
-                constexpr std::ptrdiff_t m_flLastShakeTime = 0x194; // 
-                constexpr std::ptrdiff_t m_bSweepRightFirst = 0x198; // 
-                constexpr std::ptrdiff_t m_angBeamAim = 0x19C; // 
-                constexpr std::ptrdiff_t m_vecBeamTarget = 0x1A8; // 
-                constexpr std::ptrdiff_t m_flLastBeamUpdateTime = 0x1B4; // 
-                constexpr std::ptrdiff_t m_flTargetingTaskStartTime = 0x1D0; // 
-                constexpr std::ptrdiff_t m_flTrackVel = 0x1D4; // 
+                constexpr std::ptrdiff_t m_bPreview = 0x168; // 
+                constexpr std::ptrdiff_t m_flSoundStartTime = 0x174; // 
+                constexpr std::ptrdiff_t m_vStart = 0x17C; // 
+                constexpr std::ptrdiff_t m_vEnd = 0x188; // 
+                constexpr std::ptrdiff_t m_vPrevEnd = 0x194; // 
+                constexpr std::ptrdiff_t m_flAngleBetweenTrace = 0x1A0; // 
+                constexpr std::ptrdiff_t m_flDamagePerTick = 0x1A4; // 
+                constexpr std::ptrdiff_t m_flCreepDamagePerTick = 0x1A8; // 
+                constexpr std::ptrdiff_t m_flNextDamageTick = 0x1AC; // 
+                constexpr std::ptrdiff_t m_vecEntitiesHit = 0x1B0; // CUtlVector<CHandle<C_BaseEntity>>
+                constexpr std::ptrdiff_t m_flDamageTickRate = 0x1C8; // 
+                constexpr std::ptrdiff_t m_flLastShakeTime = 0x1CC; // 
+                constexpr std::ptrdiff_t m_bSweepRightFirst = 0x1D0; // 
+                constexpr std::ptrdiff_t m_angBeamAim = 0x1D4; // 
+                constexpr std::ptrdiff_t m_vecBeamTarget = 0x1E0; // 
+                constexpr std::ptrdiff_t m_flLastBeamUpdateTime = 0x1EC; // 
+                constexpr std::ptrdiff_t m_flTargetingTaskStartTime = 0x208; // 
+                constexpr std::ptrdiff_t m_flTrackVel = 0x20C; // 
             }
             // Parent: None
             // Field count: 30
@@ -3595,13 +3695,26 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_WeaponUpgrade_FireRateAura {
             }
+            // Parent: CCitadel_Modifier_BaseBulletPreRollProcVData
+            // Field count: 6
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Modifier_EmpowerBulletVData {
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x738; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_ExplosionParticle = 0x748; // 
+                constexpr std::ptrdiff_t m_ExplosionVictimParticle = 0x828; // 
+                constexpr std::ptrdiff_t m_EmpowerWeaponParticle = 0x908; // 
+                constexpr std::ptrdiff_t m_ShotVictimSound = 0x9E8; // 
+                constexpr std::ptrdiff_t m_ShotConfirmationSound = 0x9F8; // 
+            }
             // Parent: CCitadelModifierVData
             // Field count: 2
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_AirLiftExplodingAllyVData {
-                constexpr std::ptrdiff_t m_strExplodeEffect = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_strExplodeEffect = 0x608; // 
                 constexpr std::ptrdiff_t m_AOEModifier = 0x6E8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CitadelAbilityVData
@@ -3611,7 +3724,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Bebop_LaserBeamVData {
                 constexpr std::ptrdiff_t m_LaserModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ChargeParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChargeParticle = 0x1570; // 
                 constexpr std::ptrdiff_t m_flCancelCooldown = 0x1650; // 
             }
             // Parent: CCitadel_Modifier_Invis
@@ -3650,7 +3763,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_AnimalCurseVData {
                 constexpr std::ptrdiff_t m_CursedModel = 0x608; // 
-                constexpr std::ptrdiff_t m_TargetParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TargetParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_flModelScale = 0x7C8; // 
             }
             // Parent: CCitadelModifier
@@ -3665,8 +3778,8 @@ namespace cs2_dumper {
             namespace CCitadel_Modifier_FlameDashVData {
                 constexpr std::ptrdiff_t m_GroundAuraModifier = 0x608; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ProgressModifier = 0x618; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_FlameDashParticle = 0x628; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FlameAuraParticle = 0x708; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_FlameDashParticle = 0x628; // 
+                constexpr std::ptrdiff_t m_FlameAuraParticle = 0x708; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -3684,6 +3797,17 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_Modifier_HollowPoint_Stack {
             }
+            // Parent: CCitadel_Modifier_BaseEventProcVData
+            // Field count: 4
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Modifier_SpiritSnatch_VData {
+                constexpr std::ptrdiff_t m_BuffModifier = 0x638; // 
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x648; // 
+                constexpr std::ptrdiff_t m_SwingParticle = 0x658; // 
+                constexpr std::ptrdiff_t m_HitParticle = 0x738; // 
+            }
             // Parent: CCitadel_Item
             // Field count: 0
             namespace CCitadel_ArmorUpgrade_SlowImmunity {
@@ -3692,13 +3816,21 @@ namespace cs2_dumper {
             // Field count: 0
             namespace C_PathParticleRopeAlias_path_particle_rope_clientside {
             }
+            // Parent: CBaseFilter
+            // Field count: 4
+            namespace CFilterMultiple {
+                constexpr std::ptrdiff_t m_nFilterType = 0x5C0; // 
+                constexpr std::ptrdiff_t m_iFilterName = 0x5C8; // 
+                constexpr std::ptrdiff_t m_hFilter = 0x618; // 
+                constexpr std::ptrdiff_t m_nFilterCount = 0x640; // 
+            }
             // Parent: CCitadelModifierVData
             // Field count: 1
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Fear_VData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x608; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 4
@@ -3718,7 +3850,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_DiscordVData {
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -3728,13 +3860,17 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CPlayer_UseServices {
             }
+            // Parent: C_Citadel_BreakblePropModifierPickup
+            // Field count: 0
+            namespace C_Citadel_PunchablePowerup {
+            }
             // Parent: CCitadelModifierVData
             // Field count: 1
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Synth_Grasp_Caster_VData {
-                constexpr std::ptrdiff_t m_CastParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x608; // 
             }
             // Parent: CCitadel_Modifier_Stunned
             // Field count: 1
@@ -3747,7 +3883,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityRestorativeGooVData {
-                constexpr std::ptrdiff_t m_RestorativeGooParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_RestorativeGooParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_RestorativeGooModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: C_CitadelBaseAbility
@@ -3756,6 +3892,11 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bTeleportingToTarget = 0xCA0; // 
                 constexpr std::ptrdiff_t m_vTargetPosition = 0xCA4; // 
                 constexpr std::ptrdiff_t m_vTargetAngles = 0xCB0; // 
+            }
+            // Parent: CCitadelModifier
+            // Field count: 1
+            namespace CModifier_Upgrade_ArcaneSurge_WeaponBuff {
+                constexpr std::ptrdiff_t m_nBonusClip = 0xC0; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 0
@@ -3825,7 +3966,7 @@ namespace cs2_dumper {
             namespace CCitadel_Modifier_Chrono_KineticCarbine {
                 constexpr std::ptrdiff_t m_nBulletCount = 0xC0; // 
                 constexpr std::ptrdiff_t m_flElapsedPct = 0xC4; // 
-                constexpr std::ptrdiff_t m_hTimeWarp = 0xC8; // 
+                constexpr std::ptrdiff_t m_hTimeWarp = 0xC8; // CHandle<CCitadelBulletTimeWarp>
                 constexpr std::ptrdiff_t m_nFullyChargedParticle = 0xCC; // 
             }
             // Parent: CCitadelModifierVData
@@ -3834,9 +3975,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_HealthSwapPrecastVData {
-                constexpr std::ptrdiff_t m_strTargetParticleEffect = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_strTargetEnemyParticleEffect = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_strTargetScreenParticleEffect = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_strTargetParticleEffect = 0x608; // 
+                constexpr std::ptrdiff_t m_strTargetEnemyParticleEffect = 0x6E8; // 
+                constexpr std::ptrdiff_t m_strTargetScreenParticleEffect = 0x7C8; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 2
@@ -3845,7 +3986,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_LifeDrainVData {
                 constexpr std::ptrdiff_t m_SilenceModifier = 0x608; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_DrainParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DrainParticle = 0x618; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 3
@@ -3864,7 +4005,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CItemStimPakVData {
                 constexpr std::ptrdiff_t m_StimPakModifier = 0x15A8; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_CastParticle = 0x15B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x15B8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -3907,7 +4048,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ThermalDetonator_ThinkerVData {
-                constexpr std::ptrdiff_t m_GroundParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_GroundParticle = 0x648; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 6
@@ -3916,15 +4057,11 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_ViperHookBladeVData {
                 constexpr std::ptrdiff_t m_SlowDebuffModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_DaggerStuckParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DaggerImpactParticle = 0x1650; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DaggerExplodeParticle = 0x1730; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DaggerStuckParticle = 0x1570; // 
+                constexpr std::ptrdiff_t m_DaggerImpactParticle = 0x1650; // 
+                constexpr std::ptrdiff_t m_DaggerExplodeParticle = 0x1730; // 
                 constexpr std::ptrdiff_t m_strDaggerHitSound = 0x1810; // 
                 constexpr std::ptrdiff_t m_strDaggerExplodeSound = 0x1820; // 
-            }
-            // Parent: CCitadelModifier
-            // Field count: 0
-            namespace CCitadel_Modifier_Hook_Shield {
             }
             // Parent: CCitadelModifier
             // Field count: 3
@@ -3943,7 +4080,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_TechBurst_ProcVData {
-                constexpr std::ptrdiff_t m_ProcParticle = 0x638; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ProcParticle = 0x638; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -3990,8 +4127,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Upgrade_OverdriveClip_VData {
-                constexpr std::ptrdiff_t m_BuffEffect = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TracerParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffEffect = 0x608; // 
+                constexpr std::ptrdiff_t m_TracerParticle = 0x6E8; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProcVData
             // Field count: 4
@@ -4002,7 +4139,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_BuildUpModifier = 0x638; // 
                 constexpr std::ptrdiff_t m_DisarmProcModifier = 0x648; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ImmunityModifier = 0x658; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_TracerParticle = 0x668; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TracerParticle = 0x668; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -4022,12 +4159,24 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_iCurrentMaxRagdollCount = 0x568; // 
             }
             // Parent: CitadelAbilityVData
+            // Field count: 5
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Ability_Magician_EscapeVData {
+                constexpr std::ptrdiff_t m_EscapedModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_PoofParticle = 0x1570; // 
+                constexpr std::ptrdiff_t m_TetherParticle = 0x1650; // 
+                constexpr std::ptrdiff_t m_strEscaped = 0x1730; // 
+                constexpr std::ptrdiff_t m_cameraSequenceTeleport = 0x1740; // CitadelCameraOperationsSequence_t
+            }
+            // Parent: CitadelAbilityVData
             // Field count: 1
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbility_Rutger_CheatDeath_VData {
-                constexpr std::ptrdiff_t m_ModifierCheatDeathActivated = 0x1560; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_ModifierCheatDeathActivated = 0x1560; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 1
@@ -4035,7 +4184,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierFealtyTargetVData {
-                constexpr std::ptrdiff_t m_CastParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x608; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
@@ -4066,7 +4215,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ShieldTracker_BaseVData {
                 constexpr std::ptrdiff_t m_flShieldImpactEffectDuration = 0x608; // 
-                constexpr std::ptrdiff_t m_ShieldImpactParticle = 0x610; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ShieldImpactParticle = 0x610; // 
                 constexpr std::ptrdiff_t m_ShieldImpactModifier = 0x6F0; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t eShieldType = 0x700; // 
                 constexpr std::ptrdiff_t flCooldownOnDamage = 0x704; // 
@@ -4140,7 +4289,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityThumper2VData {
-                constexpr std::ptrdiff_t m_StompParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_StompParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_strStompExplosionSound = 0x1640; // 
                 constexpr std::ptrdiff_t m_BuffModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_BarbedWireAuraModifier = 0x1660; // CEmbeddedSubclass<CCitadelModifier>
@@ -4177,7 +4326,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierBullChargingVData {
-                constexpr std::ptrdiff_t m_ChargeParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChargeParticle = 0x608; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 4
@@ -4185,7 +4334,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilitySprintVData {
-                constexpr std::ptrdiff_t m_SprintParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SprintParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_strSprintSound = 0x1640; // 
                 constexpr std::ptrdiff_t m_flInCombatDuration = 0x1650; // 
                 constexpr std::ptrdiff_t m_flSprintAccMS = 0x1654; // 
@@ -4217,8 +4366,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flExplosionShakeAmplitude = 0x1578; // 
                 constexpr std::ptrdiff_t m_flExplosionShakeFrequency = 0x157C; // 
                 constexpr std::ptrdiff_t m_flExplosionShakeDuration = 0x1580; // 
-                constexpr std::ptrdiff_t m_AOERangeEffect = 0x1588; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AnimCastEffect = 0x1668; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AOERangeEffect = 0x1588; // 
+                constexpr std::ptrdiff_t m_AnimCastEffect = 0x1668; // 
                 constexpr std::ptrdiff_t m_cameraSequenceExplosion = 0x1748; // CitadelCameraOperationsSequence_t
                 constexpr std::ptrdiff_t m_BuffModifier = 0x17D0; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_BuffTimerModifier = 0x17E0; // CEmbeddedSubclass<CCitadelModifier>
@@ -4284,10 +4433,10 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_CrashModifier = 0x15B0; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ImmunityModifier = 0x15C0; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_LandingBonusesModifier = 0x15D0; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_TakeOffParticle = 0x15E0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x16C0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AoEPreviewParticle = 0x17A0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_nHoverParticle = 0x1880; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TakeOffParticle = 0x15E0; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x16C0; // 
+                constexpr std::ptrdiff_t m_AoEPreviewParticle = 0x17A0; // 
+                constexpr std::ptrdiff_t m_nHoverParticle = 0x1880; // 
                 constexpr std::ptrdiff_t m_strCrashingSound = 0x1960; // 
                 constexpr std::ptrdiff_t m_strImpactSound = 0x1970; // 
                 constexpr std::ptrdiff_t m_flStartupTime = 0x1980; // 
@@ -4375,7 +4524,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flCancelLockoutTime = 0x690; // 
                 constexpr std::ptrdiff_t m_bChanneling = 0x6B0; // 
                 constexpr std::ptrdiff_t m_bInCastDelay = 0x6B1; // 
-                constexpr std::ptrdiff_t m_vecImbuedByAbilitiyIDs = 0x6B8; // 
+                constexpr std::ptrdiff_t m_vecImbuedByAbilitiyIDs = 0x6B8; // C_NetworkUtlVectorBase<CUtlStringToken>
                 constexpr std::ptrdiff_t m_nUpgradeBits = 0x6D0; // 
                 constexpr std::ptrdiff_t m_iBucketID = 0x6D4; // 
                 constexpr std::ptrdiff_t m_bToggleState = 0x6D8; // 
@@ -4402,7 +4551,7 @@ namespace cs2_dumper {
             // Metadata:
             // NetworkVarNames: m_CCitadelAbilityComponent (CCitadelAbilityComponent::Storage_t)
             namespace C_NPC_TeslaCoil {
-                constexpr std::ptrdiff_t m_CCitadelAbilityComponent = 0xB10; // 
+                constexpr std::ptrdiff_t m_CCitadelAbilityComponent = 0xB08; // 
             }
             // Parent: C_ModelPointEntity
             // Field count: 0
@@ -4424,9 +4573,24 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_MageWalkVData {
-                constexpr std::ptrdiff_t m_BubbleModifier = 0x1560; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_TurretModifier = 0x1570; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_strCastEffect = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BubbleModifier = 0x1560; // 
+                constexpr std::ptrdiff_t m_TurretModifier = 0x1570; // 
+                constexpr std::ptrdiff_t m_strCastEffect = 0x1580; // 
+            }
+            // Parent: C_CitadelBaseAbility
+            // Field count: 7
+            //
+            // Metadata:
+            // NetworkVarNames: m_bIsVisibleOnMinimap (bool)
+            // NetworkVarNames: m_flStoppedMovingStartTime (GameTime_t)
+            namespace CAbility_Fathom_LurkersAmbush {
+                constexpr std::ptrdiff_t m_hRegenModifier = 0xE28; // CModifierHandleTyped<CCitadelModifier>
+                constexpr std::ptrdiff_t m_hInvisModifier = 0xE40; // CModifierHandleTyped<CCitadelModifier>
+                constexpr std::ptrdiff_t m_bIsVisibleOnMinimap = 0xE58; // 
+                constexpr std::ptrdiff_t m_flStoppedMovingStartTime = 0xE5C; // 
+                constexpr std::ptrdiff_t m_vLastPos = 0xE60; // 
+                constexpr std::ptrdiff_t m_flImmobilizeDuration = 0xE6C; // 
+                constexpr std::ptrdiff_t m_flChannelTimeStarted = 0xE70; // 
             }
             // Parent: CCitadel_Modifier_Stunned
             // Field count: 1
@@ -4454,7 +4618,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Astro_Rifle_SelfVData {
-                constexpr std::ptrdiff_t m_WeaponFxParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_WeaponFxParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -4512,23 +4676,24 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Bounce_PadVData {
                 constexpr std::ptrdiff_t m_sModelName = 0x28; // 
-                constexpr std::ptrdiff_t m_IdleParticle = 0x108; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BounceParticle = 0x1E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DestroyParticle = 0x2C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_IdleParticle = 0x108; // 
+                constexpr std::ptrdiff_t m_BounceParticle = 0x1E8; // 
+                constexpr std::ptrdiff_t m_DestroyParticle = 0x2C8; // 
                 constexpr std::ptrdiff_t m_strCasterBounceSound = 0x3A8; // 
                 constexpr std::ptrdiff_t m_strOtherHeroBounceSound = 0x3B8; // 
                 constexpr std::ptrdiff_t m_strBarrelBounceSound = 0x3C8; // 
                 constexpr std::ptrdiff_t m_strExpiredSound = 0x3D8; // 
             }
             // Parent: CitadelAbilityVData
-            // Field count: 3
+            // Field count: 4
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_SmokeBombVData {
                 constexpr std::ptrdiff_t m_InvisModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_BuffModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_PurgeParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_PhaseOutModifier = 0x1580; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_PurgeParticle = 0x1590; // 
             }
             // Parent: CCitadelModifier
             // Field count: 12
@@ -4554,6 +4719,14 @@ namespace cs2_dumper {
             namespace CCitadel_Modifier_Siphon_Bullets_WatcherVData {
                 constexpr std::ptrdiff_t m_HealModifier = 0x628; // CEmbeddedSubclass<CCitadelModifier>
             }
+            // Parent: CitadelItemVData
+            // Field count: 1
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CItemSilenceGlyphVData {
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x15A8; // CEmbeddedSubclass<CCitadelModifier>
+            }
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_Upgrade_Magic_Storm {
@@ -4574,12 +4747,16 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Trapper_FearVData {
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_IceDome_AuraModifierBase {
+            }
+            // Parent: CCitadelModifier
+            // Field count: 0
+            namespace CCitadel_Modifier_SilenceProc_Debuff {
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -4595,17 +4772,17 @@ namespace cs2_dumper {
             namespace CitadelHeroData_t {
                 constexpr std::ptrdiff_t m_vecAnimGraphDefaultValueOverrides = 0x8; // 
                 constexpr std::ptrdiff_t m_HeroID = 0x28; // 
-                constexpr std::ptrdiff_t m_hDamageTakenParticle = 0x30; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_hGroundDamageTakenParticle = 0x110; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_hDeathParticle = 0x1F0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_hLowHealthParticle = 0x2D0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_hDamageTakenParticle = 0x30; // 
+                constexpr std::ptrdiff_t m_hGroundDamageTakenParticle = 0x110; // 
+                constexpr std::ptrdiff_t m_hDeathParticle = 0x1F0; // 
+                constexpr std::ptrdiff_t m_hLowHealthParticle = 0x2D0; // 
                 constexpr std::ptrdiff_t m_strSelectionImage = 0x3B0; // 
                 constexpr std::ptrdiff_t m_strIconImageSmall = 0x3C0; // 
                 constexpr std::ptrdiff_t m_strIconHeroCard = 0x3D0; // 
                 constexpr std::ptrdiff_t m_strMinimapImage = 0x3E0; // 
                 constexpr std::ptrdiff_t m_strTopBarImage = 0x3F0; // 
                 constexpr std::ptrdiff_t m_strTopBarVertical = 0x400; // 
-                constexpr std::ptrdiff_t m_hRespawnParticle = 0x410; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_hRespawnParticle = 0x410; // 
                 constexpr std::ptrdiff_t m_colorUI = 0x4F0; // 
                 constexpr std::ptrdiff_t m_colorGlowFriendly = 0x4F4; // 
                 constexpr std::ptrdiff_t m_colorGlowEnemy = 0x4F8; // 
@@ -4615,7 +4792,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_nModelSkin = 0x5E8; // 
                 constexpr std::ptrdiff_t m_strWIPModelName = 0x5F0; // 
                 constexpr std::ptrdiff_t m_strMainOnlyModelName = 0x6D0; // 
-                constexpr std::ptrdiff_t m_sAG2VariationName = 0x7B0; // 
+                constexpr std::ptrdiff_t m_sAG2VariationName = 0x7B0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeCNmGraphVariation>>
                 constexpr std::ptrdiff_t m_strUIPortraitMap = 0x890; // 
                 constexpr std::ptrdiff_t m_strUIShoppingMap = 0x898; // 
                 constexpr std::ptrdiff_t m_heroStatsUI = 0x8A0; // 
@@ -4667,7 +4844,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_eAbilityResourceType = 0xE30; // 
                 constexpr std::ptrdiff_t m_mapStandardLevelUpUpgrades = 0xE50; // 
                 constexpr std::ptrdiff_t m_mapLevelInfo = 0xE78; // 
-                constexpr std::ptrdiff_t m_mapPurchaseBonuses = 0xEA0; // CUtlOrderedMap<EItemSlotTypes_t,CUtlVector<HeroPurchaseBonus_t>>
+                constexpr std::ptrdiff_t m_mapPurchaseBonuses = 0xEA0; // 
             }
             // Parent: C_BaseEntity
             // Field count: 4
@@ -4691,9 +4868,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierVacuumAuraVData {
-                constexpr std::ptrdiff_t m_FinishParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AlliedParticle = 0x728; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_EnemyParticle = 0x808; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_FinishParticle = 0x648; // 
+                constexpr std::ptrdiff_t m_AlliedParticle = 0x728; // 
+                constexpr std::ptrdiff_t m_EnemyParticle = 0x808; // 
                 constexpr std::ptrdiff_t m_strAmbientLoopingLocalPlayerSound = 0x8E8; // 
             }
             // Parent: C_CitadelProjectile
@@ -4745,7 +4922,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierRiotProtocolEnemyDebuffVData {
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 3
@@ -4754,7 +4931,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAbilityVandalOverflowVData {
                 constexpr std::ptrdiff_t m_LiftModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_TargetParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TargetParticle = 0x1570; // 
                 constexpr std::ptrdiff_t m_TargetCastSound = 0x1650; // 
             }
             // Parent: CCitadel_Modifier_StunnedVData
@@ -4763,8 +4940,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Wrecker_UltimateThrowEnemyVData {
-                constexpr std::ptrdiff_t m_EnemyHeroStasisEffect = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_EnemyHeroGrabEffect = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_EnemyHeroStasisEffect = 0x6E8; // 
+                constexpr std::ptrdiff_t m_EnemyHeroGrabEffect = 0x7C8; // 
             }
             // Parent: CCitadel_Modifier_BaseBulletPreRollProcVData
             // Field count: 2
@@ -4772,7 +4949,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ExplosiveBulletsVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x738; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x738; // 
                 constexpr std::ptrdiff_t m_ExplodeSound = 0x818; // 
             }
             // Parent: None
@@ -4804,6 +4981,11 @@ namespace cs2_dumper {
             // Field count: 0
             namespace C_CitadelClimbRopeTrigger {
             }
+            // Parent: CBaseFilter
+            // Field count: 1
+            namespace CFilterTeam {
+                constexpr std::ptrdiff_t m_iFilterTeam = 0x5C0; // 
+            }
             // Parent: CCitadel_Item
             // Field count: 0
             namespace CCitadel_Item_Refresher {
@@ -4821,7 +5003,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_AbilityProjectile = 0x28; // 
                 constexpr std::ptrdiff_t m_RejuvModifier = 0x38; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_PunchPickupModifier = 0x48; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_IsFrozenParticle = 0x58; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_IsFrozenParticle = 0x58; // 
             }
             // Parent: None
             // Field count: 29
@@ -4893,18 +5075,18 @@ namespace cs2_dumper {
             // NetworkVarNames: m_bMaster (bool)
             // NetworkVarNames: m_bExposureControl (bool)
             namespace C_PostProcessingVolume {
-                constexpr std::ptrdiff_t m_hPostSettings = 0x878; // 
-                constexpr std::ptrdiff_t m_flFadeDuration = 0x880; // 
-                constexpr std::ptrdiff_t m_flMinLogExposure = 0x884; // 
-                constexpr std::ptrdiff_t m_flMaxLogExposure = 0x888; // 
-                constexpr std::ptrdiff_t m_flMinExposure = 0x88C; // 
-                constexpr std::ptrdiff_t m_flMaxExposure = 0x890; // 
-                constexpr std::ptrdiff_t m_flExposureCompensation = 0x894; // 
-                constexpr std::ptrdiff_t m_flExposureFadeSpeedUp = 0x898; // 
-                constexpr std::ptrdiff_t m_flExposureFadeSpeedDown = 0x89C; // 
-                constexpr std::ptrdiff_t m_flTonemapEVSmoothingRange = 0x8A0; // 
-                constexpr std::ptrdiff_t m_bMaster = 0x8A4; // 
-                constexpr std::ptrdiff_t m_bExposureControl = 0x8A5; // 
+                constexpr std::ptrdiff_t m_hPostSettings = 0x9B0; // 
+                constexpr std::ptrdiff_t m_flFadeDuration = 0x9B8; // 
+                constexpr std::ptrdiff_t m_flMinLogExposure = 0x9BC; // 
+                constexpr std::ptrdiff_t m_flMaxLogExposure = 0x9C0; // 
+                constexpr std::ptrdiff_t m_flMinExposure = 0x9C4; // 
+                constexpr std::ptrdiff_t m_flMaxExposure = 0x9C8; // 
+                constexpr std::ptrdiff_t m_flExposureCompensation = 0x9CC; // 
+                constexpr std::ptrdiff_t m_flExposureFadeSpeedUp = 0x9D0; // 
+                constexpr std::ptrdiff_t m_flExposureFadeSpeedDown = 0x9D4; // 
+                constexpr std::ptrdiff_t m_flTonemapEVSmoothingRange = 0x9D8; // 
+                constexpr std::ptrdiff_t m_bMaster = 0x9DC; // 
+                constexpr std::ptrdiff_t m_bExposureControl = 0x9DD; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -4969,8 +5151,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityCardTossVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_SummonedCard = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_SummonedCard = 0x1640; // 
                 constexpr std::ptrdiff_t m_strCardTossSound = 0x1720; // 
                 constexpr std::ptrdiff_t m_strCardSummonSound = 0x1730; // 
                 constexpr std::ptrdiff_t m_flSummonedCardStartSideOffset = 0x1740; // 
@@ -5003,12 +5185,21 @@ namespace cs2_dumper {
             namespace CModifier_Synth_Blitz_TechAmp {
             }
             // Parent: CCitadelModifierVData
+            // Field count: 2
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Modifier_SpreadingFire_DOT_VData {
+                constexpr std::ptrdiff_t m_sSpreadingFireParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_sSpreadingFireTetherParticle = 0x6E8; // 
+            }
+            // Parent: CCitadelModifierVData
             // Field count: 1
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierFlyingStrikeTargetVData {
-                constexpr std::ptrdiff_t m_GrappleRopeParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_GrappleRopeParticle = 0x608; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 15
@@ -5016,9 +5207,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Nano_PredatoryStatueVData {
-                constexpr std::ptrdiff_t m_AOEParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_EnabledParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DrainParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AOEParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_EnabledParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_DrainParticle = 0x7C8; // 
                 constexpr std::ptrdiff_t m_strEnabledSound = 0x8A8; // 
                 constexpr std::ptrdiff_t m_strEnabledLoopSound = 0x8B8; // 
                 constexpr std::ptrdiff_t m_strDisabledSound = 0x8C8; // 
@@ -5055,7 +5246,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierStimPakVData {
-                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
@@ -5141,20 +5332,20 @@ namespace cs2_dumper {
             namespace CBasePlayerController {
                 constexpr std::ptrdiff_t m_nFinalPredictedTick = 0x570; // 
                 constexpr std::ptrdiff_t m_CommandContext = 0x578; // 
-                constexpr std::ptrdiff_t m_nInButtonsWhichAreToggles = 0x610; // 
-                constexpr std::ptrdiff_t m_nTickBase = 0x618; // 
-                constexpr std::ptrdiff_t m_hPawn = 0x61C; // 
-                constexpr std::ptrdiff_t m_bKnownTeamMismatch = 0x620; // 
-                constexpr std::ptrdiff_t m_hPredictedPawn = 0x624; // 
-                constexpr std::ptrdiff_t m_nSplitScreenSlot = 0x628; // 
-                constexpr std::ptrdiff_t m_hSplitOwner = 0x62C; // CHandle<CBasePlayerController>
-                constexpr std::ptrdiff_t m_hSplitScreenPlayers = 0x630; // CUtlVector<CHandle<CBasePlayerController>>
-                constexpr std::ptrdiff_t m_bIsHLTV = 0x648; // 
-                constexpr std::ptrdiff_t m_iConnected = 0x64C; // 
-                constexpr std::ptrdiff_t m_iszPlayerName = 0x650; // 
-                constexpr std::ptrdiff_t m_steamID = 0x6D8; // 
-                constexpr std::ptrdiff_t m_bIsLocalPlayerController = 0x6E0; // 
-                constexpr std::ptrdiff_t m_iDesiredFOV = 0x6E4; // 
+                constexpr std::ptrdiff_t m_nInButtonsWhichAreToggles = 0x630; // 
+                constexpr std::ptrdiff_t m_nTickBase = 0x638; // 
+                constexpr std::ptrdiff_t m_hPawn = 0x63C; // 
+                constexpr std::ptrdiff_t m_bKnownTeamMismatch = 0x640; // 
+                constexpr std::ptrdiff_t m_hPredictedPawn = 0x644; // 
+                constexpr std::ptrdiff_t m_nSplitScreenSlot = 0x648; // 
+                constexpr std::ptrdiff_t m_hSplitOwner = 0x64C; // CHandle<CBasePlayerController>
+                constexpr std::ptrdiff_t m_hSplitScreenPlayers = 0x650; // CUtlVector<CHandle<CBasePlayerController>>
+                constexpr std::ptrdiff_t m_bIsHLTV = 0x668; // 
+                constexpr std::ptrdiff_t m_iConnected = 0x66C; // 
+                constexpr std::ptrdiff_t m_iszPlayerName = 0x670; // 
+                constexpr std::ptrdiff_t m_steamID = 0x6F8; // 
+                constexpr std::ptrdiff_t m_bIsLocalPlayerController = 0x700; // 
+                constexpr std::ptrdiff_t m_iDesiredFOV = 0x704; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -5166,7 +5357,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_HealthSwapVData {
-                constexpr std::ptrdiff_t m_BloodExchangeParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BloodExchangeParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -5187,7 +5378,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ApplyDebuff_ProcVData {
                 constexpr std::ptrdiff_t m_bUseNonEmbedded = 0x638; // 
-                constexpr std::ptrdiff_t m_DebuffModifier = 0x640; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x640; // 
                 constexpr std::ptrdiff_t m_NonEmbeddedModifier = 0x650; // 
             }
             // Parent: CBaseModifier
@@ -5229,7 +5420,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierRestorativeGooVData {
-                constexpr std::ptrdiff_t m_RestorativeGooEndParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_RestorativeGooEndParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_flDistanceCameraOffsetLerpTime = 0x6E8; // 
                 constexpr std::ptrdiff_t m_flDistanceCameraOffsetBias = 0x6EC; // 
                 constexpr std::ptrdiff_t m_flDistanceCameraOffset = 0x6F0; // 
@@ -5330,9 +5521,9 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_BarrageCasterModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_AmpModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1580; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ShootParticle = 0x1590; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1670; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ChannelParticle = 0x1750; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ShootParticle = 0x1590; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1670; // 
+                constexpr std::ptrdiff_t m_ChannelParticle = 0x1750; // 
                 constexpr std::ptrdiff_t m_strProjectileLaunchSound = 0x1830; // 
                 constexpr std::ptrdiff_t m_flAttackInterval = 0x1840; // 
             }
@@ -5342,7 +5533,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierUppercuttedVData {
-                constexpr std::ptrdiff_t m_StunParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_StunParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_strStunSound = 0x6E8; // 
                 constexpr std::ptrdiff_t m_NoExplodeModifier = 0x6F8; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ExplodeDebuffModifier = 0x708; // CEmbeddedSubclass<CCitadelModifier>
@@ -5379,8 +5570,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_RagdollPose = 0x938; // 
                 constexpr std::ptrdiff_t m_bRagdollClientSide = 0x980; // 
                 constexpr std::ptrdiff_t m_bHasAnimatedMaterialAttributes = 0x990; // 
-                constexpr std::ptrdiff_t m_animGraph2SerializeData = 0xAE0; // 
-                constexpr std::ptrdiff_t m_nAnimGraph2SerializeDataSizeBytes = 0xAF8; // 
+                constexpr std::ptrdiff_t m_animGraph2SerializeData = 0xAD8; // 
+                constexpr std::ptrdiff_t m_nAnimGraph2SerializeDataSizeBytes = 0xAF0; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 2
@@ -5388,8 +5579,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Tokamak_HeatSinks_DOT_VData {
-                constexpr std::ptrdiff_t m_sAfterburnParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sAfterburnExplodeParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_sAfterburnParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_sAfterburnExplodeParticle = 0x6E8; // 
             }
             // Parent: CAbilityMeleeVData
             // Field count: 5
@@ -5414,7 +5605,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_IceDomeVData {
                 constexpr std::ptrdiff_t m_BlockerModel = 0x608; // 
-                constexpr std::ptrdiff_t m_DomeParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DomeParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_FriendlyAuraModifier = 0x7C8; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_EnemyAuraModifier = 0x7D8; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_strDomeEndSound = 0x7E8; // 
@@ -5431,7 +5622,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_StaticChargeVData {
-                constexpr std::ptrdiff_t m_CastParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_StaticChargeModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifier
@@ -5460,9 +5651,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_PetrifyVData {
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BuffStartParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BuffEndParticle = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_BuffStartParticle = 0x7C8; // 
+                constexpr std::ptrdiff_t m_BuffEndParticle = 0x8A8; // 
                 constexpr std::ptrdiff_t m_PostSleepModifier = 0x988; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CitadelAbilityVData
@@ -5479,7 +5670,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierLashFlogDebuffVData {
-                constexpr std::ptrdiff_t m_FlogDebuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_FlogDebuffParticle = 0x608; // 
             }
             // Parent: C_GameRules
             // Field count: 0
@@ -5559,9 +5750,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_SilencedVData {
-                constexpr std::ptrdiff_t m_EmpParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_EmpPlayerParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_EmpStatusParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_EmpParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_EmpPlayerParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_EmpStatusParticle = 0x7C8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -5588,38 +5779,38 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CNPC_TrooperNeutralVData {
-                constexpr std::ptrdiff_t m_eTrooperType = 0xFB0; // 
-                constexpr std::ptrdiff_t m_flGoldReward = 0xFB4; // 
-                constexpr std::ptrdiff_t m_flGoldRewardBonusPercentPerMinute = 0xFB8; // 
-                constexpr std::ptrdiff_t m_bGiveGoldOnHit = 0xFBC; // 
-                constexpr std::ptrdiff_t m_bOrbDropper = 0xFBD; // 
-                constexpr std::ptrdiff_t m_bCapSimultanousAttackers = 0xFBE; // 
-                constexpr std::ptrdiff_t m_flShieldReactivateDelay = 0xFC0; // 
-                constexpr std::ptrdiff_t m_flDyingDuration = 0xFC4; // 
-                constexpr std::ptrdiff_t m_bDamagedByBullets = 0xFC8; // 
-                constexpr std::ptrdiff_t m_bDamagedByMelee = 0xFC9; // 
-                constexpr std::ptrdiff_t m_bDamagedByAbilities = 0xFCA; // 
-                constexpr std::ptrdiff_t m_bFixedMeleeDamage = 0xFCB; // 
-                constexpr std::ptrdiff_t m_ShieldParticle = 0xFD0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_flRetaliateDamage = 0x10B0; // 
-                constexpr std::ptrdiff_t m_flRetaliateCooldown = 0x10B4; // 
-                constexpr std::ptrdiff_t m_retaliateParticle = 0x10B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_bHasAOEAttack = 0x1198; // 
-                constexpr std::ptrdiff_t m_flAOERadius = 0x119C; // 
-                constexpr std::ptrdiff_t m_flAOEDamage = 0x11A0; // 
-                constexpr std::ptrdiff_t m_flAOEAttackCooldown = 0x11A4; // 
-                constexpr std::ptrdiff_t m_AOEParticle = 0x11A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AOEDebuffToApply = 0x1288; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_AOEInitiateSound = 0x1298; // 
-                constexpr std::ptrdiff_t m_AOESound = 0x12A8; // 
-                constexpr std::ptrdiff_t m_AOEDebuffDuration = 0x12B8; // 
-                constexpr std::ptrdiff_t m_vecRandomBodyGroup = 0x12C0; // 
-                constexpr std::ptrdiff_t m_vecRandomSkin = 0x12D8; // 
-                constexpr std::ptrdiff_t m_flHullCapsuleRadius = 0x12F0; // 
-                constexpr std::ptrdiff_t m_flHullCapsuleHeight = 0x12F4; // 
-                constexpr std::ptrdiff_t m_bFaceEnemyWhileIdle = 0x12F8; // 
-                constexpr std::ptrdiff_t m_IdleLoopSound = 0x1300; // 
-                constexpr std::ptrdiff_t m_MoveType = 0x1310; // 
+                constexpr std::ptrdiff_t m_eTrooperType = 0x10D8; // 
+                constexpr std::ptrdiff_t m_flGoldReward = 0x10DC; // 
+                constexpr std::ptrdiff_t m_flGoldRewardBonusPercentPerMinute = 0x10E0; // 
+                constexpr std::ptrdiff_t m_bGiveGoldOnHit = 0x10E4; // 
+                constexpr std::ptrdiff_t m_bOrbDropper = 0x10E5; // 
+                constexpr std::ptrdiff_t m_bCapSimultanousAttackers = 0x10E6; // 
+                constexpr std::ptrdiff_t m_flShieldReactivateDelay = 0x10E8; // 
+                constexpr std::ptrdiff_t m_flDyingDuration = 0x10EC; // 
+                constexpr std::ptrdiff_t m_bDamagedByBullets = 0x10F0; // 
+                constexpr std::ptrdiff_t m_bDamagedByMelee = 0x10F1; // 
+                constexpr std::ptrdiff_t m_bDamagedByAbilities = 0x10F2; // 
+                constexpr std::ptrdiff_t m_bFixedMeleeDamage = 0x10F3; // 
+                constexpr std::ptrdiff_t m_ShieldParticle = 0x10F8; // 
+                constexpr std::ptrdiff_t m_flRetaliateDamage = 0x11D8; // 
+                constexpr std::ptrdiff_t m_flRetaliateCooldown = 0x11DC; // 
+                constexpr std::ptrdiff_t m_retaliateParticle = 0x11E0; // 
+                constexpr std::ptrdiff_t m_bHasAOEAttack = 0x12C0; // 
+                constexpr std::ptrdiff_t m_flAOERadius = 0x12C4; // 
+                constexpr std::ptrdiff_t m_flAOEDamage = 0x12C8; // 
+                constexpr std::ptrdiff_t m_flAOEAttackCooldown = 0x12CC; // 
+                constexpr std::ptrdiff_t m_AOEParticle = 0x12D0; // 
+                constexpr std::ptrdiff_t m_AOEDebuffToApply = 0x13B0; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_AOEInitiateSound = 0x13C0; // 
+                constexpr std::ptrdiff_t m_AOESound = 0x13D0; // 
+                constexpr std::ptrdiff_t m_AOEDebuffDuration = 0x13E0; // 
+                constexpr std::ptrdiff_t m_vecRandomBodyGroup = 0x13E8; // 
+                constexpr std::ptrdiff_t m_vecRandomSkin = 0x1400; // 
+                constexpr std::ptrdiff_t m_flHullCapsuleRadius = 0x1418; // 
+                constexpr std::ptrdiff_t m_flHullCapsuleHeight = 0x141C; // 
+                constexpr std::ptrdiff_t m_bFaceEnemyWhileIdle = 0x1420; // 
+                constexpr std::ptrdiff_t m_IdleLoopSound = 0x1428; // 
+                constexpr std::ptrdiff_t m_MoveType = 0x1438; // 
             }
             // Parent: C_CitadelProjectile
             // Field count: 0
@@ -5673,7 +5864,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAbilityVandalSurgeVData {
                 constexpr std::ptrdiff_t m_LiftModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_TargetParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TargetParticle = 0x1570; // 
                 constexpr std::ptrdiff_t m_TargetCastSound = 0x1650; // 
             }
             // Parent: CCitadelModifier
@@ -5710,8 +5901,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Fathom_Breach_VData {
-                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_LeapParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_LeapParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_strInFlightAnimGraphParam = 0x1720; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x1728; // 
                 constexpr std::ptrdiff_t m_InFlightModifier = 0x1738; // CEmbeddedSubclass<CCitadelModifier>
@@ -5722,7 +5913,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Citadel_Bull_Leap_LandingBonuses_VData {
-                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 23
@@ -5730,8 +5921,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityDashVData {
-                constexpr std::ptrdiff_t m_DashParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DownDashParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DashParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_DownDashParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_strArriveSound = 0x1720; // 
                 constexpr std::ptrdiff_t m_strStaminaDrainedSound = 0x1730; // 
                 constexpr std::ptrdiff_t m_cameraSequenceGroundDashActivate = 0x1740; // CitadelCameraOperationsSequence_t
@@ -5758,14 +5949,6 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_Modifier_DebuffImmunity {
             }
-            // Parent: CCitadelModifierVData
-            // Field count: 1
-            //
-            // Metadata:
-            // MGetKV3ClassDefaults
-            namespace CCitadel_Modifier_ConsumedProtectionRacketVData {
-                constexpr std::ptrdiff_t m_strShieldBreakSound = 0x608; // 
-            }
             // Parent: CCitadel_Modifier_Stunned
             // Field count: 1
             namespace CCitadel_Modifier_Wrecker_Ultimate_ThrowEnemy {
@@ -5788,8 +5971,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ViscousBallVData {
-                constexpr std::ptrdiff_t m_TrailParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DirectionParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TrailParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_DirectionParticle = 0x6E8; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 2
@@ -5809,8 +5992,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_SuccessModifier = 0x15A8; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_strSuccessSound = 0x15B8; // 
                 constexpr std::ptrdiff_t m_strFailureSound = 0x15C8; // 
-                constexpr std::ptrdiff_t m_SuccessParticle = 0x15D8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FailureParticle = 0x16B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SuccessParticle = 0x15D8; // 
+                constexpr std::ptrdiff_t m_FailureParticle = 0x16B8; // 
                 constexpr std::ptrdiff_t m_flGraceTime = 0x1798; // 
             }
             // Parent: CitadelAbilityVData
@@ -5848,7 +6031,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_FlameDashGroundAuraVData {
-                constexpr std::ptrdiff_t m_GroundParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_GroundParticle = 0x648; // 
                 constexpr std::ptrdiff_t m_flHeight = 0x728; // 
             }
             // Parent: CCitadel_Item
@@ -5914,20 +6097,21 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilitySleepDaggerVData {
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_SleepModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_DrowsyModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_SleepBombModifier = 0x1660; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CitadelAbilityVData
-            // Field count: 3
+            // Field count: 4
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityLashFlogVData {
-                constexpr std::ptrdiff_t m_FlogParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FlogLifeLeachParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FlogDebuffModifier = 0x1720; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_FlogParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_FlogLifeLeachParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_strHitConfirmSound = 0x1720; // 
+                constexpr std::ptrdiff_t m_FlogDebuffModifier = 0x1730; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
@@ -5965,13 +6149,13 @@ namespace cs2_dumper {
             // NetworkVarNames: m_iClip2 (int32)
             // NetworkVarNames: m_pReserveAmmo (int)
             namespace C_BasePlayerWeapon {
-                constexpr std::ptrdiff_t m_nNextPrimaryAttackTick = 0xB08; // 
-                constexpr std::ptrdiff_t m_flNextPrimaryAttackTickRatio = 0xB0C; // 
-                constexpr std::ptrdiff_t m_nNextSecondaryAttackTick = 0xB10; // 
-                constexpr std::ptrdiff_t m_flNextSecondaryAttackTickRatio = 0xB14; // 
-                constexpr std::ptrdiff_t m_iClip1 = 0xB18; // 
-                constexpr std::ptrdiff_t m_iClip2 = 0xB1C; // 
-                constexpr std::ptrdiff_t m_pReserveAmmo = 0xB20; // 
+                constexpr std::ptrdiff_t m_nNextPrimaryAttackTick = 0xB00; // 
+                constexpr std::ptrdiff_t m_flNextPrimaryAttackTickRatio = 0xB04; // 
+                constexpr std::ptrdiff_t m_nNextSecondaryAttackTick = 0xB08; // 
+                constexpr std::ptrdiff_t m_flNextSecondaryAttackTickRatio = 0xB0C; // 
+                constexpr std::ptrdiff_t m_iClip1 = 0xB10; // 
+                constexpr std::ptrdiff_t m_iClip2 = 0xB14; // 
+                constexpr std::ptrdiff_t m_pReserveAmmo = 0xB18; // 
             }
             // Parent: CCitadel_Item
             // Field count: 0
@@ -5983,9 +6167,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierSpiderShieldBuffVData {
-                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_RadiusParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PulseParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_RadiusParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_PulseParticle = 0x7C8; // 
                 constexpr std::ptrdiff_t m_PulseDebuffModifier = 0x8A8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelYamatoBaseVData
@@ -5997,11 +6181,11 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flEffectSize = 0x1568; // 
                 constexpr std::ptrdiff_t m_flMaxAttackAngle = 0x156C; // 
                 constexpr std::ptrdiff_t m_remapAngleToTime = 0x1570; // 
-                constexpr std::ptrdiff_t m_DebuffModifier = 0x1580; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1590; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HealingSlashParticle = 0x1670; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HealingSlashSwordGlow = 0x1750; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CastParticle = 0x1830; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x1580; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1590; // 
+                constexpr std::ptrdiff_t m_HealingSlashParticle = 0x1670; // 
+                constexpr std::ptrdiff_t m_HealingSlashSwordGlow = 0x1750; // 
+                constexpr std::ptrdiff_t m_CastParticle = 0x1830; // 
                 constexpr std::ptrdiff_t m_strDamageTarget = 0x1910; // 
             }
             // Parent: None
@@ -6015,8 +6199,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_sToolsOnlyOwnerModelName = 0xF8; // 
                 constexpr std::ptrdiff_t m_bBuiltRightHanded = 0x1D8; // 
                 constexpr std::ptrdiff_t m_bAllowFlipping = 0x1D9; // 
-                constexpr std::ptrdiff_t m_sMuzzleAttachment = 0x1E0; // CAttachmentNameSymbolWithStorage
-                constexpr std::ptrdiff_t m_szMuzzleFlashParticle = 0x200; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_sMuzzleAttachment = 0x1E0; // 
+                constexpr std::ptrdiff_t m_szMuzzleFlashParticle = 0x200; // 
                 constexpr std::ptrdiff_t m_bLinkedCooldowns = 0x2E0; // 
                 constexpr std::ptrdiff_t m_vecIntrinsicModifiers = 0x2E8; // 
                 constexpr std::ptrdiff_t m_iFlags = 0x300; // 
@@ -6048,29 +6232,29 @@ namespace cs2_dumper {
             // NetworkVarNames: m_z (float32)
             // NetworkVarNames: m_angle (float32)
             namespace C_Fish {
-                constexpr std::ptrdiff_t m_pos = 0xB08; // 
-                constexpr std::ptrdiff_t m_vel = 0xB14; // 
-                constexpr std::ptrdiff_t m_angles = 0xB20; // 
-                constexpr std::ptrdiff_t m_localLifeState = 0xB2C; // 
-                constexpr std::ptrdiff_t m_deathDepth = 0xB30; // 
-                constexpr std::ptrdiff_t m_deathAngle = 0xB34; // 
-                constexpr std::ptrdiff_t m_buoyancy = 0xB38; // 
-                constexpr std::ptrdiff_t m_wiggleTimer = 0xB40; // 
-                constexpr std::ptrdiff_t m_wigglePhase = 0xB58; // 
-                constexpr std::ptrdiff_t m_wiggleRate = 0xB5C; // 
-                constexpr std::ptrdiff_t m_actualPos = 0xB60; // 
-                constexpr std::ptrdiff_t m_actualAngles = 0xB6C; // 
-                constexpr std::ptrdiff_t m_poolOrigin = 0xB78; // 
-                constexpr std::ptrdiff_t m_waterLevel = 0xB84; // 
-                constexpr std::ptrdiff_t m_gotUpdate = 0xB88; // 
-                constexpr std::ptrdiff_t m_x = 0xB8C; // 
-                constexpr std::ptrdiff_t m_y = 0xB90; // 
-                constexpr std::ptrdiff_t m_z = 0xB94; // 
-                constexpr std::ptrdiff_t m_angle = 0xB98; // 
-                constexpr std::ptrdiff_t m_errorHistory = 0xB9C; // 
-                constexpr std::ptrdiff_t m_errorHistoryIndex = 0xBEC; // 
-                constexpr std::ptrdiff_t m_errorHistoryCount = 0xBF0; // 
-                constexpr std::ptrdiff_t m_averageError = 0xBF4; // 
+                constexpr std::ptrdiff_t m_pos = 0xB00; // 
+                constexpr std::ptrdiff_t m_vel = 0xB0C; // 
+                constexpr std::ptrdiff_t m_angles = 0xB18; // 
+                constexpr std::ptrdiff_t m_localLifeState = 0xB24; // 
+                constexpr std::ptrdiff_t m_deathDepth = 0xB28; // 
+                constexpr std::ptrdiff_t m_deathAngle = 0xB2C; // 
+                constexpr std::ptrdiff_t m_buoyancy = 0xB30; // 
+                constexpr std::ptrdiff_t m_wiggleTimer = 0xB38; // 
+                constexpr std::ptrdiff_t m_wigglePhase = 0xB50; // 
+                constexpr std::ptrdiff_t m_wiggleRate = 0xB54; // 
+                constexpr std::ptrdiff_t m_actualPos = 0xB58; // 
+                constexpr std::ptrdiff_t m_actualAngles = 0xB64; // 
+                constexpr std::ptrdiff_t m_poolOrigin = 0xB70; // 
+                constexpr std::ptrdiff_t m_waterLevel = 0xB7C; // 
+                constexpr std::ptrdiff_t m_gotUpdate = 0xB80; // 
+                constexpr std::ptrdiff_t m_x = 0xB84; // 
+                constexpr std::ptrdiff_t m_y = 0xB88; // 
+                constexpr std::ptrdiff_t m_z = 0xB8C; // 
+                constexpr std::ptrdiff_t m_angle = 0xB90; // 
+                constexpr std::ptrdiff_t m_errorHistory = 0xB94; // 
+                constexpr std::ptrdiff_t m_errorHistoryIndex = 0xBE4; // 
+                constexpr std::ptrdiff_t m_errorHistoryCount = 0xBE8; // 
+                constexpr std::ptrdiff_t m_averageError = 0xBEC; // 
             }
             // Parent: C_CitadelProjectile
             // Field count: 0
@@ -6091,11 +6275,11 @@ namespace cs2_dumper {
             namespace CCitadel_Ability_Trapper_WebWallVData {
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_DisarmModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_WebWallParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_WebWallDestroyedParticle = 0x1660; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TimeWallChargeParticle = 0x1740; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TimeWallHitParticle = 0x1820; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TimeWallHitTimerParticle = 0x1900; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_WebWallParticle = 0x1580; // 
+                constexpr std::ptrdiff_t m_WebWallDestroyedParticle = 0x1660; // 
+                constexpr std::ptrdiff_t m_TimeWallChargeParticle = 0x1740; // 
+                constexpr std::ptrdiff_t m_TimeWallHitParticle = 0x1820; // 
+                constexpr std::ptrdiff_t m_TimeWallHitTimerParticle = 0x1900; // 
                 constexpr std::ptrdiff_t m_strWebWallCreated = 0x19E0; // 
                 constexpr std::ptrdiff_t m_strWebWallDestroyed = 0x19F0; // 
             }
@@ -6112,7 +6296,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_ZapModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_strHitSound = 0x1570; // 
                 constexpr std::ptrdiff_t m_strProjectileLoopingSound = 0x1580; // 
-                constexpr std::ptrdiff_t m_ZapParticle = 0x1590; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ZapParticle = 0x1590; // 
             }
             // Parent: CScaleFunctionVData
             // Field count: 0
@@ -6164,7 +6348,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierHighAlertBuffVData {
-                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 3
@@ -6172,7 +6356,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityTrappersBoloVData {
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_TrapModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -6232,34 +6416,34 @@ namespace cs2_dumper {
             // NetworkVarNames: m_hController (CHandle<CBasePlayerController>)
             // NetworkVarNames: m_hDefaultController (CHandle<CBasePlayerController>)
             namespace C_BasePlayerPawn {
-                constexpr std::ptrdiff_t m_pWeaponServices = 0xD28; // 
-                constexpr std::ptrdiff_t m_pItemServices = 0xD30; // 
-                constexpr std::ptrdiff_t m_pAutoaimServices = 0xD38; // 
-                constexpr std::ptrdiff_t m_pObserverServices = 0xD40; // 
-                constexpr std::ptrdiff_t m_pWaterServices = 0xD48; // 
-                constexpr std::ptrdiff_t m_pUseServices = 0xD50; // 
-                constexpr std::ptrdiff_t m_pFlashlightServices = 0xD58; // 
-                constexpr std::ptrdiff_t m_pCameraServices = 0xD60; // 
-                constexpr std::ptrdiff_t m_pMovementServices = 0xD68; // 
-                constexpr std::ptrdiff_t m_ServerViewAngleChanges = 0xD78; // 
-                constexpr std::ptrdiff_t v_angle = 0xDE0; // 
-                constexpr std::ptrdiff_t v_anglePrevious = 0xDEC; // 
-                constexpr std::ptrdiff_t m_iHideHUD = 0xDF8; // 
-                constexpr std::ptrdiff_t m_skybox3d = 0xE00; // 
-                constexpr std::ptrdiff_t m_flDeathTime = 0xE90; // 
-                constexpr std::ptrdiff_t m_vecPredictionError = 0xE94; // 
-                constexpr std::ptrdiff_t m_flPredictionErrorTime = 0xEA0; // 
-                constexpr std::ptrdiff_t m_vecLastCameraSetupLocalOrigin = 0xEA4; // 
-                constexpr std::ptrdiff_t m_flLastCameraSetupTime = 0xEB0; // 
-                constexpr std::ptrdiff_t m_flFOVSensitivityAdjust = 0xEB4; // 
-                constexpr std::ptrdiff_t m_flMouseSensitivity = 0xEB8; // 
-                constexpr std::ptrdiff_t m_vOldOrigin = 0xEBC; // 
-                constexpr std::ptrdiff_t m_flOldSimulationTime = 0xEC8; // 
-                constexpr std::ptrdiff_t m_nLastExecutedCommandNumber = 0xECC; // 
-                constexpr std::ptrdiff_t m_nLastExecutedCommandTick = 0xED0; // 
-                constexpr std::ptrdiff_t m_hController = 0xED4; // CHandle<CBasePlayerController>
-                constexpr std::ptrdiff_t m_hDefaultController = 0xED8; // CHandle<CBasePlayerController>
-                constexpr std::ptrdiff_t m_bIsSwappingToPredictableController = 0xEDC; // 
+                constexpr std::ptrdiff_t m_pWeaponServices = 0xD20; // 
+                constexpr std::ptrdiff_t m_pItemServices = 0xD28; // 
+                constexpr std::ptrdiff_t m_pAutoaimServices = 0xD30; // 
+                constexpr std::ptrdiff_t m_pObserverServices = 0xD38; // 
+                constexpr std::ptrdiff_t m_pWaterServices = 0xD40; // 
+                constexpr std::ptrdiff_t m_pUseServices = 0xD48; // 
+                constexpr std::ptrdiff_t m_pFlashlightServices = 0xD50; // 
+                constexpr std::ptrdiff_t m_pCameraServices = 0xD58; // 
+                constexpr std::ptrdiff_t m_pMovementServices = 0xD60; // 
+                constexpr std::ptrdiff_t m_ServerViewAngleChanges = 0xD70; // 
+                constexpr std::ptrdiff_t v_angle = 0xDD8; // 
+                constexpr std::ptrdiff_t v_anglePrevious = 0xDE4; // 
+                constexpr std::ptrdiff_t m_iHideHUD = 0xDF0; // 
+                constexpr std::ptrdiff_t m_skybox3d = 0xDF8; // 
+                constexpr std::ptrdiff_t m_flDeathTime = 0xE88; // 
+                constexpr std::ptrdiff_t m_vecPredictionError = 0xE8C; // 
+                constexpr std::ptrdiff_t m_flPredictionErrorTime = 0xE98; // 
+                constexpr std::ptrdiff_t m_vecLastCameraSetupLocalOrigin = 0xE9C; // 
+                constexpr std::ptrdiff_t m_flLastCameraSetupTime = 0xEA8; // 
+                constexpr std::ptrdiff_t m_flFOVSensitivityAdjust = 0xEAC; // 
+                constexpr std::ptrdiff_t m_flMouseSensitivity = 0xEB0; // 
+                constexpr std::ptrdiff_t m_vOldOrigin = 0xEB4; // 
+                constexpr std::ptrdiff_t m_flOldSimulationTime = 0xEC0; // 
+                constexpr std::ptrdiff_t m_nLastExecutedCommandNumber = 0xEC4; // 
+                constexpr std::ptrdiff_t m_nLastExecutedCommandTick = 0xEC8; // 
+                constexpr std::ptrdiff_t m_hController = 0xECC; // CHandle<CBasePlayerController>
+                constexpr std::ptrdiff_t m_hDefaultController = 0xED0; // CHandle<CBasePlayerController>
+                constexpr std::ptrdiff_t m_bIsSwappingToPredictableController = 0xED4; // 
             }
             // Parent: CCitadelModifierAuraVData
             // Field count: 1
@@ -6277,8 +6461,8 @@ namespace cs2_dumper {
             // NetworkVarNames: m_hOuter (EHANDLE)
             // NetworkVarNames: m_ProviderType (attributeprovidertypes_t)
             namespace CAttributeManager {
-                constexpr std::ptrdiff_t m_Providers = 0x8; // 
-                constexpr std::ptrdiff_t m_Receivers = 0x20; // 
+                constexpr std::ptrdiff_t m_Providers = 0x8; // CUtlVector<CHandle<C_BaseEntity>>
+                constexpr std::ptrdiff_t m_Receivers = 0x20; // CUtlVector<CHandle<C_BaseEntity>>
                 constexpr std::ptrdiff_t m_iReapplyProvisionParity = 0x38; // 
                 constexpr std::ptrdiff_t m_hOuter = 0x3C; // 
                 constexpr std::ptrdiff_t m_bPreventLoopback = 0x40; // 
@@ -6296,7 +6480,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityDistruptiveChargeVData {
-                constexpr std::ptrdiff_t m_Particle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_Particle = 0x1560; // 
                 constexpr std::ptrdiff_t m_BuffModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: C_CitadelBaseAbility
@@ -6309,9 +6493,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_MutedVData {
-                constexpr std::ptrdiff_t m_MutedParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_MutedPlayerParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_MutedStatusParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_MutedParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_MutedPlayerParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_MutedStatusParticle = 0x7C8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -6370,7 +6554,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_OwnerOnlyPredNetFloatVariables = 0x188; // C_NetworkUtlVectorBase<float32>
                 constexpr std::ptrdiff_t m_OwnerOnlyPredNetVectorVariables = 0x1A0; // C_NetworkUtlVectorBase<Vector>
                 constexpr std::ptrdiff_t m_OwnerOnlyPredNetQuaternionVariables = 0x1B8; // C_NetworkUtlVectorBase<Quaternion>
-                constexpr std::ptrdiff_t m_OwnerOnlyPredNetGlobalSymbolVariables = 0x1D0; // 
+                constexpr std::ptrdiff_t m_OwnerOnlyPredNetGlobalSymbolVariables = 0x1D0; // C_NetworkUtlVectorBase<CGlobalSymbol>
                 constexpr std::ptrdiff_t m_nBoolVariablesCount = 0x1E8; // 
                 constexpr std::ptrdiff_t m_nOwnerOnlyBoolVariablesCount = 0x1EC; // 
                 constexpr std::ptrdiff_t m_nRandomSeedOffset = 0x1F0; // 
@@ -6428,7 +6612,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_fLockedPoints = 0xBB0; // 
                 constexpr std::ptrdiff_t m_nChangeCount = 0xBB1; // 
                 constexpr std::ptrdiff_t m_Width = 0xBB4; // 
-                constexpr std::ptrdiff_t m_PhysicsDelegate = 0xBB8; // C_RopeKeyframe::CPhysicsDelegate
+                constexpr std::ptrdiff_t m_PhysicsDelegate = 0xBB8; // 
                 constexpr std::ptrdiff_t m_hMaterial = 0xBC8; // CStrongHandle<InfoForResourceTypeIMaterial2>
                 constexpr std::ptrdiff_t m_TextureHeight = 0xBD0; // 
                 constexpr std::ptrdiff_t m_vecImpulse = 0xBD4; // 
@@ -6464,6 +6648,11 @@ namespace cs2_dumper {
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
             namespace CCitadel_Modifier_SlowingBullets_Proc {
+            }
+            // Parent: CBaseFilter
+            // Field count: 1
+            namespace CFilterModifier {
+                constexpr std::ptrdiff_t m_iFilterModifier = 0x5C0; // 
             }
             // Parent: C_BaseEntity
             // Field count: 16
@@ -6508,7 +6697,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Mirage_FireBeetles_Buff_VData {
-                constexpr std::ptrdiff_t m_CasterBuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CasterBuffParticle = 0x608; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -6520,9 +6709,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityWreckerScrapBlastVData {
-                constexpr std::ptrdiff_t m_SprayParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ChannelStartParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DebuffModifier = 0x1720; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_SprayParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_ChannelStartParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x1720; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProcVData
             // Field count: 3
@@ -6532,7 +6721,7 @@ namespace cs2_dumper {
             namespace CCitadel_Modifier_Item_Bleeding_Bullets_ActiveVData {
                 constexpr std::ptrdiff_t m_BleedModifier = 0x638; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_BuildUpModifier = 0x648; // 
-                constexpr std::ptrdiff_t m_BulletImpactParticle = 0x658; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BulletImpactParticle = 0x658; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -6560,7 +6749,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CItemAOESilenceAuraVData {
-                constexpr std::ptrdiff_t m_empWaveParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_empWaveParticle = 0x648; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -6611,8 +6800,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_CheatDeathImmunityVData {
-                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BuffPlayerParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_BuffPlayerParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_StatusEffect = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIMaterial2>>
             }
             // Parent: CCitadelModifierVData
@@ -6628,6 +6817,10 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_Projectile_Pillar {
             }
+            // Parent: C_CitadelBaseAbility
+            // Field count: 0
+            namespace CCitadel_Ability_Viper_PetrifyBola {
+            }
             // Parent: CCitadelBaseShivAbility
             // Field count: 1
             //
@@ -6642,8 +6835,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_IceBeamVData {
-                constexpr std::ptrdiff_t m_BeamParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HitParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BeamParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_HitParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_SlowModifier = 0x1720; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_BuildupModifier = 0x1730; // 
                 constexpr std::ptrdiff_t m_BuildupProcModifier = 0x1740; // CEmbeddedSubclass<CCitadelModifier>
@@ -6685,26 +6878,26 @@ namespace cs2_dumper {
             // Parent: C_BaseCombatCharacter
             // Field count: 20
             namespace C_PortraitWorldUnit {
-                constexpr std::ptrdiff_t m_bSuppressIntroEffects = 0xD28; // 
-                constexpr std::ptrdiff_t m_bIsAlternateLoadout = 0xD29; // 
-                constexpr std::ptrdiff_t m_bSpawnBackgroundModels = 0xD2A; // 
-                constexpr std::ptrdiff_t m_bDeferredPortrait = 0xD2B; // 
-                constexpr std::ptrdiff_t m_bShowParticleAssetModifiers = 0xD2C; // 
-                constexpr std::ptrdiff_t m_bIgnorePortraitInfo = 0xD2D; // 
-                constexpr std::ptrdiff_t m_bFlyingCourier = 0xD2E; // 
-                constexpr std::ptrdiff_t m_nEffigyStatusEffect = 0xD30; // 
-                constexpr std::ptrdiff_t m_effigySequenceName = 0xD38; // 
-                constexpr std::ptrdiff_t m_flStartingAnimationCycle = 0xD40; // 
-                constexpr std::ptrdiff_t m_flRareLoadoutAnimChance = 0xD44; // 
-                constexpr std::ptrdiff_t m_environment = 0xD58; // 
-                constexpr std::ptrdiff_t m_nStartupBehavior = 0xD5C; // 
-                constexpr std::ptrdiff_t m_cameraName = 0xED0; // 
-                constexpr std::ptrdiff_t m_nPortraitParticle = 0xF08; // 
-                constexpr std::ptrdiff_t m_nAmbientParticle = 0xF0C; // 
-                constexpr std::ptrdiff_t m_nCourierType = 0xF10; // 
-                constexpr std::ptrdiff_t m_heroID = 0xF14; // 
-                constexpr std::ptrdiff_t m_heroAnimGraphEnumName = 0xF18; // 
-                constexpr std::ptrdiff_t m_heroShopAnimGraphEnumName = 0xF20; // 
+                constexpr std::ptrdiff_t m_bSuppressIntroEffects = 0xD20; // 
+                constexpr std::ptrdiff_t m_bIsAlternateLoadout = 0xD21; // 
+                constexpr std::ptrdiff_t m_bSpawnBackgroundModels = 0xD22; // 
+                constexpr std::ptrdiff_t m_bDeferredPortrait = 0xD23; // 
+                constexpr std::ptrdiff_t m_bShowParticleAssetModifiers = 0xD24; // 
+                constexpr std::ptrdiff_t m_bIgnorePortraitInfo = 0xD25; // 
+                constexpr std::ptrdiff_t m_bFlyingCourier = 0xD26; // 
+                constexpr std::ptrdiff_t m_nEffigyStatusEffect = 0xD28; // 
+                constexpr std::ptrdiff_t m_effigySequenceName = 0xD30; // 
+                constexpr std::ptrdiff_t m_flStartingAnimationCycle = 0xD38; // 
+                constexpr std::ptrdiff_t m_flRareLoadoutAnimChance = 0xD3C; // 
+                constexpr std::ptrdiff_t m_environment = 0xD50; // 
+                constexpr std::ptrdiff_t m_nStartupBehavior = 0xD54; // 
+                constexpr std::ptrdiff_t m_cameraName = 0xEC8; // 
+                constexpr std::ptrdiff_t m_nPortraitParticle = 0xF00; // 
+                constexpr std::ptrdiff_t m_nAmbientParticle = 0xF04; // 
+                constexpr std::ptrdiff_t m_nCourierType = 0xF08; // 
+                constexpr std::ptrdiff_t m_heroID = 0xF0C; // 
+                constexpr std::ptrdiff_t m_heroAnimGraphEnumName = 0xF10; // 
+                constexpr std::ptrdiff_t m_heroShopAnimGraphEnumName = 0xF18; // 
             }
             // Parent: C_EconEntity
             // Field count: 0
@@ -6730,8 +6923,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierChargedTackleActiveVData {
-                constexpr std::ptrdiff_t m_TackleParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PullEnemiesParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TackleParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_PullEnemiesParticle = 0x6E8; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
@@ -6777,9 +6970,9 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ItemPickupPunchableVData {
                 constexpr std::ptrdiff_t m_flPhysicsRadius = 0x608; // 
-                constexpr std::ptrdiff_t m_IsDroppingParticle = 0x610; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_IsPunchableParticle = 0x6F0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_IsFrozenParticle = 0x7D0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_IsDroppingParticle = 0x610; // 
+                constexpr std::ptrdiff_t m_IsPunchableParticle = 0x6F0; // 
+                constexpr std::ptrdiff_t m_IsFrozenParticle = 0x7D0; // 
                 constexpr std::ptrdiff_t m_NearRejuvAuraModifier = 0x8B0; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: C_BaseModelEntity
@@ -6803,7 +6996,7 @@ namespace cs2_dumper {
             namespace CModifier_Healbane_Debuff {
             }
             // Parent: CCitadelModifierVData
-            // Field count: 7
+            // Field count: 9
             //
             // Metadata:
             // MGetKV3ClassDefaults
@@ -6815,6 +7008,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flBonusHealth = 0x618; // 
                 constexpr std::ptrdiff_t m_flBonusMoveSpeedMeterPerSecond = 0x61C; // 
                 constexpr std::ptrdiff_t m_sExpireSound = 0x620; // 
+                constexpr std::ptrdiff_t m_iMaxMessages = 0x630; // 
+                constexpr std::ptrdiff_t m_flMessageInterval = 0x634; // 
             }
             // Parent: CCitadel_Item
             // Field count: 0
@@ -6874,7 +7069,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierVandalSurgeVData {
-                constexpr std::ptrdiff_t m_LiftParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LiftParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_strStartSound = 0x7C8; // 
             }
             // Parent: C_CitadelBaseAbility
@@ -6894,9 +7089,9 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x608; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_BuildupCompleteModifier = 0x618; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_BuildupModifier = 0x628; // 
-                constexpr std::ptrdiff_t m_TargetParticle = 0x638; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HitParticle = 0x718; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HeadParticle = 0x7F8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TargetParticle = 0x638; // 
+                constexpr std::ptrdiff_t m_HitParticle = 0x718; // 
+                constexpr std::ptrdiff_t m_HeadParticle = 0x7F8; // 
                 constexpr std::ptrdiff_t m_strTargetHitSound = 0x8D8; // 
                 constexpr std::ptrdiff_t m_strTargetHeadShotHitSound = 0x8E8; // 
                 constexpr std::ptrdiff_t m_strTargetCompleteSound = 0x8F8; // 
@@ -6920,7 +7115,16 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Galvanic_Storm_EffectVData {
-                constexpr std::ptrdiff_t m_BuffChainParticle = 0x708; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffChainParticle = 0x708; // 
+            }
+            // Parent: CCitadelModifierVData
+            // Field count: 2
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Modifier_NearbyEnemyResistVData {
+                constexpr std::ptrdiff_t m_flNearbyEnemyResistRange = 0x608; // 
+                constexpr std::ptrdiff_t m_flResistValues = 0x610; // 
             }
             // Parent: C_BaseModelEntity
             // Field count: 0
@@ -7000,51 +7204,51 @@ namespace cs2_dumper {
             // NetworkVarNames: m_flSlowSpeed (float32)
             // NetworkVarNames: m_flSprintAnimSuppressEndTime (GameTime_t)
             namespace C_CitadelPlayerPawn {
-                constexpr std::ptrdiff_t m_angEyeAngles = 0xF58; // 
-                constexpr std::ptrdiff_t m_angClientCamera = 0xF70; // 
-                constexpr std::ptrdiff_t m_eZipLineLaneColor = 0xF7C; // 
-                constexpr std::ptrdiff_t m_nLevel = 0xF80; // 
-                constexpr std::ptrdiff_t m_nCurrencies = 0xF84; // 
-                constexpr std::ptrdiff_t m_nSpentCurrencies = 0xF94; // 
-                constexpr std::ptrdiff_t m_flLastSpawnTime = 0xFA4; // 
-                constexpr std::ptrdiff_t m_flRespawnTime = 0xFA8; // 
-                constexpr std::ptrdiff_t m_bInRegenerationZone = 0xFAC; // 
-                constexpr std::ptrdiff_t m_bInItemShopZone = 0xFAD; // 
-                constexpr std::ptrdiff_t m_timeRevealedOnMinimapByNPC = 0xFB0; // 
-                constexpr std::ptrdiff_t m_vecFullSellPriceItems = 0xFB8; // 
-                constexpr std::ptrdiff_t m_vecFullSellPriceAbilityUpgrades = 0xFD0; // 
-                constexpr std::ptrdiff_t m_bNetworkDisconnected = 0xFE8; // 
-                constexpr std::ptrdiff_t m_bHasIncomingThreats = 0xFE9; // 
-                constexpr std::ptrdiff_t m_bLearningAbility = 0xFEA; // 
-                constexpr std::ptrdiff_t m_nFlashStartTick = 0xFEC; // 
-                constexpr std::ptrdiff_t m_nFlashMaxStartTick = 0xFF0; // 
-                constexpr std::ptrdiff_t m_nFlashFadeStartTick = 0xFF4; // 
-                constexpr std::ptrdiff_t m_nFlashEndTick = 0xFF8; // 
-                constexpr std::ptrdiff_t m_nFlashMaxAlpha = 0xFFC; // 
-                constexpr std::ptrdiff_t m_nDeducedLane = 0x1000; // 
-                constexpr std::ptrdiff_t m_nSuccessiveDucks = 0x1004; // 
-                constexpr std::ptrdiff_t m_flLastDuckTime = 0x1008; // 
-                constexpr std::ptrdiff_t m_bDismissedReportCard = 0x100C; // 
-                constexpr std::ptrdiff_t m_flCurrentHealingAmount = 0x1010; // 
-                constexpr std::ptrdiff_t m_angLockedEyeAngles = 0x1014; // 
-                constexpr std::ptrdiff_t m_CCitadelAbilityComponent = 0x1020; // 
-                constexpr std::ptrdiff_t m_CCitadelHeroComponent = 0x11C0; // 
-                constexpr std::ptrdiff_t m_flRichPresenceUpdateInterval = 0x1288; // 
-                constexpr std::ptrdiff_t m_bAnimGraphMovementClipped = 0x1380; // 
-                constexpr std::ptrdiff_t m_bAnimGraphMovementDisableGravity = 0x1381; // 
-                constexpr std::ptrdiff_t m_bAnimGraphMovementDirectAirControl = 0x1382; // 
-                constexpr std::ptrdiff_t m_bLastMoveWasAnimGraph = 0x1383; // 
-                constexpr std::ptrdiff_t m_flPredTimeSlowedStart = 0x1384; // 
-                constexpr std::ptrdiff_t m_flPredTimeSlowedEnd = 0x1388; // 
-                constexpr std::ptrdiff_t m_flPredSlowSpeed = 0x138C; // 
-                constexpr std::ptrdiff_t m_flTimeSlowedStart = 0x1390; // 
-                constexpr std::ptrdiff_t m_flTimeSlowedEnd = 0x13A0; // 
-                constexpr std::ptrdiff_t m_flSlowSpeed = 0x13B0; // 
-                constexpr std::ptrdiff_t m_flSprintAnimSuppressEndTime = 0x13C0; // 
-                constexpr std::ptrdiff_t m_iCurSlowSlot = 0x13C4; // 
-                constexpr std::ptrdiff_t m_vShootTestOffsetStanding = 0x13C8; // 
-                constexpr std::ptrdiff_t m_vShootTestOffsetCrouching = 0x13D4; // 
-                constexpr std::ptrdiff_t m_leanStartTime = 0x13E0; // 
+                constexpr std::ptrdiff_t m_angEyeAngles = 0xF50; // 
+                constexpr std::ptrdiff_t m_angClientCamera = 0xF68; // 
+                constexpr std::ptrdiff_t m_eZipLineLaneColor = 0xF74; // 
+                constexpr std::ptrdiff_t m_nLevel = 0xF78; // 
+                constexpr std::ptrdiff_t m_nCurrencies = 0xF7C; // 
+                constexpr std::ptrdiff_t m_nSpentCurrencies = 0xF8C; // 
+                constexpr std::ptrdiff_t m_flLastSpawnTime = 0xF9C; // 
+                constexpr std::ptrdiff_t m_flRespawnTime = 0xFA0; // 
+                constexpr std::ptrdiff_t m_bInRegenerationZone = 0xFA4; // 
+                constexpr std::ptrdiff_t m_bInItemShopZone = 0xFA5; // 
+                constexpr std::ptrdiff_t m_timeRevealedOnMinimapByNPC = 0xFA8; // 
+                constexpr std::ptrdiff_t m_vecFullSellPriceItems = 0xFB0; // 
+                constexpr std::ptrdiff_t m_vecFullSellPriceAbilityUpgrades = 0xFC8; // 
+                constexpr std::ptrdiff_t m_bNetworkDisconnected = 0xFE0; // 
+                constexpr std::ptrdiff_t m_bHasIncomingThreats = 0xFE1; // 
+                constexpr std::ptrdiff_t m_bLearningAbility = 0xFE2; // 
+                constexpr std::ptrdiff_t m_nFlashStartTick = 0xFE4; // 
+                constexpr std::ptrdiff_t m_nFlashMaxStartTick = 0xFE8; // 
+                constexpr std::ptrdiff_t m_nFlashFadeStartTick = 0xFEC; // 
+                constexpr std::ptrdiff_t m_nFlashEndTick = 0xFF0; // 
+                constexpr std::ptrdiff_t m_nFlashMaxAlpha = 0xFF4; // 
+                constexpr std::ptrdiff_t m_nDeducedLane = 0xFF8; // 
+                constexpr std::ptrdiff_t m_nSuccessiveDucks = 0xFFC; // 
+                constexpr std::ptrdiff_t m_flLastDuckTime = 0x1000; // 
+                constexpr std::ptrdiff_t m_bDismissedReportCard = 0x1004; // 
+                constexpr std::ptrdiff_t m_flCurrentHealingAmount = 0x1008; // 
+                constexpr std::ptrdiff_t m_angLockedEyeAngles = 0x100C; // 
+                constexpr std::ptrdiff_t m_CCitadelAbilityComponent = 0x1018; // 
+                constexpr std::ptrdiff_t m_CCitadelHeroComponent = 0x11B8; // 
+                constexpr std::ptrdiff_t m_flRichPresenceUpdateInterval = 0x1280; // 
+                constexpr std::ptrdiff_t m_bAnimGraphMovementClipped = 0x1378; // 
+                constexpr std::ptrdiff_t m_bAnimGraphMovementDisableGravity = 0x1379; // 
+                constexpr std::ptrdiff_t m_bAnimGraphMovementDirectAirControl = 0x137A; // 
+                constexpr std::ptrdiff_t m_bLastMoveWasAnimGraph = 0x137B; // 
+                constexpr std::ptrdiff_t m_flPredTimeSlowedStart = 0x137C; // 
+                constexpr std::ptrdiff_t m_flPredTimeSlowedEnd = 0x1380; // 
+                constexpr std::ptrdiff_t m_flPredSlowSpeed = 0x1384; // 
+                constexpr std::ptrdiff_t m_flTimeSlowedStart = 0x1388; // 
+                constexpr std::ptrdiff_t m_flTimeSlowedEnd = 0x1398; // 
+                constexpr std::ptrdiff_t m_flSlowSpeed = 0x13A8; // 
+                constexpr std::ptrdiff_t m_flSprintAnimSuppressEndTime = 0x13B8; // 
+                constexpr std::ptrdiff_t m_iCurSlowSlot = 0x13BC; // 
+                constexpr std::ptrdiff_t m_vShootTestOffsetStanding = 0x13C0; // 
+                constexpr std::ptrdiff_t m_vShootTestOffsetCrouching = 0x13CC; // 
+                constexpr std::ptrdiff_t m_leanStartTime = 0x13D8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -7067,7 +7271,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_BuildUpModifier = 0x638; // 
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x648; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ImmunityModifier = 0x658; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_TracerParticle = 0x668; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TracerParticle = 0x668; // 
             }
             // Parent: CScaleFunctionBase
             // Field count: 0
@@ -7164,7 +7368,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Viper_VenomVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x620; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x620; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -7191,7 +7395,7 @@ namespace cs2_dumper {
             // NetworkVarNames: m_AssociatedEntities (CHandle<C_BaseModelEntity>)
             // NetworkVarNames: m_AssociatedEntityNames (string_t)
             namespace ActiveModelConfig_t {
-                constexpr std::ptrdiff_t m_Handle = 0x30; // 
+                constexpr std::ptrdiff_t m_Handle = 0x30; // ModelConfigHandle_t
                 constexpr std::ptrdiff_t m_Name = 0x38; // 
                 constexpr std::ptrdiff_t m_AssociatedEntities = 0x40; // 
                 constexpr std::ptrdiff_t m_AssociatedEntityNames = 0x58; // C_NetworkUtlVectorBase<CUtlSymbolLarge>
@@ -7202,8 +7406,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Mirage_Tornado_Lift_VData {
-                constexpr std::ptrdiff_t m_HoldInPlaceModifier = 0x608; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_LiftParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_HoldInPlaceModifier = 0x608; // 
+                constexpr std::ptrdiff_t m_LiftParticle = 0x618; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 1
@@ -7236,7 +7440,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierIntimidatedVData {
-                constexpr std::ptrdiff_t m_EffectParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_EffectParticle = 0x608; // 
             }
             // Parent: CitadelItemVData
             // Field count: 2
@@ -7245,7 +7449,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Upgrade_AerialAssualtVData {
                 constexpr std::ptrdiff_t m_WatcherModifier = 0x15A8; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_LaunchParticle = 0x15B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LaunchParticle = 0x15B8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -7282,9 +7486,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_UtilityUpgrade_RocketBoosterVData {
-                constexpr std::ptrdiff_t m_LandingParticle = 0x1698; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AoEPreviewParticle = 0x1778; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DropDownStartParticle = 0x1858; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LandingParticle = 0x1698; // 
+                constexpr std::ptrdiff_t m_AoEPreviewParticle = 0x1778; // 
+                constexpr std::ptrdiff_t m_DropDownStartParticle = 0x1858; // 
                 constexpr std::ptrdiff_t m_DropDownStartSound = 0x1938; // 
                 constexpr std::ptrdiff_t m_LandingSound = 0x1948; // 
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1958; // CEmbeddedSubclass<CCitadelModifier>
@@ -7304,9 +7508,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_AcolytesGlove_VData {
-                constexpr std::ptrdiff_t m_DebuffModifier = 0x638; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_SwingParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HitParticle = 0x728; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x638; // 
+                constexpr std::ptrdiff_t m_SwingParticle = 0x648; // 
+                constexpr std::ptrdiff_t m_HitParticle = 0x728; // 
             }
             // Parent: None
             // Field count: 42
@@ -7415,7 +7619,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbility_Mirage_Tornado_VData {
-                constexpr std::ptrdiff_t m_TornadoCastParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TornadoCastParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_CasterModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_WhirlwindEvasionModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_TornadoAura = 0x1660; // CEmbeddedSubclass<CCitadelModifier>
@@ -7442,6 +7646,10 @@ namespace cs2_dumper {
             // Parent: CCitadelBaseAbilityServerOnly
             // Field count: 0
             namespace CTier3BossAbility {
+            }
+            // Parent: CCitadelModifier
+            // Field count: 0
+            namespace CCitadel_Modifier_Skirmish_Respawn_Reduction {
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -7506,10 +7714,10 @@ namespace cs2_dumper {
             // Metadata:
             // NetworkVarNames: m_vExitOrigin (Vector)
             namespace C_CitadelTeleportTrigger {
-                constexpr std::ptrdiff_t m_vExitOrigin = 0x868; // 
+                constexpr std::ptrdiff_t m_vExitOrigin = 0x9A0; // 
             }
             // Parent: C_BaseModelEntity
-            // Field count: 73
+            // Field count: 74
             //
             // Metadata:
             // NetworkVarNames: m_bEnabled (bool)
@@ -7543,6 +7751,7 @@ namespace cs2_dumper {
             // NetworkVarNames: m_nShadowMapSize (int)
             // NetworkVarNames: m_nShadowPriority (int)
             // NetworkVarNames: m_bContactShadow (bool)
+            // NetworkVarNames: m_bForceShadowsEnabled (bool)
             // NetworkVarNames: m_nBounceLight (int)
             // NetworkVarNames: m_flBounceScale (float)
             // NetworkVarNames: m_flMinRoughness (float)
@@ -7616,6 +7825,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_nShadowMapSize = 0x9D4; // 
                 constexpr std::ptrdiff_t m_nShadowPriority = 0x9D8; // 
                 constexpr std::ptrdiff_t m_bContactShadow = 0x9DC; // 
+                constexpr std::ptrdiff_t m_bForceShadowsEnabled = 0x9DD; // 
                 constexpr std::ptrdiff_t m_nBounceLight = 0x9E0; // 
                 constexpr std::ptrdiff_t m_flBounceScale = 0x9E4; // 
                 constexpr std::ptrdiff_t m_flMinRoughness = 0x9E8; // 
@@ -7686,7 +7896,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_SpinVData {
-                constexpr std::ptrdiff_t m_AoEParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AoEParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_SlowModifier = 0x6E8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CitadelAbilityVData
@@ -7697,8 +7907,15 @@ namespace cs2_dumper {
             namespace CAbilityIntimidateVData {
                 constexpr std::ptrdiff_t m_EnemyModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_AoEPlayerParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AoEParticle = 0x1660; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AoEPlayerParticle = 0x1580; // 
+                constexpr std::ptrdiff_t m_AoEParticle = 0x1660; // 
+            }
+            // Parent: CCitadelModifierVData
+            // Field count: 0
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CModifier_Upgrade_ArcaneSurge_AbilityWatcher_VData {
             }
             // Parent: CCitadelAnimatingModelEntity
             // Field count: 2
@@ -7707,8 +7924,8 @@ namespace cs2_dumper {
             // NetworkVarNames: m_hAbility (CHandle<CCitadelBaseAbility>)
             // NetworkVarNames: m_bFloating (bool)
             namespace CCitadel_MobileResupply {
-                constexpr std::ptrdiff_t m_hAbility = 0xB10; // 
-                constexpr std::ptrdiff_t m_bFloating = 0xB14; // 
+                constexpr std::ptrdiff_t m_hAbility = 0xB08; // 
+                constexpr std::ptrdiff_t m_bFloating = 0xB0C; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
@@ -7720,24 +7937,23 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Wraith_RapidFireVData {
-                constexpr std::ptrdiff_t m_RapidFireParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_RapidFireParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CModifier_HornetLeap {
             }
             // Parent: CCitadel_Modifier_BaseEventProcVData
-            // Field count: 6
+            // Field count: 5
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_SilenceProcWatcherVData {
                 constexpr std::ptrdiff_t m_BuildUpModifier = 0x638; // 
-                constexpr std::ptrdiff_t m_SilenceProcModifier = 0x648; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_SilenceActiveModifier = 0x658; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ImmunityModifier = 0x668; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_sInstantProcIfCasterHasModifier = 0x678; // 
-                constexpr std::ptrdiff_t m_TracerParticle = 0x680; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x648; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_ImmunityModifier = 0x658; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_sInstantProcIfCasterHasModifier = 0x668; // 
+                constexpr std::ptrdiff_t m_TracerParticle = 0x670; // 
             }
             // Parent: CEntitySubclassVDataBase
             // Field count: 81
@@ -7756,23 +7972,23 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_nAbillityUnlocksCost = 0x38; // 
                 constexpr std::ptrdiff_t m_iUpdateTime = 0x40; // 
                 constexpr std::ptrdiff_t m_AbilityBehaviorsBits = 0x4C; // CBitVecEnum<EAbilityBehavior_t>
-                constexpr std::ptrdiff_t m_eAbilityTargetingLocation = 0x54; // 
-                constexpr std::ptrdiff_t m_eAbilityTargetingShape = 0x58; // 
-                constexpr std::ptrdiff_t m_flTargetingConeAngle = 0x5C; // 
-                constexpr std::ptrdiff_t m_flTargetingConeHalfWidth = 0x60; // 
-                constexpr std::ptrdiff_t m_bIncludeExtra2DCone = 0x64; // 
-                constexpr std::ptrdiff_t m_eAbilityActivation = 0x68; // 
+                constexpr std::ptrdiff_t m_eAbilityTargetingLocation = 0x58; // 
+                constexpr std::ptrdiff_t m_eAbilityTargetingShape = 0x5C; // 
+                constexpr std::ptrdiff_t m_flTargetingConeAngle = 0x60; // 
+                constexpr std::ptrdiff_t m_flTargetingConeHalfWidth = 0x64; // 
+                constexpr std::ptrdiff_t m_bIncludeExtra2DCone = 0x68; // 
+                constexpr std::ptrdiff_t m_eAbilityActivation = 0x6C; // 
                 constexpr std::ptrdiff_t m_TriggerButtonPreReqButton = 0x70; // 
                 constexpr std::ptrdiff_t m_TriggerButtonOverride = 0x78; // 
                 constexpr std::ptrdiff_t m_eAbilitySpectatePriority = 0x80; // 
                 constexpr std::ptrdiff_t m_bitsInterruptingStates = 0x84; // 
                 constexpr std::ptrdiff_t m_IncompatibleFilter = 0x9C; // 
-                constexpr std::ptrdiff_t m_nAbilityTargetTypes = 0xAC; // 
-                constexpr std::ptrdiff_t m_nAbilityTargetFlags = 0xB0; // 
-                constexpr std::ptrdiff_t m_bitsPostCastEnabledStateMask = 0xB4; // 
-                constexpr std::ptrdiff_t m_TargetAbilityEffectsToApply = 0xCC; // 
-                constexpr std::ptrdiff_t m_bShowTargetingPreviewWhileChanneling = 0xD0; // 
-                constexpr std::ptrdiff_t m_bShowTargetingPreviewWhileCasting = 0xD1; // 
+                constexpr std::ptrdiff_t m_nAbilityTargetTypes = 0xB0; // 
+                constexpr std::ptrdiff_t m_nAbilityTargetFlags = 0xB4; // 
+                constexpr std::ptrdiff_t m_bitsPostCastEnabledStateMask = 0xB8; // 
+                constexpr std::ptrdiff_t m_TargetAbilityEffectsToApply = 0xD0; // 
+                constexpr std::ptrdiff_t m_bShowTargetingPreviewWhileChanneling = 0xD4; // 
+                constexpr std::ptrdiff_t m_bShowTargetingPreviewWhileCasting = 0xD5; // 
                 constexpr std::ptrdiff_t m_WeaponInfo = 0xD8; // 
                 constexpr std::ptrdiff_t m_projectileInfo = 0x758; // 
                 constexpr std::ptrdiff_t m_deploymentInfo = 0xAD8; // 
@@ -7805,12 +8021,12 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flCameraPreviewOffset = 0xFCC; // 
                 constexpr std::ptrdiff_t m_flCameraPreviewDistance = 0xFD0; // 
                 constexpr std::ptrdiff_t m_flCameraPreviewSpeed = 0xFD4; // 
-                constexpr std::ptrdiff_t m_previewParticle = 0xFD8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PreviewPathParticle = 0x10B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_previewParticle = 0xFD8; // 
+                constexpr std::ptrdiff_t m_PreviewPathParticle = 0x10B8; // 
                 constexpr std::ptrdiff_t m_mapCastEventParticles = 0x1198; // 
-                constexpr std::ptrdiff_t m_skillshotHitParticle = 0x11C0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_skillshotMissParticle = 0x12A0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TargetingPreviewParticle = 0x1380; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_skillshotHitParticle = 0x11C0; // 
+                constexpr std::ptrdiff_t m_skillshotMissParticle = 0x12A0; // 
+                constexpr std::ptrdiff_t m_TargetingPreviewParticle = 0x1380; // 
                 constexpr std::ptrdiff_t m_strSelectedSound = 0x1460; // 
                 constexpr std::ptrdiff_t m_strUnselectedSound = 0x1470; // 
                 constexpr std::ptrdiff_t m_strSelectedLoopSound = 0x1480; // 
@@ -7824,8 +8040,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_strAbilityOffCooldownSound = 0x1500; // 
                 constexpr std::ptrdiff_t m_strAbilityChargeReadySound = 0x1510; // 
                 constexpr std::ptrdiff_t m_bPlayMeepMop = 0x1520; // 
-                constexpr std::ptrdiff_t m_AutoChannelModifier = 0x1528; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_AutoCastDelayModifier = 0x1538; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_AutoChannelModifier = 0x1528; // 
+                constexpr std::ptrdiff_t m_AutoCastDelayModifier = 0x1538; // 
                 constexpr std::ptrdiff_t m_AutoIntrinsicModifiers = 0x1548; // 
             }
             // Parent: CCitadelModifier
@@ -7864,7 +8080,7 @@ namespace cs2_dumper {
             namespace CCitadel_Ability_Cadence_Anthem {
             }
             // Parent: CCitadelYamatoBaseVData
-            // Field count: 20
+            // Field count: 21
             //
             // Metadata:
             // MGetKV3ClassDefaults
@@ -7874,21 +8090,22 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flEffectGroundTrace = 0x1570; // 
                 constexpr std::ptrdiff_t m_flWhizbyMaxRange = 0x1574; // 
                 constexpr std::ptrdiff_t m_flStartPosTestCapsuleLength = 0x1578; // 
-                constexpr std::ptrdiff_t m_vecLongEffectOffset = 0x157C; // 
-                constexpr std::ptrdiff_t m_PowerSlashParticle = 0x1588; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PowerSlashFullParticle = 0x1668; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1748; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CastParticle = 0x1828; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PowerUpParticle = 0x1908; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_strStartSound = 0x19E8; // 
-                constexpr std::ptrdiff_t m_strHitConfirmSound = 0x19F8; // 
-                constexpr std::ptrdiff_t m_strPowerUp1Sounds = 0x1A08; // 
-                constexpr std::ptrdiff_t m_strPowerUp2Sounds = 0x1A18; // 
-                constexpr std::ptrdiff_t m_strPowerUp3Sounds = 0x1A28; // 
-                constexpr std::ptrdiff_t m_strWhizbySound = 0x1A38; // 
-                constexpr std::ptrdiff_t m_strSlashSound = 0x1A48; // 
-                constexpr std::ptrdiff_t m_strSlashFullSound = 0x1A58; // 
-                constexpr std::ptrdiff_t m_SlowModifier = 0x1A68; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_flCoverLOSBackDist = 0x157C; // 
+                constexpr std::ptrdiff_t m_vecLongEffectOffset = 0x1580; // 
+                constexpr std::ptrdiff_t m_PowerSlashParticle = 0x1590; // 
+                constexpr std::ptrdiff_t m_PowerSlashFullParticle = 0x1670; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1750; // 
+                constexpr std::ptrdiff_t m_CastParticle = 0x1830; // 
+                constexpr std::ptrdiff_t m_PowerUpParticle = 0x1910; // 
+                constexpr std::ptrdiff_t m_strStartSound = 0x19F0; // 
+                constexpr std::ptrdiff_t m_strHitConfirmSound = 0x1A00; // 
+                constexpr std::ptrdiff_t m_strPowerUp1Sounds = 0x1A10; // 
+                constexpr std::ptrdiff_t m_strPowerUp2Sounds = 0x1A20; // 
+                constexpr std::ptrdiff_t m_strPowerUp3Sounds = 0x1A30; // 
+                constexpr std::ptrdiff_t m_strWhizbySound = 0x1A40; // 
+                constexpr std::ptrdiff_t m_strSlashSound = 0x1A50; // 
+                constexpr std::ptrdiff_t m_strSlashFullSound = 0x1A60; // 
+                constexpr std::ptrdiff_t m_SlowModifier = 0x1A70; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 3
@@ -7896,7 +8113,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_IceGrenadeVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_IceGrenadeSlowModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ExplosionSound = 0x1650; // 
             }
@@ -7923,18 +8140,18 @@ namespace cs2_dumper {
             // Metadata:
             // NetworkVarNames: m_AttributeManager (CAttributeContainer)
             namespace C_EconEntity {
-                constexpr std::ptrdiff_t m_AttributeManager = 0xCB0; // 
-                constexpr std::ptrdiff_t m_bClientside = 0xE08; // 
-                constexpr std::ptrdiff_t m_nDisableMode = 0xE0C; // 
-                constexpr std::ptrdiff_t m_bParticleSystemsCreated = 0xE10; // 
-                constexpr std::ptrdiff_t m_bForceDestroyAttachedParticlesImmediately = 0xE11; // 
-                constexpr std::ptrdiff_t m_vecAttachedParticles = 0xE18; // 
-                constexpr std::ptrdiff_t m_hViewmodelAttachment = 0xE30; // 
-                constexpr std::ptrdiff_t m_iOldTeam = 0xE34; // 
-                constexpr std::ptrdiff_t m_bAttachmentDirty = 0xE38; // 
-                constexpr std::ptrdiff_t m_iOldStyle = 0xE39; // 
-                constexpr std::ptrdiff_t m_hOldProvidee = 0xE3C; // 
-                constexpr std::ptrdiff_t m_vecAttachedModels = 0xE40; // 
+                constexpr std::ptrdiff_t m_AttributeManager = 0xCA8; // 
+                constexpr std::ptrdiff_t m_bClientside = 0xE00; // 
+                constexpr std::ptrdiff_t m_nDisableMode = 0xE04; // 
+                constexpr std::ptrdiff_t m_bParticleSystemsCreated = 0xE08; // 
+                constexpr std::ptrdiff_t m_bForceDestroyAttachedParticlesImmediately = 0xE09; // 
+                constexpr std::ptrdiff_t m_vecAttachedParticles = 0xE10; // 
+                constexpr std::ptrdiff_t m_hViewmodelAttachment = 0xE28; // 
+                constexpr std::ptrdiff_t m_iOldTeam = 0xE2C; // 
+                constexpr std::ptrdiff_t m_bAttachmentDirty = 0xE30; // 
+                constexpr std::ptrdiff_t m_iOldStyle = 0xE31; // 
+                constexpr std::ptrdiff_t m_hOldProvidee = 0xE34; // 
+                constexpr std::ptrdiff_t m_vecAttachedModels = 0xE38; // 
             }
             // Parent: CCitadelModifierAuraVData
             // Field count: 0
@@ -7953,9 +8170,20 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Trapper_PoisonJarVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_AuraModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ExplodeSound = 0x1650; // 
+            }
+            // Parent: CitadelAbilityVData
+            // Field count: 4
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Ability_Viper_PetrifyBolaVData {
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_SlowModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_PetrifyModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_strBolaExplodeSound = 0x1660; // 
             }
             // Parent: CCitadel_Item
             // Field count: 0
@@ -7996,7 +8224,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierVandalOverflowVData {
-                constexpr std::ptrdiff_t m_LiftParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LiftParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_strStartSound = 0x7C8; // 
             }
             // Parent: CCitadelModifier
@@ -8111,14 +8339,6 @@ namespace cs2_dumper {
             namespace CCitadel_Modifier_Magic_Clarity_Buff {
                 constexpr std::ptrdiff_t m_bAbilityLocked = 0xF8; // 
             }
-            // Parent: CCitadelModifierVData
-            // Field count: 1
-            //
-            // Metadata:
-            // MGetKV3ClassDefaults
-            namespace CCitadel_Modifier_BreakablePropExtraStaminaVData {
-                constexpr std::ptrdiff_t m_nExtraStamina = 0x608; // 
-            }
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_Thumper_3 {
@@ -8129,10 +8349,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_StickyBombAttachedVData {
-                constexpr std::ptrdiff_t m_BombAttachedParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_StunAttachedParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BombAttachedVictimTeamParticle = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BombAttachedParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_StunAttachedParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x7C8; // 
+                constexpr std::ptrdiff_t m_BombAttachedVictimTeamParticle = 0x8A8; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x988; // 
                 constexpr std::ptrdiff_t m_strTickTockSound = 0x998; // 
                 constexpr std::ptrdiff_t m_strTickTockFastSound = 0x9A8; // 
@@ -8145,10 +8365,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierLashGrappleEnemyDebuffVData {
-                constexpr std::ptrdiff_t m_GrappleParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_LaunchParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_RopeParticle = 0x988; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_GrappleParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_LaunchParticle = 0x7C8; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x8A8; // 
+                constexpr std::ptrdiff_t m_RopeParticle = 0x988; // 
                 constexpr std::ptrdiff_t m_ImpactSound = 0xA68; // 
                 constexpr std::ptrdiff_t m_DebuffModifier = 0xA78; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -8161,25 +8381,26 @@ namespace cs2_dumper {
             namespace CEnvSoundscapeTriggerableAlias_snd_soundscape_triggerable {
             }
             // Parent: CBaseLockonAbilityVData
-            // Field count: 14
+            // Field count: 15
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityLashUltimateVData {
-                constexpr std::ptrdiff_t m_TargetPreviewParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_LaunchParticle = 0x1660; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_UltimateCastParticle = 0x1740; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_UltimateCastEnemyParticle = 0x1820; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_strThrowEnemyAnimGraphParam = 0x1900; // 
-                constexpr std::ptrdiff_t m_GrappleEnemyModifier = 0x1908; // 
-                constexpr std::ptrdiff_t m_GrabSound = 0x1918; // 
-                constexpr std::ptrdiff_t m_MissSound = 0x1928; // 
-                constexpr std::ptrdiff_t m_ThrowSound = 0x1938; // 
-                constexpr std::ptrdiff_t m_flAirSpeedMax = 0x1948; // 
-                constexpr std::ptrdiff_t m_flFallSpeedMax = 0x194C; // 
-                constexpr std::ptrdiff_t m_flAirDrag = 0x1950; // 
-                constexpr std::ptrdiff_t m_flMaxPitchRangeScale = 0x1954; // 
-                constexpr std::ptrdiff_t m_flThrowAnimTossPoint = 0x1958; // 
+                constexpr std::ptrdiff_t m_TargetPreviewParticle = 0x1580; // 
+                constexpr std::ptrdiff_t m_LaunchParticle = 0x1660; // 
+                constexpr std::ptrdiff_t m_UltimateCastParticle = 0x1740; // 
+                constexpr std::ptrdiff_t m_UltimateCastEnemyParticle = 0x1820; // 
+                constexpr std::ptrdiff_t m_AllyIndicatorParticle = 0x1900; // 
+                constexpr std::ptrdiff_t m_strThrowEnemyAnimGraphParam = 0x19E0; // 
+                constexpr std::ptrdiff_t m_GrappleEnemyModifier = 0x19E8; // 
+                constexpr std::ptrdiff_t m_GrabSound = 0x19F8; // 
+                constexpr std::ptrdiff_t m_MissSound = 0x1A08; // 
+                constexpr std::ptrdiff_t m_ThrowSound = 0x1A18; // 
+                constexpr std::ptrdiff_t m_flAirSpeedMax = 0x1A28; // 
+                constexpr std::ptrdiff_t m_flFallSpeedMax = 0x1A2C; // 
+                constexpr std::ptrdiff_t m_flAirDrag = 0x1A30; // 
+                constexpr std::ptrdiff_t m_flMaxPitchRangeScale = 0x1A34; // 
+                constexpr std::ptrdiff_t m_flThrowAnimTossPoint = 0x1A38; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -8204,30 +8425,46 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bKnockedBack = 0xCC; // 
             }
             // Parent: C_CitadelBaseAbility
-            // Field count: 9
+            // Field count: 10
             //
             // Metadata:
-            // NetworkVarNames: m_bIsVisibleOnMinimap (bool)
+            // NetworkVarNames: m_bBulletFlying (bool)
+            // NetworkVarNames: m_bHasLatchedOnce (bool)
             // NetworkVarNames: m_bLatched (bool)
             // NetworkVarNames: m_vHarpoonTarget (Vector)
             // NetworkVarNames: m_flLatchedYaw (float)
             // NetworkVarNames: m_flCloseEnoughStartTime (GameTime_t)
             // NetworkVarNames: m_flStuckStartTime (GameTime_t)
+            // NetworkVarNames: m_flReelStartTime (GameTime_t)
             namespace CAbility_Fathom_ReefdwellerHarpoon {
                 constexpr std::ptrdiff_t m_bHitTarget = 0xCA0; // 
-                constexpr std::ptrdiff_t m_hRegenModifier = 0xCA8; // CModifierHandleTyped<CCitadelModifier>
-                constexpr std::ptrdiff_t m_vPrevPos = 0xCC0; // 
-                constexpr std::ptrdiff_t m_bIsVisibleOnMinimap = 0xCCC; // 
-                constexpr std::ptrdiff_t m_bLatched = 0xCCD; // 
-                constexpr std::ptrdiff_t m_vHarpoonTarget = 0xCD0; // 
-                constexpr std::ptrdiff_t m_flLatchedYaw = 0xCDC; // 
-                constexpr std::ptrdiff_t m_flCloseEnoughStartTime = 0xCE0; // 
-                constexpr std::ptrdiff_t m_flStuckStartTime = 0xCE4; // 
+                constexpr std::ptrdiff_t m_vPrevPos = 0xCA4; // 
+                constexpr std::ptrdiff_t m_bBulletFlying = 0xCB0; // 
+                constexpr std::ptrdiff_t m_bHasLatchedOnce = 0xCB1; // 
+                constexpr std::ptrdiff_t m_bLatched = 0xCB2; // 
+                constexpr std::ptrdiff_t m_vHarpoonTarget = 0xCB4; // 
+                constexpr std::ptrdiff_t m_flLatchedYaw = 0xCC0; // 
+                constexpr std::ptrdiff_t m_flCloseEnoughStartTime = 0xCC4; // 
+                constexpr std::ptrdiff_t m_flStuckStartTime = 0xCC8; // 
+                constexpr std::ptrdiff_t m_flReelStartTime = 0xCCC; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 1
             namespace CAbility_Synth_Grasp {
-                constexpr std::ptrdiff_t m_vecTetheredEnemies = 0xCA0; // 
+                constexpr std::ptrdiff_t m_vecTetheredEnemies = 0xCA0; // CUtlVector<CHandle<C_BaseEntity>>
+            }
+            // Parent: CitadelAbilityVData
+            // Field count: 6
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CAbilityGarbageVData {
+                constexpr std::ptrdiff_t m_GarbageAuraModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1570; // 
+                constexpr std::ptrdiff_t m_flAirSpeedMax = 0x1650; // 
+                constexpr std::ptrdiff_t m_flFallSpeedMax = 0x1654; // 
+                constexpr std::ptrdiff_t m_flAirDrag = 0x1658; // 
+                constexpr std::ptrdiff_t m_flMaxMovespeed = 0x165C; // 
             }
             // Parent: CPlayerPawnComponent
             // Field count: 6
@@ -8256,11 +8493,6 @@ namespace cs2_dumper {
             // NetworkVarNames: m_iLane (int)
             namespace C_AssignedLaneParticle {
                 constexpr std::ptrdiff_t m_iLane = 0x880; // 
-            }
-            // Parent: CCitadel_Modifier_Invis
-            // Field count: 1
-            namespace CCitadel_Modifier_ReefdwellerHarpoon_Latched {
-                constexpr std::ptrdiff_t m_flStartSpotted = 0x268; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 1
@@ -8293,8 +8525,8 @@ namespace cs2_dumper {
             // Metadata:
             // NetworkVarNames: m_hAbility (CHandle<CCitadelBaseAbility>)
             namespace C_Citadel_Nano_Predatory_Statue {
-                constexpr std::ptrdiff_t m_hAbility = 0xB18; // 
-                constexpr std::ptrdiff_t m_flLifetime = 0xB1C; // 
+                constexpr std::ptrdiff_t m_hAbility = 0xB10; // 
+                constexpr std::ptrdiff_t m_flLifetime = 0xB14; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
@@ -8332,19 +8564,19 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityLashDownStrikeVData {
-                constexpr std::ptrdiff_t m_TargetPreviewParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TargetPreviewParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_strGroundCastAnimGraphParam = 0x1640; // 
                 constexpr std::ptrdiff_t m_strAirCastAnimGraphParam = 0x1648; // 
-                constexpr std::ptrdiff_t m_StompParticle = 0x1650; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_StompLineParticle = 0x1730; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_StompLineObstructedParticle = 0x1810; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_StompImpactParticle = 0x18F0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_StompParticle = 0x1650; // 
+                constexpr std::ptrdiff_t m_StompLineParticle = 0x1730; // 
+                constexpr std::ptrdiff_t m_StompLineObstructedParticle = 0x1810; // 
+                constexpr std::ptrdiff_t m_StompImpactParticle = 0x18F0; // 
                 constexpr std::ptrdiff_t m_StompExplosionSound = 0x19D0; // 
                 constexpr std::ptrdiff_t m_StompEnemyImpactSound = 0x19E0; // 
                 constexpr std::ptrdiff_t m_strFallCollideImpactSound = 0x19F0; // 
-                constexpr std::ptrdiff_t m_DownStrikeModifier = 0x1A00; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_ImpactModifier = 0x1A10; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_DragModifier = 0x1A20; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_DownStrikeModifier = 0x1A00; // 
+                constexpr std::ptrdiff_t m_ImpactModifier = 0x1A10; // 
+                constexpr std::ptrdiff_t m_DragModifier = 0x1A20; // 
                 constexpr std::ptrdiff_t m_flHeightUILingerTime = 0x1A30; // 
                 constexpr std::ptrdiff_t m_flDamageFrustumHalfWidth = 0x1A34; // 
                 constexpr std::ptrdiff_t m_flDamageFrustumAngle = 0x1A38; // 
@@ -8370,6 +8602,14 @@ namespace cs2_dumper {
             namespace CCitadel_Ability_ProjectMindVData {
                 constexpr std::ptrdiff_t m_ProjectMindModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
             }
+            // Parent: CCitadelModifierVData
+            // Field count: 1
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Modifier_SilenceProc_DebuffVData {
+                constexpr std::ptrdiff_t m_SilenceModifier = 0x608; // CEmbeddedSubclass<CCitadelModifier>
+            }
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
             namespace CCitadel_Modifier_AcolytesGlove {
@@ -8380,9 +8620,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Item_BubbleVData {
-                constexpr std::ptrdiff_t m_CastParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x15A8; // 
                 constexpr std::ptrdiff_t m_CastTargetSound = 0x1688; // 
-                constexpr std::ptrdiff_t m_BubbleModifier = 0x1698; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_BubbleModifier = 0x1698; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 1
@@ -8390,7 +8630,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierHoldingGoldenIdolVData {
-                constexpr std::ptrdiff_t m_IdolParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_IdolParticle = 0x608; // 
             }
             // Parent: None
             // Field count: 6
@@ -8507,7 +8747,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityLockDownVData {
-                constexpr std::ptrdiff_t m_CastParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifierVData
@@ -8565,9 +8805,9 @@ namespace cs2_dumper {
             // NetworkVarNames: m_bFadeCorpse (bool)
             // NetworkVarNames: m_bImportantRagdoll (bool)
             namespace C_AI_BaseNPC {
-                constexpr std::ptrdiff_t m_NPCState = 0xD28; // 
-                constexpr std::ptrdiff_t m_bFadeCorpse = 0xD2C; // 
-                constexpr std::ptrdiff_t m_bImportantRagdoll = 0xD2D; // 
+                constexpr std::ptrdiff_t m_NPCState = 0xD20; // 
+                constexpr std::ptrdiff_t m_bFadeCorpse = 0xD24; // 
+                constexpr std::ptrdiff_t m_bImportantRagdoll = 0xD25; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -8597,7 +8837,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ChainLightningEffectVData {
-                constexpr std::ptrdiff_t m_ChainParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChainParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_ChainSound = 0x6E8; // 
                 constexpr std::ptrdiff_t m_VictimSound = 0x6F8; // 
             }
@@ -8627,8 +8867,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityWreckerUltimateVData {
-                constexpr std::ptrdiff_t m_BeamParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ChargeParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BeamParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_ChargeParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_ActiveModifier = 0x1720; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadel_Modifier_BaseBulletPreRollProc
@@ -8656,7 +8896,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CScaleFunctionAbilityPropertyMultiStatsVData {
-                constexpr std::ptrdiff_t m_vecScalingStats = 0x40; // 
+                constexpr std::ptrdiff_t m_vecScalingStats = 0x40; // CUtlVector<EStatsType>
             }
             // Parent: None
             // Field count: 8
@@ -8691,13 +8931,14 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_iModelDisplayFlags = 0x0; // 
             }
             // Parent: C_CitadelBaseAbility
-            // Field count: 5
+            // Field count: 6
             namespace CCitadel_Ability_TurretClone {
-                constexpr std::ptrdiff_t m_flTurretExpireTime = 0xD80; // 
-                constexpr std::ptrdiff_t m_bTeleported = 0xD86; // 
-                constexpr std::ptrdiff_t m_bHasTurretReady = 0xD87; // 
-                constexpr std::ptrdiff_t m_vecTurretPosition = 0xD88; // 
-                constexpr std::ptrdiff_t m_nFXIndex = 0xD94; // 
+                constexpr std::ptrdiff_t m_flTurretExpireTime = 0xDB8; // 
+                constexpr std::ptrdiff_t m_bTeleported = 0xDC0; // 
+                constexpr std::ptrdiff_t m_bHasTurretReady = 0xDC1; // 
+                constexpr std::ptrdiff_t m_iCurrentSwapCount = 0xDC4; // 
+                constexpr std::ptrdiff_t m_vecTurretPosition = 0xDC8; // 
+                constexpr std::ptrdiff_t m_nFXIndex = 0xDD4; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -8709,7 +8950,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierThumper_3VData {
-                constexpr std::ptrdiff_t m_DroneParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DroneParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_LoopSound = 0x6E8; // 
             }
             // Parent: CitadelAbilityVData
@@ -8723,6 +8964,10 @@ namespace cs2_dumper {
             // Parent: C_CitadelBaseAbility
             // Field count: 0
             namespace CCitadel_Ability_SleepBomb {
+            }
+            // Parent: C_CitadelBaseAbility
+            // Field count: 0
+            namespace CCitadel_Ability_Operative_Scattercharge {
             }
             // Parent: CCitadelModifierVData
             // Field count: 0
@@ -8756,6 +9001,12 @@ namespace cs2_dumper {
             namespace CCitadel_Ability_PowerSurge {
             }
             // Parent: CCitadelModifier
+            // Field count: 2
+            namespace CModifier_Upgrade_ArcaneSurge_AbilityWatcher {
+                constexpr std::ptrdiff_t m_hBuffedAbility = 0xC0; // 
+                constexpr std::ptrdiff_t m_bRecastingBuffedAbility = 0xC4; // 
+            }
+            // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_DivinersKevlarBuff {
             }
@@ -8764,19 +9015,20 @@ namespace cs2_dumper {
             namespace CCitadel_Ability_Tier3Boss_LaserBeam {
             }
             // Parent: CCitadelModifierVData
-            // Field count: 10
+            // Field count: 11
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_InvisVData {
-                constexpr std::ptrdiff_t m_InvisLoopParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_InvisDetectRadiusParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_InvisRevealedParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_InvisLoopParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_InvisDetectRadiusParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_InvisRevealedParticle = 0x7C8; // 
                 constexpr std::ptrdiff_t m_flDesatFactor = 0x8A8; // 
                 constexpr std::ptrdiff_t m_strInvisRevealedSound = 0x8B0; // 
                 constexpr std::ptrdiff_t m_bFadeInsteadOfRemoveOnBulletFire = 0x8C0; // 
                 constexpr std::ptrdiff_t m_bFadeInsteadOfRemoveOnAbilityUse = 0x8C1; // 
-                constexpr std::ptrdiff_t m_bFadeToVisibleAtEndOfDuration = 0x8C2; // 
+                constexpr std::ptrdiff_t m_bBreakOnItemUse = 0x8C2; // 
+                constexpr std::ptrdiff_t m_bFadeToVisibleAtEndOfDuration = 0x8C3; // 
                 constexpr std::ptrdiff_t m_flMinCloak = 0x8C4; // 
                 constexpr std::ptrdiff_t m_flMaxCloak = 0x8C8; // 
             }
@@ -8809,11 +9061,11 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bIsMantleable = 0x17C; // 
                 constexpr std::ptrdiff_t m_flPrimaryDropChance = 0x180; // 
                 constexpr std::ptrdiff_t m_eRollType = 0x184; // 
-                constexpr std::ptrdiff_t m_vecPrimaryPickups = 0x188; // CUtlVector<BreakablePowerupDropDefinition_t>
+                constexpr std::ptrdiff_t m_vecPrimaryPickups = 0x188; // 
                 constexpr std::ptrdiff_t m_iMatchTimeMinsForLevel2Pickups = 0x1A0; // 
-                constexpr std::ptrdiff_t m_vecPickups_lv2 = 0x1A8; // CUtlVector<BreakablePowerupDropDefinition_t>
+                constexpr std::ptrdiff_t m_vecPickups_lv2 = 0x1A8; // 
                 constexpr std::ptrdiff_t m_iMatchTimeMinsForLevel3Pickups = 0x1C0; // 
-                constexpr std::ptrdiff_t m_vecPickups_lv3 = 0x1C8; // CUtlVector<BreakablePowerupDropDefinition_t>
+                constexpr std::ptrdiff_t m_vecPickups_lv3 = 0x1C8; // 
                 constexpr std::ptrdiff_t m_iLootListDeckSize = 0x1E0; // 
             }
             // Parent: None
@@ -8823,7 +9075,7 @@ namespace cs2_dumper {
             // NetworkVarNames: m_Attributes (C_EconItemAttribute)
             namespace CAttributeList {
                 constexpr std::ptrdiff_t m_Attributes = 0x8; // 
-                constexpr std::ptrdiff_t m_pManager = 0x70; // 
+                constexpr std::ptrdiff_t m_pManager = 0x70; // CAttributeManager*
             }
             // Parent: CCitadel_Ability_PrimaryWeaponVData
             // Field count: 1
@@ -8847,7 +9099,7 @@ namespace cs2_dumper {
             // Field count: 3
             namespace CCitadel_Modifier_RestorativeGoo {
                 constexpr std::ptrdiff_t m_flEarliestBreakoutTime = 0xC0; // 
-                constexpr std::ptrdiff_t m_hGooCube = 0x3A0; // CHandle<C_Citadel_RestorativeGooCube>
+                constexpr std::ptrdiff_t m_hGooCube = 0x3A0; // 
                 constexpr std::ptrdiff_t m_flBreakoutPercentage = 0x3A4; // 
             }
             // Parent: CCitadelModifierVData
@@ -8864,7 +9116,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Tech_BleedVData {
-                constexpr std::ptrdiff_t m_DamageParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DamageParticle = 0x608; // 
             }
             // Parent: CitadelItemVData
             // Field count: 1
@@ -8951,8 +9203,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Trapper_SpiderJar_VData {
-                constexpr std::ptrdiff_t m_SpiderExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_JarExplodeParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SpiderExplodeParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_JarExplodeParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_SpiritStealDebuffModifier = 0x1720; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadel_Modifier_StatStealBaseVData
@@ -9009,7 +9261,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_WeaponPowerForHealthVData {
-                constexpr std::ptrdiff_t m_ActiveBuff = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ActiveBuff = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -9025,7 +9277,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Rutger_Pulse_Aura_VData {
-                constexpr std::ptrdiff_t m_empWaveParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_empWaveParticle = 0x648; // 
             }
             // Parent: C_CitadelProjectile
             // Field count: 0
@@ -9046,7 +9298,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Synth_PlasmaFlux_WeaponDamage_VData {
-                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -9058,7 +9310,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_AblativeCoatResistBuffVData {
-                constexpr std::ptrdiff_t m_ResistBuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ResistBuffParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -9108,7 +9360,7 @@ namespace cs2_dumper {
             // Parent: CCitadelModifier
             // Field count: 3
             namespace CBaseModifierAura {
-                constexpr std::ptrdiff_t m_hAuraUnits = 0xC0; // 
+                constexpr std::ptrdiff_t m_hAuraUnits = 0xC0; // CUtlVector<CHandle<C_BaseEntity>>
                 constexpr std::ptrdiff_t m_hAmbientEffect = 0xD8; // 
                 constexpr std::ptrdiff_t m_flOverrideRadius = 0xDC; // 
             }
@@ -9119,8 +9371,8 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAbility_Synth_Affliction_VData {
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_AoEParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CastParticle = 0x1650; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AoEParticle = 0x1570; // 
+                constexpr std::ptrdiff_t m_CastParticle = 0x1650; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 7
@@ -9146,7 +9398,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Viper_Ability04VData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_PetrifyModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifierVData
@@ -9155,7 +9407,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_VoidSphereBuffVData {
-                constexpr std::ptrdiff_t m_RapidFireParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_RapidFireParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -9175,7 +9427,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Tier3_DamagePulseVData {
-                constexpr std::ptrdiff_t m_TargetParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TargetParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_strPulseTickSound = 0x6E8; // 
                 constexpr std::ptrdiff_t m_iMaxTargets = 0x6F8; // 
                 constexpr std::ptrdiff_t m_flRadius = 0x6FC; // 
@@ -9213,7 +9465,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flNextDamageTick = 0xE1C; // 
                 constexpr std::ptrdiff_t m_vStart = 0xE20; // 
                 constexpr std::ptrdiff_t m_vEnd = 0xE2C; // 
-                constexpr std::ptrdiff_t m_vecEntitiesHit = 0xE38; // 
+                constexpr std::ptrdiff_t m_vecEntitiesHit = 0xE38; // CUtlVector<CHandle<C_BaseEntity>>
                 constexpr std::ptrdiff_t m_angBeamAngles = 0xE50; // 
                 constexpr std::ptrdiff_t m_bNeedsBeamReset = 0xE68; // 
             }
@@ -9223,14 +9475,14 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_WreckerScrapBlastDebuffVData {
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 6
             namespace CCitadel_Modifier_IceDome {
-                constexpr std::ptrdiff_t m_hBlocker = 0xC0; // CHandle<C_Citadel_Ice_Dome_Blocker>
-                constexpr std::ptrdiff_t m_hFriendlyAura = 0xC4; // CHandle<CPointModifierThinker>
-                constexpr std::ptrdiff_t m_hEnemyAura = 0xC8; // CHandle<CPointModifierThinker>
+                constexpr std::ptrdiff_t m_hBlocker = 0xC0; // 
+                constexpr std::ptrdiff_t m_hFriendlyAura = 0xC4; // 
+                constexpr std::ptrdiff_t m_hEnemyAura = 0xC8; // 
                 constexpr std::ptrdiff_t m_nParticleIndex = 0xCC; // 
                 constexpr std::ptrdiff_t m_flStartTime = 0xD0; // 
                 constexpr std::ptrdiff_t m_vOrigin = 0x1B8; // 
@@ -9254,7 +9506,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_UtilityUpgrade_AOESmokeBombVData {
-                constexpr std::ptrdiff_t m_CastCompleteParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastCompleteParticle = 0x15A8; // 
                 constexpr std::ptrdiff_t m_strBuffGainedSound = 0x1688; // 
                 constexpr std::ptrdiff_t m_InvisModifier = 0x1698; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -9267,8 +9519,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_CasterModifier = 0x15A8; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_CasterDebuffModifier = 0x15B8; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x15C8; // 
-                constexpr std::ptrdiff_t m_CastDelayParticle = 0x15D8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TeleportTrailParticle = 0x16B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastDelayParticle = 0x15D8; // 
+                constexpr std::ptrdiff_t m_TeleportTrailParticle = 0x16B8; // 
                 constexpr std::ptrdiff_t m_flGroundProbeSpeed = 0x1798; // 
                 constexpr std::ptrdiff_t m_flGroundStepDown = 0x179C; // 
                 constexpr std::ptrdiff_t m_flGroundStepUp = 0x17A0; // 
@@ -9462,8 +9714,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_MetalSkinVData {
-                constexpr std::ptrdiff_t m_BuffStartParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BuffEndParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffStartParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_BuffEndParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_strHitProcSound = 0x7C8; // 
             }
             // Parent: CTier3BossAbility
@@ -9478,8 +9730,7 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CEntityComponent {
             }
-            // Parent: IEconItem
-            // 
+            // Parent: IEconItemInterface
             // Field count: 16
             //
             // Metadata:
@@ -9538,10 +9789,10 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_strLaserEndSound = 0x1580; // 
                 constexpr std::ptrdiff_t m_strLaserLoopSound = 0x1590; // 
                 constexpr std::ptrdiff_t m_strLaserHitSound = 0x15A0; // 
-                constexpr std::ptrdiff_t m_ChargeParticle = 0x15B0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BeamParticle = 0x1690; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HitParticle = 0x1770; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_GroundParticle = 0x1850; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChargeParticle = 0x15B0; // 
+                constexpr std::ptrdiff_t m_BeamParticle = 0x1690; // 
+                constexpr std::ptrdiff_t m_HitParticle = 0x1770; // 
+                constexpr std::ptrdiff_t m_GroundParticle = 0x1850; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 1
@@ -9553,8 +9804,11 @@ namespace cs2_dumper {
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 1
+            //
+            // Metadata:
+            // NetworkVarNames: m_flFloat (float)
             namespace CCitadel_Ability_StormCloud {
-                constexpr std::ptrdiff_t m_bApplyingVerticalAirDrag = 0xCA0; // 
+                constexpr std::ptrdiff_t m_flFloat = 0xD10; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProcVData
             // Field count: 4
@@ -9562,10 +9816,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_SuperAcolytesGlove_VData {
-                constexpr std::ptrdiff_t m_DebuffModifier = 0x638; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_SwingParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HitParticle = 0x728; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FistReadyEffect = 0x808; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x638; // 
+                constexpr std::ptrdiff_t m_SwingParticle = 0x648; // 
+                constexpr std::ptrdiff_t m_HitParticle = 0x728; // 
+                constexpr std::ptrdiff_t m_FistReadyEffect = 0x808; // 
             }
             // Parent: C_BaseEntity
             // Field count: 1
@@ -9575,9 +9829,25 @@ namespace cs2_dumper {
             namespace C_EnvWindClientside {
                 constexpr std::ptrdiff_t m_EnvWindShared = 0x568; // 
             }
+            // Parent: CBaseFilter
+            // Field count: 1
+            namespace FilterDamageType {
+                constexpr std::ptrdiff_t m_iDamageType = 0x5C0; // 
+            }
             // Parent: CCitadelModifierAura
             // Field count: 0
             namespace CCitadel_Modifier_Rutger_ForceField_Aura {
+            }
+            // Parent: CCitadelModifier
+            // Field count: 0
+            namespace CModifier_Operative_Blindside_EnemyDebuff {
+            }
+            // Parent: CitadelAbilityVData
+            // Field count: 0
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Ability_Operative_ScatterCharge_VData {
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 2
@@ -9600,8 +9870,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierNikumanVData {
-                constexpr std::ptrdiff_t m_SelfParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AOEFriendParticle = 0x728; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SelfParticle = 0x648; // 
+                constexpr std::ptrdiff_t m_AOEFriendParticle = 0x728; // 
                 constexpr std::ptrdiff_t m_strAmbientLoopingLocalPlayerSound = 0x808; // 
             }
             // Parent: C_PointClientUIWorldPanel
@@ -9611,6 +9881,17 @@ namespace cs2_dumper {
             // NetworkVarNames: m_messageText (char)
             namespace C_PointClientUIWorldTextPanel {
                 constexpr std::ptrdiff_t m_messageText = 0xAC0; // 
+            }
+            // Parent: CCitadel_Modifier_InvisVData
+            // Field count: 4
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Modifier_LurkersAmbush_InvisVData {
+                constexpr std::ptrdiff_t m_flMaxCameraAngleForSeeing = 0x8D0; // 
+                constexpr std::ptrdiff_t m_flMaxDistanceForSeeing = 0x8D4; // 
+                constexpr std::ptrdiff_t m_flInvisBias = 0x8D8; // 
+                constexpr std::ptrdiff_t m_flSpottedMinTimeToStart = 0x8DC; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -9696,7 +9977,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Cadence_AnthemAOEVData {
-                constexpr std::ptrdiff_t m_AuraParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AuraParticle = 0x648; // 
             }
             // Parent: CCitadel_Item
             // Field count: 0
@@ -9738,8 +10019,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flOutOfCombatHealthRegen = 0x614; // 
                 constexpr std::ptrdiff_t m_flOutOfCombatRegenDelay = 0x618; // 
                 constexpr std::ptrdiff_t m_flEffectsLingerTime = 0x61C; // 
-                constexpr std::ptrdiff_t m_ShieldImpactParticle = 0x620; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ShieldActiveParticle = 0x700; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ShieldImpactParticle = 0x620; // 
+                constexpr std::ptrdiff_t m_ShieldActiveParticle = 0x700; // 
                 constexpr std::ptrdiff_t m_strActiveEffectConfigName = 0x7E0; // 
                 constexpr std::ptrdiff_t flShieldImpactDirectionOffset = 0x7E8; // 
             }
@@ -9792,7 +10073,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Mirage_FireBeetles_Debuff_VData {
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -9804,7 +10085,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_IncendiaryThinkerVData {
-                constexpr std::ptrdiff_t m_GroundParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_GroundParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -9885,8 +10166,8 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Chrono_TimeWall_EffectVData {
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x608; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_BuffParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x6F8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffParticle = 0x618; // 
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x6F8; // 
                 constexpr std::ptrdiff_t m_strDamageSound = 0x7D8; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProcVData
@@ -9895,8 +10176,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_TechBleed_ProcVData {
-                constexpr std::ptrdiff_t m_BleedModifier = 0x638; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_SlowModifier = 0x648; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_BleedModifier = 0x638; // 
+                constexpr std::ptrdiff_t m_SlowModifier = 0x648; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 4
@@ -9913,7 +10194,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAbilityBloodShardsVData {
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1570; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 1
@@ -9955,9 +10236,9 @@ namespace cs2_dumper {
             // NetworkVarNames: m_ResourceAbility (AbilityResource_t)
             namespace CCitadelAbilityComponent {
                 constexpr std::ptrdiff_t m_vecAbilities = 0x70; // 
-                constexpr std::ptrdiff_t m_vecUniversalItems = 0x88; // C_NetworkUtlVectorBase<CUtlStringToken>
+                constexpr std::ptrdiff_t m_vecUniversalItems = 0x88; // 
                 constexpr std::ptrdiff_t m_arPendingAsyncAbilityReservationSlots = 0xA0; // 
-                constexpr std::ptrdiff_t m_arPendingAsyncAbilityReservationAbilityIDs = 0xB8; // C_NetworkUtlVectorBase<int32>
+                constexpr std::ptrdiff_t m_arPendingAsyncAbilityReservationAbilityIDs = 0xB8; // 
                 constexpr std::ptrdiff_t m_hSelectedAbility = 0xD0; // 
                 constexpr std::ptrdiff_t m_hPreviouslySelectedAbility = 0xD4; // 
                 constexpr std::ptrdiff_t m_bPreviousAbilityQueued = 0xD8; // 
@@ -9996,7 +10277,7 @@ namespace cs2_dumper {
             namespace CAbilityTokamakBreachVData {
                 constexpr std::ptrdiff_t m_AllySmokeAOEModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_EnemySmokeAOEModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_PurgeParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_PurgeParticle = 0x1580; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 1
@@ -10103,6 +10384,12 @@ namespace cs2_dumper {
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 2
+            namespace CCitadel_Ability_Operative_Blindside {
+                constexpr std::ptrdiff_t m_vLaunchPosition = 0xCA0; // 
+                constexpr std::ptrdiff_t m_qLaunchAngle = 0xCAC; // 
+            }
+            // Parent: C_CitadelBaseAbility
+            // Field count: 2
             namespace CCitadel_Ability_SettingSun {
                 constexpr std::ptrdiff_t m_TargetPreviews = 0xCA0; // 
                 constexpr std::ptrdiff_t m_bWasSelected = 0xD68; // 
@@ -10143,55 +10430,55 @@ namespace cs2_dumper {
             // MPropertySuppressBaseClassField
             // MPropertySuppressBaseClassField
             namespace CAI_CitadelNPCVData {
-                constexpr std::ptrdiff_t m_sAG2VariationName = 0x270; // 
-                constexpr std::ptrdiff_t m_mapBoundAbilities = 0x350; // 
-                constexpr std::ptrdiff_t m_flSightRangePlayers = 0x378; // 
-                constexpr std::ptrdiff_t m_flSightRangeNPCs = 0x37C; // 
-                constexpr std::ptrdiff_t m_MeleeAnimName = 0x380; // 
-                constexpr std::ptrdiff_t m_flMeleeAttemptRange = 0x388; // 
-                constexpr std::ptrdiff_t m_flMeleeHitRange = 0x38C; // 
-                constexpr std::ptrdiff_t m_MeleeAttackPoints = 0x390; // 
-                constexpr std::ptrdiff_t m_flMaxHealthBarDrawDistance = 0x3A8; // 
-                constexpr std::ptrdiff_t m_flWalkSpeed = 0x3AC; // 
-                constexpr std::ptrdiff_t m_flRunSpeed = 0x3B0; // 
-                constexpr std::ptrdiff_t m_flTurnRate = 0x3B4; // 
-                constexpr std::ptrdiff_t m_flAcceleration = 0x3B8; // 
-                constexpr std::ptrdiff_t m_flStepHeight = 0x3BC; // 
-                constexpr std::ptrdiff_t m_navHull = 0x3C0; // 
-                constexpr std::ptrdiff_t m_BeamStartSound = 0x3C8; // 
-                constexpr std::ptrdiff_t m_BeamStopSound = 0x3D8; // 
-                constexpr std::ptrdiff_t m_BeamPointStartLoopSound = 0x3E8; // 
-                constexpr std::ptrdiff_t m_BeamPointEndLoopSound = 0x3F8; // 
-                constexpr std::ptrdiff_t m_BeamPointClosestLoopSound = 0x408; // 
-                constexpr std::ptrdiff_t m_strAmbientLoopSound = 0x418; // 
-                constexpr std::ptrdiff_t m_DeathSound = 0x428; // 
-                constexpr std::ptrdiff_t m_strLastHitSound = 0x438; // 
-                constexpr std::ptrdiff_t m_bPlayLastHitSound = 0x448; // 
-                constexpr std::ptrdiff_t m_MeleeHitSound = 0x450; // 
-                constexpr std::ptrdiff_t m_MeleeHitPlayerSound = 0x460; // 
-                constexpr std::ptrdiff_t m_sDefaultMaterialGroupName = 0x470; // 
-                constexpr std::ptrdiff_t m_sEnemyMaterialGroupName = 0x478; // 
-                constexpr std::ptrdiff_t m_sTeam1MaterialGroupName = 0x480; // 
-                constexpr std::ptrdiff_t m_sTeam2MaterialGroupName = 0x488; // 
-                constexpr std::ptrdiff_t m_MeleeSwingParticle = 0x490; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_MeleeActivateParticle = 0x570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_flModelScale = 0x650; // 
-                constexpr std::ptrdiff_t m_DeathParticle = 0x658; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HealthBarParticle = 0x738; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sHealthBarAttachment = 0x818; // 
-                constexpr std::ptrdiff_t m_HealthBarColorFriend = 0x820; // 
-                constexpr std::ptrdiff_t m_HealthBarColorEnemy = 0x824; // 
-                constexpr std::ptrdiff_t m_HealthBarColorTeam1 = 0x828; // 
-                constexpr std::ptrdiff_t m_HealthBarColorTeam2 = 0x82C; // 
-                constexpr std::ptrdiff_t m_HealthBarColorTeamNeutral = 0x830; // 
-                constexpr std::ptrdiff_t m_flHealthBarOffset = 0x834; // 
-                constexpr std::ptrdiff_t m_bSpawnBreakablesOnDeath = 0x838; // 
-                constexpr std::ptrdiff_t m_flBreakableForceScale = 0x83C; // 
-                constexpr std::ptrdiff_t m_flPhysicsImpulseMultiplier = 0x840; // 
-                constexpr std::ptrdiff_t m_flBeamWeaponWidth = 0x844; // 
-                constexpr std::ptrdiff_t m_flBeamTurnRate = 0x848; // 
-                constexpr std::ptrdiff_t m_BeamWeaponParticle = 0x850; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_WeaponInfo = 0x930; // 
+                constexpr std::ptrdiff_t m_sAG2VariationName = 0x398; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeCNmGraphVariation>>
+                constexpr std::ptrdiff_t m_mapBoundAbilities = 0x478; // 
+                constexpr std::ptrdiff_t m_flSightRangePlayers = 0x4A0; // 
+                constexpr std::ptrdiff_t m_flSightRangeNPCs = 0x4A4; // 
+                constexpr std::ptrdiff_t m_MeleeAnimName = 0x4A8; // 
+                constexpr std::ptrdiff_t m_flMeleeAttemptRange = 0x4B0; // 
+                constexpr std::ptrdiff_t m_flMeleeHitRange = 0x4B4; // 
+                constexpr std::ptrdiff_t m_MeleeAttackPoints = 0x4B8; // 
+                constexpr std::ptrdiff_t m_flMaxHealthBarDrawDistance = 0x4D0; // 
+                constexpr std::ptrdiff_t m_flWalkSpeed = 0x4D4; // 
+                constexpr std::ptrdiff_t m_flRunSpeed = 0x4D8; // 
+                constexpr std::ptrdiff_t m_flTurnRate = 0x4DC; // 
+                constexpr std::ptrdiff_t m_flAcceleration = 0x4E0; // 
+                constexpr std::ptrdiff_t m_flStepHeight = 0x4E4; // 
+                constexpr std::ptrdiff_t m_navHull = 0x4E8; // 
+                constexpr std::ptrdiff_t m_BeamStartSound = 0x4F0; // 
+                constexpr std::ptrdiff_t m_BeamStopSound = 0x500; // 
+                constexpr std::ptrdiff_t m_BeamPointStartLoopSound = 0x510; // 
+                constexpr std::ptrdiff_t m_BeamPointEndLoopSound = 0x520; // 
+                constexpr std::ptrdiff_t m_BeamPointClosestLoopSound = 0x530; // 
+                constexpr std::ptrdiff_t m_strAmbientLoopSound = 0x540; // 
+                constexpr std::ptrdiff_t m_DeathSound = 0x550; // 
+                constexpr std::ptrdiff_t m_strLastHitSound = 0x560; // 
+                constexpr std::ptrdiff_t m_bPlayLastHitSound = 0x570; // 
+                constexpr std::ptrdiff_t m_MeleeHitSound = 0x578; // 
+                constexpr std::ptrdiff_t m_MeleeHitPlayerSound = 0x588; // 
+                constexpr std::ptrdiff_t m_sDefaultMaterialGroupName = 0x598; // 
+                constexpr std::ptrdiff_t m_sEnemyMaterialGroupName = 0x5A0; // 
+                constexpr std::ptrdiff_t m_sTeam1MaterialGroupName = 0x5A8; // 
+                constexpr std::ptrdiff_t m_sTeam2MaterialGroupName = 0x5B0; // 
+                constexpr std::ptrdiff_t m_MeleeSwingParticle = 0x5B8; // 
+                constexpr std::ptrdiff_t m_MeleeActivateParticle = 0x698; // 
+                constexpr std::ptrdiff_t m_flModelScale = 0x778; // 
+                constexpr std::ptrdiff_t m_DeathParticle = 0x780; // 
+                constexpr std::ptrdiff_t m_HealthBarParticle = 0x860; // 
+                constexpr std::ptrdiff_t m_sHealthBarAttachment = 0x940; // 
+                constexpr std::ptrdiff_t m_HealthBarColorFriend = 0x948; // 
+                constexpr std::ptrdiff_t m_HealthBarColorEnemy = 0x94C; // 
+                constexpr std::ptrdiff_t m_HealthBarColorTeam1 = 0x950; // 
+                constexpr std::ptrdiff_t m_HealthBarColorTeam2 = 0x954; // 
+                constexpr std::ptrdiff_t m_HealthBarColorTeamNeutral = 0x958; // 
+                constexpr std::ptrdiff_t m_flHealthBarOffset = 0x95C; // 
+                constexpr std::ptrdiff_t m_bSpawnBreakablesOnDeath = 0x960; // 
+                constexpr std::ptrdiff_t m_flBreakableForceScale = 0x964; // 
+                constexpr std::ptrdiff_t m_flPhysicsImpulseMultiplier = 0x968; // 
+                constexpr std::ptrdiff_t m_flBeamWeaponWidth = 0x96C; // 
+                constexpr std::ptrdiff_t m_flBeamTurnRate = 0x970; // 
+                constexpr std::ptrdiff_t m_BeamWeaponParticle = 0x978; // 
+                constexpr std::ptrdiff_t m_WeaponInfo = 0xA58; // 
             }
             // Parent: CCitadelModifierAuraVData
             // Field count: 1
@@ -10199,7 +10486,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Cadence_Crescendo_AOE_VData {
-                constexpr std::ptrdiff_t m_AuraParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AuraParticle = 0x648; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 1
@@ -10220,8 +10507,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierLashGrappleTargetVData {
-                constexpr std::ptrdiff_t m_LockingOnParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_LockedOnParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LockingOnParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_LockedOnParticle = 0x6E8; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 1
@@ -10242,18 +10529,18 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_DebuffImmunityVData {
-                constexpr std::ptrdiff_t m_ShieldParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PlayerShieldParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ShieldParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_PlayerShieldParticle = 0x6E8; // 
             }
             // Parent: CNPC_SimpleAnimatingAIVData
-            // Field count: 17
+            // Field count: 18
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CNPC_ShieldedSentryVData {
                 constexpr std::ptrdiff_t m_flZShootPostionOffset = 0x108; // 
-                constexpr std::ptrdiff_t m_LaserSightParticle = 0x110; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_KillExplosionParticle = 0x1F0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LaserSightParticle = 0x110; // 
+                constexpr std::ptrdiff_t m_KillExplosionParticle = 0x1F0; // 
                 constexpr std::ptrdiff_t m_DeployProgressModifier = 0x2D0; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_NearDeathModifier = 0x2E0; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_IntrinsicModifier = 0x2F0; // CEmbeddedSubclass<CCitadelModifier>
@@ -10268,6 +10555,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flNotifyEventTime = 0x350; // 
                 constexpr std::ptrdiff_t m_flNearDeathDuration = 0x354; // 
                 constexpr std::ptrdiff_t m_flMinimapRevealTime = 0x358; // 
+                constexpr std::ptrdiff_t m_flMinLifetime = 0x35C; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 2
@@ -10275,7 +10563,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_SleepDaggerAsleepVData {
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_PostSleepModifier = 0x6E8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CitadelAbilityVData
@@ -10284,16 +10572,16 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityImmobilizeTrapVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PreviewRingParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TrapHighlightParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ArmedParticle = 0x1800; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_PreviewRingParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_TrapHighlightParticle = 0x1720; // 
+                constexpr std::ptrdiff_t m_ArmedParticle = 0x1800; // 
                 constexpr std::ptrdiff_t m_strTripSound = 0x18E0; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x18F0; // 
                 constexpr std::ptrdiff_t m_strExpiredSound = 0x1900; // 
                 constexpr std::ptrdiff_t m_strImmobilizeTargetSound = 0x1910; // 
                 constexpr std::ptrdiff_t m_strArmingSound = 0x1920; // 
-                constexpr std::ptrdiff_t m_TrapModifier = 0x1930; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_TetherModifier = 0x1930; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1940; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_SlowModifier = 0x1950; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -10317,8 +10605,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_MagicShock_ProcVData {
-                constexpr std::ptrdiff_t m_ProcParticle = 0x638; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_hDamageTrackModifier = 0x718; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_ProcParticle = 0x638; // 
+                constexpr std::ptrdiff_t m_hDamageTrackModifier = 0x718; // 
             }
             // Parent: C_BaseModelEntity
             // Field count: 18
@@ -10373,10 +10661,10 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_LeapModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ActiveBuff = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_KillableModifier = 0x1580; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_AttackParticle = 0x1590; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1670; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FlashParticle = 0x1750; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_KillingBlowCastParticle = 0x1830; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AttackParticle = 0x1590; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1670; // 
+                constexpr std::ptrdiff_t m_FlashParticle = 0x1750; // 
+                constexpr std::ptrdiff_t m_KillingBlowCastParticle = 0x1830; // 
                 constexpr std::ptrdiff_t m_ChargeUpSound = 0x1910; // 
                 constexpr std::ptrdiff_t m_OnKillSound = 0x1920; // 
                 constexpr std::ptrdiff_t m_flPreArrivalAttackStartTime = 0x1930; // 
@@ -10407,6 +10695,10 @@ namespace cs2_dumper {
             }
             // Parent: CCitadelModifier
             // Field count: 0
+            namespace CCitadel_Modifier_Skirmish_Passive_Gold {
+            }
+            // Parent: CCitadelModifier
+            // Field count: 0
             namespace CCitadel_Modifier_PlayerPinged {
             }
             // Parent: CCitadel_Item
@@ -10432,7 +10724,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAbilityPsychicLiftVData {
                 constexpr std::ptrdiff_t m_LiftModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_TargetParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TargetParticle = 0x1570; // 
                 constexpr std::ptrdiff_t m_TargetCastSound = 0x1650; // 
             }
             // Parent: CCitadelModifierVData
@@ -10441,8 +10733,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ColossusActive_VData {
-                constexpr std::ptrdiff_t m_AuraModifier = 0x608; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_ShieldParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AuraModifier = 0x608; // 
+                constexpr std::ptrdiff_t m_ShieldParticle = 0x618; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -10451,10 +10743,6 @@ namespace cs2_dumper {
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
             namespace CCitadel_Modifier_BulletArmorShredder_Proc {
-            }
-            // Parent: CCitadelModifier
-            // Field count: 0
-            namespace CCitadel_Modifier_Bullet_Shield {
             }
             // Parent: CCitadelModifierVData
             // Field count: 1
@@ -10482,19 +10770,25 @@ namespace cs2_dumper {
             // NetworkVarNames: m_Weight (float)
             // NetworkVarNames: m_lookupFilename (char)
             namespace C_ColorCorrectionVolume {
-                constexpr std::ptrdiff_t m_LastEnterWeight = 0x868; // 
-                constexpr std::ptrdiff_t m_LastEnterTime = 0x86C; // 
-                constexpr std::ptrdiff_t m_LastExitWeight = 0x870; // 
-                constexpr std::ptrdiff_t m_LastExitTime = 0x874; // 
-                constexpr std::ptrdiff_t m_bEnabled = 0x878; // 
-                constexpr std::ptrdiff_t m_MaxWeight = 0x87C; // 
-                constexpr std::ptrdiff_t m_FadeDuration = 0x880; // 
-                constexpr std::ptrdiff_t m_Weight = 0x884; // 
-                constexpr std::ptrdiff_t m_lookupFilename = 0x888; // 
+                constexpr std::ptrdiff_t m_LastEnterWeight = 0x9A0; // 
+                constexpr std::ptrdiff_t m_LastEnterTime = 0x9A4; // 
+                constexpr std::ptrdiff_t m_LastExitWeight = 0x9A8; // 
+                constexpr std::ptrdiff_t m_LastExitTime = 0x9AC; // 
+                constexpr std::ptrdiff_t m_bEnabled = 0x9B0; // 
+                constexpr std::ptrdiff_t m_MaxWeight = 0x9B4; // 
+                constexpr std::ptrdiff_t m_FadeDuration = 0x9B8; // 
+                constexpr std::ptrdiff_t m_Weight = 0x9BC; // 
+                constexpr std::ptrdiff_t m_lookupFilename = 0x9C0; // 
             }
             // Parent: C_BaseModelEntity
             // Field count: 0
             namespace C_PrecipitationBlocker {
+            }
+            // Parent: CCitadel_Modifier_Intrinsic_Base
+            // Field count: 2
+            namespace CModifier_Operative_Scattercharge_Projectile {
+                constexpr std::ptrdiff_t m_vInitialCastPosition = 0x130; // 
+                constexpr std::ptrdiff_t m_iParticleEffect = 0x13C; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -10509,7 +10803,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flNextDamageTick = 0x12B8; // 
                 constexpr std::ptrdiff_t m_vStart = 0x12BC; // 
                 constexpr std::ptrdiff_t m_vEnd = 0x12C8; // 
-                constexpr std::ptrdiff_t m_vecEntitiesHit = 0x1310; // 
+                constexpr std::ptrdiff_t m_vecEntitiesHit = 0x1310; // CUtlVector<CHandle<C_BaseEntity>>
                 constexpr std::ptrdiff_t m_vBeamAimPos = 0x1328; // 
                 constexpr std::ptrdiff_t m_angBeamAngles = 0x1338; // 
                 constexpr std::ptrdiff_t m_bNeedsBeamReset = 0x1350; // 
@@ -10536,7 +10830,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_eTimeScaleSource = 0x414; // 
                 constexpr std::ptrdiff_t m_bDurationAffectedByEffectiveness = 0x418; // 
                 constexpr std::ptrdiff_t m_vecSetAndTrackedAnimGraphParams = 0x420; // 
-                constexpr std::ptrdiff_t m_vecSetAndTrackedBodyGroups = 0x438; // 
+                constexpr std::ptrdiff_t m_vecSetAndTrackedBodyGroups = 0x438; // CUtlVector<CCitadelTrackedBodygroupModifierState_t>
                 constexpr std::ptrdiff_t m_eDrawOverheadStatus = 0x450; // 
                 constexpr std::ptrdiff_t m_bReverseHudProgressBar = 0x454; // 
                 constexpr std::ptrdiff_t m_strSmallIconCssClass = 0x458; // 
@@ -10558,10 +10852,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierLockDownDebuffVData {
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AOEParticleCaster = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AOEParticleEnemy = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AOEParticleOthers = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_AOEParticleCaster = 0x6E8; // 
+                constexpr std::ptrdiff_t m_AOEParticleEnemy = 0x7C8; // 
+                constexpr std::ptrdiff_t m_AOEParticleOthers = 0x8A8; // 
                 constexpr std::ptrdiff_t m_strFollowLoop = 0x988; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x998; // 
                 constexpr std::ptrdiff_t m_strEscapedSound = 0x9A8; // 
@@ -10612,10 +10906,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_SettingSunThinker_VData {
-                constexpr std::ptrdiff_t m_TargetParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_LingerParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_LayerParticle = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TargetParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_LingerParticle = 0x7C8; // 
+                constexpr std::ptrdiff_t m_LayerParticle = 0x8A8; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x988; // 
                 constexpr std::ptrdiff_t m_strTargetingCompletedSound = 0x998; // 
             }
@@ -10633,11 +10927,11 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_DesatTint = 0x60C; // 
                 constexpr std::ptrdiff_t m_SatTint = 0x610; // 
                 constexpr std::ptrdiff_t m_Outline = 0x614; // 
-                constexpr std::ptrdiff_t m_DaggerShot = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DaggerSpawn = 0x6F8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DaggerAoE = 0x7D8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DaggerTargetPreview = 0x8B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DaggerShotFail = 0x998; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DaggerShot = 0x618; // 
+                constexpr std::ptrdiff_t m_DaggerSpawn = 0x6F8; // 
+                constexpr std::ptrdiff_t m_DaggerAoE = 0x7D8; // 
+                constexpr std::ptrdiff_t m_DaggerTargetPreview = 0x8B8; // 
+                constexpr std::ptrdiff_t m_DaggerShotFail = 0x998; // 
                 constexpr std::ptrdiff_t m_DaggerFireSound = 0xA78; // 
                 constexpr std::ptrdiff_t m_DaggerMissSound = 0xA88; // 
                 constexpr std::ptrdiff_t m_LastDaggerMissSound = 0xA98; // 
@@ -10655,8 +10949,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_LifestrikeGauntlets_VData {
-                constexpr std::ptrdiff_t m_SwingParticle = 0x638; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HitParticle = 0x718; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SwingParticle = 0x638; // 
+                constexpr std::ptrdiff_t m_HitParticle = 0x718; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -10707,7 +11001,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_WeaponUpgrade_SurgingPowerVData {
                 constexpr std::ptrdiff_t m_ModifierSurgingPower = 0x15A8; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_CastTargetEffect = 0x15B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastTargetEffect = 0x15B8; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 1
@@ -10715,7 +11009,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_FireRateAuraVData {
-                constexpr std::ptrdiff_t m_FireRateAuraSourceParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_FireRateAuraSourceParticle = 0x608; // 
             }
             // Parent: CCitadel_Modifier_Intrinsic_Base
             // Field count: 0
@@ -10751,9 +11045,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_SettingSun_VData {
-                constexpr std::ptrdiff_t m_BeamTargetParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_UnitTargetParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_SettingSunThinkerModifier = 0x1720; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_BeamTargetParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_UnitTargetParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_SettingSunThinkerModifier = 0x1720; // 
                 constexpr std::ptrdiff_t m_flSSCameraPreviewOffset = 0x1730; // 
                 constexpr std::ptrdiff_t m_flSSCameraPreviewSpeed = 0x1734; // 
                 constexpr std::ptrdiff_t m_flSSCameraPreviewDistance = 0x1738; // 
@@ -10768,7 +11062,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Burrow_VData {
-                constexpr std::ptrdiff_t m_BurrowPlayerParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BurrowPlayerParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_flDesatAmount = 0x6E8; // 
                 constexpr std::ptrdiff_t m_DesatTint = 0x6EC; // 
                 constexpr std::ptrdiff_t m_SatTint = 0x6F0; // 
@@ -10792,8 +11086,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CFuncFoliageVData {
-                constexpr std::ptrdiff_t m_BulletImpactParticle = 0x28; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BulletExitParticle = 0x108; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BulletImpactParticle = 0x28; // 
+                constexpr std::ptrdiff_t m_BulletExitParticle = 0x108; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -10824,10 +11118,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityWreckingBallVData {
-                constexpr std::ptrdiff_t m_SummonParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_SummonReadyParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SummonParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_SummonReadyParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_SummonParticleAttachment = 0x1720; // 
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1728; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1728; // 
                 constexpr std::ptrdiff_t m_AutoThrowModifier = 0x1808; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_HoldingBallLoop = 0x1818; // 
             }
@@ -10835,7 +11129,7 @@ namespace cs2_dumper {
             // Field count: 2
             namespace CCitadel_Modifier_Gravity_Lasso_Self {
                 constexpr std::ptrdiff_t m_bHasUsedBouncePad = 0xC0; // 
-                constexpr std::ptrdiff_t m_vCastTargets = 0xC8; // 
+                constexpr std::ptrdiff_t m_vCastTargets = 0xC8; // CUtlVector<CHandle<C_BaseEntity>>
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -10861,6 +11155,10 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flOuterAngle = 0xBAC; // 
                 constexpr std::ptrdiff_t m_bShowLight = 0xBB0; // 
             }
+            // Parent: CCitadel_Modifier_ScalingPowerUp
+            // Field count: 0
+            namespace CCitadel_Modifier_PowerUp_Survival {
+            }
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_Cadence_Crescendo_PostAOE {
@@ -10883,8 +11181,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_RescueBeamVData {
-                constexpr std::ptrdiff_t m_BeamParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BeamParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x6E8; // 
             }
             // Parent: C_AI_CitadelNPC
             // Field count: 0
@@ -10893,6 +11191,11 @@ namespace cs2_dumper {
             // MNetworkIncludeByName
             // MNetworkIncludeByName
             namespace C_NPC_HornetDrone {
+            }
+            // Parent: C_CitadelProjectile
+            // Field count: 1
+            namespace CCitadel_Projectile_MagicBolt {
+                constexpr std::ptrdiff_t bIsCloneProjectile = 0x8E8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 6
@@ -10923,8 +11226,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_ShieldedSentry_VData {
-                constexpr std::ptrdiff_t m_InnateModifier = 0x1560; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_DebuffModifier = 0x1570; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_InnateModifier = 0x1560; // 
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x1570; // 
                 constexpr std::ptrdiff_t m_flDamageFalloffEndScale = 0x1580; // 
             }
             // Parent: CCitadelModifier
@@ -10953,7 +11256,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Thumper_2_AuraVData {
-                constexpr std::ptrdiff_t m_AoEParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AoEParticle = 0x648; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 11
@@ -10961,8 +11264,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ItemWalkBackVData {
-                constexpr std::ptrdiff_t m_IdleParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_RunningParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_IdleParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_RunningParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_flStopDistance = 0x7C8; // 
                 constexpr std::ptrdiff_t m_flMaxSpeedDistance = 0x7CC; // 
                 constexpr std::ptrdiff_t m_flSlowSpeed = 0x7D0; // 
@@ -10987,6 +11290,17 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flProjectileLaunchTime = 0xCB4; // 
                 constexpr std::ptrdiff_t m_flProjectileExpireTime = 0xCB8; // 
                 constexpr std::ptrdiff_t m_hActiveProjectile = 0xCBC; // 
+            }
+            // Parent: CCitadelModifierVData
+            // Field count: 4
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Modifier_Gunslinger_DemonCarbineVData {
+                constexpr std::ptrdiff_t m_TracerParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_FullyChargedParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_strFullyCharged = 0x7C8; // 
+                constexpr std::ptrdiff_t m_strShotSound = 0x7D8; // 
             }
             // Parent: CCitadel_Ability_PrimaryWeaponVData
             // Field count: 1
@@ -11022,7 +11336,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Low_Health_GlowVData {
-                constexpr std::ptrdiff_t m_GlowParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_GlowParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -11071,14 +11385,19 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_ArmorUpgrade_DamageRecycler {
             }
+            // Parent: CBaseFilter
+            // Field count: 1
+            namespace CFilterClass {
+                constexpr std::ptrdiff_t m_iFilterClass = 0x5C0; // 
+            }
             // Parent: CitadelAbilityVData
             // Field count: 6
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Magician_BigBoltVData {
-                constexpr std::ptrdiff_t m_ChargeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ShootDelayParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChargeParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_ShootDelayParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_CasterModifier = 0x1720; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_BoltHitModifier = 0x1730; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_strBoltDelay = 0x1740; // 
@@ -11101,7 +11420,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_BulletArmorShredder_ProcVData {
-                constexpr std::ptrdiff_t m_DebuffModifier = 0x638; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x638; // 
             }
             // Parent: CCitadelModifier
             // Field count: 2
@@ -11127,13 +11446,17 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CNPC_TrooperBossVData {
-                constexpr std::ptrdiff_t m_bMitigateDamageFromPlayers = 0x1690; // 
-                constexpr std::ptrdiff_t m_flPlayerAutoAttackRange = 0x1694; // 
-                constexpr std::ptrdiff_t m_flMinMeleeAttackTime = 0x1698; // 
-                constexpr std::ptrdiff_t m_flInvulRange = 0x169C; // 
-                constexpr std::ptrdiff_t m_sAngryStart = 0x16A0; // 
-                constexpr std::ptrdiff_t m_sAngryLoop = 0x16B0; // 
-                constexpr std::ptrdiff_t m_sAngryStop = 0x16C0; // 
+                constexpr std::ptrdiff_t m_bMitigateDamageFromPlayers = 0x17B8; // 
+                constexpr std::ptrdiff_t m_flPlayerAutoAttackRange = 0x17BC; // 
+                constexpr std::ptrdiff_t m_flMinMeleeAttackTime = 0x17C0; // 
+                constexpr std::ptrdiff_t m_flInvulRange = 0x17C4; // 
+                constexpr std::ptrdiff_t m_sAngryStart = 0x17C8; // 
+                constexpr std::ptrdiff_t m_sAngryLoop = 0x17D8; // 
+                constexpr std::ptrdiff_t m_sAngryStop = 0x17E8; // 
+            }
+            // Parent: CBaseFilter
+            // Field count: 0
+            namespace CFilterLOS {
             }
             // Parent: None
             // Field count: 2
@@ -11152,6 +11475,17 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAbilityTokamakRadianceVData {
                 constexpr std::ptrdiff_t m_RadianceModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
+            }
+            // Parent: CitadelAbilityVData
+            // Field count: 4
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Ability_Gunslinger_DemonCarbineVData {
+                constexpr std::ptrdiff_t m_flShotTimeScaleLingerDuration = 0x1560; // 
+                constexpr std::ptrdiff_t m_ChargingModifier = 0x1568; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x1578; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_cameraDemonCarbineShotFired = 0x1588; // CitadelCameraOperationsSequence_t
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 1
@@ -11173,13 +11507,9 @@ namespace cs2_dumper {
             namespace ice_path_shard_model_desc_t {
                 constexpr std::ptrdiff_t m_nModelID = 0x8; // 
                 constexpr std::ptrdiff_t m_vecPanelSize = 0xC; // 
-                constexpr std::ptrdiff_t m_vecPanelVertices = 0x18; // C_NetworkUtlVectorBase<Vector>
+                constexpr std::ptrdiff_t m_vecPanelVertices = 0x18; // 
                 constexpr std::ptrdiff_t m_flThickness = 0x30; // 
                 constexpr std::ptrdiff_t m_SurfacePropStringToken = 0x34; // 
-            }
-            // Parent: CCitadel_Modifier_Root
-            // Field count: 0
-            namespace CCitadel_Modifier_ImmobilizeTrap_Immobilize {
             }
             // Parent: None
             // Field count: 3
@@ -11231,7 +11561,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flSuccessActiveTime = 0x1570; // 
                 constexpr std::ptrdiff_t m_flBossVictimNoMeleeTime = 0x1574; // 
                 constexpr std::ptrdiff_t m_flBossVictimCalmTime = 0x1578; // 
-                constexpr std::ptrdiff_t m_SuccessfulParryParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SuccessfulParryParticle = 0x1580; // 
                 constexpr std::ptrdiff_t m_strSuccessfulParrySound = 0x1660; // 
                 constexpr std::ptrdiff_t m_ParryActiveModifier = 0x1670; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ParryVictimModifier = 0x1680; // CEmbeddedSubclass<CCitadelModifier>
@@ -11249,7 +11579,12 @@ namespace cs2_dumper {
             // MNetworkIncludeByName
             // NetworkVarNames: m_nHitIndex (int)
             namespace C_Citadel_BreakableProp {
-                constexpr std::ptrdiff_t m_nHitIndex = 0xB08; // 
+                constexpr std::ptrdiff_t m_nHitIndex = 0xB00; // 
+            }
+            // Parent: CCitadel_Modifier_BaseBulletPreRollProc
+            // Field count: 1
+            namespace CCitadel_Modifier_EmpowerBullet {
+                constexpr std::ptrdiff_t m_BuffedShotId = 0x1F8; // 
             }
             // Parent: CCitadelBaseYamatoAbility
             // Field count: 21
@@ -11307,7 +11642,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_TargetPracticeSelfVData {
-                constexpr std::ptrdiff_t m_TracerParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TracerParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_strWeaponShootSound = 0x6E8; // 
                 constexpr std::ptrdiff_t m_strBulletWhizSound = 0x6F8; // 
             }
@@ -11317,7 +11652,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Cadence_SleepAOEVData {
-                constexpr std::ptrdiff_t m_AuraParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AuraParticle = 0x648; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -11341,7 +11676,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Bull_Heal_TargetVData {
-                constexpr std::ptrdiff_t m_DrainParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DrainParticle = 0x608; // 
             }
             // Parent: CCitadel_Modifier_Intrinsic_BaseVData
             // Field count: 2
@@ -11370,7 +11705,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CItemAOERootVData {
-                constexpr std::ptrdiff_t m_AOEParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AOEParticle = 0x15A8; // 
                 constexpr std::ptrdiff_t m_strRootTargetSound = 0x1688; // 
                 constexpr std::ptrdiff_t m_TetherModifier = 0x1698; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -11380,7 +11715,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Item_TrackingProjectileApplyModifierVData {
-                constexpr std::ptrdiff_t m_ProjectileImpactParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ProjectileImpactParticle = 0x15A8; // 
                 constexpr std::ptrdiff_t m_TargetModifier = 0x1688; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_FriendlyOnlyModifier = 0x1698; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -11395,7 +11730,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Rutger_CheatDeath_Activated_VData {
-                constexpr std::ptrdiff_t m_ActivatedParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ActivatedParticle = 0x608; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -11407,9 +11742,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ReturnFireVData {
-                constexpr std::ptrdiff_t m_AttackerHitFx = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_SpiritReflectTracerReplacement = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AttackerHitFx = 0x608; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_SpiritReflectTracerReplacement = 0x7C8; // 
                 constexpr std::ptrdiff_t m_strAttackerHitSound = 0x8A8; // 
                 constexpr std::ptrdiff_t m_strHitProcSound = 0x8B8; // 
             }
@@ -11442,7 +11777,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_BubbleVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x8A8; // 
                 constexpr std::ptrdiff_t m_ExplodeSound = 0x988; // 
                 constexpr std::ptrdiff_t m_BuffModifier = 0x998; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -11452,8 +11787,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CNPC_FieldSentryVData {
-                constexpr std::ptrdiff_t m_LaserSightParticle = 0x108; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_KillExplosionParticle = 0x1E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LaserSightParticle = 0x108; // 
+                constexpr std::ptrdiff_t m_KillExplosionParticle = 0x1E8; // 
                 constexpr std::ptrdiff_t m_DeployProgressModifier = 0x2C8; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_sSpawnSound = 0x2D8; // 
                 constexpr std::ptrdiff_t m_sKillExplosionSound = 0x2E8; // 
@@ -11475,17 +11810,13 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_VoidSphereVData {
-                constexpr std::ptrdiff_t m_BubbleModifier = 0x1560; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_strCastEffect = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_strAllyPositionPreview = 0x1650; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BubbleModifier = 0x1560; // 
+                constexpr std::ptrdiff_t m_strCastEffect = 0x1570; // 
+                constexpr std::ptrdiff_t m_strAllyPositionPreview = 0x1650; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_ExplosiveShots {
-            }
-            // Parent: CCitadel_Item
-            // Field count: 0
-            namespace CCitadel_Upgrade_AerialAssault {
             }
             // Parent: C_BaseTrigger
             // Field count: 3
@@ -11494,9 +11825,13 @@ namespace cs2_dumper {
             // NetworkVarNames: m_vLaunchTarget (Vector)
             // NetworkVarNames: m_flLaunchSpeed (float)
             namespace CCitadelCatapultTrigger {
-                constexpr std::ptrdiff_t m_vLaunchTarget = 0x868; // 
-                constexpr std::ptrdiff_t m_flLaunchSpeed = 0x874; // 
-                constexpr std::ptrdiff_t m_nameTarget = 0x878; // 
+                constexpr std::ptrdiff_t m_vLaunchTarget = 0x9A0; // 
+                constexpr std::ptrdiff_t m_flLaunchSpeed = 0x9AC; // 
+                constexpr std::ptrdiff_t m_nameTarget = 0x9B0; // 
+            }
+            // Parent: CCitadel_Item
+            // Field count: 0
+            namespace CCitadel_Upgrade_AerialAssault {
             }
             // Parent: C_BaseModelEntity
             // Field count: 9
@@ -11524,8 +11859,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Synth_Affliction_Debuff_VData {
-                constexpr std::ptrdiff_t m_EffectParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_EffectParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x6E8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -11554,7 +11889,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Fervor_Bonuses_VData {
-                constexpr std::ptrdiff_t m_BonusesParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BonusesParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_ActivateBonusesSound = 0x6E8; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProcVData
@@ -11563,8 +11898,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_SilencerProcActiveVData {
-                constexpr std::ptrdiff_t m_TracerParticle = 0x638; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_SilencerActiveParticle = 0x718; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TracerParticle = 0x638; // 
+                constexpr std::ptrdiff_t m_SilencerActiveParticle = 0x718; // 
                 constexpr std::ptrdiff_t m_SilenceActiveModifier = 0x7F8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifierVData
@@ -11574,7 +11909,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_HalloweenMaskVData {
                 constexpr std::ptrdiff_t m_nNumMasks = 0x608; // 
-                constexpr std::ptrdiff_t m_HalloweenMask = 0x610; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_HalloweenMask = 0x610; // 
             }
             // Parent: C_SoundOpvarSetAABBEntity
             // Field count: 0
@@ -11636,6 +11971,16 @@ namespace cs2_dumper {
             // MNetworkIncludeByName
             namespace CCitadelAnimatingModelEntity {
             }
+            // Parent: CitadelAbilityVData
+            // Field count: 3
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Ability_Operative_Blindside_VData {
+                constexpr std::ptrdiff_t m_EnemyDebuffModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1570; // 
+                constexpr std::ptrdiff_t m_ExplosionSound = 0x1650; // 
+            }
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_TargetPracticeDebuff {
@@ -11644,7 +11989,7 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_Modifier_Chrono_PulseGrenade_PulseArea {
             }
-            // Parent: CCitadelModifier
+            // Parent: CCitadel_Modifier_BaseShield
             // Field count: 0
             namespace CCitadel_Modifier_Wraith_ProjectMind_Shield {
             }
@@ -11825,11 +12170,11 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_LeapModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ActiveBuff = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_SlowModifier = 0x1580; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_AttackParticle = 0x1590; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FlashParticle = 0x1670; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CastParticle = 0x1750; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplodeSlowParticle = 0x1830; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PrimaryHitParticle = 0x1910; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AttackParticle = 0x1590; // 
+                constexpr std::ptrdiff_t m_FlashParticle = 0x1670; // 
+                constexpr std::ptrdiff_t m_CastParticle = 0x1750; // 
+                constexpr std::ptrdiff_t m_ExplodeSlowParticle = 0x1830; // 
+                constexpr std::ptrdiff_t m_PrimaryHitParticle = 0x1910; // 
                 constexpr std::ptrdiff_t m_AttackSound = 0x19F0; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x1A00; // 
                 constexpr std::ptrdiff_t m_flAttackTimePhase01 = 0x1A10; // 
@@ -11873,7 +12218,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bCanProcMultipleTimesFromSameShot = 0x640; // 
                 constexpr std::ptrdiff_t m_bRequiresTargetFilter = 0x641; // 
                 constexpr std::ptrdiff_t m_bCanBeEvaded = 0x642; // 
-                constexpr std::ptrdiff_t m_TracerAdditionParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TracerAdditionParticle = 0x648; // 
                 constexpr std::ptrdiff_t m_OnBulletRolledProcSound = 0x728; // 
             }
             // Parent: C_CitadelProjectile
@@ -11886,7 +12231,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierTangoTetherTargetVData {
-                constexpr std::ptrdiff_t m_GrappleRopeParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_GrappleRopeParticle = 0x608; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 2
@@ -11894,7 +12239,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Vandal_PillarVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_PetrifyModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifierAuraVData
@@ -11903,7 +12248,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Tokamak_AllySmokeAOE_VData {
-                constexpr std::ptrdiff_t m_AuraParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AuraParticle = 0x648; // 
             }
             // Parent: CCitadel_Item
             // Field count: 0
@@ -11915,7 +12260,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierTier3BossInvulnVData {
-                constexpr std::ptrdiff_t m_ShieldParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ShieldParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_flShieldRadius = 0x6E8; // 
             }
             // Parent: CCitadelModifierVData
@@ -11924,7 +12269,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Fathom_ScaldingSpray_Target_VData {
-                constexpr std::ptrdiff_t m_DrainParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DrainParticle = 0x608; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 8
@@ -11935,8 +12280,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_BuffModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ImmunityModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_FireRateModifier = 0x1580; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_TeleportStartParticle = 0x1590; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TeleportEndParticle = 0x1670; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TeleportStartParticle = 0x1590; // 
+                constexpr std::ptrdiff_t m_TeleportEndParticle = 0x1670; // 
                 constexpr std::ptrdiff_t m_strArriveSound = 0x1750; // 
                 constexpr std::ptrdiff_t m_strDepartSound = 0x1760; // 
                 constexpr std::ptrdiff_t m_strChannelDestinationSound = 0x1770; // 
@@ -11955,7 +12300,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_QuickSilverBuffVData {
-                constexpr std::ptrdiff_t m_RapidFireParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_RapidFireParticle = 0x608; // 
             }
             // Parent: CScaleFunctionBase
             // Field count: 0
@@ -11995,19 +12340,19 @@ namespace cs2_dumper {
             // NetworkVarNames: m_bListenedTo (bool)
             // NetworkVarNames: m_hViewPosition (CHandle<C_BaseEntity>)
             namespace C_PointCommentaryNode {
-                constexpr std::ptrdiff_t m_bActive = 0xB10; // 
-                constexpr std::ptrdiff_t m_bWasActive = 0xB11; // 
-                constexpr std::ptrdiff_t m_flEndTime = 0xB14; // 
-                constexpr std::ptrdiff_t m_flStartTime = 0xB18; // 
-                constexpr std::ptrdiff_t m_flStartTimeInCommentary = 0xB1C; // 
-                constexpr std::ptrdiff_t m_iszCommentaryFile = 0xB20; // 
-                constexpr std::ptrdiff_t m_iszTitle = 0xB28; // 
-                constexpr std::ptrdiff_t m_iszSpeakers = 0xB30; // 
-                constexpr std::ptrdiff_t m_iNodeNumber = 0xB38; // 
-                constexpr std::ptrdiff_t m_iNodeNumberMax = 0xB3C; // 
-                constexpr std::ptrdiff_t m_bListenedTo = 0xB40; // 
-                constexpr std::ptrdiff_t m_hViewPosition = 0xB50; // 
-                constexpr std::ptrdiff_t m_bRestartAfterRestore = 0xB54; // 
+                constexpr std::ptrdiff_t m_bActive = 0xB08; // 
+                constexpr std::ptrdiff_t m_bWasActive = 0xB09; // 
+                constexpr std::ptrdiff_t m_flEndTime = 0xB0C; // 
+                constexpr std::ptrdiff_t m_flStartTime = 0xB10; // 
+                constexpr std::ptrdiff_t m_flStartTimeInCommentary = 0xB14; // 
+                constexpr std::ptrdiff_t m_iszCommentaryFile = 0xB18; // 
+                constexpr std::ptrdiff_t m_iszTitle = 0xB20; // 
+                constexpr std::ptrdiff_t m_iszSpeakers = 0xB28; // 
+                constexpr std::ptrdiff_t m_iNodeNumber = 0xB30; // 
+                constexpr std::ptrdiff_t m_iNodeNumberMax = 0xB34; // 
+                constexpr std::ptrdiff_t m_bListenedTo = 0xB38; // 
+                constexpr std::ptrdiff_t m_hViewPosition = 0xB48; // 
+                constexpr std::ptrdiff_t m_bRestartAfterRestore = 0xB4C; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -12031,8 +12376,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_LightningBallVData {
-                constexpr std::ptrdiff_t m_ZapParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TargetScreenParticleEffect = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ZapParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_TargetScreenParticleEffect = 0x6E8; // 
             }
             // Parent: CCitadel_Modifier_Burning
             // Field count: 0
@@ -12045,6 +12390,16 @@ namespace cs2_dumper {
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_Disarmed {
+            }
+            // Parent: CCitadelModifierVData
+            // Field count: 3
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Modifier_ScalingPowerUpVData {
+                constexpr std::ptrdiff_t m_vecModifierValues = 0x608; // CUtlVector<ScalingPowerupDefinition_t>
+                constexpr std::ptrdiff_t m_flTimeMin = 0x620; // 
+                constexpr std::ptrdiff_t m_flTimeMax = 0x624; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -12069,7 +12424,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Upgrade_ArcaneMedallion_VData {
-                constexpr std::ptrdiff_t m_TriggeredModifier = 0x638; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_TriggeredModifier = 0x638; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 12
@@ -12096,14 +12451,10 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_nConsecutiveAirDashes = 0xCD8; // 
                 constexpr std::ptrdiff_t m_nConsecutiveDownDashes = 0xCD9; // 
                 constexpr std::ptrdiff_t m_bDownAirDash = 0xCDA; // 
-                constexpr std::ptrdiff_t m_hJumpAbility = 0xE90; // 
-            }
-            // Parent: CCitadel_Modifier_Bullet_Shield
-            // Field count: 0
-            namespace CCitadel_Modifier_Tech_Shield {
+                constexpr std::ptrdiff_t m_hJumpAbility = 0xE90; // CHandle<CCitadel_Ability_Jump>
             }
             // Parent: CEntitySubclassVDataBase
-            // Field count: 28
+            // Field count: 27
             //
             // Metadata:
             // MGetKV3ClassDefaults
@@ -12122,20 +12473,19 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flLegDamageMultiplier = 0x1A8; // 
                 constexpr std::ptrdiff_t m_nMaxAdditionalAmmoBalancingShots = 0x1B8; // 
                 constexpr std::ptrdiff_t m_bTakesDamage = 0x1C8; // 
-                constexpr std::ptrdiff_t m_nRagdollHealth = 0x1CC; // 
-                constexpr std::ptrdiff_t m_DestructiblePartsOverrideByPartName = 0x1D0; // CUtlOrderedMap<CUtlString,CDestructiblePartsSystemData_PartRuntimeData>
-                constexpr std::ptrdiff_t m_bAllowNonZUpMovement = 0x1F8; // 
-                constexpr std::ptrdiff_t m_bUseDynamicCollisionHull = 0x1F9; // 
-                constexpr std::ptrdiff_t m_bRequestCapsuleCollision = 0x1FA; // 
-                constexpr std::ptrdiff_t m_flCapsuleRadiusOverride = 0x1FC; // 
-                constexpr std::ptrdiff_t m_flCapsuleHeightOverride = 0x200; // 
-                constexpr std::ptrdiff_t m_bAllowAnimgraphMotorMovementStates = 0x204; // 
-                constexpr std::ptrdiff_t m_vecActionDesiredShared = 0x208; // 
-                constexpr std::ptrdiff_t m_sPlayerKilledNpcSound = 0x220; // 
-                constexpr std::ptrdiff_t m_sCustomDeathHandshake = 0x230; // 
-                constexpr std::ptrdiff_t m_flMovementMaxPathEndDirectionAngleDifferenceForStop = 0x238; // 
-                constexpr std::ptrdiff_t m_flMovementPlantedTurnAngleThreshold = 0x23C; // 
-                constexpr std::ptrdiff_t m_movementHeadingSettings = 0x240; // 
+                constexpr std::ptrdiff_t m_strDamagedEffect = 0x1D0; // 
+                constexpr std::ptrdiff_t m_nRagdollHealth = 0x2B0; // 
+                constexpr std::ptrdiff_t m_DestructiblePartsOverrideByPartName = 0x2B8; // CUtlOrderedMap<CUtlString,CDestructiblePartsSystemData_PartRuntimeData>
+                constexpr std::ptrdiff_t m_bAllowNonZUpMovement = 0x2E0; // 
+                constexpr std::ptrdiff_t m_bUseDynamicCollisionHull = 0x2E1; // 
+                constexpr std::ptrdiff_t m_bRequestCapsuleCollision = 0x2E2; // 
+                constexpr std::ptrdiff_t m_flCapsuleRadiusOverride = 0x2E4; // 
+                constexpr std::ptrdiff_t m_flCapsuleHeightOverride = 0x2E8; // 
+                constexpr std::ptrdiff_t m_bAllowAnimgraphMotorMovementStates = 0x2EC; // 
+                constexpr std::ptrdiff_t m_vecActionDesiredShared = 0x2F0; // 
+                constexpr std::ptrdiff_t m_sPlayerKilledNpcSound = 0x308; // 
+                constexpr std::ptrdiff_t m_sCustomDeathHandshake = 0x318; // 
+                constexpr std::ptrdiff_t m_defaultAdditionalMovementSettings = 0x320; // 
             }
             // Parent: None
             // Field count: 5
@@ -12212,8 +12562,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbility_Rutger_RocketLauncher_VData {
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ShootParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_ShootParticle = 0x1640; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -12241,7 +12591,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierPowerJumpVData {
-                constexpr std::ptrdiff_t m_FloatParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_FloatParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_flAirDrag = 0x6E8; // 
                 constexpr std::ptrdiff_t m_flVerticalCameraOffset = 0x6EC; // 
                 constexpr std::ptrdiff_t m_flVerticalCameraOffsetLerpTime = 0x6F0; // 
@@ -12325,7 +12675,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flGetupBusyDuration = 0x1678; // 
                 constexpr std::ptrdiff_t m_cameraSequenceStartSliding = 0x1680; // CitadelCameraOperationsSequence_t
                 constexpr std::ptrdiff_t m_cameraSequenceEndSliding = 0x1708; // CitadelCameraOperationsSequence_t
-                constexpr std::ptrdiff_t m_SlideParticle = 0x1790; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SlideParticle = 0x1790; // 
                 constexpr std::ptrdiff_t m_strStartSound = 0x1870; // 
                 constexpr std::ptrdiff_t m_strLoopingSound = 0x1880; // 
                 constexpr std::ptrdiff_t m_strStopSound = 0x1890; // 
@@ -12395,13 +12745,13 @@ namespace cs2_dumper {
             // NetworkVarNames: m_hLookTarget (EHANDLE)
             // NetworkVarNames: m_CCitadelAbilityComponent (CCitadelAbilityComponent::Storage_t)
             namespace C_AI_CitadelNPC {
-                constexpr std::ptrdiff_t m_bBeamActive = 0xD4C; // 
-                constexpr std::ptrdiff_t m_vEyeBeamTarget = 0xD50; // 
-                constexpr std::ptrdiff_t m_nPlayerTeamEvent = 0x1210; // 
-                constexpr std::ptrdiff_t m_vecWeakPoints = 0x1260; // 
-                constexpr std::ptrdiff_t m_bMinion = 0x12C8; // 
-                constexpr std::ptrdiff_t m_hLookTarget = 0x12CC; // 
-                constexpr std::ptrdiff_t m_CCitadelAbilityComponent = 0x12D0; // 
+                constexpr std::ptrdiff_t m_bBeamActive = 0xD44; // 
+                constexpr std::ptrdiff_t m_vEyeBeamTarget = 0xD48; // 
+                constexpr std::ptrdiff_t m_nPlayerTeamEvent = 0x1208; // 
+                constexpr std::ptrdiff_t m_vecWeakPoints = 0x1258; // 
+                constexpr std::ptrdiff_t m_bMinion = 0x12C0; // 
+                constexpr std::ptrdiff_t m_hLookTarget = 0x12C4; // 
+                constexpr std::ptrdiff_t m_CCitadelAbilityComponent = 0x12C8; // 
             }
             // Parent: C_Sprite
             // Field count: 2
@@ -12434,8 +12784,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_FissureWallVData {
-                constexpr std::ptrdiff_t m_FriendlyWallParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_EnemyWallParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_FriendlyWallParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_EnemyWallParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_WallTravelSoundLoop = 0x1720; // 
                 constexpr std::ptrdiff_t m_WallModifier = 0x1730; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -12447,13 +12797,17 @@ namespace cs2_dumper {
             namespace CCitadel_Upgrade_WeaponPowerForHealthVData {
                 constexpr std::ptrdiff_t m_BuffModifier = 0x15A8; // CEmbeddedSubclass<CCitadelModifier>
             }
+            // Parent: CCitadelModifier
+            // Field count: 0
+            namespace CModifier_Upgrade_ArcaneSurge {
+            }
             // Parent: CCitadelModifierVData
             // Field count: 2
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_HollowPoint_ProcVData {
-                constexpr std::ptrdiff_t m_TracerParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TracerParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_ParticleModifier = 0x6E8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifier
@@ -12493,14 +12847,14 @@ namespace cs2_dumper {
             // Parent: C_BaseTrigger
             // Field count: 8
             namespace C_Precipitation {
-                constexpr std::ptrdiff_t m_flDensity = 0x868; // 
-                constexpr std::ptrdiff_t m_flParticleInnerDist = 0x878; // 
-                constexpr std::ptrdiff_t m_pParticleDef = 0x880; // 
-                constexpr std::ptrdiff_t m_tParticlePrecipTraceTimer = 0x8A8; // 
-                constexpr std::ptrdiff_t m_bActiveParticlePrecipEmitter = 0x8B0; // 
-                constexpr std::ptrdiff_t m_bParticlePrecipInitialized = 0x8B1; // 
-                constexpr std::ptrdiff_t m_bHasSimulatedSinceLastSceneObjectUpdate = 0x8B2; // 
-                constexpr std::ptrdiff_t m_nAvailableSheetSequencesMaxIndex = 0x8B4; // 
+                constexpr std::ptrdiff_t m_flDensity = 0x9A0; // 
+                constexpr std::ptrdiff_t m_flParticleInnerDist = 0x9B0; // 
+                constexpr std::ptrdiff_t m_pParticleDef = 0x9B8; // 
+                constexpr std::ptrdiff_t m_tParticlePrecipTraceTimer = 0x9E0; // 
+                constexpr std::ptrdiff_t m_bActiveParticlePrecipEmitter = 0x9E8; // 
+                constexpr std::ptrdiff_t m_bParticlePrecipInitialized = 0x9E9; // 
+                constexpr std::ptrdiff_t m_bHasSimulatedSinceLastSceneObjectUpdate = 0x9EA; // 
+                constexpr std::ptrdiff_t m_nAvailableSheetSequencesMaxIndex = 0x9EC; // 
             }
             // Parent: CitadelItemVData
             // Field count: 1
@@ -12517,7 +12871,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_QuickSilverVData {
                 constexpr std::ptrdiff_t m_BuffModifier = 0x638; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ProcParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ProcParticle = 0x648; // 
             }
             // Parent: CEntitySubclassVDataBase
             // Field count: 1
@@ -12545,7 +12899,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CPrecipitationVData {
-                constexpr std::ptrdiff_t m_szParticlePrecipitationEffect = 0x28; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_szParticlePrecipitationEffect = 0x28; // 
                 constexpr std::ptrdiff_t m_flInnerDistance = 0x108; // 
                 constexpr std::ptrdiff_t m_nAttachType = 0x10C; // 
                 constexpr std::ptrdiff_t m_bBatchSameVolumeType = 0x110; // 
@@ -12565,8 +12919,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Killing_Blow_GlowVData {
-                constexpr std::ptrdiff_t m_ShivOnlyDeathStatus = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ShivOnlyDeathTrail = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ShivOnlyDeathStatus = 0x608; // 
+                constexpr std::ptrdiff_t m_ShivOnlyDeathTrail = 0x6E8; // 
                 constexpr std::ptrdiff_t m_strShivOnlyActivateSound = 0x7C8; // 
                 constexpr std::ptrdiff_t m_strShivOnlyLoopSound = 0x7D8; // 
             }
@@ -12637,8 +12991,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityPsychicPulseVData {
-                constexpr std::ptrdiff_t m_DebuffModifier = 0x1560; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_PulseParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x1560; // 
+                constexpr std::ptrdiff_t m_PulseParticle = 0x1570; // 
                 constexpr std::ptrdiff_t m_flCastEffectLifetime = 0x1650; // 
                 constexpr std::ptrdiff_t m_flConeAngle = 0x1654; // 
                 constexpr std::ptrdiff_t m_flConeHalfWidth = 0x1658; // 
@@ -12655,14 +13009,14 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Item_Savior_VData {
                 constexpr std::ptrdiff_t m_SaviorModifier = 0x15A8; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_CastParticle = 0x15B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x15B8; // 
             }
-            // Parent: CCitadelModifier
+            // Parent: CCitadel_Modifier_BaseBulletPreRollProc
             // Field count: 3
             namespace CCitadel_Modifier_BulletFlurry {
-                constexpr std::ptrdiff_t m_nEffectId = 0x130; // 
-                constexpr std::ptrdiff_t m_flNextSequenceChange = 0x134; // 
-                constexpr std::ptrdiff_t m_nCurrentPose = 0x138; // 
+                constexpr std::ptrdiff_t m_nEffectId = 0x230; // 
+                constexpr std::ptrdiff_t m_flNextSequenceChange = 0x234; // 
+                constexpr std::ptrdiff_t m_nCurrentPose = 0x238; // 
             }
             // Parent: CCitadel_Modifier_BaseBulletPreRollProcVData
             // Field count: 2
@@ -12670,7 +13024,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_MedicBulletsVData {
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x738; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x738; // 
                 constexpr std::ptrdiff_t m_ProcSound = 0x818; // 
             }
             // Parent: None
@@ -12682,6 +13036,11 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_vecWheelFrictionScales = 0x38; // 
                 constexpr std::ptrdiff_t m_vecFractionOfWheelSubmergedForWheelDrag = 0x50; // 
                 constexpr std::ptrdiff_t m_vecWheelDrag = 0x68; // 
+            }
+            // Parent: CBaseFilter
+            // Field count: 1
+            namespace CFilterAttributeInt {
+                constexpr std::ptrdiff_t m_sAttributeName = 0x5C0; // 
             }
             // Parent: CCitadel_Item
             // Field count: 0
@@ -12718,8 +13077,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilitySleepBombVData {
-                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AuraModifier = 0x1640; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_AuraModifier = 0x1640; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -12736,9 +13095,9 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Bebop_LaserBeamVData {
                 constexpr std::ptrdiff_t m_SlowModifier = 0x608; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_BeamParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BeamParticleLocal = 0x6F8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BeamHitParticle = 0x7D8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BeamParticle = 0x618; // 
+                constexpr std::ptrdiff_t m_BeamParticleLocal = 0x6F8; // 
+                constexpr std::ptrdiff_t m_BeamHitParticle = 0x7D8; // 
                 constexpr std::ptrdiff_t m_strLaserStartSound = 0x8B8; // 
                 constexpr std::ptrdiff_t m_strLaserEndSound = 0x8C8; // 
                 constexpr std::ptrdiff_t m_strLaserLoopSound = 0x8D8; // 
@@ -12766,9 +13125,9 @@ namespace cs2_dumper {
             // NetworkVarNames: m_hTargetedEnemy (EHANDLE)
             // NetworkVarNames: m_flHealingChargeParticlePct (float)
             namespace C_NPC_Trooper {
-                constexpr std::ptrdiff_t m_iLane = 0x1470; // 
-                constexpr std::ptrdiff_t m_hTargetedEnemy = 0x1474; // 
-                constexpr std::ptrdiff_t m_flHealingChargeParticlePct = 0x1478; // 
+                constexpr std::ptrdiff_t m_iLane = 0x1468; // 
+                constexpr std::ptrdiff_t m_hTargetedEnemy = 0x146C; // 
+                constexpr std::ptrdiff_t m_flHealingChargeParticlePct = 0x1470; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 1
@@ -12776,7 +13135,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_WreckerSalvageBuffVData {
-                constexpr std::ptrdiff_t m_WeaponBuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_WeaponBuffParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -12806,13 +13165,15 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flStartHeight = 0xF2C; // 
             }
             // Parent: CCitadel_Modifier_StunnedVData
-            // Field count: 2
+            // Field count: 4
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierPsychicLiftVData {
-                constexpr std::ptrdiff_t m_LiftParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LiftParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_strStartSound = 0x7C8; // 
+                constexpr std::ptrdiff_t m_flOscillateFrequency = 0x7D8; // 
+                constexpr std::ptrdiff_t m_flOscillateHeight = 0x7DC; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 6
@@ -12875,24 +13236,20 @@ namespace cs2_dumper {
             // NetworkVarNames: m_hTargetPlayer (EHANDLE)
             // NetworkVarNames: m_flFallRate (float)
             namespace C_CitadelItemPickup {
-                constexpr std::ptrdiff_t m_eLootType = 0xB18; // 
-                constexpr std::ptrdiff_t m_nCurrencyValue = 0xB1C; // 
-                constexpr std::ptrdiff_t m_iszModelName = 0xB20; // 
-                constexpr std::ptrdiff_t m_flModelScale = 0xB28; // 
-                constexpr std::ptrdiff_t m_hTargetPlayer = 0xB2C; // 
-                constexpr std::ptrdiff_t m_flFallRate = 0xB30; // 
+                constexpr std::ptrdiff_t m_eLootType = 0xB10; // 
+                constexpr std::ptrdiff_t m_nCurrencyValue = 0xB14; // 
+                constexpr std::ptrdiff_t m_iszModelName = 0xB18; // 
+                constexpr std::ptrdiff_t m_flModelScale = 0xB20; // 
+                constexpr std::ptrdiff_t m_hTargetPlayer = 0xB24; // 
+                constexpr std::ptrdiff_t m_flFallRate = 0xB28; // 
             }
             // Parent: CBaseAnimGraph
             // Field count: 4
             namespace CBaseProp {
-                constexpr std::ptrdiff_t m_bModelOverrodeBlockLOS = 0xB08; // 
-                constexpr std::ptrdiff_t m_iShapeType = 0xB0C; // 
-                constexpr std::ptrdiff_t m_bConformToCollisionBounds = 0xB10; // 
-                constexpr std::ptrdiff_t m_mPreferredCatchTransform = 0xB14; // 
-            }
-            // Parent: CCitadelModifier
-            // Field count: 0
-            namespace CCitadel_Modifier_BreakablePropSpeedPickup {
+                constexpr std::ptrdiff_t m_bModelOverrodeBlockLOS = 0xB00; // 
+                constexpr std::ptrdiff_t m_iShapeType = 0xB04; // 
+                constexpr std::ptrdiff_t m_bConformToCollisionBounds = 0xB08; // 
+                constexpr std::ptrdiff_t m_mPreferredCatchTransform = 0xB0C; // 
             }
             // Parent: CCitadel_Modifier_Intrinsic_Base
             // Field count: 2
@@ -12906,8 +13263,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_PuddleVData {
-                constexpr std::ptrdiff_t m_puddleAoeDamageFx = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TargetDamageFx = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_puddleAoeDamageFx = 0x608; // 
+                constexpr std::ptrdiff_t m_TargetDamageFx = 0x6E8; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 2
@@ -12916,7 +13273,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAbilityHornetStingVData {
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_HitParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_HitParticle = 0x1570; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 10
@@ -12924,12 +13281,12 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierStormCloudVData {
-                constexpr std::ptrdiff_t m_ZapFriendly = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DrawFriendly = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AoEFriendly = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ZapEnemy = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DrawEnemy = 0x988; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AoEEnemy = 0xA68; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ZapFriendly = 0x608; // 
+                constexpr std::ptrdiff_t m_DrawFriendly = 0x6E8; // 
+                constexpr std::ptrdiff_t m_AoEFriendly = 0x7C8; // 
+                constexpr std::ptrdiff_t m_ZapEnemy = 0x8A8; // 
+                constexpr std::ptrdiff_t m_DrawEnemy = 0x988; // 
+                constexpr std::ptrdiff_t m_AoEEnemy = 0xA68; // 
                 constexpr std::ptrdiff_t m_strChannelEndingSoonSound = 0xB48; // 
                 constexpr std::ptrdiff_t m_strChannelFinishedSound = 0xB58; // 
                 constexpr std::ptrdiff_t m_strDamageRecievedSound = 0xB68; // 
@@ -12964,6 +13321,11 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_pVecTrackedObjects = 0x80; // CUtlVector<IModifierTrackedObject*>*
                 constexpr std::ptrdiff_t m_hModifierListHandle = 0x88; // 
             }
+            // Parent: CBaseFilter
+            // Field count: 1
+            namespace CFilterMassGreater {
+                constexpr std::ptrdiff_t m_fFilterMass = 0x5C0; // 
+            }
             // Parent: CitadelAbilityVData
             // Field count: 1
             //
@@ -12995,7 +13357,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CModifier_Synth_Grasp_Victim_VData {
                 constexpr std::ptrdiff_t m_strVictimTetheredSound = 0x608; // 
-                constexpr std::ptrdiff_t m_GraspVictimParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_GraspVictimParticle = 0x618; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 0
@@ -13010,8 +13372,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityRiotProtocolVData {
-                constexpr std::ptrdiff_t m_ChargeUpParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CastParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChargeUpParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_CastParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_CastDelayModifier = 0x1720; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_WardenBuffModifier = 0x1730; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -13021,8 +13383,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Chrono_KineticCarbineVData {
-                constexpr std::ptrdiff_t m_TracerParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FullyChargedParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TracerParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_FullyChargedParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_strFullyCharged = 0x7C8; // 
                 constexpr std::ptrdiff_t m_strShotSound = 0x7D8; // 
             }
@@ -13042,11 +13404,11 @@ namespace cs2_dumper {
             // NetworkVarNames: m_bActive (bool)
             // NetworkVarNames: m_bFinal (bool)
             namespace C_Citadel_Destroyable_Building {
-                constexpr std::ptrdiff_t m_CCitadelAbilityComponent = 0xB10; // 
-                constexpr std::ptrdiff_t m_vecWeakPoints = 0xCB0; // 
-                constexpr std::ptrdiff_t m_bDestroyed = 0xD18; // 
-                constexpr std::ptrdiff_t m_bActive = 0xD19; // 
-                constexpr std::ptrdiff_t m_bFinal = 0xD1A; // 
+                constexpr std::ptrdiff_t m_CCitadelAbilityComponent = 0xB08; // 
+                constexpr std::ptrdiff_t m_vecWeakPoints = 0xCA8; // 
+                constexpr std::ptrdiff_t m_bDestroyed = 0xD10; // 
+                constexpr std::ptrdiff_t m_bActive = 0xD11; // 
+                constexpr std::ptrdiff_t m_bFinal = 0xD12; // 
             }
             // Parent: CCitadel_Item
             // Field count: 1
@@ -13062,20 +13424,19 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t fl_StoredDamage = 0xCF0; // 
             }
             // Parent: CLogicalEntity
-            // Field count: 12
+            // Field count: 11
             namespace CPointTemplate {
                 constexpr std::ptrdiff_t m_iszWorldName = 0x568; // 
                 constexpr std::ptrdiff_t m_iszSource2EntityLumpName = 0x570; // 
                 constexpr std::ptrdiff_t m_iszEntityFilterName = 0x578; // 
                 constexpr std::ptrdiff_t m_flTimeoutInterval = 0x580; // 
                 constexpr std::ptrdiff_t m_bAsynchronouslySpawnEntities = 0x584; // 
-                constexpr std::ptrdiff_t m_pOutputOnSpawned = 0x588; // 
-                constexpr std::ptrdiff_t m_clientOnlyEntityBehavior = 0x5B0; // PointTemplateClientOnlyEntityBehavior_t
-                constexpr std::ptrdiff_t m_ownerSpawnGroupType = 0x5B4; // PointTemplateOwnerSpawnGroupType_t
-                constexpr std::ptrdiff_t m_createdSpawnGroupHandles = 0x5B8; // 
-                constexpr std::ptrdiff_t m_SpawnedEntityHandles = 0x5D0; // 
-                constexpr std::ptrdiff_t m_ScriptSpawnCallback = 0x5E8; // 
-                constexpr std::ptrdiff_t m_ScriptCallbackScope = 0x5F0; // 
+                constexpr std::ptrdiff_t m_clientOnlyEntityBehavior = 0x588; // PointTemplateClientOnlyEntityBehavior_t
+                constexpr std::ptrdiff_t m_ownerSpawnGroupType = 0x58C; // PointTemplateOwnerSpawnGroupType_t
+                constexpr std::ptrdiff_t m_createdSpawnGroupHandles = 0x590; // 
+                constexpr std::ptrdiff_t m_SpawnedEntityHandles = 0x5A8; // 
+                constexpr std::ptrdiff_t m_ScriptSpawnCallback = 0x5C0; // 
+                constexpr std::ptrdiff_t m_ScriptCallbackScope = 0x5C8; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 1
@@ -13083,7 +13444,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityFealtyVData {
-                constexpr std::ptrdiff_t m_TargetModifier = 0x1560; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_TargetModifier = 0x1560; // 
             }
             // Parent: CCitadel_Modifier_Disarmed
             // Field count: 0
@@ -13120,8 +13481,8 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_BoxingGloveVData {
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x638; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_SwingParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HitParticle = 0x728; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SwingParticle = 0x648; // 
+                constexpr std::ptrdiff_t m_HitParticle = 0x728; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
@@ -13149,11 +13510,11 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Viscous_TelepunchVData {
-                constexpr std::ptrdiff_t m_PortalParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CastParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PunchParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_WallPunchParticle = 0x1800; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CeilingPunchParticle = 0x18E0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_PortalParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_CastParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_PunchParticle = 0x1720; // 
+                constexpr std::ptrdiff_t m_WallPunchParticle = 0x1800; // 
+                constexpr std::ptrdiff_t m_CeilingPunchParticle = 0x18E0; // 
                 constexpr std::ptrdiff_t m_EnemyPortalSound = 0x19C0; // 
                 constexpr std::ptrdiff_t m_SelfPortalSound = 0x19D0; // 
                 constexpr std::ptrdiff_t m_WindupSound = 0x19E0; // 
@@ -13200,10 +13561,6 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bCanApplyTechAmp = 0xCD8; // 
                 constexpr std::ptrdiff_t m_bCanLifesteal = 0xCD9; // 
             }
-            // Parent: CCitadelModifier
-            // Field count: 0
-            namespace CCitadel_Modifier_ConsumedProtectionRacket {
-            }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
             namespace CCitadel_Ability_TargetPractice {
@@ -13236,11 +13593,11 @@ namespace cs2_dumper {
             namespace CAbility_Synth_Pulse_VData {
                 constexpr std::ptrdiff_t m_EscapeModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_AoEParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_EffectParticle = 0x1660; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ChannelParticle = 0x1740; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HitParticle = 0x1820; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_RadiusParticle = 0x1900; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AoEParticle = 0x1580; // 
+                constexpr std::ptrdiff_t m_EffectParticle = 0x1660; // 
+                constexpr std::ptrdiff_t m_ChannelParticle = 0x1740; // 
+                constexpr std::ptrdiff_t m_HitParticle = 0x1820; // 
+                constexpr std::ptrdiff_t m_RadiusParticle = 0x1900; // 
                 constexpr std::ptrdiff_t m_strExpireSound = 0x19E0; // 
                 constexpr std::ptrdiff_t m_cameraSequenceInSatchel = 0x19F0; // CitadelCameraOperationsSequence_t
             }
@@ -13266,9 +13623,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierContainmentVictimVData {
-                constexpr std::ptrdiff_t m_AreaParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ChainedParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AreaParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_ChainedParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x7C8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -13316,23 +13673,40 @@ namespace cs2_dumper {
             // NetworkVarNames: m_vecLinearForceDirection (Vector)
             // NetworkVarNames: m_bConvertToDebrisWhenPossible (bool)
             namespace C_TriggerPhysics {
-                constexpr std::ptrdiff_t m_gravityScale = 0x868; // 
-                constexpr std::ptrdiff_t m_linearLimit = 0x86C; // 
-                constexpr std::ptrdiff_t m_linearDamping = 0x870; // 
-                constexpr std::ptrdiff_t m_angularLimit = 0x874; // 
-                constexpr std::ptrdiff_t m_angularDamping = 0x878; // 
-                constexpr std::ptrdiff_t m_linearForce = 0x87C; // 
-                constexpr std::ptrdiff_t m_flFrequency = 0x880; // 
-                constexpr std::ptrdiff_t m_flDampingRatio = 0x884; // 
-                constexpr std::ptrdiff_t m_vecLinearForcePointAt = 0x888; // 
-                constexpr std::ptrdiff_t m_bCollapseToForcePoint = 0x894; // 
-                constexpr std::ptrdiff_t m_vecLinearForcePointAtWorld = 0x898; // 
-                constexpr std::ptrdiff_t m_vecLinearForceDirection = 0x8A4; // 
-                constexpr std::ptrdiff_t m_bConvertToDebrisWhenPossible = 0x8B0; // 
+                constexpr std::ptrdiff_t m_gravityScale = 0x9A0; // 
+                constexpr std::ptrdiff_t m_linearLimit = 0x9A4; // 
+                constexpr std::ptrdiff_t m_linearDamping = 0x9A8; // 
+                constexpr std::ptrdiff_t m_angularLimit = 0x9AC; // 
+                constexpr std::ptrdiff_t m_angularDamping = 0x9B0; // 
+                constexpr std::ptrdiff_t m_linearForce = 0x9B4; // 
+                constexpr std::ptrdiff_t m_flFrequency = 0x9B8; // 
+                constexpr std::ptrdiff_t m_flDampingRatio = 0x9BC; // 
+                constexpr std::ptrdiff_t m_vecLinearForcePointAt = 0x9C0; // 
+                constexpr std::ptrdiff_t m_bCollapseToForcePoint = 0x9CC; // 
+                constexpr std::ptrdiff_t m_vecLinearForcePointAtWorld = 0x9D0; // 
+                constexpr std::ptrdiff_t m_vecLinearForceDirection = 0x9DC; // 
+                constexpr std::ptrdiff_t m_bConvertToDebrisWhenPossible = 0x9E8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_Mirage_SandPhantom_ProcReady {
+            }
+            // Parent: C_CitadelBaseAbility
+            // Field count: 6
+            //
+            // Metadata:
+            // NetworkVarNames: m_bWantsSlow (bool)
+            // NetworkVarNames: m_flLatchedTimeScaleFracChangeTime (GameTime_t)
+            // NetworkVarNames: m_flLatchedTimeScaleFrac (float)
+            // NetworkVarNames: m_flSpeedBoostEndTime (GameTime_t)
+            // NetworkVarNames: m_flShotTimeScaleEndTime (GameTime_t)
+            namespace CCitadel_Ability_Gunslinger_DemonCarbine {
+                constexpr std::ptrdiff_t m_bWantsSlow = 0xCA0; // 
+                constexpr std::ptrdiff_t m_flLatchedTimeScaleFracChangeTime = 0xCA4; // 
+                constexpr std::ptrdiff_t m_flLatchedTimeScaleFrac = 0xCA8; // 
+                constexpr std::ptrdiff_t m_flSpeedBoostEndTime = 0xCAC; // 
+                constexpr std::ptrdiff_t m_flShotTimeScaleEndTime = 0xCB0; // 
+                constexpr std::ptrdiff_t m_flStoredPowerPct = 0xCB8; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 8
@@ -13344,7 +13718,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flCloseEnoughDistance = 0x60C; // 
                 constexpr std::ptrdiff_t m_flTossUpSpeed = 0x610; // 
                 constexpr std::ptrdiff_t m_SlowModifier = 0x618; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_HookRetrieveParticle = 0x628; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_HookRetrieveParticle = 0x628; // 
                 constexpr std::ptrdiff_t m_strRetractSound = 0x708; // 
                 constexpr std::ptrdiff_t m_strRetractSoundEnd = 0x718; // 
                 constexpr std::ptrdiff_t m_strApproachingWhooshSound = 0x728; // 
@@ -13363,8 +13737,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CItem_RestorativeLocket_VData {
-                constexpr std::ptrdiff_t m_CastParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TrailParticle = 0x1688; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x15A8; // 
+                constexpr std::ptrdiff_t m_TrailParticle = 0x1688; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProcVData
             // Field count: 2
@@ -13372,8 +13746,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_CharmedWraps_VData {
-                constexpr std::ptrdiff_t m_SwingParticle = 0x638; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HitParticle = 0x718; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SwingParticle = 0x638; // 
+                constexpr std::ptrdiff_t m_HitParticle = 0x718; // 
             }
             // Parent: C_LightEntity
             // Field count: 0
@@ -13440,8 +13814,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Item_CheatDeathVData {
-                constexpr std::ptrdiff_t m_DamagePulseParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DamageTargetParticle = 0x1688; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DamagePulseParticle = 0x15A8; // 
+                constexpr std::ptrdiff_t m_DamageTargetParticle = 0x1688; // 
                 constexpr std::ptrdiff_t m_sHealPulseSound = 0x1768; // 
                 constexpr std::ptrdiff_t m_sHealAndDamagePulseSound = 0x1778; // 
                 constexpr std::ptrdiff_t m_DeathImmuneModifier = 0x1788; // CEmbeddedSubclass<CCitadelModifier>
@@ -13459,6 +13833,14 @@ namespace cs2_dumper {
             // Parent: CCitadel_Ability_PrimaryWeapon
             // Field count: 0
             namespace CCitadel_Ability_PrimaryWeapon_Cadence {
+            }
+            // Parent: CitadelAbilityVData
+            // Field count: 1
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CAbilityEmpowerBulletVData {
+                constexpr std::ptrdiff_t m_EmpowerBulletModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -13484,12 +13866,12 @@ namespace cs2_dumper {
             // Parent: CBaseAnimGraph
             // Field count: 6
             namespace C_Citadel_FissureWall {
-                constexpr std::ptrdiff_t m_vStartPos = 0xB08; // 
-                constexpr std::ptrdiff_t m_vEndPos = 0xB14; // 
-                constexpr std::ptrdiff_t m_flStartEmitTime = 0xB20; // 
-                constexpr std::ptrdiff_t m_flEndEmitTime = 0xB24; // 
-                constexpr std::ptrdiff_t m_bSolid = 0xB28; // 
-                constexpr std::ptrdiff_t m_nTouchCount = 0xB2C; // 
+                constexpr std::ptrdiff_t m_vStartPos = 0xB00; // 
+                constexpr std::ptrdiff_t m_vEndPos = 0xB0C; // 
+                constexpr std::ptrdiff_t m_flStartEmitTime = 0xB18; // 
+                constexpr std::ptrdiff_t m_flEndEmitTime = 0xB1C; // 
+                constexpr std::ptrdiff_t m_bSolid = 0xB20; // 
+                constexpr std::ptrdiff_t m_nTouchCount = 0xB24; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 12
@@ -13504,12 +13886,16 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_bRequiresTargetFilter = 0x611; // 
                 constexpr std::ptrdiff_t m_ProcReadyModifier = 0x618; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_PassiveVictimModifier = 0x628; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ProcReadyParticle = 0x638; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TracerAdditionParticle = 0x718; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x7F8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ProcReadyParticle = 0x638; // 
+                constexpr std::ptrdiff_t m_TracerAdditionParticle = 0x718; // 
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x7F8; // 
                 constexpr std::ptrdiff_t m_OnBulletRolledProcSound = 0x8D8; // 
                 constexpr std::ptrdiff_t m_ProcSound = 0x8E8; // 
                 constexpr std::ptrdiff_t m_ExplodeSound = 0x8F8; // 
+            }
+            // Parent: C_CitadelBaseAbility
+            // Field count: 0
+            namespace CCitadel_Ability_EmpowerBullet {
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -13522,7 +13908,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_PassiveBeefyVData {
-                constexpr std::ptrdiff_t m_HealParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_HealParticle = 0x1560; // 
             }
             // Parent: CCitadelModifier
             // Field count: 2
@@ -13541,10 +13927,10 @@ namespace cs2_dumper {
             // MNetworkIncludeByName
             // MNetworkIncludeByName
             namespace CPropAnimatingBreakable {
-                constexpr std::ptrdiff_t m_stages = 0xB08; // 
-                constexpr std::ptrdiff_t m_OnTakeDamage = 0xB20; // 
-                constexpr std::ptrdiff_t m_OnFinalBreak = 0xB48; // 
-                constexpr std::ptrdiff_t m_OnStageAdvanced = 0xB70; // 
+                constexpr std::ptrdiff_t m_stages = 0xB00; // 
+                constexpr std::ptrdiff_t m_OnTakeDamage = 0xB18; // 
+                constexpr std::ptrdiff_t m_OnFinalBreak = 0xB40; // 
+                constexpr std::ptrdiff_t m_OnStageAdvanced = 0xB68; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -13558,7 +13944,7 @@ namespace cs2_dumper {
             namespace CAbilityStickyBombVData {
                 constexpr std::ptrdiff_t m_BombAttachedModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_KillCheckModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_CastBombParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastBombParticle = 0x1580; // 
                 constexpr std::ptrdiff_t m_flAllyTargetRangeMult = 0x1660; // 
             }
             // Parent: C_BaseEntity
@@ -13600,7 +13986,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flMomentumModifier = 0x5B0; // 
                 constexpr std::ptrdiff_t m_flSnapValue = 0x5B4; // 
                 constexpr std::ptrdiff_t m_flCurrentMomentum = 0x5B8; // 
-                constexpr std::ptrdiff_t m_nRatchetType = 0x5BC; // 
+                constexpr std::ptrdiff_t m_nRatchetType = 0x5BC; // ValueRemapperRatchetType_t
                 constexpr std::ptrdiff_t m_flRatchetOffset = 0x5C0; // 
                 constexpr std::ptrdiff_t m_flInputOffset = 0x5C4; // 
                 constexpr std::ptrdiff_t m_bEngaged = 0x5C8; // 
@@ -13608,17 +13994,6 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flPreviousValue = 0x5CC; // 
                 constexpr std::ptrdiff_t m_flPreviousUpdateTickTime = 0x5D0; // 
                 constexpr std::ptrdiff_t m_vecPreviousTestPoint = 0x5D4; // 
-            }
-            // Parent: CCitadelModifierVData
-            // Field count: 4
-            //
-            // Metadata:
-            // MGetKV3ClassDefaults
-            namespace CCitadel_Modifier_Fathom_ReefdwellerHarpoon_Move_VData {
-                constexpr std::ptrdiff_t m_LatchedModifier = 0x608; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_BeamParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HealParticle = 0x6F8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DamageParticle = 0x7D8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -13630,8 +14005,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierQuarantineVData {
-                constexpr std::ptrdiff_t m_BubbleParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BubbleExplodeParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BubbleParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_BubbleExplodeParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_SilenceModifier = 0x7C8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifier
@@ -13644,16 +14019,12 @@ namespace cs2_dumper {
             // Metadata:
             // NetworkVarNames: m_iGoldReward (int)
             namespace C_Citadel_BreakblePropGoldPickup {
-                constexpr std::ptrdiff_t m_iGoldReward = 0xB38; // 
+                constexpr std::ptrdiff_t m_iGoldReward = 0xB30; // 
             }
             // Parent: CCitadel_Item
             // Field count: 1
             namespace CCitadel_Item_Intensifying_Clip {
                 constexpr std::ptrdiff_t m_flSpinUpTime = 0xCF0; // 
-            }
-            // Parent: CCitadelModifier
-            // Field count: 0
-            namespace CCitadel_Modifier_BreakablePropFireRatePickup {
             }
             // Parent: C_EnvCubemap
             // Field count: 0
@@ -13685,9 +14056,9 @@ namespace cs2_dumper {
             // NetworkVarNames: m_flFadeOutStart (GameTime_t)
             // NetworkVarNames: m_flFadeOutEnd (GameTime_t)
             namespace C_NPC_TrooperBoss {
-                constexpr std::ptrdiff_t m_CCitadelPlayerClipComponent = 0x14B8; // 
-                constexpr std::ptrdiff_t m_flFadeOutStart = 0x14E4; // 
-                constexpr std::ptrdiff_t m_flFadeOutEnd = 0x14E8; // 
+                constexpr std::ptrdiff_t m_CCitadelPlayerClipComponent = 0x14B0; // 
+                constexpr std::ptrdiff_t m_flFadeOutStart = 0x14DC; // 
+                constexpr std::ptrdiff_t m_flFadeOutEnd = 0x14E0; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -13772,7 +14143,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_PristineEmblem_VData {
-                constexpr std::ptrdiff_t m_TracerParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TracerParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_ParticleModifier = 0x6E8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: None
@@ -13795,6 +14166,13 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_Modifier_FrenzyAura {
             }
+            // Parent: CLogicalEntity
+            // Field count: 3
+            namespace CBaseFilter {
+                constexpr std::ptrdiff_t m_bNegated = 0x568; // 
+                constexpr std::ptrdiff_t m_OnPass = 0x570; // 
+                constexpr std::ptrdiff_t m_OnFail = 0x598; // 
+            }
             // Parent: CitadelAbilityVData
             // Field count: 15
             //
@@ -13805,11 +14183,11 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_ActiveBuff = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_SlowModifier = 0x1580; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_DoublePounceModifier = 0x1590; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_AttackParticle = 0x15A0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FlashParticle = 0x1680; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CastParticle = 0x1760; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplodeSlowParticle = 0x1840; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PrimaryHitParticle = 0x1920; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AttackParticle = 0x15A0; // 
+                constexpr std::ptrdiff_t m_FlashParticle = 0x1680; // 
+                constexpr std::ptrdiff_t m_CastParticle = 0x1760; // 
+                constexpr std::ptrdiff_t m_ExplodeSlowParticle = 0x1840; // 
+                constexpr std::ptrdiff_t m_PrimaryHitParticle = 0x1920; // 
                 constexpr std::ptrdiff_t m_AttackSound = 0x1A00; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x1A10; // 
                 constexpr std::ptrdiff_t m_flAttackTimePhase01 = 0x1A20; // 
@@ -13823,7 +14201,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityHornetChainVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x1640; // 
                 constexpr std::ptrdiff_t m_ChainModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_DisarmModifier = 0x1660; // CEmbeddedSubclass<CCitadelModifier>
@@ -13855,8 +14233,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_FireBombVData {
-                constexpr std::ptrdiff_t m_ChargeParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_GroundParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChargeParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_GroundParticle = 0x6E8; // 
             }
             // Parent: CCitadel_Ability_Melee_Base
             // Field count: 10
@@ -13897,9 +14275,9 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAbilityJumpVData {
                 constexpr std::ptrdiff_t m_flShootingLockoutAfterJump = 0x1560; // 
-                constexpr std::ptrdiff_t m_DashJumpParticle = 0x1568; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AirJumpParticle = 0x1648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_WallJumpParticle = 0x1728; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DashJumpParticle = 0x1568; // 
+                constexpr std::ptrdiff_t m_AirJumpParticle = 0x1648; // 
+                constexpr std::ptrdiff_t m_WallJumpParticle = 0x1728; // 
                 constexpr std::ptrdiff_t m_AirJumpExecutedSound = 0x1808; // 
                 constexpr std::ptrdiff_t m_flMantleRefundWindow = 0x1818; // 
                 constexpr std::ptrdiff_t m_flZiplineRefundWindow = 0x181C; // 
@@ -13960,7 +14338,7 @@ namespace cs2_dumper {
             // MNetworkExcludeByName
             // NetworkVarNames: m_hEnemy (EHANDLE)
             namespace C_NPC_SimpleAnimatingAI {
-                constexpr std::ptrdiff_t m_hEnemy = 0xB08; // 
+                constexpr std::ptrdiff_t m_hEnemy = 0xB00; // 
             }
             // Parent: CCitadel_Item
             // Field count: 0
@@ -13987,7 +14365,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_HealthSwapVData {
-                constexpr std::ptrdiff_t m_SwapParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SwapParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_SwapModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_PreCastModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_BuffModifier = 0x1660; // CEmbeddedSubclass<CCitadelModifier>
@@ -14004,10 +14382,6 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_Modifier_CanDamageMidBoss {
             }
-            // Parent: CCitadel_Item
-            // Field count: 0
-            namespace CCitadel_Item_SingleTargetStun {
-            }
             // Parent: C_BaseTrigger
             // Field count: 15
             //
@@ -14021,21 +14395,25 @@ namespace cs2_dumper {
             // NetworkVarNames: m_bIsBeingCaptured (bool)
             // NetworkVarNames: m_bIsBeingBlocked (bool)
             namespace CCitadelControlPointTrigger {
-                constexpr std::ptrdiff_t m_flInitialRadius = 0x868; // 
-                constexpr std::ptrdiff_t m_flEndRadius = 0x86C; // 
-                constexpr std::ptrdiff_t m_flProgress = 0x870; // 
-                constexpr std::ptrdiff_t m_flCaptureTime = 0x874; // 
-                constexpr std::ptrdiff_t m_hUnlockPrereq = 0x878; // 
-                constexpr std::ptrdiff_t m_bAvailable = 0x87C; // 
-                constexpr std::ptrdiff_t m_bIsBeingCaptured = 0x87D; // 
-                constexpr std::ptrdiff_t m_bIsBeingBlocked = 0x87E; // 
-                constexpr std::ptrdiff_t m_flLastTouchedTime = 0x888; // 
-                constexpr std::ptrdiff_t m_vecBeamTarget = 0x88C; // 
-                constexpr std::ptrdiff_t m_vecBeamStart = 0x898; // 
-                constexpr std::ptrdiff_t m_nFXProgressBeam = 0x8A4; // 
-                constexpr std::ptrdiff_t m_strUnlockPrereq = 0x8A8; // 
-                constexpr std::ptrdiff_t m_strBeamStart = 0x8B0; // 
-                constexpr std::ptrdiff_t m_strBeamTarget = 0x8B8; // 
+                constexpr std::ptrdiff_t m_flInitialRadius = 0x9A0; // 
+                constexpr std::ptrdiff_t m_flEndRadius = 0x9A4; // 
+                constexpr std::ptrdiff_t m_flProgress = 0x9A8; // 
+                constexpr std::ptrdiff_t m_flCaptureTime = 0x9AC; // 
+                constexpr std::ptrdiff_t m_hUnlockPrereq = 0x9B0; // 
+                constexpr std::ptrdiff_t m_bAvailable = 0x9B4; // 
+                constexpr std::ptrdiff_t m_bIsBeingCaptured = 0x9B5; // 
+                constexpr std::ptrdiff_t m_bIsBeingBlocked = 0x9B6; // 
+                constexpr std::ptrdiff_t m_flLastTouchedTime = 0x9C0; // 
+                constexpr std::ptrdiff_t m_vecBeamTarget = 0x9C4; // 
+                constexpr std::ptrdiff_t m_vecBeamStart = 0x9D0; // 
+                constexpr std::ptrdiff_t m_nFXProgressBeam = 0x9DC; // 
+                constexpr std::ptrdiff_t m_strUnlockPrereq = 0x9E0; // 
+                constexpr std::ptrdiff_t m_strBeamStart = 0x9E8; // 
+                constexpr std::ptrdiff_t m_strBeamTarget = 0x9F0; // 
+            }
+            // Parent: CCitadel_Item
+            // Field count: 0
+            namespace CCitadel_Item_SingleTargetStun {
             }
             // Parent: CCitadelModifierVData
             // Field count: 4
@@ -14060,11 +14438,11 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Bull_Leap_Boosting_CrashVData {
                 constexpr std::ptrdiff_t m_DragModifier = 0x608; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_CrashTrailParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CrashTrailParticle = 0x618; // 
                 constexpr std::ptrdiff_t m_flCollideRadius = 0x6F8; // 
             }
             // Parent: C_CitadelBaseAbility
-            // Field count: 39
+            // Field count: 40
             //
             // Metadata:
             // NetworkVarNames: m_flNextPrimaryAttack (GameTime_t)
@@ -14131,6 +14509,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flCurrentSpinRate = 0xD38; // 
                 constexpr std::ptrdiff_t m_fFireDuration = 0xD40; // 
                 constexpr std::ptrdiff_t m_bFireOnEmpty = 0xD45; // 
+                constexpr std::ptrdiff_t m_bHasReleasedForSemiAuto = 0xD46; // 
                 constexpr std::ptrdiff_t m_flNextDisarmSound = 0xD48; // 
             }
             // Parent: CCitadelModifierVData
@@ -14139,9 +14518,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_SleepBombVData {
-                constexpr std::ptrdiff_t m_BombParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplodeDamageFriendlyParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplodeDamageEnemyParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BombParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_ExplodeDamageFriendlyParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_ExplodeDamageEnemyParticle = 0x7C8; // 
                 constexpr std::ptrdiff_t m_SleepModifier = 0x8A8; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x8B8; // 
             }
@@ -14183,7 +14562,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierAirLiftGrabVData {
-                constexpr std::ptrdiff_t m_GrabEffect = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_GrabEffect = 0x608; // 
                 constexpr std::ptrdiff_t m_flLiftHorizontal = 0x6E8; // 
                 constexpr std::ptrdiff_t m_flLiftHeight = 0x6EC; // 
                 constexpr std::ptrdiff_t m_flFollowDampingFactor = 0x6F0; // 
@@ -14207,7 +14586,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_WeaponUpgrade_InstantReloadVData {
-                constexpr std::ptrdiff_t m_ReloadParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ReloadParticle = 0x15A8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 3
@@ -14245,9 +14624,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityPerchedPredatorVData {
-                constexpr std::ptrdiff_t m_ExplodeBaseParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplodeFriendlyParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplodeEnemyParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeBaseParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_ExplodeFriendlyParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_ExplodeEnemyParticle = 0x1720; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x1800; // 
                 constexpr std::ptrdiff_t m_ModifierDragEnemy = 0x1810; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_flOnHitDetonateTimer = 0x1820; // 
@@ -14338,7 +14717,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Afterburn_DOT_VData {
-                constexpr std::ptrdiff_t m_sAfterburnParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_sAfterburnParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -14357,6 +14736,10 @@ namespace cs2_dumper {
             namespace CCitadel_ArmorUpgrade_DoubleJump {
                 constexpr std::ptrdiff_t m_nTickJumped = 0xCB8; // 
             }
+            // Parent: CCitadel_Item
+            // Field count: 0
+            namespace CItemSilenceGlyph {
+            }
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_PayloadCarrier {
@@ -14371,7 +14754,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierChargedTacklePrepareVData {
-                constexpr std::ptrdiff_t m_PrepareParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_PrepareParticle = 0x608; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 3
@@ -14413,18 +14796,6 @@ namespace cs2_dumper {
             namespace CCitadel_ArmorUpgrade_MetalSkin {
             }
             // Parent: CCitadelModifier
-            // Field count: 8
-            namespace CCitadel_Modifier_Fathom_ReefdwellerHarpoon_Move {
-                constexpr std::ptrdiff_t m_vCasterToDest = 0xC0; // 
-                constexpr std::ptrdiff_t m_vStart = 0xCC; // 
-                constexpr std::ptrdiff_t m_vDest = 0xD8; // 
-                constexpr std::ptrdiff_t m_hOther = 0xE4; // 
-                constexpr std::ptrdiff_t m_vLastSafePos = 0xE8; // 
-                constexpr std::ptrdiff_t m_nNumTicks = 0xF4; // 
-                constexpr std::ptrdiff_t m_nTicksLeft = 0xF8; // 
-                constexpr std::ptrdiff_t m_nBeamIndex = 0xFC; // 
-            }
-            // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_Fathom_ScaldingSpray_WeaponDamage {
             }
@@ -14435,8 +14806,8 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Spinning_BladeVData {
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_CatchIndicator = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CatchParticle = 0x1650; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CatchIndicator = 0x1570; // 
+                constexpr std::ptrdiff_t m_CatchParticle = 0x1650; // 
                 constexpr std::ptrdiff_t m_strThrowSound = 0x1730; // 
                 constexpr std::ptrdiff_t m_strReturnSound = 0x1740; // 
                 constexpr std::ptrdiff_t m_strCatchSound = 0x1750; // 
@@ -14444,7 +14815,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_strHitSound = 0x1770; // 
             }
             // Parent: CitadelAbilityVData
-            // Field count: 34
+            // Field count: 36
             //
             // Metadata:
             // MGetKV3ClassDefaults
@@ -14455,34 +14826,36 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_DroppedBuffModifier = 0x1590; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ExplodingAllyModifier = 0x15A0; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_AoEModifier = 0x15B0; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_InitialExplodeParticle = 0x15C0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HoldBombEffect = 0x16A0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_InitialExplodeParticle = 0x15C0; // 
+                constexpr std::ptrdiff_t m_HoldBombEffect = 0x16A0; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x1780; // 
                 constexpr std::ptrdiff_t m_flAirDrag = 0x1790; // 
                 constexpr std::ptrdiff_t m_flMaxFallSpeed = 0x1794; // 
                 constexpr std::ptrdiff_t m_flTargetAirSpeedFast = 0x1798; // 
                 constexpr std::ptrdiff_t m_flTargetAirSpeedBase = 0x179C; // 
-                constexpr std::ptrdiff_t m_flAcceleration = 0x17A0; // 
-                constexpr std::ptrdiff_t m_flDecceleration = 0x17A4; // 
-                constexpr std::ptrdiff_t m_flAirSideSpeedPercent = 0x17A8; // 
-                constexpr std::ptrdiff_t m_flBoostTime = 0x17AC; // 
-                constexpr std::ptrdiff_t m_flBoostSpeedUp = 0x17B0; // 
-                constexpr std::ptrdiff_t m_flMinFlyHeight = 0x17B4; // 
-                constexpr std::ptrdiff_t m_flMaxFlyHeight = 0x17B8; // 
-                constexpr std::ptrdiff_t m_flMaxPitchUp = 0x17BC; // 
-                constexpr std::ptrdiff_t m_flMaxPitchDown = 0x17C0; // 
-                constexpr std::ptrdiff_t m_flAllyDelayedBoostTime = 0x17C4; // 
-                constexpr std::ptrdiff_t m_flChannelingAirDrag = 0x17C8; // 
-                constexpr std::ptrdiff_t m_flChannelingMaxFallSpeed = 0x17CC; // 
-                constexpr std::ptrdiff_t m_flBombReleaseSpeed = 0x17D0; // 
-                constexpr std::ptrdiff_t m_flBombReleasePitch = 0x17D4; // 
-                constexpr std::ptrdiff_t m_flBombDropReleaseOffset = 0x17D8; // 
-                constexpr std::ptrdiff_t m_flHoldBombOffsetX = 0x17DC; // 
-                constexpr std::ptrdiff_t m_flHoldBombOffsetY = 0x17E0; // 
-                constexpr std::ptrdiff_t m_flHoldBombOffsetZ = 0x17E4; // 
-                constexpr std::ptrdiff_t m_flAnglePitchBias = 0x17E8; // 
-                constexpr std::ptrdiff_t m_flTrackAmount = 0x17EC; // 
-                constexpr std::ptrdiff_t m_flMoveCollideSpeed = 0x17F0; // 
+                constexpr std::ptrdiff_t m_flSprintMult = 0x17A0; // 
+                constexpr std::ptrdiff_t m_flAcceleration = 0x17A4; // 
+                constexpr std::ptrdiff_t m_flDecceleration = 0x17A8; // 
+                constexpr std::ptrdiff_t m_flAirSideSpeedPercent = 0x17AC; // 
+                constexpr std::ptrdiff_t m_flBoostTime = 0x17B0; // 
+                constexpr std::ptrdiff_t m_flBoostSpeedUp = 0x17B4; // 
+                constexpr std::ptrdiff_t m_flCrouchLaunchReduction = 0x17B8; // 
+                constexpr std::ptrdiff_t m_flMinFlyHeight = 0x17BC; // 
+                constexpr std::ptrdiff_t m_flMaxFlyHeight = 0x17C0; // 
+                constexpr std::ptrdiff_t m_flMaxPitchUp = 0x17C4; // 
+                constexpr std::ptrdiff_t m_flMaxPitchDown = 0x17C8; // 
+                constexpr std::ptrdiff_t m_flAllyDelayedBoostTime = 0x17CC; // 
+                constexpr std::ptrdiff_t m_flChannelingAirDrag = 0x17D0; // 
+                constexpr std::ptrdiff_t m_flChannelingMaxFallSpeed = 0x17D4; // 
+                constexpr std::ptrdiff_t m_flBombReleaseSpeed = 0x17D8; // 
+                constexpr std::ptrdiff_t m_flBombReleasePitch = 0x17DC; // 
+                constexpr std::ptrdiff_t m_flBombDropReleaseOffset = 0x17E0; // 
+                constexpr std::ptrdiff_t m_flHoldBombOffsetX = 0x17E4; // 
+                constexpr std::ptrdiff_t m_flHoldBombOffsetY = 0x17E8; // 
+                constexpr std::ptrdiff_t m_flHoldBombOffsetZ = 0x17EC; // 
+                constexpr std::ptrdiff_t m_flAnglePitchBias = 0x17F0; // 
+                constexpr std::ptrdiff_t m_flTrackAmount = 0x17F4; // 
+                constexpr std::ptrdiff_t m_flMoveCollideSpeed = 0x17F8; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 3
@@ -14490,9 +14863,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ChronoSwap_BubbleMoveVData {
-                constexpr std::ptrdiff_t m_BeamParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HealParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DamageParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BeamParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_HealParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_DamageParticle = 0x7C8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -14563,7 +14936,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Cadence_GrandFinaleAOEVData {
-                constexpr std::ptrdiff_t m_AuraParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AuraParticle = 0x648; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -14575,7 +14948,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Haunt_Damage_VData {
-                constexpr std::ptrdiff_t m_sAfterburnParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_sAfterburnParticle = 0x608; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 2
@@ -14583,7 +14956,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityShivDeferDamageVData {
-                constexpr std::ptrdiff_t m_ActiveCastParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ActiveCastParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_flDeferredDamageApplicationInterval = 0x1640; // 
             }
             // Parent: CCitadelModifier
@@ -14613,7 +14986,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CBaseLockonAbilityVData {
-                constexpr std::ptrdiff_t m_TargetModifier = 0x1560; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_TargetModifier = 0x1560; // 
                 constexpr std::ptrdiff_t m_strApplyLockonStack = 0x1570; // 
             }
             // Parent: CCitadelModifier
@@ -14640,6 +15013,19 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_Modifier_Intimidated_Debuff {
             }
+            // Parent: CCitadel_Modifier_StunnedVData
+            // Field count: 6
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Modifier_UltCombo_TargetVData {
+                constexpr std::ptrdiff_t m_flTargetPosDistance = 0x6E8; // 
+                constexpr std::ptrdiff_t m_flTargetPosRange = 0x6EC; // 
+                constexpr std::ptrdiff_t m_flPullSpeedMin = 0x6F0; // 
+                constexpr std::ptrdiff_t m_flPullSpeedMax = 0x6F4; // 
+                constexpr std::ptrdiff_t m_flPullDistanceMin = 0x6F8; // 
+                constexpr std::ptrdiff_t m_flPullDistanceMax = 0x6FC; // 
+            }
             // Parent: CCitadelModifierVData
             // Field count: 2
             //
@@ -14655,7 +15041,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Upgrade_MagicCarpetVData {
-                constexpr std::ptrdiff_t m_SummonParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SummonParticle = 0x15A8; // 
                 constexpr std::ptrdiff_t m_FlyingCarpetModifier = 0x1688; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_SummonFlyingCarpetModifier = 0x1698; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_SummonFlyingCarpetVisualModifier = 0x16A8; // CEmbeddedSubclass<CCitadelModifier>
@@ -14682,7 +15068,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flPlayerDamagePerTick = 0xF8; // 
                 constexpr std::ptrdiff_t m_flNPCDamagePerTick = 0xFC; // 
                 constexpr std::ptrdiff_t m_flNextDamageTick = 0x100; // 
-                constexpr std::ptrdiff_t m_vecEntitiesHit = 0x108; // 
+                constexpr std::ptrdiff_t m_vecEntitiesHit = 0x108; // CUtlVector<CHandle<C_BaseEntity>>
                 constexpr std::ptrdiff_t m_flDamageTickRate = 0x120; // 
                 constexpr std::ptrdiff_t m_flLastShakeTime = 0x124; // 
                 constexpr std::ptrdiff_t m_bSweepRightFirst = 0x128; // 
@@ -14705,12 +15091,12 @@ namespace cs2_dumper {
             namespace CModifierProperty {
                 constexpr std::ptrdiff_t __m_pChainEntity = 0x8; // 
                 constexpr std::ptrdiff_t m_hOwner = 0x30; // 
-                constexpr std::ptrdiff_t m_nProviderVisitedFlags = 0x198; // 
-                constexpr std::ptrdiff_t m_bModifierStatesDirty = 0x199; // 
-                constexpr std::ptrdiff_t m_bPredictedOwner = 0x19A; // 
-                constexpr std::ptrdiff_t m_iLockRefCount = 0x19B; // 
-                constexpr std::ptrdiff_t m_hHandle = 0x19C; // 
-                constexpr std::ptrdiff_t m_nBroadcastEventListenerMask = 0x1A0; // 
+                constexpr std::ptrdiff_t m_nProviderVisitedFlags = 0x19B; // 
+                constexpr std::ptrdiff_t m_bModifierStatesDirty = 0x19C; // 
+                constexpr std::ptrdiff_t m_bPredictedOwner = 0x19D; // 
+                constexpr std::ptrdiff_t m_iLockRefCount = 0x19E; // 
+                constexpr std::ptrdiff_t m_hHandle = 0x1A0; // 
+                constexpr std::ptrdiff_t m_nBroadcastEventListenerMask = 0x1A4; // 
                 constexpr std::ptrdiff_t m_vecProviders = 0x1B0; // 
                 constexpr std::ptrdiff_t m_nDisabledGroups = 0x1C8; // 
                 constexpr std::ptrdiff_t m_bvEnabledStateMask = 0x1CC; // 
@@ -14724,8 +15110,8 @@ namespace cs2_dumper {
             // NetworkVarNames: m_flForwardSpeed (float)
             // NetworkVarNames: m_hOwnerPawn (CHandle<CBaseEntity>)
             namespace C_NPC_NanoRollermine {
-                constexpr std::ptrdiff_t m_flForwardSpeed = 0x1488; // 
-                constexpr std::ptrdiff_t m_hOwnerPawn = 0x148C; // 
+                constexpr std::ptrdiff_t m_flForwardSpeed = 0x1480; // 
+                constexpr std::ptrdiff_t m_hOwnerPawn = 0x1484; // 
             }
             // Parent: C_AI_CitadelNPC
             // Field count: 1
@@ -14733,7 +15119,7 @@ namespace cs2_dumper {
             // Metadata:
             // NetworkVarNames: m_hOwner (EHANDLE)
             namespace C_NPC_HeroCloneTrooper {
-                constexpr std::ptrdiff_t m_hOwner = 0x1470; // 
+                constexpr std::ptrdiff_t m_hOwner = 0x1468; // 
             }
             // Parent: CCitadelModifierAura
             // Field count: 0
@@ -14760,7 +15146,7 @@ namespace cs2_dumper {
             namespace CCitadel_Ability_RocketBarrageVData {
                 constexpr std::ptrdiff_t m_BarrageModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_MoveSlowModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1580; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x1660; // 
                 constexpr std::ptrdiff_t m_cameraSequenceSelected = 0x1670; // CitadelCameraOperationsSequence_t
                 constexpr std::ptrdiff_t m_flMoveSpeedReductionPct = 0x16F8; // 
@@ -14783,16 +15169,16 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_strOrbDeniedPlayer = 0x60; // 
                 constexpr std::ptrdiff_t m_strOrbHitConfirm = 0x70; // 
                 constexpr std::ptrdiff_t m_sOrbModel = 0x80; // 
-                constexpr std::ptrdiff_t m_sPredictedHitLimboGlowParticle = 0x160; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sFriendlyHitConfirmParticle = 0x240; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sEnemyHitConfirmParticle = 0x320; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sFriendlyGlowParticle = 0x400; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sEnemyGlowParticle = 0x4E0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sGoldReceivedParticle = 0x5C0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sFriendlyOrbDeniedParticle = 0x6A0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sEnemyOrbDeniedParticle = 0x780; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sFriendlyOrbEarnedParticle = 0x860; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_sEnemyOrbEarnedParticle = 0x940; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_sPredictedHitLimboGlowParticle = 0x160; // 
+                constexpr std::ptrdiff_t m_sFriendlyHitConfirmParticle = 0x240; // 
+                constexpr std::ptrdiff_t m_sEnemyHitConfirmParticle = 0x320; // 
+                constexpr std::ptrdiff_t m_sFriendlyGlowParticle = 0x400; // 
+                constexpr std::ptrdiff_t m_sEnemyGlowParticle = 0x4E0; // 
+                constexpr std::ptrdiff_t m_sGoldReceivedParticle = 0x5C0; // 
+                constexpr std::ptrdiff_t m_sFriendlyOrbDeniedParticle = 0x6A0; // 
+                constexpr std::ptrdiff_t m_sEnemyOrbDeniedParticle = 0x780; // 
+                constexpr std::ptrdiff_t m_sFriendlyOrbEarnedParticle = 0x860; // 
+                constexpr std::ptrdiff_t m_sEnemyOrbEarnedParticle = 0x940; // 
                 constexpr std::ptrdiff_t m_flOrbSpawnDelayMin = 0xA20; // 
                 constexpr std::ptrdiff_t m_flOrbSpawnDelayMax = 0xA24; // 
                 constexpr std::ptrdiff_t m_flOrbSpawnOffsetZ = 0xA28; // 
@@ -14838,7 +15224,7 @@ namespace cs2_dumper {
             // MNetworkExcludeByName
             // NetworkVarNames: m_ShardDesc (shard_model_desc_t)
             namespace C_ShatterGlassShardPhysics {
-                constexpr std::ptrdiff_t m_ShardDesc = 0xCA0; // 
+                constexpr std::ptrdiff_t m_ShardDesc = 0xC98; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 0
@@ -14975,9 +15361,13 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Magician_MagicBoltVData {
                 constexpr std::ptrdiff_t m_TargetDebuffModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_RetargetParticle = 0x1650; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1570; // 
+                constexpr std::ptrdiff_t m_RetargetParticle = 0x1650; // 
                 constexpr std::ptrdiff_t m_strRedirect = 0x1730; // 
+            }
+            // Parent: CCitadelModifier
+            // Field count: 0
+            namespace CCitadel_Modifier_ReefdwellerHarpoon_DetachBuff {
             }
             // Parent: CitadelAbilityVData
             // Field count: 1
@@ -14985,7 +15375,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityRocketLauncherVData {
-                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1560; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -15007,7 +15397,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ArcaneEaterDebuffVData {
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
@@ -15105,16 +15495,6 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_nLaserParticleIndex = 0x8E8; // 
                 constexpr std::ptrdiff_t m_vecSmoothedVelocity = 0x8EC; // 
             }
-            // Parent: CCitadelModifierVData
-            // Field count: 3
-            //
-            // Metadata:
-            // MGetKV3ClassDefaults
-            namespace CCitadel_Modifier_BreakablePropClipSizePickupVData {
-                constexpr std::ptrdiff_t m_flClipSize = 0x608; // 
-                constexpr std::ptrdiff_t m_nClipCount = 0x60C; // 
-                constexpr std::ptrdiff_t m_flFireRate = 0x610; // 
-            }
             // Parent: CCitadel_Modifier_Invis
             // Field count: 1
             namespace CCitadel_Modifier_Shadow_Step {
@@ -15126,9 +15506,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityHatTrickVData {
-                constexpr std::ptrdiff_t m_SpectatingProjectileParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HatTrickChannelParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SpectatingProjectileParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_HatTrickChannelParticle = 0x1720; // 
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1800; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x1810; // 
             }
@@ -15149,10 +15529,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ZiplineKnockdownImmuneVData {
-                constexpr std::ptrdiff_t m_ZipLineEnemyKnockdownProtectionParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ZipLineSelfKnockdownProtectionParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ZipLineKnockdownProtectionStatusParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ZipLineKnockdownProtectionStatusEnemyParticle = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ZipLineEnemyKnockdownProtectionParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_ZipLineSelfKnockdownProtectionParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_ZipLineKnockdownProtectionStatusParticle = 0x7C8; // 
+                constexpr std::ptrdiff_t m_ZipLineKnockdownProtectionStatusEnemyParticle = 0x8A8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -15183,14 +15563,14 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flGrappleShotFloatTime = 0x15C8; // 
                 constexpr std::ptrdiff_t m_flGrappleShotDelayToFlyOnHit = 0x15CC; // 
                 constexpr std::ptrdiff_t m_flGrappleSpeed = 0x15D0; // 
-                constexpr std::ptrdiff_t m_SlowModifier = 0x15D8; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_GrappleTargetModifier = 0x15E8; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_WeaponBuffModifier = 0x15F8; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_LeapParticle = 0x1608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x16E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_SlashParticle = 0x17C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BulletGrappleTracerParticle = 0x18A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_EnemyGrappleParticle = 0x1988; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SlowModifier = 0x15D8; // 
+                constexpr std::ptrdiff_t m_GrappleTargetModifier = 0x15E8; // 
+                constexpr std::ptrdiff_t m_WeaponBuffModifier = 0x15F8; // 
+                constexpr std::ptrdiff_t m_LeapParticle = 0x1608; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x16E8; // 
+                constexpr std::ptrdiff_t m_SlashParticle = 0x17C8; // 
+                constexpr std::ptrdiff_t m_BulletGrappleTracerParticle = 0x18A8; // 
+                constexpr std::ptrdiff_t m_EnemyGrappleParticle = 0x1988; // 
                 constexpr std::ptrdiff_t m_strDamageTarget = 0x1A68; // 
                 constexpr std::ptrdiff_t m_strStartFlyingToTarget = 0x1A78; // 
                 constexpr std::ptrdiff_t m_strStartAttack = 0x1A88; // 
@@ -15214,8 +15594,8 @@ namespace cs2_dumper {
             namespace CAbilityGooGrenadeVData {
                 constexpr std::ptrdiff_t m_GooGrenadeImpactModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_GooGrenadePuddleAuraModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_GooGrenadeSkipParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_GooGrenadeExplodeParticle = 0x1660; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_GooGrenadeSkipParticle = 0x1580; // 
+                constexpr std::ptrdiff_t m_GooGrenadeExplodeParticle = 0x1660; // 
                 constexpr std::ptrdiff_t m_GrenadeHitImpactSound = 0x1740; // 
                 constexpr std::ptrdiff_t m_GrenadeMissImpactSound = 0x1750; // 
                 constexpr std::ptrdiff_t m_flMinRestitution = 0x1760; // 
@@ -15227,7 +15607,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_FireBombVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_ExplodeSound = 0x1640; // 
                 constexpr std::ptrdiff_t m_ProgressBarModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_FireBombModifier = 0x1660; // CEmbeddedSubclass<CCitadelModifier>
@@ -15263,7 +15643,7 @@ namespace cs2_dumper {
             // MNetworkIncludeByName
             // NetworkVarNames: m_vecUnitStatusOffset (Vector)
             namespace C_NPC_BaseDefenseSentry {
-                constexpr std::ptrdiff_t m_vecUnitStatusOffset = 0xB10; // 
+                constexpr std::ptrdiff_t m_vecUnitStatusOffset = 0xB08; // 
             }
             // Parent: C_DynamicProp
             // Field count: 5
@@ -15274,11 +15654,11 @@ namespace cs2_dumper {
             // NetworkVarNames: m_strEnemySkin (CUtlString)
             // NetworkVarNames: m_bIsWorld (bool)
             namespace C_Citadel_DynamicProp {
-                constexpr std::ptrdiff_t m_nPlayerTeamEvent = 0xDB8; // 
-                constexpr std::ptrdiff_t m_strDefaultSkin = 0xDC0; // 
-                constexpr std::ptrdiff_t m_strFriendlySkin = 0xDC8; // 
-                constexpr std::ptrdiff_t m_strEnemySkin = 0xDD0; // 
-                constexpr std::ptrdiff_t m_bIsWorld = 0xDD8; // 
+                constexpr std::ptrdiff_t m_nPlayerTeamEvent = 0xDB0; // 
+                constexpr std::ptrdiff_t m_strDefaultSkin = 0xDB8; // 
+                constexpr std::ptrdiff_t m_strFriendlySkin = 0xDC0; // 
+                constexpr std::ptrdiff_t m_strEnemySkin = 0xDC8; // 
+                constexpr std::ptrdiff_t m_bIsWorld = 0xDD0; // 
             }
             // Parent: CBaseAnimGraph
             // Field count: 19
@@ -15287,25 +15667,25 @@ namespace cs2_dumper {
             // NetworkVarNames: m_flexWeight (float32)
             // NetworkVarNames: m_blinktoggle (bool)
             namespace C_BaseFlex {
-                constexpr std::ptrdiff_t m_flexWeight = 0xB18; // C_NetworkUtlVectorBase<float32>
-                constexpr std::ptrdiff_t m_vLookTargetPosition = 0xB30; // 
-                constexpr std::ptrdiff_t m_blinktoggle = 0xB48; // 
-                constexpr std::ptrdiff_t m_nLastFlexUpdateFrameCount = 0xBA8; // 
-                constexpr std::ptrdiff_t m_CachedViewTarget = 0xBAC; // 
-                constexpr std::ptrdiff_t m_nNextSceneEventId = 0xBB8; // 
-                constexpr std::ptrdiff_t m_iBlink = 0xBBC; // 
-                constexpr std::ptrdiff_t m_blinktime = 0xBC0; // 
-                constexpr std::ptrdiff_t m_prevblinktoggle = 0xBC4; // 
-                constexpr std::ptrdiff_t m_iJawOpen = 0xBC8; // 
-                constexpr std::ptrdiff_t m_flJawOpenAmount = 0xBCC; // 
-                constexpr std::ptrdiff_t m_flBlinkAmount = 0xBD0; // 
-                constexpr std::ptrdiff_t m_iMouthAttachment = 0xBD4; // 
-                constexpr std::ptrdiff_t m_iEyeAttachment = 0xBD5; // 
-                constexpr std::ptrdiff_t m_bResetFlexWeightsOnModelChange = 0xBD6; // 
-                constexpr std::ptrdiff_t m_nEyeOcclusionRendererBone = 0xBF0; // 
-                constexpr std::ptrdiff_t m_mEyeOcclusionRendererCameraToBoneTransform = 0xBF4; // 
-                constexpr std::ptrdiff_t m_vEyeOcclusionRendererHalfExtent = 0xC24; // 
-                constexpr std::ptrdiff_t m_PhonemeClasses = 0xC40; // C_BaseFlex::Emphasized_Phoneme[3]
+                constexpr std::ptrdiff_t m_flexWeight = 0xB10; // C_NetworkUtlVectorBase<float32>
+                constexpr std::ptrdiff_t m_vLookTargetPosition = 0xB28; // 
+                constexpr std::ptrdiff_t m_blinktoggle = 0xB40; // 
+                constexpr std::ptrdiff_t m_nLastFlexUpdateFrameCount = 0xBA0; // 
+                constexpr std::ptrdiff_t m_CachedViewTarget = 0xBA4; // 
+                constexpr std::ptrdiff_t m_nNextSceneEventId = 0xBB0; // 
+                constexpr std::ptrdiff_t m_iBlink = 0xBB4; // 
+                constexpr std::ptrdiff_t m_blinktime = 0xBB8; // 
+                constexpr std::ptrdiff_t m_prevblinktoggle = 0xBBC; // 
+                constexpr std::ptrdiff_t m_iJawOpen = 0xBC0; // 
+                constexpr std::ptrdiff_t m_flJawOpenAmount = 0xBC4; // 
+                constexpr std::ptrdiff_t m_flBlinkAmount = 0xBC8; // 
+                constexpr std::ptrdiff_t m_iMouthAttachment = 0xBCC; // 
+                constexpr std::ptrdiff_t m_iEyeAttachment = 0xBCD; // 
+                constexpr std::ptrdiff_t m_bResetFlexWeightsOnModelChange = 0xBCE; // 
+                constexpr std::ptrdiff_t m_nEyeOcclusionRendererBone = 0xBE8; // 
+                constexpr std::ptrdiff_t m_mEyeOcclusionRendererCameraToBoneTransform = 0xBEC; // 
+                constexpr std::ptrdiff_t m_vEyeOcclusionRendererHalfExtent = 0xC1C; // 
+                constexpr std::ptrdiff_t m_PhonemeClasses = 0xC38; // C_BaseFlex::Emphasized_Phoneme[3]
             }
             // Parent: CCitadel_Item
             // Field count: 0
@@ -15321,11 +15701,22 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_MageWalkVData {
-                constexpr std::ptrdiff_t m_TeleportStartParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TeleportEndParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TeleportTrailParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TeleportStartParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_TeleportEndParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_TeleportTrailParticle = 0x7C8; // 
                 constexpr std::ptrdiff_t m_flPreTeleportDuration = 0x8A8; // 
                 constexpr std::ptrdiff_t m_strAmbientLoopingLocalPlayerSound = 0x8B0; // 
+            }
+            // Parent: CitadelAbilityVData
+            // Field count: 4
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CAbility_Fathom_LurkersAmbush_VData {
+                constexpr std::ptrdiff_t m_InvisModifier = 0x1560; // 
+                constexpr std::ptrdiff_t m_RegenModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_ImmobilizeModifier = 0x1580; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_strSwapStarted = 0x1590; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 7
@@ -15333,7 +15724,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Mirage_FireBeetles_VData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_CasterModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_RecentlyDebuffedModifier = 0x1660; // CEmbeddedSubclass<CCitadelModifier>
@@ -15364,9 +15755,9 @@ namespace cs2_dumper {
             namespace CModifierIcePathVData {
                 constexpr std::ptrdiff_t m_FrontModel = 0x608; // 
                 constexpr std::ptrdiff_t m_BodyModel = 0x6E8; // 
-                constexpr std::ptrdiff_t m_GroundParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FloatingParticle = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_IcePathBuffParticle = 0x988; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_GroundParticle = 0x7C8; // 
+                constexpr std::ptrdiff_t m_FloatingParticle = 0x8A8; // 
+                constexpr std::ptrdiff_t m_IcePathBuffParticle = 0x988; // 
                 constexpr std::ptrdiff_t m_FriendlyAuraModifier = 0xA68; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_BonusSpiritLingerModifier = 0xA78; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -15411,6 +15802,17 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flFogMaxStart = 0x88C; // 
                 constexpr std::ptrdiff_t m_flFogMaxEnd = 0x890; // 
                 constexpr std::ptrdiff_t m_bEnabled = 0x894; // 
+            }
+            // Parent: CCitadelModifierAuraVData
+            // Field count: 4
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CModifierGarbageAuraVData {
+                constexpr std::ptrdiff_t m_FinishParticle = 0x648; // 
+                constexpr std::ptrdiff_t m_AlliedParticle = 0x728; // 
+                constexpr std::ptrdiff_t m_EnemyParticle = 0x808; // 
+                constexpr std::ptrdiff_t m_strAmbientLoopingLocalPlayerSound = 0x8E8; // 
             }
             // Parent: CCitadelModifierAura
             // Field count: 0
@@ -15484,8 +15886,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_TechCleaveVData {
-                constexpr std::ptrdiff_t m_CleavePlayerParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CleaveTrooperParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CleavePlayerParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_CleaveTrooperParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_sVictimSound = 0x7C8; // 
             }
             // Parent: CScaleFunctionBase
@@ -15499,29 +15901,33 @@ namespace cs2_dumper {
             // NetworkVarNames: m_bUseHitboxesForRenderBox (bool)
             // NetworkVarNames: m_bUseAnimGraph (bool)
             namespace C_DynamicProp {
-                constexpr std::ptrdiff_t m_bUseHitboxesForRenderBox = 0xC90; // 
-                constexpr std::ptrdiff_t m_bUseAnimGraph = 0xC91; // 
-                constexpr std::ptrdiff_t m_pOutputAnimBegun = 0xC98; // 
-                constexpr std::ptrdiff_t m_pOutputAnimOver = 0xCC0; // 
-                constexpr std::ptrdiff_t m_pOutputAnimLoopCycleOver = 0xCE8; // 
-                constexpr std::ptrdiff_t m_OnAnimReachedStart = 0xD10; // 
-                constexpr std::ptrdiff_t m_OnAnimReachedEnd = 0xD38; // 
-                constexpr std::ptrdiff_t m_iszIdleAnim = 0xD60; // 
-                constexpr std::ptrdiff_t m_nIdleAnimLoopMode = 0xD68; // 
-                constexpr std::ptrdiff_t m_bRandomizeCycle = 0xD6C; // 
-                constexpr std::ptrdiff_t m_bStartDisabled = 0xD6D; // 
-                constexpr std::ptrdiff_t m_bFiredStartEndOutput = 0xD6E; // 
-                constexpr std::ptrdiff_t m_bForceNpcExclude = 0xD6F; // 
-                constexpr std::ptrdiff_t m_bCreateNonSolid = 0xD70; // 
-                constexpr std::ptrdiff_t m_bIsOverrideProp = 0xD71; // 
-                constexpr std::ptrdiff_t m_iInitialGlowState = 0xD74; // 
-                constexpr std::ptrdiff_t m_nGlowRange = 0xD78; // 
-                constexpr std::ptrdiff_t m_nGlowRangeMin = 0xD7C; // 
-                constexpr std::ptrdiff_t m_glowColor = 0xD80; // 
-                constexpr std::ptrdiff_t m_nGlowTeam = 0xD84; // 
-                constexpr std::ptrdiff_t m_iCachedFrameCount = 0xD88; // 
-                constexpr std::ptrdiff_t m_vecCachedRenderMins = 0xD8C; // 
-                constexpr std::ptrdiff_t m_vecCachedRenderMaxs = 0xD98; // 
+                constexpr std::ptrdiff_t m_bUseHitboxesForRenderBox = 0xC88; // 
+                constexpr std::ptrdiff_t m_bUseAnimGraph = 0xC89; // 
+                constexpr std::ptrdiff_t m_pOutputAnimBegun = 0xC90; // 
+                constexpr std::ptrdiff_t m_pOutputAnimOver = 0xCB8; // 
+                constexpr std::ptrdiff_t m_pOutputAnimLoopCycleOver = 0xCE0; // 
+                constexpr std::ptrdiff_t m_OnAnimReachedStart = 0xD08; // 
+                constexpr std::ptrdiff_t m_OnAnimReachedEnd = 0xD30; // 
+                constexpr std::ptrdiff_t m_iszIdleAnim = 0xD58; // 
+                constexpr std::ptrdiff_t m_nIdleAnimLoopMode = 0xD60; // 
+                constexpr std::ptrdiff_t m_bRandomizeCycle = 0xD64; // 
+                constexpr std::ptrdiff_t m_bStartDisabled = 0xD65; // 
+                constexpr std::ptrdiff_t m_bFiredStartEndOutput = 0xD66; // 
+                constexpr std::ptrdiff_t m_bForceNpcExclude = 0xD67; // 
+                constexpr std::ptrdiff_t m_bCreateNonSolid = 0xD68; // 
+                constexpr std::ptrdiff_t m_bIsOverrideProp = 0xD69; // 
+                constexpr std::ptrdiff_t m_iInitialGlowState = 0xD6C; // 
+                constexpr std::ptrdiff_t m_nGlowRange = 0xD70; // 
+                constexpr std::ptrdiff_t m_nGlowRangeMin = 0xD74; // 
+                constexpr std::ptrdiff_t m_glowColor = 0xD78; // 
+                constexpr std::ptrdiff_t m_nGlowTeam = 0xD7C; // 
+                constexpr std::ptrdiff_t m_iCachedFrameCount = 0xD80; // 
+                constexpr std::ptrdiff_t m_vecCachedRenderMins = 0xD84; // 
+                constexpr std::ptrdiff_t m_vecCachedRenderMaxs = 0xD90; // 
+            }
+            // Parent: CCitadel_Item
+            // Field count: 0
+            namespace CCitadel_WeaponUpgrade_SpellslingerHeadshots {
             }
             // Parent: CCitadel_Item
             // Field count: 1
@@ -15529,32 +15935,32 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t fl_mSpellShieldBreakTime = 0xCB8; // 
             }
             // Parent: CitadelAbilityVData
-            // Field count: 4
+            // Field count: 5
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_TurretClone_VData {
-                constexpr std::ptrdiff_t m_strTurretParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_strSwapParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_strTurretParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_strSwapParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_TurretSound = 0x1720; // 
-                constexpr std::ptrdiff_t m_cameraSequenceTeleport = 0x1730; // CitadelCameraOperationsSequence_t
+                constexpr std::ptrdiff_t m_BuffModifier = 0x1730; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_cameraSequenceTeleport = 0x1740; // CitadelCameraOperationsSequence_t
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
             namespace CCitadel_Ability_VandalOverflow {
             }
             // Parent: CitadelAbilityVData
-            // Field count: 6
+            // Field count: 5
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityChargedTackleVData {
-                constexpr std::ptrdiff_t m_ChargePreviewParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChargePreviewParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_ChargePrepareModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ChargeActiveModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_BuffModifier = 0x1660; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_DragModifier = 0x1670; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_strHitSound = 0x1680; // 
+                constexpr std::ptrdiff_t m_DragModifier = 0x1660; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_strHitSound = 0x1670; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 3
@@ -15562,7 +15968,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_SpilledBloodThinkerVData {
-                constexpr std::ptrdiff_t m_SpilledBloodParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SpilledBloodParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_flTickRate = 0x6E8; // 
                 constexpr std::ptrdiff_t m_flHeight = 0x6EC; // 
             }
@@ -15608,8 +16014,8 @@ namespace cs2_dumper {
             // NetworkVarNames: m_bPlayingIdle (bool)
             // NetworkVarNames: m_bShieldActive (bool)
             namespace C_NPC_TrooperNeutral {
-                constexpr std::ptrdiff_t m_bPlayingIdle = 0x1470; // 
-                constexpr std::ptrdiff_t m_bShieldActive = 0x1471; // 
+                constexpr std::ptrdiff_t m_bPlayingIdle = 0x1468; // 
+                constexpr std::ptrdiff_t m_bShieldActive = 0x1469; // 
             }
             // Parent: CCitadel_Modifier_StunnedVData
             // Field count: 1
@@ -15617,7 +16023,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierGravityLassoEnemyVData {
-                constexpr std::ptrdiff_t m_LassoEffect = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LassoEffect = 0x6E8; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 3
@@ -15625,7 +16031,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Wraith_RapidFireVData {
-                constexpr std::ptrdiff_t m_CastParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_TargetBuffSound = 0x1640; // 
                 constexpr std::ptrdiff_t m_RapidFireModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -15635,7 +16041,14 @@ namespace cs2_dumper {
             // Metadata:
             // NetworkVarNames: m_hTouchedPlayeres (CHandle<C_BasePlayerPawn>)
             namespace C_ItemWeaponParts {
-                constexpr std::ptrdiff_t m_hTouchedPlayeres = 0xB28; // 
+                constexpr std::ptrdiff_t m_hTouchedPlayeres = 0xB20; // 
+            }
+            // Parent: CCitadel_Modifier_Intrinsic_BaseVData
+            // Field count: 0
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CModifier_Operative_Scattercharge_Projectile_VData {
             }
             // Parent: CitadelAbilityVData
             // Field count: 1
@@ -15665,9 +16078,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Item_Discord_AuraVData_Enemy {
-                constexpr std::ptrdiff_t m_strAreaEffectEnemy = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_strAreaEffectFriendly = 0x728; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_strAreaEffectSelf = 0x808; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_strAreaEffectEnemy = 0x648; // 
+                constexpr std::ptrdiff_t m_strAreaEffectFriendly = 0x728; // 
+                constexpr std::ptrdiff_t m_strAreaEffectSelf = 0x808; // 
             }
             // Parent: C_BaseEntity
             // Field count: 8
@@ -15726,10 +16139,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CNPC_TrooperBarrackBossVData {
-                constexpr std::ptrdiff_t m_flBackDoorProtectionRange = 0x16D0; // 
-                constexpr std::ptrdiff_t m_BackdoorProtectionModifier = 0x16D8; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_BackdoorBulletResistModifier = 0x16E8; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ObjectiveRegen = 0x16F8; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_flBackDoorProtectionRange = 0x17F8; // 
+                constexpr std::ptrdiff_t m_BackdoorProtectionModifier = 0x1800; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_BackdoorBulletResistModifier = 0x1810; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_ObjectiveRegen = 0x1820; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifierVData
             // Field count: 2
@@ -15737,8 +16150,13 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Wrecker_UltimateGrabEnemyVData {
-                constexpr std::ptrdiff_t m_EnemyHeroStasisEffect = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_EnemyHeroGrabEffect = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_EnemyHeroStasisEffect = 0x608; // 
+                constexpr std::ptrdiff_t m_EnemyHeroGrabEffect = 0x6E8; // 
+            }
+            // Parent: CBaseFilter
+            // Field count: 1
+            namespace CFilterModel {
+                constexpr std::ptrdiff_t m_iFilterModel = 0x5C0; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -15759,9 +16177,9 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flLaunchTime = 0x1578; // 
                 constexpr std::ptrdiff_t m_flMoveSpeedAboveBaseScale = 0x157C; // 
                 constexpr std::ptrdiff_t m_LeapModifier = 0x1580; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_DustParticle = 0x1590; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TrailParticle = 0x1670; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CastParticle = 0x1750; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DustParticle = 0x1590; // 
+                constexpr std::ptrdiff_t m_TrailParticle = 0x1670; // 
+                constexpr std::ptrdiff_t m_CastParticle = 0x1750; // 
             }
             // Parent: CitadelItemVData
             // Field count: 1
@@ -15778,31 +16196,31 @@ namespace cs2_dumper {
             // Parent: CBaseAnimGraph
             // Field count: 25
             namespace C_LocalTempEntity {
-                constexpr std::ptrdiff_t flags = 0xB08; // 
-                constexpr std::ptrdiff_t die = 0xB0C; // 
-                constexpr std::ptrdiff_t m_flFrameMax = 0xB10; // 
-                constexpr std::ptrdiff_t x = 0xB14; // 
-                constexpr std::ptrdiff_t y = 0xB18; // 
-                constexpr std::ptrdiff_t fadeSpeed = 0xB1C; // 
-                constexpr std::ptrdiff_t bounceFactor = 0xB20; // 
-                constexpr std::ptrdiff_t hitSound = 0xB24; // 
-                constexpr std::ptrdiff_t priority = 0xB28; // 
-                constexpr std::ptrdiff_t tentOffset = 0xB2C; // 
-                constexpr std::ptrdiff_t m_vecTempEntAngVelocity = 0xB38; // 
-                constexpr std::ptrdiff_t tempent_renderamt = 0xB44; // 
-                constexpr std::ptrdiff_t m_vecNormal = 0xB48; // 
-                constexpr std::ptrdiff_t m_flSpriteScale = 0xB54; // 
-                constexpr std::ptrdiff_t m_nFlickerFrame = 0xB58; // 
-                constexpr std::ptrdiff_t m_flFrameRate = 0xB5C; // 
-                constexpr std::ptrdiff_t m_flFrame = 0xB60; // 
-                constexpr std::ptrdiff_t m_pszImpactEffect = 0xB68; // 
-                constexpr std::ptrdiff_t m_pszParticleEffect = 0xB70; // 
-                constexpr std::ptrdiff_t m_bParticleCollision = 0xB78; // 
-                constexpr std::ptrdiff_t m_iLastCollisionFrame = 0xB7C; // 
-                constexpr std::ptrdiff_t m_vLastCollisionOrigin = 0xB80; // 
-                constexpr std::ptrdiff_t m_vecTempEntVelocity = 0xB8C; // 
-                constexpr std::ptrdiff_t m_vecPrevAbsOrigin = 0xB98; // 
-                constexpr std::ptrdiff_t m_vecTempEntAcceleration = 0xBA4; // 
+                constexpr std::ptrdiff_t flags = 0xB00; // 
+                constexpr std::ptrdiff_t die = 0xB04; // 
+                constexpr std::ptrdiff_t m_flFrameMax = 0xB08; // 
+                constexpr std::ptrdiff_t x = 0xB0C; // 
+                constexpr std::ptrdiff_t y = 0xB10; // 
+                constexpr std::ptrdiff_t fadeSpeed = 0xB14; // 
+                constexpr std::ptrdiff_t bounceFactor = 0xB18; // 
+                constexpr std::ptrdiff_t hitSound = 0xB1C; // 
+                constexpr std::ptrdiff_t priority = 0xB20; // 
+                constexpr std::ptrdiff_t tentOffset = 0xB24; // 
+                constexpr std::ptrdiff_t m_vecTempEntAngVelocity = 0xB30; // 
+                constexpr std::ptrdiff_t tempent_renderamt = 0xB3C; // 
+                constexpr std::ptrdiff_t m_vecNormal = 0xB40; // 
+                constexpr std::ptrdiff_t m_flSpriteScale = 0xB4C; // 
+                constexpr std::ptrdiff_t m_nFlickerFrame = 0xB50; // 
+                constexpr std::ptrdiff_t m_flFrameRate = 0xB54; // 
+                constexpr std::ptrdiff_t m_flFrame = 0xB58; // 
+                constexpr std::ptrdiff_t m_pszImpactEffect = 0xB60; // 
+                constexpr std::ptrdiff_t m_pszParticleEffect = 0xB68; // 
+                constexpr std::ptrdiff_t m_bParticleCollision = 0xB70; // 
+                constexpr std::ptrdiff_t m_iLastCollisionFrame = 0xB74; // 
+                constexpr std::ptrdiff_t m_vLastCollisionOrigin = 0xB78; // 
+                constexpr std::ptrdiff_t m_vecTempEntVelocity = 0xB84; // 
+                constexpr std::ptrdiff_t m_vecPrevAbsOrigin = 0xB90; // 
+                constexpr std::ptrdiff_t m_vecTempEntAcceleration = 0xB9C; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -15838,8 +16256,8 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_hModel = 0x38; // 
                 constexpr std::ptrdiff_t m_flModelScale = 0x118; // 
                 constexpr std::ptrdiff_t m_flSpawnOffset = 0x11C; // 
-                constexpr std::ptrdiff_t m_AmbientParticle = 0x120; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_SpawnParticle = 0x200; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AmbientParticle = 0x120; // 
+                constexpr std::ptrdiff_t m_SpawnParticle = 0x200; // 
             }
             // Parent: None
             // Field count: 2
@@ -15860,52 +16278,53 @@ namespace cs2_dumper {
             namespace CCitadelPreviewPlayerController {
             }
             // Parent: CAI_CitadelNPCVData
-            // Field count: 41
+            // Field count: 42
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CNPC_Boss_Tier3VData {
-                constexpr std::ptrdiff_t m_nPhase2Health = 0xFB0; // 
-                constexpr std::ptrdiff_t m_flEyeZOffset = 0xFB4; // 
-                constexpr std::ptrdiff_t m_flDefaultMoveSpeed = 0xFB8; // 
-                constexpr std::ptrdiff_t m_flNoShieldMoveSpeed = 0xFBC; // 
-                constexpr std::ptrdiff_t m_flDyingMoveSpeed = 0xFC0; // 
-                constexpr std::ptrdiff_t m_flMovingToFinalPositionSpeed = 0xFC4; // 
-                constexpr std::ptrdiff_t m_DeathSmallExplosionParticle = 0xFC8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DeathLargeExplosionParticle = 0x10A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_WeakpointBrokenExplosionParticle = 0x1188; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ChargeUpExplosionParticle = 0x1268; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_strWIPModelName = 0x1348; // 
-                constexpr std::ptrdiff_t m_DyingSmallExplosion = 0x1428; // 
-                constexpr std::ptrdiff_t m_AvatarKilledSound = 0x1438; // 
-                constexpr std::ptrdiff_t m_AvatarBecomePatronSound = 0x1448; // 
-                constexpr std::ptrdiff_t m_PatronLandedSound = 0x1458; // 
-                constexpr std::ptrdiff_t m_PatronKilledSound = 0x1468; // 
-                constexpr std::ptrdiff_t m_LaserSound = 0x1478; // 
-                constexpr std::ptrdiff_t m_LaserBeamModifier = 0x1488; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_DyingModifier = 0x1498; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_VulnerableModifier = 0x14A8; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_Phase1Modifier = 0x14B8; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_Phase2Modifier = 0x14C8; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_BackdoorProtection = 0x14D8; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_ObjectiveRegen = 0x14E8; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_LaserChargingParticle = 0x14F8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_LaserBeamEffect = 0x15D8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_LaserPreviewEffect = 0x16B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_LaserDamageEffect = 0x1798; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_flLaserTargetingZOffset = 0x1878; // 
-                constexpr std::ptrdiff_t m_flLaserTrackingSpeed = 0x187C; // 
-                constexpr std::ptrdiff_t m_flLaserTrackingMaxSpeed = 0x1880; // 
-                constexpr std::ptrdiff_t m_flLaserCastingTrackSpeed = 0x1884; // 
-                constexpr std::ptrdiff_t m_flLaserCastingTrackMaxSpeed = 0x1888; // 
-                constexpr std::ptrdiff_t m_flLaserDPSToPlayers = 0x188C; // 
-                constexpr std::ptrdiff_t m_flLaserDPSToNPCs = 0x1890; // 
-                constexpr std::ptrdiff_t m_flNoShieldLaserTrackingSpeed = 0x1894; // 
-                constexpr std::ptrdiff_t m_flNoShieldLaserTrackingMaxSpeed = 0x1898; // 
-                constexpr std::ptrdiff_t m_flNoShieldLaserCastingTrackSpeed = 0x189C; // 
-                constexpr std::ptrdiff_t m_flNoShieldLaserCastingTrackMaxSpeed = 0x18A0; // 
-                constexpr std::ptrdiff_t m_flNoShieldLaserDPSToPlayers = 0x18A4; // 
-                constexpr std::ptrdiff_t m_flNoShieldLaserDPSToNPCs = 0x18A8; // 
+                constexpr std::ptrdiff_t m_nPhase2Health = 0x10D8; // 
+                constexpr std::ptrdiff_t m_flEyeZOffset = 0x10DC; // 
+                constexpr std::ptrdiff_t m_flDefaultMoveSpeed = 0x10E0; // 
+                constexpr std::ptrdiff_t m_flNoShieldMoveSpeed = 0x10E4; // 
+                constexpr std::ptrdiff_t m_flDyingMoveSpeed = 0x10E8; // 
+                constexpr std::ptrdiff_t m_flMovingToFinalPositionSpeed = 0x10EC; // 
+                constexpr std::ptrdiff_t m_DeathSmallExplosionParticle = 0x10F0; // 
+                constexpr std::ptrdiff_t m_DeathLargeExplosionParticle = 0x11D0; // 
+                constexpr std::ptrdiff_t m_WeakpointBrokenExplosionParticle = 0x12B0; // 
+                constexpr std::ptrdiff_t m_ChargeUpExplosionParticle = 0x1390; // 
+                constexpr std::ptrdiff_t m_strWIPModelName = 0x1470; // 
+                constexpr std::ptrdiff_t m_DyingSmallExplosion = 0x1550; // 
+                constexpr std::ptrdiff_t m_AvatarKilledSound = 0x1560; // 
+                constexpr std::ptrdiff_t m_AvatarBecomePatronSound = 0x1570; // 
+                constexpr std::ptrdiff_t m_PatronLandedSound = 0x1580; // 
+                constexpr std::ptrdiff_t m_PatronKilledSound = 0x1590; // 
+                constexpr std::ptrdiff_t m_LaserSound = 0x15A0; // 
+                constexpr std::ptrdiff_t m_LaserBeamModifier = 0x15B0; // 
+                constexpr std::ptrdiff_t m_DyingModifier = 0x15C0; // 
+                constexpr std::ptrdiff_t m_VulnerableModifier = 0x15D0; // 
+                constexpr std::ptrdiff_t m_Phase1Modifier = 0x15E0; // 
+                constexpr std::ptrdiff_t m_Phase2Modifier = 0x15F0; // 
+                constexpr std::ptrdiff_t m_BackdoorProtection = 0x1600; // 
+                constexpr std::ptrdiff_t m_ObjectiveRegen = 0x1610; // 
+                constexpr std::ptrdiff_t m_LaserChargingParticle = 0x1620; // 
+                constexpr std::ptrdiff_t m_LaserBeamEffect = 0x1700; // 
+                constexpr std::ptrdiff_t m_LaserPreviewEffect = 0x17E0; // 
+                constexpr std::ptrdiff_t m_LaserDamageEffect = 0x18C0; // 
+                constexpr std::ptrdiff_t m_flLaserTargetingZOffset = 0x19A0; // 
+                constexpr std::ptrdiff_t m_flLaserTrackingSpeed = 0x19A4; // 
+                constexpr std::ptrdiff_t m_flLaserTrackingMaxSpeed = 0x19A8; // 
+                constexpr std::ptrdiff_t m_flLaserCastingTrackSpeed = 0x19AC; // 
+                constexpr std::ptrdiff_t m_flLaserCastingTrackMaxSpeed = 0x19B0; // 
+                constexpr std::ptrdiff_t m_flLaserDPSToPlayers = 0x19B4; // 
+                constexpr std::ptrdiff_t m_flLaserDPSToNPCs = 0x19B8; // 
+                constexpr std::ptrdiff_t m_flLaserDPSMaxHealth = 0x19BC; // 
+                constexpr std::ptrdiff_t m_flNoShieldLaserTrackingSpeed = 0x19C0; // 
+                constexpr std::ptrdiff_t m_flNoShieldLaserTrackingMaxSpeed = 0x19C4; // 
+                constexpr std::ptrdiff_t m_flNoShieldLaserCastingTrackSpeed = 0x19C8; // 
+                constexpr std::ptrdiff_t m_flNoShieldLaserCastingTrackMaxSpeed = 0x19CC; // 
+                constexpr std::ptrdiff_t m_flNoShieldLaserDPSToPlayers = 0x19D0; // 
+                constexpr std::ptrdiff_t m_flNoShieldLaserDPSToNPCs = 0x19D4; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 2
@@ -15920,7 +16339,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CItemSingleTargetStunVData {
                 constexpr std::ptrdiff_t m_StunDelayModifier = 0x15A8; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_CastParticle = 0x15B8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x15B8; // 
             }
             // Parent: CCitadel_Item_TrackingProjectileApplyModifierVData
             // Field count: 1
@@ -15928,7 +16347,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CItem_WitheringWhip_VData {
-                constexpr std::ptrdiff_t m_DebuffModifier = 0x16A8; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_DebuffModifier = 0x16A8; // 
             }
             // Parent: C_PointEntity
             // Field count: 9
@@ -15976,8 +16395,8 @@ namespace cs2_dumper {
             // Parent: C_CitadelBaseAbility
             // Field count: 2
             namespace CCitadel_Ability_ViperHookblade {
-                constexpr std::ptrdiff_t m_vecOutgoingHitList = 0xCA0; // 
-                constexpr std::ptrdiff_t m_vecReturningHitList = 0xCB8; // 
+                constexpr std::ptrdiff_t m_vecOutgoingHitList = 0xCA0; // CUtlVector<CHandle<C_BaseEntity>>
+                constexpr std::ptrdiff_t m_vecReturningHitList = 0xCB8; // CUtlVector<CHandle<C_BaseEntity>>
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -15993,7 +16412,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Bull_Leap_BoostingVData {
-                constexpr std::ptrdiff_t m_BoostTrailParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BoostTrailParticle = 0x608; // 
             }
             // Parent: CitadelItemVData
             // Field count: 2
@@ -16026,9 +16445,9 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_cameraExplodedTransitionBackToArcher = 0x15E8; // CitadelCameraOperationsSequence_t
                 constexpr std::ptrdiff_t m_flCameraHoldAtExplosion = 0x1670; // 
                 constexpr std::ptrdiff_t m_flFadeToBlackTime = 0x1674; // 
-                constexpr std::ptrdiff_t m_SpectatingProjectileParticle = 0x1678; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1758; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_GuidedArrowChannelParticle = 0x1838; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SpectatingProjectileParticle = 0x1678; // 
+                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1758; // 
+                constexpr std::ptrdiff_t m_GuidedArrowChannelParticle = 0x1838; // 
                 constexpr std::ptrdiff_t m_ProjectileModel = 0x1918; // 
                 constexpr std::ptrdiff_t m_ArrowOffsetX = 0x19F8; // 
                 constexpr std::ptrdiff_t m_ArrowCameraDistance = 0x19FC; // 
@@ -16053,9 +16472,13 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityPowerJumpVData {
-                constexpr std::ptrdiff_t m_JumpParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_JumpParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_InAirModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_PowerJumpModifier = 0x1650; // CEmbeddedSubclass<CCitadelModifier>
+            }
+            // Parent: CCitadelModifier
+            // Field count: 0
+            namespace CCitadel_Modifier_NearbyEnemyResist {
             }
             // Parent: CCitadel_Item
             // Field count: 0
@@ -16099,7 +16522,7 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Cadence_GrandFinale_BuffVData {
                 constexpr std::ptrdiff_t m_BuildUpModifier = 0x608; // 
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x618; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x618; // 
                 constexpr std::ptrdiff_t m_ExplodeSound = 0x6F8; // 
             }
             // Parent: CCitadelModifierVData
@@ -16123,7 +16546,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_TangoTether_TetherReceiverVData {
-                constexpr std::ptrdiff_t m_strAttackBuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_strAttackBuffParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_TetherSound = 0x6E8; // 
             }
             // Parent: CCitadelModifierVData
@@ -16132,8 +16555,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_WreckerSalvageVData {
-                constexpr std::ptrdiff_t m_SalvageBeam = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ConnectBeam = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SalvageBeam = 0x608; // 
+                constexpr std::ptrdiff_t m_ConnectBeam = 0x6E8; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 1
@@ -16149,7 +16572,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Ricochet_ProcVData {
-                constexpr std::ptrdiff_t m_RicochetTracerParticle = 0x638; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_RicochetTracerParticle = 0x638; // 
             }
             // Parent: CCitadelBaseAbilityServerOnly
             // Field count: 0
@@ -16199,9 +16622,13 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_BloodBombVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_SpilledBloodModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_strBloodSpillStatName = 0x1650; // 
+            }
+            // Parent: CCitadelModifier
+            // Field count: 0
+            namespace CCitadel_Modifier_Upgrade_SpellslingerHeadshots_Buff {
             }
             // Parent: CCitadel_Modifier_BaseEventProc
             // Field count: 0
@@ -16270,7 +16697,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_nLastThinkTick = 0x330; // 
                 constexpr std::ptrdiff_t m_pGameSceneNode = 0x338; // 
                 constexpr std::ptrdiff_t m_pRenderComponent = 0x340; // 
-                constexpr std::ptrdiff_t m_pCollision = 0x348; // CCollisionProperty*
+                constexpr std::ptrdiff_t m_pCollision = 0x348; // 
                 constexpr std::ptrdiff_t m_pModifierProp = 0x350; // 
                 constexpr std::ptrdiff_t m_iMaxHealth = 0x358; // 
                 constexpr std::ptrdiff_t m_iHealth = 0x35C; // 
@@ -16362,11 +16789,11 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Mirage_SandPhantom_WhirlwindEvasion_VData {
-                constexpr std::ptrdiff_t m_AttackerHitFx = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_playerBuffSelf = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_playerBuffEnemy = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ReflectedBulletTracerParticle = 0x988; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AttackerHitFx = 0x608; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_playerBuffSelf = 0x7C8; // 
+                constexpr std::ptrdiff_t m_playerBuffEnemy = 0x8A8; // 
+                constexpr std::ptrdiff_t m_ReflectedBulletTracerParticle = 0x988; // 
                 constexpr std::ptrdiff_t m_strAttackerHitSound = 0xA68; // 
                 constexpr std::ptrdiff_t m_strVictimHitSound = 0xA78; // 
             }
@@ -16403,8 +16830,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_ArmorUpgrade_DebuffReducerVData {
-                constexpr std::ptrdiff_t m_DebuffReducedParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_PurgeCastParticle = 0x1688; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffReducedParticle = 0x15A8; // 
+                constexpr std::ptrdiff_t m_PurgeCastParticle = 0x1688; // 
                 constexpr std::ptrdiff_t m_MoveSpeedModifier = 0x1768; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CScaleFunctionBase
@@ -16436,12 +16863,12 @@ namespace cs2_dumper {
             // NetworkVarNames: m_flUpFactor (float)
             // NetworkVarNames: m_flBounceVelocity (float)
             namespace C_Citadel_Bounce_Pad {
-                constexpr std::ptrdiff_t m_flUpFactor = 0xB10; // 
-                constexpr std::ptrdiff_t m_flBounceVelocity = 0xB14; // 
-                constexpr std::ptrdiff_t m_flBarrelBounceVelocity = 0xB18; // 
-                constexpr std::ptrdiff_t m_flBarrelUpFactor = 0xB1C; // 
-                constexpr std::ptrdiff_t m_bSpeedOnLand = 0xB20; // 
-                constexpr std::ptrdiff_t m_bHasBouncedPlayerBefore = 0xB21; // 
+                constexpr std::ptrdiff_t m_flUpFactor = 0xB08; // 
+                constexpr std::ptrdiff_t m_flBounceVelocity = 0xB0C; // 
+                constexpr std::ptrdiff_t m_flBarrelBounceVelocity = 0xB10; // 
+                constexpr std::ptrdiff_t m_flBarrelUpFactor = 0xB14; // 
+                constexpr std::ptrdiff_t m_bSpeedOnLand = 0xB18; // 
+                constexpr std::ptrdiff_t m_bHasBouncedPlayerBefore = 0xB19; // 
             }
             // Parent: C_BreakableProp
             // Field count: 1
@@ -16456,7 +16883,7 @@ namespace cs2_dumper {
             // MNetworkIncludeByName
             // NetworkVarNames: m_bAwake (bool)
             namespace C_PhysicsProp {
-                constexpr std::ptrdiff_t m_bAwake = 0xC90; // 
+                constexpr std::ptrdiff_t m_bAwake = 0xC88; // 
             }
             // Parent: CBaseProp
             // Field count: 29
@@ -16465,35 +16892,35 @@ namespace cs2_dumper {
             // NetworkVarNames: m_CPropDataComponent (CPropDataComponent::Storage_t)
             // NetworkVarNames: m_noGhostCollision (bool)
             namespace C_BreakableProp {
-                constexpr std::ptrdiff_t m_CPropDataComponent = 0xB48; // 
-                constexpr std::ptrdiff_t m_OnBreak = 0xB88; // 
-                constexpr std::ptrdiff_t m_OnHealthChanged = 0xBB0; // 
-                constexpr std::ptrdiff_t m_OnTakeDamage = 0xBD8; // 
-                constexpr std::ptrdiff_t m_impactEnergyScale = 0xC00; // 
-                constexpr std::ptrdiff_t m_iMinHealthDmg = 0xC04; // 
-                constexpr std::ptrdiff_t m_flPressureDelay = 0xC08; // 
-                constexpr std::ptrdiff_t m_flDefBurstScale = 0xC0C; // 
-                constexpr std::ptrdiff_t m_vDefBurstOffset = 0xC10; // 
-                constexpr std::ptrdiff_t m_hBreaker = 0xC1C; // 
-                constexpr std::ptrdiff_t m_PerformanceMode = 0xC20; // 
-                constexpr std::ptrdiff_t m_flPreventDamageBeforeTime = 0xC24; // 
-                constexpr std::ptrdiff_t m_BreakableContentsType = 0xC28; // 
-                constexpr std::ptrdiff_t m_strBreakableContentsPropGroupOverride = 0xC30; // 
-                constexpr std::ptrdiff_t m_strBreakableContentsParticleOverride = 0xC38; // 
-                constexpr std::ptrdiff_t m_bHasBreakPiecesOrCommands = 0xC40; // 
-                constexpr std::ptrdiff_t m_explodeDamage = 0xC44; // 
-                constexpr std::ptrdiff_t m_explodeRadius = 0xC48; // 
-                constexpr std::ptrdiff_t m_explosionDelay = 0xC50; // 
-                constexpr std::ptrdiff_t m_explosionBuildupSound = 0xC58; // 
-                constexpr std::ptrdiff_t m_explosionCustomEffect = 0xC60; // 
-                constexpr std::ptrdiff_t m_explosionCustomSound = 0xC68; // 
-                constexpr std::ptrdiff_t m_explosionModifier = 0xC70; // 
-                constexpr std::ptrdiff_t m_hPhysicsAttacker = 0xC78; // 
-                constexpr std::ptrdiff_t m_flLastPhysicsInfluenceTime = 0xC7C; // 
-                constexpr std::ptrdiff_t m_flDefaultFadeScale = 0xC80; // 
-                constexpr std::ptrdiff_t m_hLastAttacker = 0xC84; // 
-                constexpr std::ptrdiff_t m_hFlareEnt = 0xC88; // 
-                constexpr std::ptrdiff_t m_noGhostCollision = 0xC8C; // 
+                constexpr std::ptrdiff_t m_CPropDataComponent = 0xB40; // 
+                constexpr std::ptrdiff_t m_OnBreak = 0xB80; // 
+                constexpr std::ptrdiff_t m_OnHealthChanged = 0xBA8; // 
+                constexpr std::ptrdiff_t m_OnTakeDamage = 0xBD0; // 
+                constexpr std::ptrdiff_t m_impactEnergyScale = 0xBF8; // 
+                constexpr std::ptrdiff_t m_iMinHealthDmg = 0xBFC; // 
+                constexpr std::ptrdiff_t m_flPressureDelay = 0xC00; // 
+                constexpr std::ptrdiff_t m_flDefBurstScale = 0xC04; // 
+                constexpr std::ptrdiff_t m_vDefBurstOffset = 0xC08; // 
+                constexpr std::ptrdiff_t m_hBreaker = 0xC14; // 
+                constexpr std::ptrdiff_t m_PerformanceMode = 0xC18; // 
+                constexpr std::ptrdiff_t m_flPreventDamageBeforeTime = 0xC1C; // 
+                constexpr std::ptrdiff_t m_BreakableContentsType = 0xC20; // 
+                constexpr std::ptrdiff_t m_strBreakableContentsPropGroupOverride = 0xC28; // 
+                constexpr std::ptrdiff_t m_strBreakableContentsParticleOverride = 0xC30; // 
+                constexpr std::ptrdiff_t m_bHasBreakPiecesOrCommands = 0xC38; // 
+                constexpr std::ptrdiff_t m_explodeDamage = 0xC3C; // 
+                constexpr std::ptrdiff_t m_explodeRadius = 0xC40; // 
+                constexpr std::ptrdiff_t m_explosionDelay = 0xC48; // 
+                constexpr std::ptrdiff_t m_explosionBuildupSound = 0xC50; // 
+                constexpr std::ptrdiff_t m_explosionCustomEffect = 0xC58; // 
+                constexpr std::ptrdiff_t m_explosionCustomSound = 0xC60; // 
+                constexpr std::ptrdiff_t m_explosionModifier = 0xC68; // 
+                constexpr std::ptrdiff_t m_hPhysicsAttacker = 0xC70; // 
+                constexpr std::ptrdiff_t m_flLastPhysicsInfluenceTime = 0xC74; // 
+                constexpr std::ptrdiff_t m_flDefaultFadeScale = 0xC78; // 
+                constexpr std::ptrdiff_t m_hLastAttacker = 0xC7C; // 
+                constexpr std::ptrdiff_t m_hFlareEnt = 0xC80; // 
+                constexpr std::ptrdiff_t m_noGhostCollision = 0xC84; // 
             }
             // Parent: CCitadelBaseLockonAbility
             // Field count: 4
@@ -16526,7 +16953,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Rutger_Pulse_VData {
-                constexpr std::ptrdiff_t m_AuraModifier = 0x1560; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_AuraModifier = 0x1560; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 0
@@ -16545,13 +16972,13 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityViscousBowlingVData {
-                constexpr std::ptrdiff_t m_TransformStartFx = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplodeFX = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_WallImpactFx = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BallTrailFx = 0x1800; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_GroundImpactParticle = 0x18E0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_JumpParticle = 0x19C0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DirectionParticle = 0x1AA0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TransformStartFx = 0x1560; // 
+                constexpr std::ptrdiff_t m_ExplodeFX = 0x1640; // 
+                constexpr std::ptrdiff_t m_WallImpactFx = 0x1720; // 
+                constexpr std::ptrdiff_t m_BallTrailFx = 0x1800; // 
+                constexpr std::ptrdiff_t m_GroundImpactParticle = 0x18E0; // 
+                constexpr std::ptrdiff_t m_JumpParticle = 0x19C0; // 
+                constexpr std::ptrdiff_t m_DirectionParticle = 0x1AA0; // 
                 constexpr std::ptrdiff_t m_flVerticalCameraOffsetLerpTime = 0x1B80; // 
                 constexpr std::ptrdiff_t m_flVerticalCameraOffsetBias = 0x1B84; // 
                 constexpr std::ptrdiff_t m_flVerticalCameraOffset = 0x1B88; // 
@@ -16607,8 +17034,8 @@ namespace cs2_dumper {
             // NetworkVarNames: m_CCitadelAbilityComponent (CCitadelAbilityComponent::Storage_t)
             // NetworkVarNames: m_bPickedUp (bool)
             namespace CCitadelItemPickupRejuv {
-                constexpr std::ptrdiff_t m_CCitadelAbilityComponent = 0xB40; // 
-                constexpr std::ptrdiff_t m_bPickedUp = 0xCE0; // 
+                constexpr std::ptrdiff_t m_CCitadelAbilityComponent = 0xB38; // 
+                constexpr std::ptrdiff_t m_bPickedUp = 0xCD8; // 
             }
             // Parent: C_BaseToggle
             // Field count: 0
@@ -16691,6 +17118,13 @@ namespace cs2_dumper {
             namespace C_ItemAmmo {
             }
             // Parent: CCitadelModifier
+            // Field count: 3
+            namespace CCitadel_Modifier_Gunslinger_DemonCarbine {
+                constexpr std::ptrdiff_t m_nBulletCount = 0xC0; // 
+                constexpr std::ptrdiff_t m_flElapsedPct = 0xC4; // 
+                constexpr std::ptrdiff_t m_nFullyChargedParticle = 0xC8; // 
+            }
+            // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_LashGrappleTarget {
             }
@@ -16762,9 +17196,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityExplosiveBarrelVData {
-                constexpr std::ptrdiff_t m_BarrelExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_MirvExplodeParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BarrelBurnParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BarrelExplodeParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_MirvExplodeParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_BarrelBurnParticle = 0x1720; // 
                 constexpr std::ptrdiff_t m_strExplodeSound = 0x1800; // 
                 constexpr std::ptrdiff_t m_strMirvExplodeSound = 0x1810; // 
                 constexpr std::ptrdiff_t m_strRiccochetSound = 0x1820; // 
@@ -16781,10 +17215,10 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flResupplyForceScale = 0x1560; // 
                 constexpr std::ptrdiff_t m_flResupplyUp = 0x1564; // 
                 constexpr std::ptrdiff_t m_strKilledSound = 0x1568; // 
-                constexpr std::ptrdiff_t m_AuraModifier = 0x1578; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_AuraModifier = 0x1578; // 
                 constexpr std::ptrdiff_t m_DispenserModel = 0x1588; // 
-                constexpr std::ptrdiff_t m_SprayParticle = 0x1668; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DestroyedParticle = 0x1748; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SprayParticle = 0x1668; // 
+                constexpr std::ptrdiff_t m_DestroyedParticle = 0x1748; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 2
@@ -16792,17 +17226,17 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Fervor_VData {
-                constexpr std::ptrdiff_t m_FervorParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_FervorParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_BonusesModifier = 0x6E8; // CEmbeddedSubclass<CCitadelModifier>
-            }
-            // Parent: CCitadel_Modifier_BaseShield
-            // Field count: 0
-            namespace CCitadel_Modifier_RegeneratingBulletShield {
             }
             // Parent: CCitadelModifier
             // Field count: 1
             namespace CCitadel_Modifier_WeaponPowerForHealth {
                 constexpr std::ptrdiff_t m_flHealthDrained = 0xC0; // 
+            }
+            // Parent: CCitadel_Modifier_BaseShield
+            // Field count: 0
+            namespace CCitadel_Modifier_RegeneratingBulletShield {
             }
             // Parent: C_DynamicProp
             // Field count: 0
@@ -16838,7 +17272,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_Mirage_FireScarabs_HealthLoss_VData {
-                constexpr std::ptrdiff_t m_SiphonParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SiphonParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_HealModifier = 0x6E8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CitadelAbilityVData
@@ -16847,8 +17281,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityTokamakHeatSinksInherentVData {
-                constexpr std::ptrdiff_t m_HotTracerParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HotWeaponFxParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_HotTracerParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_HotWeaponFxParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_strHotWeaponShootSound = 0x1720; // 
                 constexpr std::ptrdiff_t m_strOverheatRed = 0x1730; // 
                 constexpr std::ptrdiff_t m_strOverheatFull = 0x1740; // 
@@ -16896,7 +17330,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_SnipeGlowVData {
-                constexpr std::ptrdiff_t m_GlowParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_GlowParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 5
@@ -16916,11 +17350,11 @@ namespace cs2_dumper {
             // Parent: CBaseAnimGraph
             // Field count: 5
             namespace CCitadel_GrandFinaleStage {
-                constexpr std::ptrdiff_t m_vStartPos = 0xB08; // 
-                constexpr std::ptrdiff_t m_vEndPos = 0xB14; // 
-                constexpr std::ptrdiff_t m_flStartEmitTime = 0xB20; // 
-                constexpr std::ptrdiff_t m_flEndEmitTime = 0xB24; // 
-                constexpr std::ptrdiff_t m_nTouchCount = 0xB28; // 
+                constexpr std::ptrdiff_t m_vStartPos = 0xB00; // 
+                constexpr std::ptrdiff_t m_vEndPos = 0xB0C; // 
+                constexpr std::ptrdiff_t m_flStartEmitTime = 0xB18; // 
+                constexpr std::ptrdiff_t m_flEndEmitTime = 0xB1C; // 
+                constexpr std::ptrdiff_t m_nTouchCount = 0xB20; // 
             }
             // Parent: CCitadelModifierAura
             // Field count: 0
@@ -16983,7 +17417,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ShieldImpactVData {
-                constexpr std::ptrdiff_t m_ShieldBreakParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ShieldBreakParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_ShieldBreakSound = 0x6E8; // 
             }
             // Parent: CEntityComponent
@@ -17031,7 +17465,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Infuser_VData {
-                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // 
             }
             // Parent: None
             // Field count: 1
@@ -17047,14 +17481,14 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CNPC_MidBossVData {
-                constexpr std::ptrdiff_t m_iStartingHealth = 0xFB0; // 
-                constexpr std::ptrdiff_t m_iHealthGainPerMinute = 0xFB4; // 
-                constexpr std::ptrdiff_t m_flAggroTime = 0xFB8; // 
-                constexpr std::ptrdiff_t m_DyingSmallExplosion = 0xFC0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DyingFinalExplosion = 0x10A0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_flDyingDuration = 0x1180; // 
-                constexpr std::ptrdiff_t m_KnockbackAura = 0x1188; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_AggroEnemy = 0x1198; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_iStartingHealth = 0x10D8; // 
+                constexpr std::ptrdiff_t m_iHealthGainPerMinute = 0x10DC; // 
+                constexpr std::ptrdiff_t m_flAggroTime = 0x10E0; // 
+                constexpr std::ptrdiff_t m_DyingSmallExplosion = 0x10E8; // 
+                constexpr std::ptrdiff_t m_DyingFinalExplosion = 0x11C8; // 
+                constexpr std::ptrdiff_t m_flDyingDuration = 0x12A8; // 
+                constexpr std::ptrdiff_t m_KnockbackAura = 0x12B0; // CEmbeddedSubclass<CCitadelModifier>
+                constexpr std::ptrdiff_t m_AggroEnemy = 0x12C0; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifierAuraVData
             // Field count: 1
@@ -17062,7 +17496,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Thumper_PullAOE_VData {
-                constexpr std::ptrdiff_t m_AuraParticle = 0x648; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AuraParticle = 0x648; // 
             }
             // Parent: CCitadelModifierAura
             // Field count: 0
@@ -17078,13 +17512,13 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Tengu_StoneFormVData {
-                constexpr std::ptrdiff_t m_CastParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_StoneFormParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_CastParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_StoneFormParticle = 0x1720; // 
                 constexpr std::ptrdiff_t m_CastTargetSound = 0x1800; // 
                 constexpr std::ptrdiff_t m_strImpactSound = 0x1810; // 
                 constexpr std::ptrdiff_t m_strFallCollideImpactSound = 0x1820; // 
-                constexpr std::ptrdiff_t m_DragModifier = 0x1830; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_DragModifier = 0x1830; // 
                 constexpr std::ptrdiff_t m_strTrueFormModel = 0x1840; // 
                 constexpr std::ptrdiff_t m_flLandHoldTime = 0x1920; // 
                 constexpr std::ptrdiff_t m_flRisingTime = 0x1924; // 
@@ -17096,8 +17530,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_UltComboVData {
-                constexpr std::ptrdiff_t m_MeleeSwingParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_MeleeImpactParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_MeleeSwingParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_MeleeImpactParticle = 0x1640; // 
                 constexpr std::ptrdiff_t m_SelfModifier = 0x1720; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_TargetModifier = 0x1730; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_KillCheckModifier = 0x1740; // CEmbeddedSubclass<CCitadelModifier>
@@ -17163,7 +17597,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_UtilityUpgrade_RocketBootsVData {
-                constexpr std::ptrdiff_t m_LaunchParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_LaunchParticle = 0x15A8; // 
                 constexpr std::ptrdiff_t m_InAirWatcherModifier = 0x1688; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadel_Modifier_BaseBulletPreRollProcVData
@@ -17181,7 +17615,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_WarpStone_Caster_VData {
-                constexpr std::ptrdiff_t m_playerBuffSelf = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_playerBuffSelf = 0x608; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 2
@@ -17189,7 +17623,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifier_SiphonBullets_HealthLoss_VData {
-                constexpr std::ptrdiff_t m_SiphonParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SiphonParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_HealModifier = 0x6E8; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifierVData
@@ -17200,10 +17634,6 @@ namespace cs2_dumper {
             namespace CCitadel_Modifier_BerserkerVData {
                 constexpr std::ptrdiff_t m_BerserkerSound = 0x608; // 
                 constexpr std::ptrdiff_t m_StackModifier = 0x618; // CEmbeddedSubclass<CCitadelModifier>
-            }
-            // Parent: CCitadelModifier
-            // Field count: 0
-            namespace CCitadel_Modifier_Bullet_Shield_Pulse {
             }
             // Parent: CCitadelModifier
             // Field count: 2
@@ -17237,18 +17667,22 @@ namespace cs2_dumper {
             // NetworkVarNames: m_closedAngles (QAngle)
             // NetworkVarNames: m_hMaster (CHandle<C_BasePropDoor>)
             namespace C_BasePropDoor {
-                constexpr std::ptrdiff_t m_eDoorState = 0xDB8; // 
-                constexpr std::ptrdiff_t m_modelChanged = 0xDBC; // 
-                constexpr std::ptrdiff_t m_bLocked = 0xDBD; // 
-                constexpr std::ptrdiff_t m_bNoNPCs = 0xDBE; // 
-                constexpr std::ptrdiff_t m_closedPosition = 0xDC0; // 
-                constexpr std::ptrdiff_t m_closedAngles = 0xDCC; // 
-                constexpr std::ptrdiff_t m_hMaster = 0xDD8; // 
-                constexpr std::ptrdiff_t m_vWhereToSetLightingOrigin = 0xDDC; // 
+                constexpr std::ptrdiff_t m_eDoorState = 0xDB0; // 
+                constexpr std::ptrdiff_t m_modelChanged = 0xDB4; // 
+                constexpr std::ptrdiff_t m_bLocked = 0xDB5; // 
+                constexpr std::ptrdiff_t m_bNoNPCs = 0xDB6; // 
+                constexpr std::ptrdiff_t m_closedPosition = 0xDB8; // 
+                constexpr std::ptrdiff_t m_closedAngles = 0xDC4; // 
+                constexpr std::ptrdiff_t m_hMaster = 0xDD0; // 
+                constexpr std::ptrdiff_t m_vWhereToSetLightingOrigin = 0xDD4; // 
             }
             // Parent: C_PointEntity
             // Field count: 0
             namespace C_PointEntityAlias_info_target_portrait_root {
+            }
+            // Parent: CCitadelModifierAura
+            // Field count: 0
+            namespace CCitadel_Modifier_GarbageAura {
             }
             // Parent: CCitadel_Item
             // Field count: 0
@@ -17265,6 +17699,14 @@ namespace cs2_dumper {
             // Parent: C_CitadelBaseAbility
             // Field count: 0
             namespace CCitadel_Ability_SelfVacuum {
+            }
+            // Parent: CCitadelModifierVData
+            // Field count: 1
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CModifier_Upgrade_ArcaneSurge_WeaponBuff_VData {
+                constexpr std::ptrdiff_t m_TriggeredSound = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 7
@@ -17320,15 +17762,19 @@ namespace cs2_dumper {
             // Field count: 0
             namespace CCitadel_Modifier_ActiveDisarm_SpiritSteal {
             }
+            // Parent: CCitadel_Modifier_BaseEventProc
+            // Field count: 0
+            namespace CCitadel_Modifier_SpiritSnatch {
+            }
             // Parent: C_BreakableProp
             // Field count: 6
             namespace C_PhysPropClientside {
-                constexpr std::ptrdiff_t m_flTouchDelta = 0xC90; // 
-                constexpr std::ptrdiff_t m_fDeathTime = 0xC94; // 
-                constexpr std::ptrdiff_t m_inertiaScale = 0xC98; // 
-                constexpr std::ptrdiff_t m_vecDamagePosition = 0xC9C; // 
-                constexpr std::ptrdiff_t m_vecDamageDirection = 0xCA8; // 
-                constexpr std::ptrdiff_t m_nDamageType = 0xCB4; // 
+                constexpr std::ptrdiff_t m_flTouchDelta = 0xC88; // 
+                constexpr std::ptrdiff_t m_fDeathTime = 0xC8C; // 
+                constexpr std::ptrdiff_t m_inertiaScale = 0xC90; // 
+                constexpr std::ptrdiff_t m_vecDamagePosition = 0xC94; // 
+                constexpr std::ptrdiff_t m_vecDamageDirection = 0xCA0; // 
+                constexpr std::ptrdiff_t m_nDamageType = 0xCAC; // 
             }
             // Parent: C_CitadelProjectile
             // Field count: 0
@@ -17358,7 +17804,7 @@ namespace cs2_dumper {
             // Metadata:
             // NetworkVarNames: m_vecPuddleModifiers (CUtlVector<EHANDLE>)
             namespace CCitadel_Ability_GooGrenade {
-                constexpr std::ptrdiff_t m_vecPuddleModifiers = 0xCA0; // 
+                constexpr std::ptrdiff_t m_vecPuddleModifiers = 0xCA0; // CUtlVector<CHandle<C_BaseEntity>>
                 constexpr std::ptrdiff_t m_LastDetonateTime = 0xEE8; // 
             }
             // Parent: CitadelAbilityVData
@@ -17367,9 +17813,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_ViscousWeapon_Alt_VData {
-                constexpr std::ptrdiff_t m_strChargingParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FiringParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_strChargingParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_FiringParticle = 0x1720; // 
                 constexpr std::ptrdiff_t m_ExplosionSound = 0x1800; // 
                 constexpr std::ptrdiff_t m_ChargeSound = 0x1810; // 
                 constexpr std::ptrdiff_t m_ShootSound = 0x1820; // 
@@ -17399,6 +17845,11 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_hAbilityToTrigger = 0xCA0; // 
                 constexpr std::ptrdiff_t m_flDashCastStartTime = 0xCA4; // 
                 constexpr std::ptrdiff_t m_vDashCastDir = 0xCA8; // 
+            }
+            // Parent: CBaseFilter
+            // Field count: 1
+            namespace CFilterProximity {
+                constexpr std::ptrdiff_t m_flRadius = 0x5C0; // 
             }
             // Parent: C_BaseEntity
             // Field count: 4
@@ -17433,9 +17884,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_ShivDashVData {
-                constexpr std::ptrdiff_t m_DashParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DashEchoParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DashTrailParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DashParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_DashEchoParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_DashTrailParticle = 0x7C8; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 10
@@ -17443,10 +17894,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_BurrowVData {
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BurrowStartParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BurrowEndParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BurrowInGroundParticle = 0x1800; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_BurrowStartParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_BurrowEndParticle = 0x1720; // 
+                constexpr std::ptrdiff_t m_BurrowInGroundParticle = 0x1800; // 
                 constexpr std::ptrdiff_t m_BurrowModifier = 0x18E0; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_SpinModifier = 0x18F0; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_strBurrowEndSound = 0x1900; // 
@@ -17464,12 +17915,22 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_Savior_VData {
-                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TrailParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BuffParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_TrailParticle = 0x6E8; // 
             }
             // Parent: CCitadelModifierAura
             // Field count: 0
             namespace CCitadel_Modifier_Cadence_AnthemAOE {
+            }
+            // Parent: CCitadel_Modifier_StunnedVData
+            // Field count: 3
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Modifier_GarbageAuraTargetModifierVData {
+                constexpr std::ptrdiff_t m_flOuterSpeedScale = 0x6E8; // 
+                constexpr std::ptrdiff_t m_flSpeedScaleBias = 0x6EC; // 
+                constexpr std::ptrdiff_t m_TargetLoopingSound = 0x6F0; // 
             }
             // Parent: CitadelAbilityVData
             // Field count: 16
@@ -17477,10 +17938,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityWreckerTeleportVData {
-                constexpr std::ptrdiff_t m_SpectatingProjectileParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ChannelParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CastParticle = 0x1800; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SpectatingProjectileParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_ExplosionParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_ChannelParticle = 0x1720; // 
+                constexpr std::ptrdiff_t m_CastParticle = 0x1800; // 
                 constexpr std::ptrdiff_t m_ArrowOffsetX = 0x18E0; // 
                 constexpr std::ptrdiff_t m_ArrowCameraDistance = 0x18E4; // 
                 constexpr std::ptrdiff_t m_ArrowCameraHeightOffset = 0x18E8; // 
@@ -17494,9 +17955,22 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_flBaseProjectileSpeed = 0x192C; // 
                 constexpr std::ptrdiff_t m_flMaxProjectileSpeed = 0x1930; // 
             }
+            // Parent: CitadelItemVData
+            // Field count: 1
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_WeaponUpgrade_SpellslingerHeadshots_VData {
+                constexpr std::ptrdiff_t m_HeadshotBuffModifier = 0x15A8; // CEmbeddedSubclass<CCitadelModifier>
+            }
             // Parent: CCitadelModifier
             // Field count: 0
             namespace CCitadel_Modifier_Savior {
+            }
+            // Parent: CCitadelModifier
+            // Field count: 1
+            namespace CCitadel_Modifier_Damage_Taken_Reduction_Handicap {
+                constexpr std::ptrdiff_t m_flValue = 0xC0; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -17539,7 +18013,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_BoucePadVData {
-                constexpr std::ptrdiff_t m_StompParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_StompParticle = 0x608; // 
                 constexpr std::ptrdiff_t m_strImpactSound = 0x6E8; // 
             }
             // Parent: CitadelAbilityVData
@@ -17548,7 +18022,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityStompVData {
-                constexpr std::ptrdiff_t m_StompParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_StompParticle = 0x1560; // 
                 constexpr std::ptrdiff_t m_strStompExplosionSound = 0x1640; // 
                 constexpr std::ptrdiff_t m_strCastDelayLocalPlayerSound = 0x1650; // 
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x1660; // CEmbeddedSubclass<CCitadelModifier>
@@ -17559,12 +18033,16 @@ namespace cs2_dumper {
             namespace CCitadel_Ability_PassiveBeefy {
             }
             // Parent: CitadelAbilityVData
-            // Field count: 1
+            // Field count: 5
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityStormCloudVData {
-                constexpr std::ptrdiff_t m_StormCloudModifier = 0x1560; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_StormCloudModifier = 0x1560; // 
+                constexpr std::ptrdiff_t m_flOscillateFrequency = 0x1570; // 
+                constexpr std::ptrdiff_t m_flOscillateSpeed = 0x1574; // 
+                constexpr std::ptrdiff_t m_flOscillateSpeedStart = 0x1578; // 
+                constexpr std::ptrdiff_t m_flOscillateStartOffset = 0x157C; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
@@ -17607,9 +18085,9 @@ namespace cs2_dumper {
             namespace CCitadel_Ability_ShivDaggerVData {
                 constexpr std::ptrdiff_t m_DamageDebuffModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_SlowDebuffModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_DaggerStuckParticle = 0x1580; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DaggerImpactParticle = 0x1660; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DaggerExplodeParticle = 0x1740; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DaggerStuckParticle = 0x1580; // 
+                constexpr std::ptrdiff_t m_DaggerImpactParticle = 0x1660; // 
+                constexpr std::ptrdiff_t m_DaggerExplodeParticle = 0x1740; // 
                 constexpr std::ptrdiff_t m_strDaggerHitSound = 0x1820; // 
                 constexpr std::ptrdiff_t m_strDaggerExplodeSound = 0x1830; // 
             }
@@ -17650,10 +18128,10 @@ namespace cs2_dumper {
             // NetworkVarNames: m_nNameOffset (int)
             // NetworkVarNames: m_sAmbientNoise (CUtlString)
             namespace C_Citadel_BreakblePropPickup {
-                constexpr std::ptrdiff_t m_bActive = 0xB08; // 
-                constexpr std::ptrdiff_t m_sPickupName = 0xB10; // 
-                constexpr std::ptrdiff_t m_nNameOffset = 0xB18; // 
-                constexpr std::ptrdiff_t m_sAmbientNoise = 0xB20; // 
+                constexpr std::ptrdiff_t m_bActive = 0xB00; // 
+                constexpr std::ptrdiff_t m_sPickupName = 0xB08; // 
+                constexpr std::ptrdiff_t m_nNameOffset = 0xB10; // 
+                constexpr std::ptrdiff_t m_sAmbientNoise = 0xB18; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 2
@@ -17708,8 +18186,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_NearDeathFXVData {
-                constexpr std::ptrdiff_t m_EnemyNearDeathParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_FriendlyNearDeathParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_EnemyNearDeathParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_FriendlyNearDeathParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_sSelfDestructStart = 0x7C8; // 
                 constexpr std::ptrdiff_t m_sSelfDestructEnd = 0x7D8; // 
             }
@@ -17728,8 +18206,8 @@ namespace cs2_dumper {
             // Parent: CBaseAnimGraph
             // Field count: 2
             namespace C_PhysMagnet {
-                constexpr std::ptrdiff_t m_aAttachedObjectsFromServer = 0xB08; // 
-                constexpr std::ptrdiff_t m_aAttachedObjects = 0xB20; // 
+                constexpr std::ptrdiff_t m_aAttachedObjectsFromServer = 0xB00; // 
+                constexpr std::ptrdiff_t m_aAttachedObjects = 0xB18; // CUtlVector<CHandle<C_BaseEntity>>
             }
             // Parent: CitadelAbilityVData
             // Field count: 6
@@ -17740,9 +18218,9 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_CurseModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_AirDampingModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_TargetWarningSound = 0x1580; // 
-                constexpr std::ptrdiff_t m_ProjectileImpactParticle = 0x1590; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TargetWarningParticle = 0x1670; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ProjectileExplodeParticle = 0x1750; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ProjectileImpactParticle = 0x1590; // 
+                constexpr std::ptrdiff_t m_TargetWarningParticle = 0x1670; // 
+                constexpr std::ptrdiff_t m_ProjectileExplodeParticle = 0x1750; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -17762,8 +18240,8 @@ namespace cs2_dumper {
             namespace CCitadelModifierChronoPulseGrenadePulseAreaVData {
                 constexpr std::ptrdiff_t m_DebuffModifier = 0x608; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_SlowModifier = 0x618; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_PreviewRingParticle = 0x628; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AreaEffect = 0x708; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_PreviewRingParticle = 0x628; // 
+                constexpr std::ptrdiff_t m_AreaEffect = 0x708; // 
                 constexpr std::ptrdiff_t m_strArmingSound = 0x7E8; // 
                 constexpr std::ptrdiff_t m_strArmedSound = 0x7F8; // 
                 constexpr std::ptrdiff_t m_strLoopingSound = 0x808; // 
@@ -17810,7 +18288,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_hPlayer = 0xAC0; // 
             }
             // Parent: CBasePlayerController
-            // Field count: 27
+            // Field count: 30
             //
             // Metadata:
             // NetworkVarNames: m_ePlayState (EPlayerPlayState)
@@ -17834,38 +18312,44 @@ namespace cs2_dumper {
             // NetworkVarNames: m_bInTeamChat (bool)
             // NetworkVarNames: m_bInPartyChat (bool)
             // NetworkVarNames: m_unHeroBuildID (HeroBuildID_t)
+            // NetworkVarNames: m_bLaneSwapLocked (bool)
+            // NetworkVarNames: m_vecLaneSwapRequests (EHANDLE)
+            // NetworkVarNames: m_vecLaneSwapRejects (EHANDLE)
             // NetworkVarNames: m_hHeroPawn (CHandle<CCitadelPlayerPawn>)
             // NetworkVarNames: m_PlayerDataGlobal (PlayerDataGlobal_t)
             // NetworkVarNames: m_nDeathReplayAvailable (int8)
             // NetworkVarNames: m_unLobbyPlayerSlot (CitadelLobbyPlayerSlot_t)
             namespace CCitadelPlayerController {
-                constexpr std::ptrdiff_t m_ePlayState = 0x700; // 
-                constexpr std::ptrdiff_t m_iGuidedBotMatchLastHits = 0x704; // 
-                constexpr std::ptrdiff_t m_iGuidedBotMatchOrbsSecured = 0x708; // 
-                constexpr std::ptrdiff_t m_iGuidedBotMatchOrbsDenied = 0x70C; // 
-                constexpr std::ptrdiff_t m_iGuidedBotMatchDamageToGuardians = 0x710; // 
-                constexpr std::ptrdiff_t m_iGuidedBotMatchDamageToPlayers = 0x714; // 
-                constexpr std::ptrdiff_t m_iGuidedBotMatchDamageTaken = 0x718; // 
-                constexpr std::ptrdiff_t m_iGuidedBotMatchNetWorth = 0x71C; // 
-                constexpr std::ptrdiff_t m_iGuidedBotMatchModsPurchased = 0x720; // 
-                constexpr std::ptrdiff_t m_iGuidedBotMatchAbilityUpgrades = 0x724; // 
-                constexpr std::ptrdiff_t m_flGuideBotMatchLastTaskNagVO = 0x728; // 
-                constexpr std::ptrdiff_t m_flGuideBotLastTimeTaskCompleted = 0x72C; // 
-                constexpr std::ptrdiff_t m_eGuidedBotMatchObjective = 0x730; // 
-                constexpr std::ptrdiff_t m_nCurrentRank = 0x734; // 
-                constexpr std::ptrdiff_t m_nAssignedLane = 0x738; // 
-                constexpr std::ptrdiff_t m_nOriginalLaneAssignment = 0x739; // 
-                constexpr std::ptrdiff_t m_bIsKingPanda = 0x73A; // 
-                constexpr std::ptrdiff_t m_bBotDisconnectTakeover = 0x73B; // 
-                constexpr std::ptrdiff_t m_bInTeamChat = 0x73C; // 
-                constexpr std::ptrdiff_t m_bInPartyChat = 0x73D; // 
-                constexpr std::ptrdiff_t m_unHeroBuildID = 0x740; // 
-                constexpr std::ptrdiff_t m_hHeroPawn = 0x744; // 
-                constexpr std::ptrdiff_t m_PlayerDataGlobal = 0x780; // 
-                constexpr std::ptrdiff_t m_nDeathReplayAvailable = 0x9A0; // 
-                constexpr std::ptrdiff_t m_unLobbyPlayerSlot = 0x9A1; // 
-                constexpr std::ptrdiff_t m_bHasCheckedFriendName = 0x9A2; // 
-                constexpr std::ptrdiff_t m_sFriendName = 0x9A8; // 
+                constexpr std::ptrdiff_t m_ePlayState = 0x720; // 
+                constexpr std::ptrdiff_t m_iGuidedBotMatchLastHits = 0x724; // 
+                constexpr std::ptrdiff_t m_iGuidedBotMatchOrbsSecured = 0x728; // 
+                constexpr std::ptrdiff_t m_iGuidedBotMatchOrbsDenied = 0x72C; // 
+                constexpr std::ptrdiff_t m_iGuidedBotMatchDamageToGuardians = 0x730; // 
+                constexpr std::ptrdiff_t m_iGuidedBotMatchDamageToPlayers = 0x734; // 
+                constexpr std::ptrdiff_t m_iGuidedBotMatchDamageTaken = 0x738; // 
+                constexpr std::ptrdiff_t m_iGuidedBotMatchNetWorth = 0x73C; // 
+                constexpr std::ptrdiff_t m_iGuidedBotMatchModsPurchased = 0x740; // 
+                constexpr std::ptrdiff_t m_iGuidedBotMatchAbilityUpgrades = 0x744; // 
+                constexpr std::ptrdiff_t m_flGuideBotMatchLastTaskNagVO = 0x748; // 
+                constexpr std::ptrdiff_t m_flGuideBotLastTimeTaskCompleted = 0x74C; // 
+                constexpr std::ptrdiff_t m_eGuidedBotMatchObjective = 0x750; // 
+                constexpr std::ptrdiff_t m_nCurrentRank = 0x754; // 
+                constexpr std::ptrdiff_t m_nAssignedLane = 0x758; // 
+                constexpr std::ptrdiff_t m_nOriginalLaneAssignment = 0x759; // 
+                constexpr std::ptrdiff_t m_bIsKingPanda = 0x75A; // 
+                constexpr std::ptrdiff_t m_bBotDisconnectTakeover = 0x75B; // 
+                constexpr std::ptrdiff_t m_bInTeamChat = 0x75C; // 
+                constexpr std::ptrdiff_t m_bInPartyChat = 0x75D; // 
+                constexpr std::ptrdiff_t m_unHeroBuildID = 0x760; // 
+                constexpr std::ptrdiff_t m_bLaneSwapLocked = 0x764; // 
+                constexpr std::ptrdiff_t m_vecLaneSwapRequests = 0x768; // 
+                constexpr std::ptrdiff_t m_vecLaneSwapRejects = 0x780; // 
+                constexpr std::ptrdiff_t m_hHeroPawn = 0x798; // 
+                constexpr std::ptrdiff_t m_PlayerDataGlobal = 0x7D0; // 
+                constexpr std::ptrdiff_t m_nDeathReplayAvailable = 0x9F0; // 
+                constexpr std::ptrdiff_t m_unLobbyPlayerSlot = 0x9F1; // 
+                constexpr std::ptrdiff_t m_bHasCheckedFriendName = 0x9F2; // 
+                constexpr std::ptrdiff_t m_sFriendName = 0x9F8; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 0
@@ -17874,7 +18358,7 @@ namespace cs2_dumper {
             // Parent: C_CitadelBaseAbility
             // Field count: 1
             namespace CCitadel_Ability_Ghost_BloodShards {
-                constexpr std::ptrdiff_t m_vecDamagedTargets = 0xDF0; // 
+                constexpr std::ptrdiff_t m_vecDamagedTargets = 0xDF0; // CUtlVector<CHandle<C_BaseEntity>>
             }
             // Parent: CCitadelModifierVData
             // Field count: 0
@@ -17890,6 +18374,15 @@ namespace cs2_dumper {
             // Parent: CCitadelModifierAura
             // Field count: 0
             namespace CCitadelModifier_Viscous_Goo_Aura {
+            }
+            // Parent: CitadelAbilityVData
+            // Field count: 2
+            //
+            // Metadata:
+            // MGetKV3ClassDefaults
+            namespace CCitadel_Ability_Gunslinger_SpreadingFireVData {
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_FireDebuffModifier = 0x1640; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -17909,7 +18402,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierPowerGeneratorVData {
-                constexpr std::ptrdiff_t m_EffectToTitan = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_EffectToTitan = 0x608; // 
             }
             // Parent: CCitadelModifierVData
             // Field count: 7
@@ -17917,11 +18410,11 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_VoidSphereVData {
-                constexpr std::ptrdiff_t m_TeleportStartParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TeleportEndParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TeleportTrailParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TeleportModelParticle = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BuffModifier = 0x988; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_TeleportStartParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_TeleportEndParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_TeleportTrailParticle = 0x7C8; // 
+                constexpr std::ptrdiff_t m_TeleportModelParticle = 0x8A8; // 
+                constexpr std::ptrdiff_t m_BuffModifier = 0x988; // 
                 constexpr std::ptrdiff_t m_flPreTeleportDuration = 0x998; // 
                 constexpr std::ptrdiff_t m_strAmbientLoopingLocalPlayerSound = 0x9A0; // 
             }
@@ -17932,10 +18425,10 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Chrono_TimeWallVData {
                 constexpr std::ptrdiff_t m_AuraModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_TimeWallParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TimeWallChargeParticle = 0x1650; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TimeWallHitParticle = 0x1730; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TimeWallHitTimerParticle = 0x1810; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TimeWallParticle = 0x1570; // 
+                constexpr std::ptrdiff_t m_TimeWallChargeParticle = 0x1650; // 
+                constexpr std::ptrdiff_t m_TimeWallHitParticle = 0x1730; // 
+                constexpr std::ptrdiff_t m_TimeWallHitTimerParticle = 0x1810; // 
                 constexpr std::ptrdiff_t m_strWallCreated = 0x18F0; // 
                 constexpr std::ptrdiff_t m_strChargeUpSound = 0x1900; // 
             }
@@ -17945,7 +18438,7 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_GhostBloodShardDebuffVData {
-                constexpr std::ptrdiff_t m_BloodShardDebuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_BloodShardDebuffParticle = 0x608; // 
             }
             // Parent: CCitadelModifier
             // Field count: 2
@@ -17967,9 +18460,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityChargedShotVData {
-                constexpr std::ptrdiff_t m_ChannelParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ChannelStartParticle = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_ShootParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ChannelParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_ChannelStartParticle = 0x1640; // 
+                constexpr std::ptrdiff_t m_ShootParticle = 0x1720; // 
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -18005,7 +18498,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_TargetModifier = 0x1570; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_BulletAmpModifier = 0x1580; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_ShieldModifier = 0x1590; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_HookOutParticle = 0x15A0; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_HookOutParticle = 0x15A0; // 
                 constexpr std::ptrdiff_t m_strHookSuccessSound = 0x1680; // 
                 constexpr std::ptrdiff_t m_strHookAllySound = 0x1690; // 
                 constexpr std::ptrdiff_t m_strHookMissSound = 0x16A0; // 
@@ -18049,7 +18542,7 @@ namespace cs2_dumper {
                 constexpr std::ptrdiff_t m_pChild = 0x40; // 
                 constexpr std::ptrdiff_t m_pNextSibling = 0x48; // 
                 constexpr std::ptrdiff_t m_hParent = 0x78; // 
-                constexpr std::ptrdiff_t m_vecOrigin = 0x88; // CNetworkOriginCellCoordQuantizedVector
+                constexpr std::ptrdiff_t m_vecOrigin = 0x88; // 
                 constexpr std::ptrdiff_t m_angRotation = 0xC0; // 
                 constexpr std::ptrdiff_t m_flScale = 0xCC; // 
                 constexpr std::ptrdiff_t m_vecAbsOrigin = 0xD0; // 
@@ -18142,21 +18635,12 @@ namespace cs2_dumper {
             // NetworkVarNames: m_eAliveState (ETier3State_t)
             // NetworkVarNames: m_ePhase (ETier3Phase_t)
             namespace C_NPC_Boss_Tier3 {
-                constexpr std::ptrdiff_t m_iLane = 0x1470; // 
-                constexpr std::ptrdiff_t m_angTargeting1 = 0x1478; // 
-                constexpr std::ptrdiff_t m_angTargeting2 = 0x1490; // 
-                constexpr std::ptrdiff_t m_nElectricBeamCasts = 0x14A8; // 
-                constexpr std::ptrdiff_t m_eAliveState = 0x14AC; // 
-                constexpr std::ptrdiff_t m_ePhase = 0x14B0; // 
-            }
-            // Parent: CCitadelModifierVData
-            // Field count: 2
-            //
-            // Metadata:
-            // MGetKV3ClassDefaults
-            namespace CCitadel_Modifier_BreakablePropExtraGoldPickupVData {
-                constexpr std::ptrdiff_t m_iBaseExtraGoldBounty = 0x608; // 
-                constexpr std::ptrdiff_t m_iPerMinuteExtraGoldBounty = 0x60C; // 
+                constexpr std::ptrdiff_t m_iLane = 0x1468; // 
+                constexpr std::ptrdiff_t m_angTargeting1 = 0x1470; // 
+                constexpr std::ptrdiff_t m_angTargeting2 = 0x1488; // 
+                constexpr std::ptrdiff_t m_nElectricBeamCasts = 0x14A0; // 
+                constexpr std::ptrdiff_t m_eAliveState = 0x14A4; // 
+                constexpr std::ptrdiff_t m_ePhase = 0x14A8; // 
             }
             // Parent: CCitadelModifier
             // Field count: 8
@@ -18248,9 +18732,9 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_PillarVData {
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BuffStartParticle = 0x7C8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_BuffEndParticle = 0x8A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x6E8; // 
+                constexpr std::ptrdiff_t m_BuffStartParticle = 0x7C8; // 
+                constexpr std::ptrdiff_t m_BuffEndParticle = 0x8A8; // 
                 constexpr std::ptrdiff_t m_PostSleepModifier = 0x988; // CEmbeddedSubclass<CCitadelModifier>
             }
             // Parent: CCitadelModifier
@@ -18321,11 +18805,11 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAbilityBullChargeVData {
                 constexpr std::ptrdiff_t m_cameraSequenceImpact = 0x1560; // CitadelCameraOperationsSequence_t
-                constexpr std::ptrdiff_t m_ModifierTossAirControlLockout = 0x15E8; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_ModifierWeaponPowerIncrease = 0x15F8; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_ModifierChargeDragEnemy = 0x1608; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_ModifierBullCharging = 0x1618; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_WallImpactParticle = 0x1628; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ModifierTossAirControlLockout = 0x15E8; // 
+                constexpr std::ptrdiff_t m_ModifierWeaponPowerIncrease = 0x15F8; // 
+                constexpr std::ptrdiff_t m_ModifierChargeDragEnemy = 0x1608; // 
+                constexpr std::ptrdiff_t m_ModifierBullCharging = 0x1618; // 
+                constexpr std::ptrdiff_t m_WallImpactParticle = 0x1628; // 
                 constexpr std::ptrdiff_t m_strWallSlamSound = 0x1708; // 
                 constexpr std::ptrdiff_t m_flWallStunLookAheadDist = 0x1718; // 
                 constexpr std::ptrdiff_t m_flEndChargeVelocityScale = 0x171C; // 
@@ -18437,9 +18921,9 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CAbilityShivDashVData {
                 constexpr std::ptrdiff_t m_DashModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_DashImpactEffect = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DashSwingEffect = 0x1650; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_DashLineEffect = 0x1730; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DashImpactEffect = 0x1570; // 
+                constexpr std::ptrdiff_t m_DashSwingEffect = 0x1650; // 
+                constexpr std::ptrdiff_t m_DashLineEffect = 0x1730; // 
                 constexpr std::ptrdiff_t m_strDashStartWithTargets = 0x1810; // 
                 constexpr std::ptrdiff_t m_strDashStartEcho = 0x1820; // 
                 constexpr std::ptrdiff_t m_strDashStartMiss = 0x1830; // 
@@ -18460,10 +18944,10 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CAbilityHornetSnipeVData {
-                constexpr std::ptrdiff_t m_AssassinateShotParticle = 0x1560; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_AssassinateShotParticleOwnerOnly = 0x1640; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_LaserSightParticle = 0x1720; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_LaserSightParticleOwnerOnly = 0x1800; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_AssassinateShotParticle = 0x1560; // 
+                constexpr std::ptrdiff_t m_AssassinateShotParticleOwnerOnly = 0x1640; // 
+                constexpr std::ptrdiff_t m_LaserSightParticle = 0x1720; // 
+                constexpr std::ptrdiff_t m_LaserSightParticleOwnerOnly = 0x1800; // 
                 constexpr std::ptrdiff_t m_SnipeModifier = 0x18E0; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_BuffOnKillModifier = 0x18F0; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_GlowEnemyModifier = 0x1900; // CEmbeddedSubclass<CCitadelModifier>
@@ -18485,18 +18969,11 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CModifierVitalitySuppressorVData {
-                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_DebuffParticle = 0x608; // 
             }
             // Parent: C_AI_CitadelNPC
             // Field count: 0
             namespace C_CitadelPlayerBotNPCBrain {
-            }
-            // Parent: C_DynamicProp
-            // Field count: 0
-            //
-            // Metadata:
-            // MNetworkIncludeByName
-            namespace C_AnimGraph2TestProp {
             }
             // Parent: CBaseAnimGraph
             // Field count: 8
@@ -18507,14 +18984,14 @@ namespace cs2_dumper {
             // NetworkVarNames: m_flBlendWeight (float32)
             // NetworkVarNames: m_hRagdollSource (EHANDLE)
             namespace C_RagdollProp {
-                constexpr std::ptrdiff_t m_ragPos = 0xB10; // 
-                constexpr std::ptrdiff_t m_ragAngles = 0xB28; // 
-                constexpr std::ptrdiff_t m_flBlendWeight = 0xB40; // 
-                constexpr std::ptrdiff_t m_hRagdollSource = 0xB44; // 
-                constexpr std::ptrdiff_t m_iEyeAttachment = 0xB48; // 
-                constexpr std::ptrdiff_t m_flBlendWeightCurrent = 0xB4C; // 
-                constexpr std::ptrdiff_t m_parentPhysicsBoneIndices = 0xB50; // 
-                constexpr std::ptrdiff_t m_worldSpaceBoneComputationOrder = 0xB68; // 
+                constexpr std::ptrdiff_t m_ragPos = 0xB08; // C_NetworkUtlVectorBase<Vector>
+                constexpr std::ptrdiff_t m_ragAngles = 0xB20; // C_NetworkUtlVectorBase<QAngle>
+                constexpr std::ptrdiff_t m_flBlendWeight = 0xB38; // 
+                constexpr std::ptrdiff_t m_hRagdollSource = 0xB3C; // 
+                constexpr std::ptrdiff_t m_iEyeAttachment = 0xB40; // 
+                constexpr std::ptrdiff_t m_flBlendWeightCurrent = 0xB44; // 
+                constexpr std::ptrdiff_t m_parentPhysicsBoneIndices = 0xB48; // 
+                constexpr std::ptrdiff_t m_worldSpaceBoneComputationOrder = 0xB60; // 
             }
             // Parent: CCitadel_Item
             // Field count: 0
@@ -18553,8 +19030,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Gravity_Lasso_VData {
-                constexpr std::ptrdiff_t m_GravityLassoSelf = 0x1560; // CEmbeddedSubclass<CBaseModifier>
-                constexpr std::ptrdiff_t m_GravityLassoTarget = 0x1570; // CEmbeddedSubclass<CBaseModifier>
+                constexpr std::ptrdiff_t m_GravityLassoSelf = 0x1560; // 
+                constexpr std::ptrdiff_t m_GravityLassoTarget = 0x1570; // 
             }
             // Parent: CCitadel_Modifier_BaseEventProcVData
             // Field count: 4
@@ -18562,8 +19039,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_MeleeCharge_VData {
-                constexpr std::ptrdiff_t m_SwingParticle = 0x638; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_HitParticle = 0x718; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_SwingParticle = 0x638; // 
+                constexpr std::ptrdiff_t m_HitParticle = 0x718; // 
                 constexpr std::ptrdiff_t m_ReloadVisualModifier = 0x7F8; // CEmbeddedSubclass<CCitadelModifier>
                 constexpr std::ptrdiff_t m_AmmoAddedVisualModifier = 0x808; // CEmbeddedSubclass<CCitadelModifier>
             }
@@ -18573,13 +19050,17 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Item_HealthRegenAuraVData {
-                constexpr std::ptrdiff_t m_HealParticle = 0x15A8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_CastHealParticle = 0x1688; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_HealParticle = 0x15A8; // 
+                constexpr std::ptrdiff_t m_CastHealParticle = 0x1688; // 
                 constexpr std::ptrdiff_t m_HealingPulseTrackerModifier = 0x1768; // CEmbeddedSubclass<CCitadelModifier>
             }
-            // Parent: CCitadel_Modifier_RegeneratingTechShield
+            // Parent: CCitadel_Modifier_BaseShield
             // Field count: 0
             namespace CCitadel_Modifier_GalvanicStormTechShield {
+            }
+            // Parent: CCitadel_Modifier_RegeneratingBulletShield
+            // Field count: 0
+            namespace CCitadel_Modifier_TempBulletShield {
             }
             // Parent: CCitadelModifier
             // Field count: 0
@@ -18638,21 +19119,22 @@ namespace cs2_dumper {
             // MGetKV3ClassDefaults
             namespace CCitadel_Ability_Magician_ShadowCloneVData {
                 constexpr std::ptrdiff_t m_CloneModifier = 0x1560; // CEmbeddedSubclass<CCitadelModifier>
-                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1570; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x1570; // 
             }
             // Parent: CCitadelModifier
             // Field count: 1
             namespace CCitadel_Modifier_Thumper_Ability_2 {
                 constexpr std::ptrdiff_t m_vLastPosition = 0xC0; // 
             }
-            // Parent: CCitadelModifierVData
-            // Field count: 2
+            // Parent: CCitadel_Modifier_BaseBulletPreRollProcVData
+            // Field count: 3
             //
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_BulletFlurryVData {
-                constexpr std::ptrdiff_t m_ImpactParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_strAttackerHitSound = 0x6E8; // 
+                constexpr std::ptrdiff_t m_ImpactParticle = 0x738; // 
+                constexpr std::ptrdiff_t m_ExplodeParticle = 0x818; // 
+                constexpr std::ptrdiff_t m_strAttackerHitSound = 0x8F8; // 
             }
             // Parent: C_CitadelBaseAbility
             // Field count: 1
@@ -18668,8 +19150,8 @@ namespace cs2_dumper {
             // Metadata:
             // MGetKV3ClassDefaults
             namespace CCitadel_Modifier_TeleportToObjectiveVData {
-                constexpr std::ptrdiff_t m_TeleportOriginParticle = 0x608; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
-                constexpr std::ptrdiff_t m_TeleportDestinationParticle = 0x6E8; // CResourceNameTyped<CWeakHandle<InfoForResourceTypeIParticleSystemDefinition>>
+                constexpr std::ptrdiff_t m_TeleportOriginParticle = 0x608; // 
+                constexpr std::ptrdiff_t m_TeleportDestinationParticle = 0x6E8; // 
                 constexpr std::ptrdiff_t m_TeleportStartSound = 0x7C8; // 
                 constexpr std::ptrdiff_t m_TeleportCompleteSound = 0x7D8; // 
                 constexpr std::ptrdiff_t m_TeleportArriveSound = 0x7E8; // 

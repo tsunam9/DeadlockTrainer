@@ -138,7 +138,6 @@ void ShowKeyBindStatus() {
 		KeyBinds.push_back(&Config.aimbot.AimKeyXp);
 		KeyBinds.push_back(&Config.aimbot.AimKeyMinions);
 		KeyBinds.push_back(&Config.aimbot.magicbulletkey);
-		KeyBinds.push_back(&Config.misc.SpeedBoostKey);
 		KeyBinds.push_back(&Config.legitbot.LegitAimKey);
 		init = true;
 	}
@@ -636,7 +635,7 @@ void Esp::DrawEsp(uintptr_t Entity, PlayerData* EntInfo)
 			Helper::get_player_data(Helper::get_local_player(), LocalPlayerData);
 
 			std::string temp = std::to_string(Helper::GetDistance(LocalPlayerData->m_vecOrigin, EntInfo->m_vecOrigin));
-			draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.5, ImColor(Config.colors.distancecolesp), _strdup(temp.c_str()));
+			draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2 + 25, ImColor(Config.colors.distancecolesp), _strdup(temp.c_str()));
 			delete LocalPlayerData;
 		}
 		if (Config.esp.NameEsp) {
