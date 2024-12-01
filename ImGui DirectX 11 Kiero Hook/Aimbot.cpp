@@ -641,6 +641,10 @@ void Aimbot::RageAimAt(uint64_t entity) {
 	if (Config.aimbot.magicbullet) // dont interfere if magic bullet is currently shooting
 		return;
 
+	if (LocalPlayerData.HeroID == Bebop) {
+		CUserCmd->buttons |= IN_ATTACK;
+	}
+
 	float BulletSpeed = globals::instance().BulletVelocity;
 	vec3 vec_target = Helper::GetBonePosition(entity, "head");
 	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);

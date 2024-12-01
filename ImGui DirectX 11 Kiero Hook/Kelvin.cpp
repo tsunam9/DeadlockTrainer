@@ -23,7 +23,6 @@ void KelvinLogic::OnAbility1() {
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();
 	if (!target)
 		return;
-	std::cout << "AIM" << std::endl;
 	Aimbot::AimAbility(target, 2, this->abilitiesarray[1], 2000.f, true);
 
 }

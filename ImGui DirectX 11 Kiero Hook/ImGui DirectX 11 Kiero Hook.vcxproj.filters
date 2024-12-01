@@ -267,6 +267,9 @@
     <ClCompile Include="Yamato.cpp">
       <Filter>Source Files\Features\Heros\Yamato</Filter>
     </ClCompile>
+    <ClCompile Include="cfgvar.cpp">
+      <Filter>Source Files\Config</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="kiero\minhook\dll_resources\MinHook.rc">
@@ -450,6 +453,9 @@
     </ClInclude>
     <ClInclude Include="source2client.h">
       <Filter>Source Files\ValveClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="cfgvar.h">
+      <Filter>Source Files\Config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

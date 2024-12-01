@@ -343,7 +343,8 @@ R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:g
 {
 	shader = "pbr.vfx"
 
-	
+	F_SELF_ILLUM = 1
+	F_UNLIT = 1
 
 	g_tAmbientOcclusion = resource:"materials/default/default_ao_tga_559f1ac6.vtex"
 	g_tColor = resource:"models/heroes_staging/gen_man/materials/gen_man_color_psd_66eccf52.vtex"

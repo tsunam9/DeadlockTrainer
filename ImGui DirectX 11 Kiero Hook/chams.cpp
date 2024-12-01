@@ -97,17 +97,14 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 	Helper::get_player_data(Helper::get_local_player(), &LocalPlayerData);
 
 
-	static auto mymatsystem = GetInterface<IMaterialSystem2>("materialsystem2.dll", "VMaterialSystem2_001");
+	/*	static auto mymatsystem = GetInterface<IMaterialSystem2>("materialsystem2.dll", "VMaterialSystem2_001");
 
 	CMaterial2*** mymat2 = new CMaterial2**;
 	CMaterial2*** ignorezmat = new CMaterial2**;
 	const char* str = "materials/dev/primary_white.vmat";
 	const char* str2 = "materials/dev/outlineproperty.vmat";
 	CMaterial2*** mymaterial = drawfindmattarget((__int64)mymatsystem, (__int64*)mymat2, (__int64)str);
-	CMaterial2*** ignorematerial = drawfindmattarget((__int64)mymatsystem, (__int64*)ignorezmat, (__int64)str2);
-
-	__int64 vertexinput = matdata->pMaterial->GetVertexShaderInputSignature();
-	__int64 attributes = matdata->pMaterial->GetAttributes();
+	CMaterial2*** ignorematerial = drawfindmattarget((__int64)mymatsystem, (__int64*)ignorezmat, (__int64)str2);*/
 
 	static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
 
@@ -122,7 +119,7 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 		matdata->colValue.b = Config.colors.LocalChamsCol.z * 255;
 		matdata->colValue.a = Config.colors.LocalChamsCol.w * 255;
 		if (Config.esp.ModelChams) {
-			matdata->pMaterial = **mymaterial;
+			matdata->pMaterial = setmat;
 		}
 		goto LABEL_1;
 	}
@@ -137,7 +134,7 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 
 	if (Config.esp.ModelChams) {
 		if (ignorez) {
-			matdata->pMaterial = **ignorezmat;
+			matdata->pMaterial = setmat;
 		}
 		else {
 			if (setmat) {
@@ -150,8 +147,8 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 
 	LABEL_1:
 
-	delete mymat2;
-	delete ignorezmat;
+	//delete mymat2;
+	//delete ignorezmat;
 	return;
 
 }
