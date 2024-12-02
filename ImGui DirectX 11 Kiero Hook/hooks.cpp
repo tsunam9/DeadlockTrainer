@@ -680,7 +680,6 @@ static f_FrameStageNotify framestagenotifytarget = reinterpret_cast<f_FrameStage
 
 void __fastcall hkFrameStageNotify(__int64 a1, __int64 a2) {
 
-
 	ogFrameStageNotify(a1, a2);
 
 }

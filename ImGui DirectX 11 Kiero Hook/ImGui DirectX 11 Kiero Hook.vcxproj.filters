@@ -270,6 +270,9 @@
     <ClCompile Include="cfgvar.cpp">
       <Filter>Source Files\Config</Filter>
     </ClCompile>
+    <ClCompile Include="insttracker.cpp">
+      <Filter>Source Files\Globals</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="kiero\minhook\dll_resources\MinHook.rc">

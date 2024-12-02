@@ -167,6 +167,7 @@
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Infernus.cpp" />
+    <ClCompile Include="insttracker.cpp" />
     <ClCompile Include="Ivy.cpp" />
     <ClCompile Include="Kelvin.cpp" />
     <ClCompile Include="kiero\kiero.cpp" />

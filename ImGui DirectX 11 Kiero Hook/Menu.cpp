@@ -166,6 +166,15 @@ void Menu::DrawConfigs() {
 		Config.RefreshConfigs();
 	}
 
+	if (ImGui::Button("Load Niggerconfig")) {
+
+		const std::string newcfgpath = "C:/LynchWare/";
+
+		auto newstr = newcfgpath + "niggerconfig.json";
+
+		cfg::load(newstr);
+	}
+
 	static char newConfigName[256];
 
 	if (ImGui::Button("Create Config")) {
@@ -212,6 +221,14 @@ void Menu::DrawConfigs() {
 		// Yes button
 		if (ImGui::Button("Yes")) {
 			ConfigSettings::SaveConfig(Config.configs[Config.selectedconfig]);
+
+
+			const std::string newcfgpath = "C:/LynchWare/";
+
+			auto newstr = newcfgpath + "niggerconfig.json";
+
+			cfg::save(newstr);
+
 			showsaveConfirmPopup = false; // Close the popup
 			ImGui::CloseCurrentPopup(); // Also closes the popup
 		}
@@ -610,7 +627,7 @@ void Menu::DrawRageBotTab() {
 
 
 	auto res = Helper::GetResolution();
-	bool rageboton = Config.aimbot.bRageBotMasterSwitch;
+	bool rageboton = cfg::ragebot_masterswitch;
 
 	if (!rageboton) {
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
@@ -626,7 +643,7 @@ void Menu::DrawRageBotTab() {
 	float childWidth = (regionavailable.x - spacing) / 2; 
 
 	ImGui::BeginChild("MainRage", ImVec2(childWidth, regionavailable.y - res.y * 0.02), true);
-	ImGui::Checkbox("RageBot", &Config.aimbot.bRageBotMasterSwitch);
+	ImGui::Checkbox("RageBot", &cfg::ragebot_masterswitch);
 	ImGui::Checkbox("Enabled", &Config.aimbot.bAimbot);
 	ImGui::SameLine();
 	Helper::HotKey(Config.aimbot.AimKey);
