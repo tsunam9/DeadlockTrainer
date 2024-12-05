@@ -5,7 +5,7 @@ void KelvinLogic::AutoLockBeam() {
 	if (!(*(bool*)(this->abilitiesarray[3] + C_CitadelBaseAbility::m_bChanneling)))
 		return;
 
-	if (!Config.kelvin.LockBeam)
+	if (!cfg::kelvin_LockBeam)
 		return;
 
 	Aimbot::AimAbility(target, 1, this->abilitiesarray[1], 0.f, false);
@@ -17,7 +17,7 @@ void KelvinLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.kelvin.AimGrenade)
+	if (!cfg::kelvin_AimGrenade)
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();

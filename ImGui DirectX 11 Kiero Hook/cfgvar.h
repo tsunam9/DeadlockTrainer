@@ -42,4 +42,5 @@ namespace cfg
 {
 	void save(std::string_view name);
 	void load(std::string_view name);
+	bool remove(std::string_view name);
 }

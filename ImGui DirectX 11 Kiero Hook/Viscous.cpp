@@ -6,7 +6,7 @@ void ViscousLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.viscous.AimGooGrenade)
+	if (!cfg::viscous_AimGooGrenade)
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();

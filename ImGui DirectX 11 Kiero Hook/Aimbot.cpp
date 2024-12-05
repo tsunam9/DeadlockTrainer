@@ -165,19 +165,14 @@ bool Aimbot::LegitGetAimbotTarget(uint32_t group, int &closestbone, uint64_t& ai
 				continue;
 			}
 
-			if (Config.legitbot.hitboxes.size() < 1) {
-				Config.legitbot.hitboxes.push_back("head");
-				Config.legitbot.hitboxes.push_back("neck_0");
-				Config.legitbot.hitboxes.push_back("pelvis");
-			}
 
 			float distance = 0.f;
-			int hitboxessize = Config.legitbot.hitboxes.size();
+			int hitboxessize = legitbot_hitboxes.size();
 
 			if (hitboxessize > 0) {
 
 				vec3 TargetPos = { 0, 0, 0 };
-				TargetPos = Helper::GetBonePosition((*aimbotglobs.entlist.active)[i], Config.legitbot.hitboxes[0].c_str());
+				TargetPos = Helper::GetBonePosition((*aimbotglobs.entlist.active)[i], legitbot_hitboxes[0].c_str());
 				if (TargetPos.x == 0 && TargetPos.y == 0 && TargetPos.z == 0) {
 					continue;
 				}
@@ -190,7 +185,7 @@ bool Aimbot::LegitGetAimbotTarget(uint32_t group, int &closestbone, uint64_t& ai
 			for (int hitboxindex = 0; hitboxindex < hitboxessize; hitboxindex++) {
 
 				vec3 TargetPos = { 0, 0, 0 };
-				TargetPos = Helper::GetBonePosition((*aimbotglobs.entlist.active)[i], Config.legitbot.hitboxes[hitboxindex].c_str());
+				TargetPos = Helper::GetBonePosition((*aimbotglobs.entlist.active)[i], legitbot_hitboxes[hitboxindex].c_str());
 				if (TargetPos.x == 0 && TargetPos.y == 0 && TargetPos.z == 0) {
 					continue;
 				}
@@ -201,7 +196,7 @@ bool Aimbot::LegitGetAimbotTarget(uint32_t group, int &closestbone, uint64_t& ai
 
 				float FOV = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
 
-				if (FOV > Config.legitbot.fov) {
+				if (FOV > cfg::legitbot_fov) {
 					continue; // Skip targets outside of the FOV
 				}
 
@@ -278,8 +273,7 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 				continue;
 			}
 
-			Helper::KeyBindHandler(Config.aimbot.magicbulletkey);
-			if(!Config.aimbot.magicbullet){ // if magic bullet then obviously dont do vischeck 
+			if(!cfg::ragebot_magicbullet){ // if magic bullet then obviously dont do vischeck 
 				if (IsPlayerVisible((*aimbotglobs.entlist.active)[i]) == false) {
 					continue;
 				}
@@ -299,7 +293,7 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 			// Calculate distance between targetpos and localplayer
 			float distance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetPos);
 
-			if (distance > Config.aimbot.MaxDistance) {
+			if (distance > cfg::ragebot_maxdistance) {
 				continue;
 			}
 
@@ -312,7 +306,7 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 
 			float FOV = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
 
-			if (FOV > Config.aimbot.fov) {
+			if (FOV > cfg::ragebot_aimfov) {
 				continue; // Skip targets outside of the FOV
 			}
 
@@ -348,7 +342,7 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 				continue;
 
 			float xpdistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetXPData->m_vecOrigin);
-			if (xpdistance > Config.aimbot.MaxDistance)
+			if (xpdistance > cfg::ragebot_maxdistance)
 				continue;
 
 			vec2 LocalPlayerAngles = { ViewAngles->x, ViewAngles->y };
@@ -358,7 +352,7 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 
 			float xpFOV = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
 
-			if (xpFOV > Config.aimbot.fov)
+			if (xpFOV > cfg::ragebot_aimfov)
 				continue; // Skip targets outside of the FOV
 
 			if (xpdistance < ClosestIndex) {
@@ -402,7 +396,7 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 			}
 
 			float MinionDistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetNpcData->m_vecOrigin);
-			if (MinionDistance > Config.aimbot.MaxDistance) {
+			if (MinionDistance > cfg::ragebot_maxdistance) {
 				delete TargetNpcData;
 				continue;
 			}
@@ -426,7 +420,7 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 
 			float minionfov = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
 
-			if (minionfov > Config.aimbot.fov) {
+			if (minionfov > cfg::ragebot_aimfov) {
 				delete TargetNpcData;
 				continue;
 			} // Skip targets outside of the FOV
@@ -455,7 +449,7 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 
 
 	if (group == AimGroup_Player) {
-		switch (Config.aimbot.targetSelectionMode) {
+		switch (cfg::ragebot_TargetSelectMode) {
 		case 0:
 			if (ClosestIndex == 999) {
 				CurrentPlayerTarget = 0;
@@ -480,7 +474,7 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 		}
 	}
 	else if (group == AimGroup_Soul) {
-		switch (Config.aimbot.targetSelectionMode) {
+		switch (cfg::ragebot_TargetSelectMode) {
 		case 0:
 			if (ClosestIndex == 999) {
 				return 0;
@@ -499,7 +493,7 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 		}
 	}
 	else if (group == AimGroup_Minion) {
-		switch (Config.aimbot.targetSelectionMode) {
+		switch (cfg::ragebot_TargetSelectMode) {
 		case 0:
 			if (ClosestIndex == 999) {
 				return 0;
@@ -638,7 +632,7 @@ bool readyToFire() {
 
 void Aimbot::RageAimAt(uint64_t entity) {
 
-	if (Config.aimbot.magicbullet) // dont interfere if magic bullet is currently shooting
+	if (cfg::ragebot_magicbullet) // dont interfere if magic bullet is currently shooting
 		return;
 
 	if (LocalPlayerData.HeroID == Bebop) {
@@ -655,7 +649,7 @@ void Aimbot::RageAimAt(uint64_t entity) {
 	vec2 target_angles = Aimbot::GetAimAngles(predictedposition);
 
 
-	if (Config.aimbot.silentaim) { // silent aim
+	if (cfg::ragebot_silentaim) { // silent aim
 
 		if (!readyToFire())
 			return;
@@ -687,7 +681,7 @@ void Aimbot::RageAimAtXp(uintptr_t entity) {
 	Helper::get_xp_data(entity, &TargetXPData);
 	vec2 target_angles = Aimbot::GetAimAngles(TargetXPData.m_vecOrigin);
 
-	if (Config.aimbot.silentaim) { // silent aim
+	if (cfg::ragebot_silentaim) { // silent aim
 
 		if (!readyToFire())
 			return;
@@ -736,7 +730,7 @@ void Aimbot::RageAimAtMinions(uintptr_t entity) {
 	vec2 target_angles = Aimbot::GetAimAngles(HeadPos);
 
 
-	if (Config.aimbot.silentaim) { // silent aim
+	if (cfg::ragebot_silentaim) { // silent aim
 
 		if (!readyToFire())
 			return;
@@ -785,11 +779,11 @@ void Aimbot::LegitAimAt(uint64_t entity, std::string bone) {
 
 	vec2 final_delta = delta.clamp();
 
-	if (Config.legitbot.pitchcorrection) {
-		ViewAngles->x += (Config.legitbot.pitchcorrectammount) * (final_delta.x / Config.legitbot.smooth);
+	if (cfg::legitbot_pitchcorrection) {
+		ViewAngles->x += (cfg::legitbot_pitchcorrectammount) * (final_delta.x / cfg::legitbot_smooth);
 	}
-	if (Config.legitbot.yawcorrection) {
-		ViewAngles->y += (Config.legitbot.yawcorrectammount) * (final_delta.y / Config.legitbot.smooth);
+	if (cfg::legitbot_yawcorrection) {
+		ViewAngles->y += (cfg::legitbot_yawcorrectammount) * (final_delta.y / cfg::legitbot_smooth);
 	}
 
 	return;
@@ -837,63 +831,48 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 		return;
 	}
 
-	if (Config.aimbot.bRageBotMasterSwitch) { // ragebot
+	if (cfg::ragebot_masterswitch) { // ragebot
 
 		uint64_t aimtarget = Aimbot::RageGetAimbotTarget(AimGroup_Player);
 		uint64_t xp_target = 0; // make sure unassigned is always zero 
 		uint64_t minion_target = 0;
 
-		if (Config.aimbot.AimXp)
+		if (cfg::ragebot_AimXp)
 			xp_target = Aimbot::RageGetAimbotTarget(AimGroup_Soul);
-		if (Config.aimbot.AimMinions)
+		if (cfg::ragebot_AimMinions)
 			minion_target = Aimbot::RageGetAimbotTarget(AimGroup_Minion);
 
-		Helper::KeyBindHandler(Config.aimbot.magicbulletkey);
-		if (Config.aimbot.magicbullet && aimtarget) {
+		if (cfg::ragebot_magicbullet && aimtarget) {
 			ShootMagicBullet(aimtarget);
 			return;
 		}
 
-		Helper::KeyBindHandler(Config.aimbot.AimKey);
-		if (Config.aimbot.bAimbot && aimtarget) {
+		if (cfg::ragebot_bAimbot && aimtarget) {
 			RageAimAt(aimtarget);
 			return;
 		}
 
-		if (Config.aimbot.AimKeyXp.keybindmode == 0) {
-			if (Config.aimbot.bAimbot && xp_target) {
+
+		if (cfg::ragebot_bAimbot && xp_target) {
 				RageAimAtXp(xp_target);
 				return;
-			}
-		}
-		else {
-			Helper::KeyBindHandler(Config.aimbot.AimKeyXp);
-			if (Config.aimbot.AimXp && xp_target) {
-				RageAimAtXp(xp_target);
-				return;
-			}
 		}
 
-		if (Config.aimbot.AimKeyMinions.keybindmode == 0) {
-			if (Config.aimbot.bAimbot && minion_target) {
+
+
+		if (cfg::ragebot_bAimbot && minion_target) {
 				RageAimAtMinions(minion_target);
 				return;
-			}
 		}
-		else {
-			Helper::KeyBindHandler(Config.aimbot.AimKeyMinions);
-			if (Config.aimbot.AimMinions) {
-				RageAimAtMinions(minion_target);
-				return;
-			}
-		}
+
+
 
 
 		return;
 	}
 	else {
 
-		if (!Config.legitbot.legitbotmasterswitch)
+		if (!cfg::legitbot_masterswitch)
 			return;
 
 		int closestbone = 0;
@@ -918,9 +897,8 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 			}
 		}
 
-		if (Config.legitbot.aimdelayinms != 0 && aimtarget) {
-
-			float delay = (float)(Config.legitbot.aimdelayinms / 1000.0f);
+		if (cfg::legitbot_aimdelayinms != 0 && aimtarget) {
+			float delay = (float)(cfg::legitbot_aimdelayinms / 1000.0f);
 			if (!(aimbotglobs.Globals->flAbsCurTime > timeaquiredtarget + delay)) {
 				return;
 			}
@@ -928,23 +906,13 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 
 
 
-		if (Config.legitbot.LegitAimKey.keybindmode == 0) {
-			if (Config.legitbot.bLegitBot && aimtarget) {
-				LegitAimAt(aimtarget, Config.legitbot.hitboxes[closestbone]);
+
+		if (cfg::legitbot_bLegitBot && aimtarget) {
+				LegitAimAt(aimtarget, legitbot_hitboxes[closestbone]);
 				return;
-			}
-		}
-		else {
-			Helper::KeyBindHandler(Config.legitbot.LegitAimKey);
-			if (Config.legitbot.bLegitBot && aimtarget) {
-				LegitAimAt(aimtarget, Config.legitbot.hitboxes[closestbone]);
-				return;
-			}
 		}
 
 		return;
-
-
 
 	}
 

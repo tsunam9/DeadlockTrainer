@@ -7,7 +7,7 @@ void InfernusLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.infernus.AimCatalyst)
+	if (!cfg::infernus_AimCatalyst)
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();

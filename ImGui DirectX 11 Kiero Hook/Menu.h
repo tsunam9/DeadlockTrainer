@@ -4,6 +4,7 @@
 #include "iostream"
 #include "json.hpp"
 #include <vector>
+#include "binds.h"
 
 class Menu {
 public:	
@@ -19,6 +20,8 @@ public:
 	static void DrawBackround();
 	static void DrawNewMenu(FILE* fp, ID3D11Device* dx11Device);
 	static void DrawConfigs();
+
+	static void checkbox(const char* label, bool* v);
 
 	
 

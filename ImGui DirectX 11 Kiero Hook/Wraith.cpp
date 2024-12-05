@@ -18,28 +18,12 @@ void WraithLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.mirage.AimTornado)
-		//return;
-
-		uint64_t target = Aimbot::GetCurrentAimbotTarget();
-	if (!target)
-		return;
-	Aimbot::AimAbility(target, 1, this->abilitiesarray[1], 1050.f, true);
-
 }
 
 void WraithLogic::OnAbility2() {
 
 	if (*(bool*)(this->abilitiesarray[2] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
-
-	if (!Config.mirage.AimScarabs)
-		//return;
-
-		uint64_t target = Aimbot::GetCurrentAimbotTarget();
-	if (!target)
-		return;
-	Aimbot::AimAbility(target, 0, this->abilitiesarray[2], 2350.f, true);
 
 
 }
@@ -78,7 +62,7 @@ void WraithLogic::OnTick() {
 		OnAbility4();
 	}
 
-	if (Config.wraith.AimCards)
+	if (cfg::wraith_AimCards)
 		AutoAimCard();
 
 

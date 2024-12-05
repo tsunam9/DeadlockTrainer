@@ -50,12 +50,12 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 		return;
 	}
 
-	if (!Config.esp.bEsp) {
+	if (!cfg::esp_bEsp) {
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
 		return;
 	}
 
-	if (!Config.esp.Chams) {
+	if (!cfg::esp_Chams) {
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
 		return;
 	}
@@ -92,15 +92,12 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 
 		if (ownerobj == localpawn) {
 			islocal = true;
-			if (Config.esp.LocalChams && Config.colors.LocalChamsCol.w == 0.f) {
+			if (cfg::esp_LocalChams && cfg::colors_LocalChamsCol.w == 0.f) {
 				return;
 			}
 		}
 
 		Chams::DrawChams(material_data, islocal, ownerobj, false);
-
-		int value = Config.tempvalues.inputint;
-
 
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
 
@@ -164,7 +161,7 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 
 	Aimbot::RunAimbot(cmd); // always run aimbot 
 
-	if (Config.antiaim.bAntiAim) {
+	if (cfg::antiaim_bAntiAim) {
 		AntiAim::DoAntiAim(cmd);
 	}
 
@@ -241,17 +238,8 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 			break;
 		}
 
-	if (Config.aimbot.MovementFix) {
+	if (cfg::ragebot_movementfix) {
 		Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
-	}
-
-
-	if (Config.MenuOpen) { // prevent anything except movement while menu open
-
-		static std::string bitString ="0000001000000001000000000000000000000000000000000000011000011100";
-		unsigned long long mask = createMask(bitString);
-		cmd->buttons = cmd->buttons & mask;
-		cmd->pBaseUserCMD->CInButtonStatePB->buttons = cmd->pBaseUserCMD->CInButtonStatePB->buttons & mask;
 	}
 
 
@@ -277,7 +265,7 @@ void __fastcall hkRenderStart(CViewRender* pViewRender)
 {
 
 	RenderStart(pViewRender);
-	pViewRender->Fov *= Config.misc.fovmodifier;
+	pViewRender->Fov *= cfg::misc_fovmodifier;
 	pViewRender->nSomeFlags |= 2;
 
 }
@@ -340,15 +328,15 @@ __int64 __fastcall hkUpdateSceneObject(C_AggregateSceneObject* object, __int64 u
 {
 	__int64 result = ogUpdateSceneObject(object, unk, a3);
 
-	if (Config.esp.ModWorld)
+	if (cfg::esp_ModWorld)
 	{
 
 		for (int i = 0; i < object->m_nCount; i++)
 		{
-			object->m_pData[i].r = Config.colors.WorldModulationColor.x * 255;
-			object->m_pData[i].g = Config.colors.WorldModulationColor.y * 255;
-			object->m_pData[i].b = Config.colors.WorldModulationColor.z * 255;
-			object->m_pData[i].a = Config.colors.WorldModulationColor.w * 255;
+			object->m_pData[i].r = cfg::colors_WorldModulationColor.x * 255;
+			object->m_pData[i].g = cfg::colors_WorldModulationColor.y * 255;
+			object->m_pData[i].b = cfg::colors_WorldModulationColor.z * 255;
+			object->m_pData[i].a = cfg::colors_WorldModulationColor.w * 255;
 
 		}
 	}
@@ -365,10 +353,10 @@ fnLightSceneObject ogLightScene = nullptr;
 void __fastcall hkLightSceneObject(void* ptr, C_SceneLightObject * object, void* unk)
 {
 	ogLightScene(ptr, object, unk);
-	if (Config.esp.ModLights) {
-		object->r = Config.colors.LightModColor.x;
-		object->g = Config.colors.LightModColor.y;
-		object->b = Config.colors.LightModColor.z;
+	if (cfg::esp_ModLights) {
+		object->r = cfg::colors_LightModColor.x;
+		object->g = cfg::colors_LightModColor.y;
+		object->b = cfg::colors_LightModColor.z;
 	}
 }
 
@@ -465,7 +453,7 @@ static f_MouseInputEnabled MouseInputEnabledTarget = reinterpret_cast<f_MouseInp
 
 bool __fastcall hkMouseInputEnabled()
 {
-	return Config.MenuOpen ? false : ogMouseInputEnabled();
+	return cfg::menu_open ? false : ogMouseInputEnabled();
 }
 
 
@@ -558,7 +546,7 @@ static f_doglow doglowtarget = reinterpret_cast<f_doglow>(MEM::GetClientBase() +
 
 void __fastcall hkDoGlow(__int64 a1) {
 
-	if (!Config.esp.GlowEsp || !Config.esp.bEsp)
+	if (!cfg::esp_GlowEsp || !cfg::esp_bEsp)
 		return;
 
 
@@ -587,7 +575,7 @@ void __fastcall hkDoGlow(__int64 a1) {
 				teamnums.push_back(entdata.TeamNum);
 				Controllers.push_back(entity);
 			}
-			else if (Config.esp.GlowTeam) {
+			else if (cfg::esp_GlowTeam) {
 				teamnums.push_back(entdata.TeamNum);
 				Controllers.push_back(entity);
 			}
@@ -608,12 +596,12 @@ void __fastcall hkDoGlow(__int64 a1) {
 
 		if (!glowhelper) {
 			if (teamnums[i] == localdata.TeamNum) {
-				if (!(Config.colors.GlowTeamCol.w == 0.f)) {
+				if (!(cfg::colors_GlowTeamCol.w == 0.f)) {
 					*(uint64_t*)(glowProperty + 0x28) = iSceneSystem002->CreateCHlowHelperSceneObject((uint64_t)pawn);
 				}
 			}
 			else {
-				if (!(Config.colors.GlowCol.w == 0.f)) {
+				if (!(cfg::colors_GlowCol.w == 0.f)) {
 					*(uint64_t*)(glowProperty + 0x28) = iSceneSystem002->CreateCHlowHelperSceneObject((uint64_t)pawn);
 				}
 			}
@@ -624,16 +612,16 @@ void __fastcall hkDoGlow(__int64 a1) {
 
 
 		if (teamnums[i] != localdata.TeamNum) {
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride) = Config.colors.GlowCol.x * 255;     // Red
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 1) = Config.colors.GlowCol.y * 255; // Green
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 2) = Config.colors.GlowCol.z * 255; // Blue
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 3) = Config.colors.GlowCol.w * 255; // Alpha
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride) = cfg::colors_GlowCol.x* 255;     // Red
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 1) = cfg::colors_GlowCol.y * 255; // Green
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 2) = cfg::colors_GlowCol.z * 255; // Blue
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 3) = cfg::colors_GlowCol.w * 255; // Alpha
 		}
 		else {
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride) = Config.colors.GlowTeamCol.x * 255;     // Red
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 1) = Config.colors.GlowTeamCol.y * 255; // Green
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 2) = Config.colors.GlowTeamCol.z * 255; // Blue
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 3) = Config.colors.GlowTeamCol.w * 255; // Alpha
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride) = cfg::colors_GlowTeamCol.x * 255;     // Red
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 1) = cfg::colors_GlowTeamCol.y * 255;  // Green
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 2) = cfg::colors_GlowTeamCol.z * 255;  // Blue
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 3) = cfg::colors_GlowTeamCol.w * 255;  // Alpha
 		}
 
 
@@ -739,6 +727,7 @@ int64_t __fastcall hkApplySpread(int64_t a1, int64_t a2) {
 }
 
 
+
 void CreateHooks() {
 
 	static bool init = false;
@@ -842,8 +831,11 @@ void CreateHooks() {
 	//MH_EnableHook((LPVOID)oSetMaterialFunction);
 	//std::cout << "[+] SetMat Hook Initialized!" << std::endl;
 
+	// Set the new window procedure
+
 
 
 
 	init = true;
 }
+

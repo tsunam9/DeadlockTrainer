@@ -26,9 +26,9 @@ void globals::SortEnts() { // ONLY CALL IN AIMBOT
 
             if (EntName == "CCitadelPlayerController" && !*(bool*)(entity + CBasePlayerController::m_bIsLocalPlayerController))
                 this->entlist.updating->push_back(entity);
-            if (EntName == "CItemXP" && (Config.aimbot.AimXp || Config.legitbot.LegitAimXp))
+            if (EntName == "CItemXP" && (cfg::ragebot_AimXp|| cfg::legitbot_LegitAimXp))
                 this->entlist.updating->push_back(entity);
-            if (EntName == "C_NPC_Trooper" && (Config.aimbot.AimMinions || Config.legitbot.LegitAimMinions))
+            if (EntName == "C_NPC_Trooper" && (cfg::ragebot_AimMinions || cfg::legitbot_LegitAimMinions))
                 this->entlist.updating->push_back(entity);
         }
         this->entlist.SwapBuffers();
@@ -53,7 +53,7 @@ void globals::SortEntsEsp() { // ONLY CALL IN DOESP
 
         if (EntName == "CCitadelPlayerController" && !*(bool*)(entity + CBasePlayerController::m_bIsLocalPlayerController))
             this->espEntList.updating->push_back(entity);
-        if (EntName == "CItemXP" && Config.esp.DrawXp)
+        if (EntName == "CItemXP" && cfg::esp_DrawXp)
             this->espEntList.updating->push_back(entity);
         if (EntName == "C_NPC_TrooperNeutral")
             this->espEntList.updating->push_back(entity);

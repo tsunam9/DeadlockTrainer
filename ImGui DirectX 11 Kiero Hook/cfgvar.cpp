@@ -1,5 +1,6 @@
 #pragma once
 #include "cfgvar.h"
+#include <cstdio>
 
 void cfg::save(std::string_view name) {
 

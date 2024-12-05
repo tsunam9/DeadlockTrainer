@@ -5,8 +5,9 @@ void PocketLogic::AutoBarrage() {
 	if (!(*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bChanneling)))
 		return;
 
-	if (!Config.pocket.AimBarrage)
+	if (!cfg::pocket_AimBarrage)
 		return;
+
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();
 	if (!target)
 		return;
@@ -19,7 +20,7 @@ void PocketLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.pocket.AimBarrage)
+	if (!cfg::pocket_AimBarrage)
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();
@@ -34,7 +35,7 @@ void PocketLogic::OnAbility2() {
 	if (*(bool*)(this->abilitiesarray[2] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.pocket.AimCloak)
+	if (!cfg::pocket_AimCloak)
 		//return;
 
 		uint64_t target = Aimbot::GetCurrentAimbotTarget();

@@ -26,8 +26,8 @@ void VindictaLogic::AutoUlt() {
 	}
 
 
-	Helper::KeyBindHandler(Config.aimbot.magicbulletkey);
-	if (Config.aimbot.magicbullet)
+	//Helper::KeyBindHandler(Config.aimbot.magicbulletkey);
+	if (cfg::ragebot_magicbullet)
 		return;
 
 
@@ -47,7 +47,7 @@ void VindictaLogic::AutoUlt() {
 
 
 	float targetpercent = (float)this->targetdata->Health / (float)this->targetdata->MaxHealth;
-	if (targetpercent < Config.vindicta.AutoUltHealthPercent) {
+	if (targetpercent < cfg::vindicta_AutoUltHealthPercent) {
 
 		
 
@@ -77,7 +77,7 @@ void VindictaLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.vindicta.AutoAimStake)
+	if (!cfg::vindicta_AutoAimStake)
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();
@@ -100,7 +100,7 @@ void VindictaLogic::OnAbility3() {
 	if (*(bool*)(this->abilitiesarray[3] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.vindicta.AutoAimCrow)
+	if (!cfg::vindicta_AutoAimCrow)
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();
@@ -141,7 +141,7 @@ void VindictaLogic::OnTick() {
 
 	static bool checking = false;
 
-	if (Config.vindicta.AutoSnipe) {
+	if (cfg::vindicta_AutoSnipe) {
 		AutoUlt();
 	}
 

@@ -6,7 +6,7 @@ void MirageLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.mirage.AimTornado)
+	if (!cfg::mirage_AimTornado)
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();
@@ -21,7 +21,7 @@ void MirageLogic::OnAbility2() {
 	if (*(bool*)(this->abilitiesarray[2] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.mirage.AimScarabs)
+	if (!cfg::mirage_AimScarabs)
 		return;
 
 		uint64_t target = Aimbot::GetCurrentAimbotTarget();

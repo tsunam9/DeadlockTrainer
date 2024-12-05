@@ -55,7 +55,7 @@ void BebopLogic::OnAbility3() {
 	if (*(bool*)(this->abilitiesarray[3] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.bebop.AimHook)
+	if (!cfg::bebop_AimHook)
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();
@@ -92,10 +92,10 @@ void BebopLogic::OnTick() {
 		OnAbility4();
 	}
 
-	if (Config.bebop.AutoBomb) {
+	if (cfg::bebop_AutoBomb) {
 		AutoBomb();
 	}
-	if (Config.bebop.AutoUppercut) {
+	if (cfg::bebop_AutoUppercut) {
 		AutoUpperCut();
 	}
 

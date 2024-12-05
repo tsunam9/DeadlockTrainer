@@ -6,7 +6,7 @@ void ParadoxLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.paradox.AimGrenade)
+	if (!cfg::paradox_AimGrenade)
 		return;
 
 		uint64_t target = Aimbot::GetCurrentAimbotTarget();
@@ -34,7 +34,7 @@ void ParadoxLogic::OnAbility4() {
 	if (*(bool*)(this->abilitiesarray[4] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.paradox.AimSwap)
+	if (!cfg::paradox_AimSwap)
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();

@@ -12,7 +12,7 @@ void Misc::SimpleNoRecoil(){
 	static char original_bytes[5]; // Declare the array
 	static bool patched = false;
 
-		if (patched && !Config.misc.bNorecoil) {
+		if (patched && !cfg::misc_bNorecoil) {
 			DWORD oldProtect;
 			VirtualProtect((void*)(ClientModuleBase + Offsets.o_fApplyRecoil), 5, PAGE_EXECUTE_READWRITE, &oldProtect);
 			std::memcpy(reinterpret_cast<void*>(ClientModuleBase + Offsets.o_fApplyRecoil), original_bytes, sizeof(original_bytes));
@@ -21,7 +21,7 @@ void Misc::SimpleNoRecoil(){
 			return;
 		}
 
-		if (!patched && Config.misc.bNorecoil) {
+		if (!patched && cfg::misc_bNorecoil) {
 			DWORD oldProtect;
 			VirtualProtect((void*)(ClientModuleBase + Offsets.o_fApplyRecoil), 5, PAGE_EXECUTE_READWRITE, &oldProtect);
 			InitializeOriginalBytes(original_bytes);

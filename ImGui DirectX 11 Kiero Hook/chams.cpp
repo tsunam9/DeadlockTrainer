@@ -113,12 +113,12 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 		return;
 	}
 
-	if (islocal && Config.esp.LocalChams) {
-		matdata->colValue.r = Config.colors.LocalChamsCol.x * 255;
-		matdata->colValue.g = Config.colors.LocalChamsCol.y * 255;
-		matdata->colValue.b = Config.colors.LocalChamsCol.z * 255;
-		matdata->colValue.a = Config.colors.LocalChamsCol.w * 255;
-		if (Config.esp.ModelChams) {
+	if (islocal && cfg::esp_LocalChams) {
+		matdata->colValue.r = cfg::colors_LocalChamsCol.x* 255;
+		matdata->colValue.g = cfg::colors_LocalChamsCol.y * 255;
+		matdata->colValue.b = cfg::colors_LocalChamsCol.z * 255;
+		matdata->colValue.a = cfg::colors_LocalChamsCol.w * 255;
+		if (cfg::esp_ModelChams) {
 			matdata->pMaterial = setmat;
 		}
 		goto LABEL_1;
@@ -127,12 +127,12 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 	if (targetchamsdata.TeamNum == LocalPlayerData.TeamNum)
 		return;
 
-	matdata->colValue.r = Config.colors.ChamsCol.x * 255;
-	matdata->colValue.g = Config.colors.ChamsCol.y * 255;
-	matdata->colValue.b = Config.colors.ChamsCol.z * 255;
-	matdata->colValue.a = Config.colors.ChamsCol.w * 255;
+	matdata->colValue.r = cfg::colors_ChamsCol.x * 255;
+	matdata->colValue.g = cfg::colors_ChamsCol.y * 255;
+	matdata->colValue.b = cfg::colors_ChamsCol.z * 255;
+	matdata->colValue.a = cfg::colors_ChamsCol.w * 255;
 
-	if (Config.esp.ModelChams) {
+	if (cfg::esp_ModelChams) {
 		if (ignorez) {
 			matdata->pMaterial = setmat;
 		}

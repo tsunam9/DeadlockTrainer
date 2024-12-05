@@ -9,7 +9,7 @@ void Hero::OnTick() {
 
 void Hero::RunScript(CCitadelUserCmdPB* cmd) {
 
-	if (!(Config.aimbot.bRageBotMasterSwitch) && !(Config.legitbot.legitbotmasterswitch)) {
+	if (!(cfg::ragebot_masterswitch) && !(cfg::legitbot_masterswitch)) {
 		return;
 	}
 

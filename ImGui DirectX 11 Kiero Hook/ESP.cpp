@@ -2,6 +2,8 @@
 
 Drawing draw;
 
+extern Binds mainbinds;
+
 inline globals& globs = globals::instance();
 
 void DrawBoneEsp(uintptr_t entity) {
@@ -21,7 +23,7 @@ void DrawBoneEsp(uintptr_t entity) {
 		vec2 ScreenPos1;
 		vec2 ScreenPos2;
 		if (Helper::WorldToScreen(BonePos1, ScreenPos1) && Helper::WorldToScreen(BonePos2, ScreenPos2))
-			draw.DrawLine(ScreenPos1.x, ScreenPos1.y, ScreenPos2.x, ScreenPos2.y, ImColor(Config.colors.skeletoncol));
+			draw.DrawLine(ScreenPos1.x, ScreenPos1.y, ScreenPos2.x, ScreenPos2.y, ImColor(cfg::colors_skeletoncol));
 
 
 
@@ -34,7 +36,7 @@ void DrawBoneEsp(uintptr_t entity) {
 
 void DrawXPEsp(uintptr_t entity) {
 
-	if(!Config.esp.DrawXp || !entity)
+	if(!cfg::esp_DrawXp|| !entity)
 		return;
 
 	vec2 ScreenXp;
@@ -75,7 +77,7 @@ void DrawXPEsp(uintptr_t entity) {
 
 void DrawMonsterEsp(uintptr_t entity) {
 
-	if (!Config.esp.DrawMonsters || !entity)
+	if (!cfg::esp_DrawMonsters || !entity)
 		return;
 	NpcData EntInfo;
 	Helper::get_npc_data(entity, &EntInfo);
@@ -122,48 +124,9 @@ void DrawMonsterEsp(uintptr_t entity) {
 		return;
 	}
 
-	draw.DrawQuad(limitup, limitright, limitdown, limitleft, ImColor(Config.colors.drawmonsterscol));
+	draw.DrawQuad(limitup, limitright, limitdown, limitleft, ImColor(cfg::colors_drawmonsterscol));
 
 
-}
-
-std::vector<KeyBind*> KeyBinds;
-
-void ShowKeyBindStatus() {
-
-	static bool init = false;
-	if (!init) {
-
-		KeyBinds.push_back(&Config.aimbot.AimKey);
-		KeyBinds.push_back(&Config.aimbot.AimKeyXp);
-		KeyBinds.push_back(&Config.aimbot.AimKeyMinions);
-		KeyBinds.push_back(&Config.aimbot.magicbulletkey);
-		KeyBinds.push_back(&Config.legitbot.LegitAimKey);
-		init = true;
-	}
-
-	ImGui::SetNextWindowSize(ImVec2(150.f, ImGui::GetTextLineHeightWithSpacing() * KeyBinds.size()));
-
-	ImGui::Begin("KeyBinds", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoResize);
-
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(5, 5));
-
-	for (int i = 0; i < KeyBinds.size(); i++) {
-
-		if (*KeyBinds[i]->varptr) {
-			switch (KeyBinds[i]->keybindmode) {
-			case 1:
-				ImGui::Text("[HOLD] %s", KeyBinds[i]->BindName.c_str());
-				break;
-			case 2:
-				ImGui::Text("[TOGGLE] %s", KeyBinds[i]->BindName.c_str());
-				break;
-			}
-		}
-	}
-
-	ImGui::PopStyleVar();
-	ImGui::End();
 }
 
 float GetSmoothedFPS() {
@@ -250,7 +213,7 @@ void RenderWatermark() {
 
 void DrawMinionEsp(uintptr_t entity) {
 
-	if (!Config.esp.DrawMinions || !entity)
+	if (!cfg::esp_DrawMinions || !entity)
 		return;
 
 
@@ -352,13 +315,13 @@ void DrawFov() {
 
 		float radius = 0;
 
-		if (Config.legitbot.legitbotmasterswitch) {
-			radius = tanf(Helper::DegreesToRadians(Config.legitbot.fov) / 2) / tanf(Helper::DegreesToRadians(pFov) / 2) * (resolution.x / 2);
-		}else if (Config.aimbot.bRageBotMasterSwitch) {
-			radius = tanf(Helper::DegreesToRadians(Config.aimbot.fov) / 2) / tanf(Helper::DegreesToRadians(pFov) / 2) * (resolution.x / 2);
+		if (cfg::legitbot_masterswitch) {
+			radius = tanf(Helper::DegreesToRadians(cfg::legitbot_fov) / 2) / tanf(Helper::DegreesToRadians(pFov) / 2) * (resolution.x / 2);
+		}else if (cfg::ragebot_masterswitch) {
+			radius = tanf(Helper::DegreesToRadians(cfg::ragebot_aimfov) / 2) / tanf(Helper::DegreesToRadians(pFov) / 2) * (resolution.x / 2);
 		}
 
-		draw.DrawCircle(resolution.x / 2, resolution.y / 2, radius, ImColor(Config.colors.drawfovcol));
+		draw.DrawCircle(resolution.x / 2, resolution.y / 2, radius, ImColor(cfg::colors_drawfovcol));
 }
 
 void DrawAimbotTargetInfo(PlayerData* info) {
@@ -402,18 +365,19 @@ const char* Vec3ToCString(const vec3& vec) {
 void Esp::DoEsp() {
 
 
-	if (Config.esp.DrawFov) {
+	if (cfg::esp_DrawFov) {
 		DrawFov();
 	}
 	RenderWatermark();
 	
-	if (Config.esp.ShowKeyBindList) {
-		ShowKeyBindStatus();
+	if (cfg::esp_ShowKeyBindList) {
+		mainbinds.think();
+		mainbinds.paint();
 	}
 
 	globs.SortEntsEsp();
 
-	if (!Config.esp.bEsp)
+	if (!cfg::esp_bEsp)
 		return;
 
 
@@ -557,10 +521,10 @@ void Esp::DoEsp() {
 		else if (EntName == "CItemXP") {
 			DrawXPEsp((*globs.espEntList.active)[i]);
 		}
-		else if (EntName == "C_NPC_TrooperNeutral" && Config.esp.DrawMonsters) {
+		else if (EntName == "C_NPC_TrooperNeutral" && cfg::esp_DrawMonsters) {
 			DrawMonsterEsp((*globs.espEntList.active)[i]);
 		}
-		else if (EntName == "C_NPC_Trooper" && Config.esp.DrawMinions) {
+		else if (EntName == "C_NPC_Trooper" && cfg::esp_DrawMinions) {
 			DrawMinionEsp((*globs.espEntList.active)[i]);
 		}
 	}
@@ -595,7 +559,7 @@ void Esp::DrawEsp(uintptr_t Entity, PlayerData* EntInfo)
 
 	vec2 resolution = Helper::GetResolution();
 
-	if (Config.esp.DrawAimbotTarget && Aimbot::GetCurrentAimbotTarget() == Entity) {
+	if (cfg::esp_DrawAimbotTarget && Aimbot::GetCurrentAimbotTarget() == Entity) {
 		if (w2sresult) {
 			vec2 point1;
 			vec2 point2;
@@ -610,38 +574,38 @@ void Esp::DrawEsp(uintptr_t Entity, PlayerData* EntInfo)
 			point3.x = (BoxHead.x + (0.5 * width)) - 8;
 			point3.y = BoxHead.y - 35.0f;
 
-			draw.DrawTriangleFilled(point1, point2, point3, ImColor(Config.colors.aimbotTargetcol));
+			draw.DrawTriangleFilled(point1, point2, point3, ImColor(cfg::colors_aimbotTargetcol));
 		}
 		DrawAimbotTargetInfo(EntInfo);
 	}
 	
 	if (w2sresult) {
-		if (Config.esp.boxEsp) {
-			draw.DrawBox(BoxHead.x, BoxHead.y, width, height * 1.2, ImColor(Config.colors.boxespcol));
+		if (cfg::esp_boxEsp) {
+			draw.DrawBox(BoxHead.x, BoxHead.y, width, height * 1.2, ImColor(cfg::colors_boxespcol));
 		}
-		if (Config.esp.HealthEsp) {
+		if (cfg::esp_HealthEsp) {
 			std::string Health = std::to_string(EntInfo->Health);
 			std::string MaxHealth = std::to_string(EntInfo->MaxHealth);
 			std::string HealthDisplay = "Health: " + Health + " / " + MaxHealth;
 
-			draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.2, ImColor(Config.colors.healthtextcolesp), _strdup(HealthDisplay.c_str()));
+			draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.2, ImColor(cfg::colors_healthtextcolesp), _strdup(HealthDisplay.c_str()));
 		}
-		if (Config.esp.Tracers) {
-			draw.DrawLine(resolution.x / 2, resolution.y, ScreenFeet.x, ScreenFeet.y, ImColor(Config.colors.tracerscol));
+		if (cfg::esp_Tracers) {
+			draw.DrawLine(resolution.x / 2, resolution.y, ScreenFeet.x, ScreenFeet.y, ImColor(cfg::colors_tracerscol));
 		}
-		if (Config.esp.DistanceEsp) {
+		if (cfg::esp_DistanceEsp) {
 
 			PlayerData* LocalPlayerData = new PlayerData;
 			Helper::get_player_data(Helper::get_local_player(), LocalPlayerData);
 
 			std::string temp = std::to_string(Helper::GetDistance(LocalPlayerData->m_vecOrigin, EntInfo->m_vecOrigin));
-			draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2 + 25, ImColor(Config.colors.distancecolesp), _strdup(temp.c_str()));
+			draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2 + 25, ImColor(cfg::colors_distancecolesp), _strdup(temp.c_str()));
 			delete LocalPlayerData;
 		}
-		if (Config.esp.NameEsp) {
-			draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2, ImColor(Config.colors.namecoloresp), Helper::GetHeroNameByID(EntInfo->HeroID).c_str());
+		if (cfg::esp_NameEsp) {
+			draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2, ImColor(cfg::colors_namecoloresp), Helper::GetHeroNameByID(EntInfo->HeroID).c_str());
 		}
-		if (Config.esp.HealthBar) {
+		if (cfg::esp_HealthBar) {
 			float health_ratio = (float)EntInfo->Health / (float)EntInfo->MaxHealth;
 			float scaled_height = height * 1.2f;
 
@@ -677,7 +641,7 @@ void Esp::DrawEsp(uintptr_t Entity, PlayerData* EntInfo)
 
 			ImGui::PopFont();
 		}
-		if (Config.esp.boneEsp) {
+		if (cfg::esp_boneEsp) {
 			DrawBoneEsp(Entity);
 		}
 	}

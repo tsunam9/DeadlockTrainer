@@ -24,7 +24,7 @@ void SevenLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.seven.AimLightingBall)
+	if (!cfg::seven_AimLightingBall)
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();
@@ -75,7 +75,7 @@ void SevenLogic::OnTick() {
 		OnAbility4();
 	}
 
-	if (Config.seven.AutoStaticCharge) {
+	if (cfg::seven_AutoStaticCharge) {
 		AutoStaticCharge();
 	}
 

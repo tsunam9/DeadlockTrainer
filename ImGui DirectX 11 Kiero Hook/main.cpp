@@ -65,17 +65,24 @@ void InitImGui()
 
 }
 
+/*	if (true && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+		return true;*/
 
 LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
-	if (true && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
-		return true;
+	ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
+
+	if (cfg::menu_open && !unloadRequested) {
+		if ((uMsg >= WM_MOUSEFIRST && uMsg <= WM_MOUSELAST) || (uMsg >= WM_KEYFIRST && uMsg <= WM_KEYLAST)) {
+			return CallWindowProcA(oWndProc, hWnd, uMsg,0,0);
+		}
+	}
 
 	return CallWindowProc(oWndProc, hWnd, uMsg, wParam, lParam);
 }
 
 DWORD WINAPI UnloadThread(LPVOID lpParameter) {
-	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	std::this_thread::sleep_for(std::chrono::milliseconds(250));
 	FreeLibraryAndExitThread((HMODULE)lpParameter, 0);
 	return 0;
 }
@@ -96,7 +103,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 			pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)& pBackBuffer);
 			pDevice->CreateRenderTargetView(pBackBuffer, NULL, &mainRenderTargetView);
 			pBackBuffer->Release();
-			oWndProc = (WNDPROC)SetWindowLongPtr(window, GWLP_WNDPROC, (LONG_PTR)WndProc);
+			oWndProc = (WNDPROC)SetWindowLongPtrA(window, GWLP_WNDPROC, (LONG_PTR)WndProc);
 			InitImGui();
 			init = true;
 		}
@@ -107,17 +114,23 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 
 	if (unloadRequested) {
 
+		DXGI_SWAP_CHAIN_DESC sd;
+		pSwapChain->GetDesc(&sd);
+		window = sd.OutputWindow;
+
+
 		iEngine->ClientCmd_Unrestricted("hud_free_cursor -1");
+		SetWindowLongPtrA(window, GWLP_WNDPROC, (LONG_PTR)oWndProc);
 		kiero::shutdown();
 		fclose(fp);
 		FreeConsole();
 		unloadRequested = false;
-		//CreateThread(nullptr, 0, UnloadThread, myhmod, 0, nullptr);
+		CreateThread(nullptr, 0, UnloadThread, myhmod, 0, nullptr);
 		return oPresent(pSwapChain, SyncInterval, Flags);
 	}
 
-	if (GetAsyncKeyState(Config.MenuKey.key) & 1) {
-		Config.MenuOpen = !Config.MenuOpen;
+	if (GetAsyncKeyState(VK_INSERT) & 1) {
+		cfg::menu_open = !cfg::menu_open;
 	}
 
 	ImGui_ImplDX11_NewFrame();
@@ -130,7 +143,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	GodFunction();
 	ImGui::PopFont();
 
-	if (Config.MenuOpen) {
+	if (cfg::menu_open) {
 
 		Menu::DrawBackround();
 

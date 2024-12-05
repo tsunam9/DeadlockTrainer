@@ -28,7 +28,7 @@ void ShivLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[2] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.shiv.AutoAimDagger)
+	if (!cfg::shiv_AutoAimDagger)
 		return;
 
 	Aimbot::AimAbility(target, 1, this->abilitiesarray[2],5000.0f, true);
@@ -39,7 +39,7 @@ void ShivLogic::OnAbility2() {
 	if (*(bool*)(this->abilitiesarray[3] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.shiv.AutoAimDash)
+	if (!cfg::shiv_AutoAimDash)
 		return;
 
 	vec3 vec_target = Helper::GetBonePosition(target, "head");
@@ -90,11 +90,11 @@ void ShivLogic::OnTick() {
 		 OnAbility4();
 	 }
 
-	 if (Config.shiv.AutoExecute) {
+	 if (cfg::shiv_AutoExecute) {
 		 AutoUlt();
 	 }
 
-	 if (Config.aimbot.MovementFix) {
+	 if (cfg::ragebot_movementfix) {
 		 auto camera = Helper::get_Camera();
 		 vec3 OldAngles = *(vec3*)(camera + 0x44);
 		 Helper::CorrectMovement(cmd, cmd->pBaseUserCMD->forwardMove, cmd->pBaseUserCMD->sideMove, OldAngles);

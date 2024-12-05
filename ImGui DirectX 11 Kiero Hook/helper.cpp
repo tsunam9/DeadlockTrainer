@@ -456,98 +456,6 @@ CCitadelUserCmdPB* Helper::GetCurrentUserCmd()
 }
 
 
-/*
-	static uint64_t offset = ClientModuleBase + MEM::PatternScanOffset((void*)ClientModuleBase, "48 8b 0d ? ? ? ? e8 ? ? ? ? 48 8b cf 4c 8b e8", 3, 7);
-
-	const char* v132;
-	__int64 v4 = GetLocalPlayerController(0LL);
-	__int64 v5 = v4;
-	if (!v4)
-		return nullptr;
-	oGetCommandIndex(v4, (__int64)&v132);
-	__int64 v6 = (unsigned int)((uint32_t)v132 - 1);
-	if ((uint32_t)v132 == -1)
-		v6 = 0xFFFFFFFFLL;
-	__int64 *v7 = (__int64*)oGetCUserCmdBASE(offset, v6);
-
-	unsigned int v8 = *(uint32_t*)(*v7 + 21136);
-	CCitadelUserCmdPB* v9 = oGetUserCmd(v5, v8);
-
-	return v9;
-*/
-
-// Add a static variable to track the currently active keybind waiting for a key
-static KeyBind* activeKeybind = nullptr;
-
-void Helper::HotKey(KeyBind& keybind) {
-	// Use PushID with a unique identifier for each keybind
-	ImGui::PushID(&keybind); // Use the address of keybind as a unique ID
-
-	if (!keybind.waitingForKey) {
-		if (ImGui::Button(keybind.name.c_str())) {
-			// Set the active keybind if none is waiting
-			if (activeKeybind == nullptr) {
-				activeKeybind = &keybind; // Set this keybind as active
-				keybind.waitingForKey = true;
-			}
-		}
-	}
-	else {
-		ImGui::Button("...");
-		for (auto& Key : KeyCodes) {
-			if (GetAsyncKeyState(Key) & 0x8000) { // Ensure the key is pressed down
-				if (Key == VK_ESCAPE) {
-					keybind.key = 0;
-					keybind.name = "-";
-					keybind.waitingForKey = false;
-					activeKeybind = nullptr; // Reset active keybind
-					break;
-				}
-
-				// Check if the key is already bound to another keybind
-				if (activeKeybind != nullptr && activeKeybind != &keybind && activeKeybind->key == Key) {
-					// Optionally handle the conflict here (e.g., notify the user)
-					// You could reset the conflicting keybind or ignore the new key.	
-					break;
-				}
-
-				// Set the key and update the name
-				keybind.key = Key;
-				keybind.name = KeyNames[Key];
-				keybind.waitingForKey = false;
-				activeKeybind = nullptr; // Reset active keybind
-				break;
-			}
-		}
-	}
-
-	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) {
-		ImGui::OpenPopup("Keybind Options");
-	}
-
-	// Get the position of the button
-	ImVec2 buttonPos = ImGui::GetItemRectMin();
-
-	// Calculate the position for the popup
-	ImVec2 popupPos = buttonPos;
-	popupPos.x += ImGui::GetItemRectSize().x; // Position to the right of the button
-
-	// Create the subwindow
-	if (ImGui::BeginPopup("Keybind Options", ImGuiWindowFlags_NoMove)) {
-		ImGui::SetWindowPos(popupPos);
-
-		const char* items[] = { "Always", "Hold", "Toggle" };
-
-		ImGui::Combo("Mode", &keybind.keybindmode, items, IM_ARRAYSIZE(items));
-
-		ImGui::EndPopup();
-	}
-
-	// Pop the ID to restore the previous state
-	ImGui::PopID();
-}
-
-
 
 
 
@@ -880,6 +788,12 @@ void Helper::DrawMultiSelectDropdown(const char* label, const char* previewText,
 
 		ImGui::EndCombo();
 	}
+}
+
+void Helper::CenterText(const char* text) {
+	ImVec2 textSize = ImGui::CalcTextSize(text);
+	ImGui::SetCursorPosX((ImGui::GetWindowSize().x - textSize.x) / 2);
+	ImGui::Text(text);
 }
 
 

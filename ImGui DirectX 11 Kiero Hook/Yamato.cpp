@@ -6,7 +6,7 @@ void YamatoLogic::AimPowerSlash() {
 	if (!*(bool*)(this->abilitiesarray[2] + C_CitadelBaseAbility::m_bInCastDelay))
 		return;
 
-	if (!Config.yamato.AimPowerSlash)
+	if (!cfg::yamato_AimPowerSlash)
 		return;
 	cmd->buttons &= ~IN_ATTACK;
 
@@ -35,7 +35,7 @@ void YamatoLogic::OnAbility3() {
 	if (*(bool*)(this->abilitiesarray[5] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.yamato.AimCrimsonSlash)
+	if (!cfg::yamato_AimCrimsonSlash)
 		return;
 
 	Aimbot::AimAbility(target, 1, this->abilitiesarray[3], 0.f, false);

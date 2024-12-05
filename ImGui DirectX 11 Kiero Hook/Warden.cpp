@@ -6,7 +6,7 @@ void WardenLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.warden.AimLightingGrenade)
+	if (!cfg::warden_AimLightingGrenade)
 		return;
 
 	if (!target)

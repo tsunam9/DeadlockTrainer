@@ -1,5 +1,6 @@
 #pragma once
 #include "includes.h"
+#include "binds.h"
 
 class Esp
 {

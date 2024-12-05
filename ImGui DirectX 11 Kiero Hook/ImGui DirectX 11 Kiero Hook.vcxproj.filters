@@ -127,6 +127,9 @@
     <Filter Include="Source Files\Features\Chams\AntiAim">
       <UniqueIdentifier>{db13c58b-dcea-4ea4-9963-85f28abbcee3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Features\Binds">
+      <UniqueIdentifier>{13f0555b-6b90-466f-a77d-6106fe686ebc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kiero\minhook\src\buffer.c">
@@ -185,9 +188,6 @@
     </ClCompile>
     <ClCompile Include="Misc.cpp">
       <Filter>Source Files\Globals\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="Config.cpp">
-      <Filter>Source Files\Config</Filter>
     </ClCompile>
     <ClCompile Include="hooks.cpp">
       <Filter>Source Files\Hooks</Filter>
@@ -272,6 +272,9 @@
     </ClCompile>
     <ClCompile Include="insttracker.cpp">
       <Filter>Source Files\Globals</Filter>
+    </ClCompile>
+    <ClCompile Include="binds.cpp">
+      <Filter>Source Files\Features\Binds</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -459,6 +462,9 @@
     </ClInclude>
     <ClInclude Include="cfgvar.h">
       <Filter>Source Files\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="binds.h">
+      <Filter>Source Files\Features\Binds</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

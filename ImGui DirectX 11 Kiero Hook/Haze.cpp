@@ -7,7 +7,7 @@ void HazeLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!(Config.haze.AimDagger))
+	if (!(cfg::haze_AimDagger))
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();

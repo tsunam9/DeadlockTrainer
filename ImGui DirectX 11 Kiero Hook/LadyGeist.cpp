@@ -6,7 +6,7 @@ void LadyGeistLogic::OnAbility1() {
 	if (*(bool*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.ladygeist.AimBomb)
+	if (!cfg::ladygeist_AimBomb)
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();
@@ -29,7 +29,7 @@ void LadyGeistLogic::OnAbility3() {
 	if (*(bool*)(this->abilitiesarray[3] + C_CitadelBaseAbility::m_bIsCoolingDownInternal))
 		return;
 
-	if (!Config.ladygeist.AimMalice)
+	if (!cfg::ladygeist_AimMalice)
 		return;
 
 	uint64_t target = Aimbot::GetCurrentAimbotTarget();

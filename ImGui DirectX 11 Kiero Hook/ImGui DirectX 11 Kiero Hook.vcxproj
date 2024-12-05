@@ -149,9 +149,9 @@
     <ClCompile Include="Aimbot.cpp" />
     <ClCompile Include="AntiAim.cpp" />
     <ClCompile Include="Bebop.cpp" />
+    <ClCompile Include="binds.cpp" />
     <ClCompile Include="cfgvar.cpp" />
     <ClCompile Include="chams.cpp" />
-    <ClCompile Include="Config.cpp" />
     <ClCompile Include="Drawing.cpp" />
     <ClCompile Include="ESP.cpp" />
     <ClCompile Include="gameinterface.cpp" />
@@ -206,6 +206,7 @@
     <ClInclude Include="Aimbot.h" />
     <ClInclude Include="AntiAim.h" />
     <ClInclude Include="Bebop.h" />
+    <ClInclude Include="binds.h" />
     <ClInclude Include="CCitadelBulletManager.h" />
     <ClInclude Include="cfgvar.h" />
     <ClInclude Include="chams.h" />
