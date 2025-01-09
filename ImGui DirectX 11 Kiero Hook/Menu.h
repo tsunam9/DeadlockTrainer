@@ -5,23 +5,48 @@
 #include "json.hpp"
 #include <vector>
 #include "binds.h"
+#include "cfgvar.h"
+
+extern char quickiterationmaterial[20408];
+extern bool replacedmaterial;
+extern bool firstreplacedmaterial;
+
+enum WidgetType {
+	checkbox,
+	sliderint,
+	sliderfloat
+};
+
+struct widgetinfo_checkbox {
+
+	std::string label;
+	bool* var;
+
+};
+
+struct storedcfgvar {
+
+	cfgvar* var;
+	int WidgetType;
+	void* widgetinfo;
+};
 
 class Menu {
 public:	
 
-	static void DrawRageBotTab();
-	static void DrawLegitBotTab();
-	static void DrawHeroesTab();
-	static void DrawEspTab();
-	static void DrawConfigTab(FILE* fp);
+	void DrawRageBotTab();
+	void DrawLegitBotTab();
+	void DrawHeroesTab();
+	void DrawEspTab();
+	void DrawConfigTab(FILE* fp);
 
+	std::vector<storedcfgvar> menu_storedvars;
 
-	static void DrawMenu(FILE* fp);
-	static void DrawBackround();
-	static void DrawNewMenu(FILE* fp, ID3D11Device* dx11Device);
-	static void DrawConfigs();
+	void DrawBackround();
+	void DrawNewMenu(FILE* fp, ID3D11Device* dx11Device);
+	void DrawConfigs();
 
-	static void checkbox(const char* label, bool* v);
+	void checkbox(const char* label, bool* v);
 
 	
 

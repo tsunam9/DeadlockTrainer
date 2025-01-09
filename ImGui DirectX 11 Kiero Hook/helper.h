@@ -765,6 +765,7 @@ public:
     static float getBulletSpeed(uint64_t BulletHandler);
     static void DrawMultiSelectDropdown(const char* label, const char* previewText, const char** items, bool* selected, int itemCount);
     static void CenterText(const char* text);
+    static float GetServerTime();
 
 };
 

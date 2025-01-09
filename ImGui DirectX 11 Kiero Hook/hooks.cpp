@@ -1,3 +1,4 @@
+
 #include "hooks.h"
 
 static CMaterial2* permamat;
@@ -43,7 +44,6 @@ f_DrawModel DrawModelTarget = reinterpret_cast<f_DrawModel>(scenesytembase + MEM
 class CRenderContextBase;
 
 void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, __int64 a8) {
-
 
 	if (!(iEngine->IsInGame())) {
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
@@ -97,10 +97,19 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 			}
 		}
 
+		std::string matname = material_data->pMaterial->GetName();
+
+		if (!islocal) {
+			std::cout << material_data->pMaterial->GetName() << "\n";
+		}
+
+		if (matname.find("glow") != std::string::npos) {
+			return;
+		}
+
 		Chams::DrawChams(material_data, islocal, ownerobj, false);
 
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-
 
 		return;
 	}
@@ -141,7 +150,6 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	CreateMove(a1, a2, a3);
 	CCitadelUserCmdPB* cmd = Helper::GetCurrentUserCmd();
 
-
 	if (!cmd->pBaseUserCMD->playerViewAngle || !cmd->cameraViewAngle)
 		return;
 
@@ -161,11 +169,11 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 
 	Aimbot::RunAimbot(cmd); // always run aimbot 
 
+	Misc::AutoActiveReload(cmd);
+
 	if (cfg::antiaim_bAntiAim) {
 		AntiAim::DoAntiAim(cmd);
 	}
-
-
 
 	ShivLogic shiv;
 	VindictaLogic vindicta;
@@ -238,7 +246,7 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 			break;
 		}
 
-	if (cfg::ragebot_movementfix) {
+	if (cfg::ragebot_masterswitch) {
 		Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
 	}
 
@@ -265,8 +273,6 @@ void __fastcall hkRenderStart(CViewRender* pViewRender)
 {
 
 	RenderStart(pViewRender);
-	pViewRender->Fov *= cfg::misc_fovmodifier;
-	pViewRender->nSomeFlags |= 2;
 
 }
 
@@ -321,7 +327,7 @@ __int64 __fastcall hkFindParam(__int64 firstparam, const char* param) {
 
 
 using fnUpdateSceneObject = __int64(__fastcall*)(C_AggregateSceneObject* object, __int64 unk, char a3);
-fnUpdateSceneObject UpdateSceneObjectTarget = reinterpret_cast<fnUpdateSceneObject>(scenesytembase + MEM::PatternScanFunc((void*)scenesytembase, "48 89 5c 24 ? 48 89 6c 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 ec ? 4c 8b f9 33 ff"));
+fnUpdateSceneObject UpdateSceneObjectTarget = reinterpret_cast<fnUpdateSceneObject>(scenesytembase + MEM::PatternScanFunc((void*)scenesytembase, "48 89 6c 24 ? 48 89 74 24 ? 44 88 44 24"));
 fnUpdateSceneObject ogUpdateSceneObject = nullptr;
 
 __int64 __fastcall hkUpdateSceneObject(C_AggregateSceneObject* object, __int64 unk, char a3)
@@ -728,108 +734,52 @@ int64_t __fastcall hkApplySpread(int64_t a1, int64_t a2) {
 
 
 
+
+
 void CreateHooks() {
 
 	static bool init = false;
 	if (init)
 		return;
 
-
 	MH_CreateHook((LPVOID)CreateMoveTarget, &detourCreateMove, reinterpret_cast<LPVOID*>(&CreateMove));
 	MH_EnableHook((LPVOID)CreateMoveTarget);
-	std::cout << "[+] CreateMove Hook Initialized!" << std::endl;
+	//std::cout << "[+] CreateMove Hook Initialized!" << std::endl;
 	MH_CreateHook((LPVOID)RenderStartTarget, &hkRenderStart, reinterpret_cast<LPVOID*>(&RenderStart));
 	MH_EnableHook((LPVOID)RenderStartTarget);
-	std::cout << "[+] RenderStart Hook Initialized!" << std::endl;
+	//std::cout << "[+] RenderStart Hook Initialized!" << std::endl;
 
 	MH_CreateHook((LPVOID)DrawModelTarget, &detourdrawmodel, reinterpret_cast<LPVOID*>(&DrawModel));
 	MH_EnableHook((LPVOID)DrawModelTarget);
-	std::cout << "[+] DrawModel Hook Initialized!" << std::endl;
+	//std::cout << "[+] DrawModel Hook Initialized!" << std::endl;
 
 	MH_CreateHook((LPVOID)UpdateSceneObjectTarget, &hkUpdateSceneObject, reinterpret_cast<LPVOID*>(&ogUpdateSceneObject));
 	MH_EnableHook((LPVOID)UpdateSceneObjectTarget);
 
 	MH_CreateHook((LPVOID)LightSceneTarget, &hkLightSceneObject, reinterpret_cast<LPVOID*>(&ogLightScene));
 	MH_EnableHook((LPVOID)LightSceneTarget);
-	std::cout << "[+] LightScene Hook Initialized!" << std::endl;
+	//std::cout << "[+] LightScene Hook Initialized!" << std::endl;
 
 	MH_CreateHook((LPVOID)createBulletTarget, &khCreateBullet, reinterpret_cast<LPVOID*>(&ogCreateBullet));
 	MH_EnableHook((LPVOID)createBulletTarget);
-	std::cout << "[+] CreateBullet Hook Initialized!" << std::endl;
+	//std::cout << "[+] CreateBullet Hook Initialized!" << std::endl;
 
 	MH_CreateHook((LPVOID)LevelInitTarget, &hkLevelInit, reinterpret_cast<LPVOID*>(&ogLevelInit));
 	MH_EnableHook((LPVOID)LevelInitTarget);
-	std::cout << "[+] LevelInit Hook Initialized!" << std::endl;
+	//std::cout << "[+] LevelInit Hook Initialized!" << std::endl;
 
 	MH_CreateHook((LPVOID)levelshutdowntarget, &hkLevelShutdown, reinterpret_cast<LPVOID*>(&oglevelshutdown));
 	MH_EnableHook((LPVOID)levelshutdowntarget);
-	std::cout << "[+] LevelShutdown Hook Initialized!" << std::endl;
+	//std::cout << "[+] LevelShutdown Hook Initialized!" << std::endl;
 
 	MH_CreateHook((LPVOID)MouseInputEnabledTarget, &hkMouseInputEnabled, reinterpret_cast<LPVOID*>(&ogMouseInputEnabled));
 	MH_EnableHook((LPVOID)MouseInputEnabledTarget);
-	std::cout << "[+] MouseInputEnabled Hook Initialized!" << std::endl;
-
-	//MH_CreateHook((LPVOID)addglowhelpertarget, &hkaddglowhelperobj, reinterpret_cast<LPVOID*>(&ogaddglowhelper));
-	//MH_EnableHook((LPVOID)addglowhelpertarget);
-	//std::cout << "[+] AddGlowHelper Hook Initialized!" << std::endl;
-
-
-
-	//MH_CreateHook((LPVOID)applyglowtarget, &hkApplyGlow, reinterpret_cast<LPVOID*>(&ogApplyGlow));
-	//MH_EnableHook((LPVOID)applyglowtarget);
-	//std::cout << "[+] ApplyGlow Hook Initialized!" << std::endl;
+	//std::cout << "[+] MouseInputEnabled Hook Initialized!" << std::endl;
 
 	MH_CreateHook((LPVOID)doglowtarget, &hkDoGlow, reinterpret_cast<LPVOID*>(&ogdoglow));
 	MH_EnableHook((LPVOID)doglowtarget);
-	std::cout << "[+] DoGlow Hook Initialized!" << std::endl;
+	//std::cout << "[+] DoGlow Hook Initialized!" << std::endl;
 
-	MH_CreateHook((LPVOID)framestagenotifytarget, &hkFrameStageNotify, reinterpret_cast<LPVOID*>(&ogFrameStageNotify));
-	//MH_EnableHook((LPVOID)framestagenotifytarget);
-	std::cout << "[+] FrameStageNotify Hook Initialized!" << std::endl;
-
-	MH_CreateHook((LPVOID)applyrecoiltarget, &hkApplyRecoil, reinterpret_cast<LPVOID*>(&ogapplyrecoil));
-	//MH_EnableHook((LPVOID)applyrecoiltarget);
-	std::cout << "[+] ApplyRecoil Hook Initialized!" << std::endl;
-
-	MH_CreateHook((LPVOID)fetchrecoiltarget, &hkFetchRecoil, reinterpret_cast<LPVOID*>(&ogfetchrecoil));
-	//MH_EnableHook((LPVOID)fetchrecoiltarget); 
-	std::cout << "[+] FetchRecoil Hook Initialized!" << std::endl;
-
-	MH_CreateHook((LPVOID)applyspreadtarget, &hkApplySpread, reinterpret_cast<LPVOID*>(&ogApplySpread));
-	MH_EnableHook((LPVOID)applyspreadtarget);
-	std::cout << "[+] ApplySpread Hook Initialized!" << std::endl;
-
-
-	//MH_CreateHook((LPVOID)applycallertarget, &hkApplyGlowCaller, reinterpret_cast<LPVOID*>(&ogapplycaller));
-	//MH_EnableHook((LPVOID)applycallertarget);
-	//std::cout << "[+] ApplpyCaller Hook Initialized!" << std::endl;
-
-	//MH_CreateHook((LPVOID)verifyglowobjecttarget, &hkVerifyGlowObject, reinterpret_cast<LPVOID*>(&ogverifyglowobject));
-	//MH_EnableHook((LPVOID)verifyglowobjecttarget);
-	//std::cout << "[+] VerifyGlowObject Hook Initialized!" << std::endl;
-
-
-	//MH_CreateHook((LPVOID)ConsoleCmdTarget, &hkConsoleCmd, reinterpret_cast<LPVOID*>(&ogConsoleCmd));
-	//MH_EnableHook((LPVOID)ConsoleCmdTarget);
-	//std::cout << "[+] ConsoleCmd Hook Initialized!" << std::endl;
-
-
-	//MH_CreateHook((LPVOID)DrawSceneObjectTarget, &hkDrawSceneObject, reinterpret_cast<LPVOID*>(&ogDrawSceneObject));
-	//MH_EnableHook((LPVOID)DrawSceneObjectTarget);
-	//std::cout << "[+] DrawSceneObject Hook Initialized!" << std::endl;
-
-	//MH_CreateHook((LPVOID)ParamTarget, &hkFindParam, reinterpret_cast<LPVOID*>(&ogFindParams));
-	//MH_EnableHook((LPVOID)ParamTarget);
-	//std::cout << "[+] FindParams Hook Initialized!" << std::endl;
-
-
-	//MH_CreateHook((LPVOID)findmattarget, &hkFindMat, reinterpret_cast<LPVOID*>(&findmat));
-    //MH_EnableHook((LPVOID)findmattarget);
-	//std::cout << "[+] Findmat Hook Initialized!" << std::endl;
-
-	//MH_CreateHook((LPVOID)oSetMaterialFunction, &hkSetMaterial, reinterpret_cast<LPVOID*>(&SetMaterial));
-	//MH_EnableHook((LPVOID)oSetMaterialFunction);
-	//std::cout << "[+] SetMat Hook Initialized!" << std::endl;
 
 	// Set the new window procedure
 

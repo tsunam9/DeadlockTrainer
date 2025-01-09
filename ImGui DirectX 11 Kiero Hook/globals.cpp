@@ -8,7 +8,7 @@ ISource2Client* source2client = GetInterface<ISource2Client>("client.dll", "Sour
 
 
 
-bool unloadRequested = false; // Define the variable here
+bool unloadRequested = false; 
 
 void globals::SortEnts() { // ONLY CALL IN AIMBOT
 

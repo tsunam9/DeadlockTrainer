@@ -1,5 +1,9 @@
 #include "chams.h"
 
+char quickiterationmaterial[20480];
+bool replacedmaterial = false;
+bool firstreplacedmaterial = false;
+
 typedef void (__fastcall* fnCreateMaterial)(void*, void*, const char*, void*, unsigned int, unsigned int);
 fnCreateMaterial creatematerial = fnCreateMaterial(materialsystembase + (MEM::PatternScanFunc((void*)materialsystembase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 56 48 81 EC ? ? ? ? 48 8B 05")));
 
@@ -106,8 +110,55 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 	CMaterial2*** mymaterial = drawfindmattarget((__int64)mymatsystem, (__int64*)mymat2, (__int64)str);
 	CMaterial2*** ignorematerial = drawfindmattarget((__int64)mymatsystem, (__int64*)ignorezmat, (__int64)str2);*/
 
-	static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
+	/*	static CStrongHandle<CMaterial2> setmat;
 
+	if (!firstreplacedmaterial) {
+		 setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
+	}
+	else {
+
+		std::string firsthalf = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+		{ shader="pbr.vfx")";
+
+		std::string iteration = quickiterationmaterial;
+
+		std::string secondhalf = R"(	
+		g_tAmbientOcclusion = resource:"materials/default/default_ao_tga_559f1ac6.vtex"
+		g_tColor = resource:"materials/dev/primary_white_color_tga_e79cd79d.vtex"
+		g_tNormalRoughness = resource:"materials/dev/primary_white_color_tga_e79cd79d.vtex"
+    	g_tSelfIllumMask = resource:"materials/default/default_mask_tga_344101f8.vtex"
+    	g_tTintMask = resource:"materials/default/default_mask_tga_344101f8.vtex"
+		})";
+
+		std::string total = firsthalf + iteration + secondhalf;
+
+
+		 setmat = Chams::CreateMaterial("invisible", total.c_str());
+
+	}*/
+
+
+
+		std::string firsthalf = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+		{)";
+
+		std::string iteration = quickiterationmaterial;
+
+		std::string secondhalf = R"(	
+		})";
+
+		std::string total = firsthalf + iteration + secondhalf;
+
+		static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
+
+		if (firstreplacedmaterial) {
+			setmat = Chams::CreateMaterial("invisible", total.c_str());
+			firstreplacedmaterial = false;
+		}
+
+	
+
+	
 	std::string matname = matdata->pMaterial->GetName();
 	if (matname.find("outline") != std::string::npos) {
 		return;
@@ -133,14 +184,10 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 	matdata->colValue.a = cfg::colors_ChamsCol.w * 255;
 
 	if (cfg::esp_ModelChams) {
-		if (ignorez) {
-			matdata->pMaterial = setmat;
-		}
-		else {
-			if (setmat) {
+
 				matdata->pMaterial = setmat;
-			}
-		}
+				matdata->pMaterial2 = setmat;
+
 	}
 
 

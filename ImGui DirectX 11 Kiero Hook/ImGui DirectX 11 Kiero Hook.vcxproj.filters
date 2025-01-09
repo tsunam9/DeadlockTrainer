@@ -130,6 +130,9 @@
     <Filter Include="Source Files\Features\Binds">
       <UniqueIdentifier>{13f0555b-6b90-466f-a77d-6106fe686ebc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Security">
+      <UniqueIdentifier>{5acb3ba0-eae2-40ad-8ecf-e1613d5284fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kiero\minhook\src\buffer.c">
@@ -276,11 +279,9 @@
     <ClCompile Include="binds.cpp">
       <Filter>Source Files\Features\Binds</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="kiero\minhook\dll_resources\MinHook.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <ClCompile Include="Security.cpp">
+      <Filter>Source Files\Security</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kiero\minhook\src\buffer.h">
@@ -466,10 +467,26 @@
     <ClInclude Include="binds.h">
       <Filter>Source Files\Features\Binds</Filter>
     </ClInclude>
+    <ClInclude Include="Security.h">
+      <Filter>Source Files\Security</Filter>
+    </ClInclude>
+    <ClInclude Include="httpthings.h">
+      <Filter>Dump\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Dump\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\fontawesome_data.h">
+      <Filter>Dump\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="kiero\minhook\dll_resources\MinHook.def">
       <Filter>kiero</Filter>
     </None>
+    <None Include="kiero\minhook\dll_resources\font1.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="html1.htm" />
   </ItemGroup>
 </Project>

@@ -167,11 +167,11 @@ void RenderWatermark() {
 	char fullBuffer[256];
 
 	if (iEngine->IsInGame()) {
-		snprintf(fullBuffer, sizeof(fullBuffer), "Darks Slain : %d | FPS : %.0f | LYNCHWARE.NET ",
+		snprintf(fullBuffer, sizeof(fullBuffer), "Darks Slain : %d | FPS : %.0f | JohnWickWare ",
 			plrdata.kills, GetSmoothedFPS());
 	}
 	else {
-		snprintf(fullBuffer, sizeof(fullBuffer), "Darks Slain : %d | FPS : %.0f | LYNCHWARE.NET ",
+		snprintf(fullBuffer, sizeof(fullBuffer), "Darks Slain : %d | FPS : %.0f | JohnWickWare ",
 			0, GetSmoothedFPS());
 	}
 

@@ -36,6 +36,9 @@ private:
 
 public:
 
+	void save(const std::string& path);
+	void load(const std::string& path);
+
 	void addbind(const Bind bind);
 	void removebind(Bind* const bind_ptr);
 

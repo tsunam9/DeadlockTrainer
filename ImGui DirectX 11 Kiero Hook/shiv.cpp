@@ -94,12 +94,6 @@ void ShivLogic::OnTick() {
 		 AutoUlt();
 	 }
 
-	 if (cfg::ragebot_movementfix) {
-		 auto camera = Helper::get_Camera();
-		 vec3 OldAngles = *(vec3*)(camera + 0x44);
-		 Helper::CorrectMovement(cmd, cmd->pBaseUserCMD->forwardMove, cmd->pBaseUserCMD->sideMove, OldAngles);
-	 }
-
 	
 
 }

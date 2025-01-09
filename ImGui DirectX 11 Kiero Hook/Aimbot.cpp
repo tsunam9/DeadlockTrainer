@@ -279,9 +279,6 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 				}
 			}
 
-
-
-
 			vec3 TargetPos = { 0, 0, 0 };
 			TargetPos = Helper::GetBonePosition((*aimbotglobs.entlist.active)[i], "head");
 
@@ -617,6 +614,10 @@ void Aimbot::ShootMagicBullet(uint64_t entity) {
 
 bool readyToFire() {
 
+	if (!iEngine->IsConnected() || !iEngine->IsInGame()) {
+		return false;
+	}
+
 	uintptr_t localweapon = Helper::get_localplr_weapon();
 
 	if (!localweapon)
@@ -814,9 +815,7 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 
 
 	aimbotglobs.SortEnts();
-
-
-
+	 
 	crosshairposition = (vec2*)(CameraManager + Offsets.o_crosshairposfromcameramanager);
 	CameraManager = *(uint64_t*)(ClientModuleBase + Offsets.o_CameraManager + 0x28);
 	ViewAngles = (vec2*)(CameraManager + 0x44); // RESET to 0x44
@@ -852,15 +851,12 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 			return;
 		}
 
-
-		if (cfg::ragebot_bAimbot && xp_target) {
+		if (cfg::ragebot_AimXp && xp_target) {
 				RageAimAtXp(xp_target);
 				return;
 		}
 
-
-
-		if (cfg::ragebot_bAimbot && minion_target) {
+		if (cfg::ragebot_AimMinions && minion_target) {
 				RageAimAtMinions(minion_target);
 				return;
 		}

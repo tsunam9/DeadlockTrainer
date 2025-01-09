@@ -37,7 +37,6 @@ struct KeyBind {
 // Aimbot Settings
 MAKE_CFGVAR(ragebot_masterswitch, false);
 MAKE_CFGVAR(ragebot_bAimbot, false);
-MAKE_CFGVAR(ragebot_movementfix, false);
 MAKE_CFGVAR(ragebot_AimXp, false);
 MAKE_CFGVAR(ragebot_AimMinions, false);
 MAKE_CFGVAR(ragebot_TargetSelectMode, 0);
@@ -87,8 +86,9 @@ MAKE_CFGVAR(esp_GlowTeam, false);
 // Misc Settings
 MAKE_CFGVAR(misc_bNorecoil, false);
 MAKE_CFGVAR(misc_modfovandaspect, false);
-MAKE_CFGVAR(misc_fovmodifier, 1.0f);
+MAKE_CFGVAR(misc_fov, 75.f);
 MAKE_CFGVAR(misc_aspectratio, 1.0f);
+MAKE_CFGVAR(misc_autoactivereload, false);
 
 // Shiv Settings
 MAKE_CFGVAR(shiv_AutoAimDagger, false);
