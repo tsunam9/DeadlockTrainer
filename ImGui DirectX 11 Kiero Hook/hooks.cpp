@@ -50,24 +50,11 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 		return;
 	}
 
-	if (!cfg::esp_bEsp) {
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-		return;
-	}
-
-	if (!cfg::esp_Chams) {
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-		return;
-	}
-
 	uint64_t hOwner = material_data->pSceneAnimatableObject->hOwner;
 	if (!hOwner) {
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
 		return;
 	}
-
-
-
 
 	uint64_t ownerobjindex = Helper::CHandle_get_entry_index(hOwner);
 	uint64_t ownerobj = Helper::get_base_entity_from_index(ownerobjindex);
@@ -85,23 +72,20 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 		return;
 	}
 
+	PlayerData LocalData;
+	Helper::get_player_data(Helper::get_local_player(), &LocalData);
+
 
 	if(objname == "C_CitadelPlayerPawn"){
 
 		bool islocal = false;
 
 		if (ownerobj == localpawn) {
-			islocal = true;
-			if (cfg::esp_LocalChams && cfg::colors_LocalChamsCol.w == 0.f) {
-				return;
-			}
+			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+			return;
 		}
 
 		std::string matname = material_data->pMaterial->GetName();
-
-		if (!islocal) {
-			std::cout << material_data->pMaterial->GetName() << "\n";
-		}
 
 		if (matname.find("glow") != std::string::npos) {
 			return;
@@ -112,6 +96,70 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
 
 		return;
+	}
+	if (objname == "C_NPC_Trooper") {
+
+		if (!cfg::esp_DrawMinions) {
+			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+			return;
+		}
+
+		NpcData EntInfo;
+		Helper::get_npc_data(ownerobj, &EntInfo);
+
+		uint64_t entteamnum = 263168 + LocalData.TeamNum;
+		if (EntInfo.m_iteamnum == entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
+			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+			return;
+		}
+
+		material_data->colValue.a = 255;
+		material_data->colValue.r = 255;
+		material_data->colValue.g = 0;
+		material_data->colValue.b = 0;
+
+		static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
+
+		material_data->pMaterial = setmat;
+		material_data->pMaterial2 = setmat;
+
+		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+
+		return;
+
+	}
+	if (objname == "C_NPC_TrooperBoss") {
+
+		if (!cfg::esp_drawTowers) {
+			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+			return;
+		}
+
+		NpcData EntInfo;
+		Helper::get_npc_data(ownerobj, &EntInfo);
+
+		uint64_t entteamnum = 262144 + LocalData.TeamNum;
+		if (EntInfo.m_iteamnum == entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
+			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+			return;
+		}
+
+		std::string matname = material_data->pMaterial->GetName();
+
+		material_data->colValue.a = 255;
+		material_data->colValue.r = 255;
+		material_data->colValue.g = 0;
+		material_data->colValue.b = 0;
+
+		static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
+
+		material_data->pMaterial = setmat;
+		material_data->pMaterial2 = setmat;
+
+		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+
+		return;
+
 	}
 
 
@@ -276,19 +324,6 @@ void __fastcall hkRenderStart(CViewRender* pViewRender)
 
 }
 
-
-CMaterial2*** __fastcall hkFindMat(__int64 a1, __int64* a2, __int64 a3)
-{
-	if (foundmat) {
-		return findmat(a1, a2, a3);
-	}
-	std::cout << "findmat called\n";
-	auto result = findmat(a1, a2, a3);
-	permamat = **result;
-	foundmat = true;
-	return result;
-}
-
 using fnSetMaterialFunction = void(__fastcall*)(unsigned __int64* a1, int* functionvar, __int64 value, unsigned __int8 a4);
 
 static auto oSetMaterialFunction = reinterpret_cast<fnSetMaterialFunction>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 0F B6 01 45 0F B6 F9 8B 2A 48 8B F9"));
@@ -300,30 +335,6 @@ void hkSetMaterial(unsigned __int64* a1,int* a2, __int64 a3, unsigned __int8 a4 
 	SetMaterial(a1, a2, a3, a4);
 }
 
-using fnPotential = void(__fastcall*)(__int64 a1, __int64 a2, __int64* a3);
-static auto PotentialTarget = reinterpret_cast<fnPotential>(matsystemasbase + 0x6EE0);
-fnPotential ogPotential = nullptr;
-
-void hkpotential(__int64 a1, __int64 a2, __int64* a3){
-
-	std::cout << "Potential " << std::endl;
-	ogPotential(a1, a2, a3);
-	
-}
-
-
-using fnGetParams = __int64(__fastcall*)(__int64 firstparam, const char* param);
-static auto ParamTarget = reinterpret_cast<fnPotential>(matsystemasbase + 0x6EE0);
-fnGetParams ogFindParams = nullptr;
-
-__int64 __fastcall hkFindParam(__int64 firstparam, const char* param) {
-
-
-	std::cout << "FINDPARAMS CALLED\n";
-
-
-	return ogFindParams(firstparam, param);
-}
 
 
 using fnUpdateSceneObject = __int64(__fastcall*)(C_AggregateSceneObject* object, __int64 unk, char a3);
@@ -479,18 +490,6 @@ typedef __int64(__fastcall* f_applyglow)(__int64 CGlowProperty, CSceneAnimatable
 static f_applyglow ogApplyGlow = nullptr;
 static f_applyglow applyglowtarget = reinterpret_cast<f_applyglow>(MEM::GetClientBase() + 0xD395D0); // ApplyGlow 
 
-typedef __int64(__fastcall* f_addglowhelperobj)(__int64 a1, __int64 a2, __int64 a3, __int64 a4, __int64 a5);
-static f_addglowhelperobj ogaddglowhelper = nullptr;
-static f_addglowhelperobj addglowhelpertarget = reinterpret_cast<f_addglowhelperobj>(scenesytembase + 0xc81f0); // adds glowhelper obj
-
-__int64 __fastcall hkaddglowhelperobj(__int64 a1, __int64 a2, __int64 a3, __int64 a4, __int64 a5) {
-
-	std::cout << a2 << std::endl;
-
-	return ogaddglowhelper(a1, a2, a3, a4, a5);
-
-}
-
 
 
 __int64 __fastcall hkApplyGlow(__int64 CGlowProperty, CSceneAnimatableObject* glowobject)
@@ -552,7 +551,7 @@ static f_doglow doglowtarget = reinterpret_cast<f_doglow>(MEM::GetClientBase() +
 
 void __fastcall hkDoGlow(__int64 a1) {
 
-	if (!cfg::esp_GlowEsp || !cfg::esp_bEsp)
+	if ((!cfg::esp_eGlowEsp && !cfg::esp_tGlowEsp ) || !cfg::esp_bEsp)
 		return;
 
 
@@ -581,7 +580,7 @@ void __fastcall hkDoGlow(__int64 a1) {
 				teamnums.push_back(entdata.TeamNum);
 				Controllers.push_back(entity);
 			}
-			else if (cfg::esp_GlowTeam) {
+			else if (cfg::esp_tGlowEsp) {
 				teamnums.push_back(entdata.TeamNum);
 				Controllers.push_back(entity);
 			}
@@ -602,12 +601,12 @@ void __fastcall hkDoGlow(__int64 a1) {
 
 		if (!glowhelper) {
 			if (teamnums[i] == localdata.TeamNum) {
-				if (!(cfg::colors_GlowTeamCol.w == 0.f)) {
+				if (!(cfg::colors_tGlowCol.w == 0.f)) {
 					*(uint64_t*)(glowProperty + 0x28) = iSceneSystem002->CreateCHlowHelperSceneObject((uint64_t)pawn);
 				}
 			}
 			else {
-				if (!(cfg::colors_GlowCol.w == 0.f)) {
+				if (!(cfg::colors_eGlowCol.w == 0.f)) {
 					*(uint64_t*)(glowProperty + 0x28) = iSceneSystem002->CreateCHlowHelperSceneObject((uint64_t)pawn);
 				}
 			}
@@ -618,16 +617,16 @@ void __fastcall hkDoGlow(__int64 a1) {
 
 
 		if (teamnums[i] != localdata.TeamNum) {
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride) = cfg::colors_GlowCol.x* 255;     // Red
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 1) = cfg::colors_GlowCol.y * 255; // Green
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 2) = cfg::colors_GlowCol.z * 255; // Blue
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 3) = cfg::colors_GlowCol.w * 255; // Alpha
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride) = cfg::colors_eGlowCol.x* 255;     // Red
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 1) = cfg::colors_eGlowCol.y * 255; // Green
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 2) = cfg::colors_eGlowCol.z * 255; // Blue
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 3) = cfg::colors_eGlowCol.w * 255; // Alpha
 		}
 		else {
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride) = cfg::colors_GlowTeamCol.x * 255;     // Red
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 1) = cfg::colors_GlowTeamCol.y * 255;  // Green
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 2) = cfg::colors_GlowTeamCol.z * 255;  // Blue
-			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 3) = cfg::colors_GlowTeamCol.w * 255;  // Alpha
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride) = cfg::colors_tGlowCol.x * 255;     // Red
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 1) = cfg::colors_tGlowCol.y * 255;  // Green
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 2) = cfg::colors_tGlowCol.z * 255;  // Blue
+			*(uint8_t*)(glowProperty + CGlowProperty::m_glowColorOverride + 3) = cfg::colors_tGlowCol.w * 255;  // Alpha
 		}
 
 
@@ -666,70 +665,6 @@ __int64 __fastcall hkVerifyGlowObject(__int64 a1, int a2, float a3) {
 	}
 
 	return result;
-}
-
-typedef void(__fastcall* f_FrameStageNotify)(__int64 a1, __int64 a2);
-static f_FrameStageNotify ogFrameStageNotify = nullptr;
-static f_FrameStageNotify framestagenotifytarget = reinterpret_cast<f_FrameStageNotify>(MEM::GetClientBase() + 0x4DF000);
-
-void __fastcall hkFrameStageNotify(__int64 a1, __int64 a2) {
-
-	ogFrameStageNotify(a1, a2);
-
-}
-
-typedef void(__fastcall* f_ApplyRecoil)(__int64 a1, float a2, float a3, float a4, char a5);
-static f_ApplyRecoil ogapplyrecoil = nullptr;
-static f_ApplyRecoil applyrecoiltarget = reinterpret_cast<f_ApplyRecoil>(MEM::GetClientBase() + 0x38d910);
-
-void __fastcall hkApplyRecoil(__int64 a1, float a2, float a3, float a4, char a5) {
-
-	auto pawn = Helper::GetPawn(Helper::get_local_player());
-
-	auto cameraservices = *(uint64_t*)(pawn + C_BasePlayerPawn::m_pCameraServices);
-
-	vec3* punchangle = (vec3*)(cameraservices + CPlayer_CameraServices::m_vecPunchAngle);
-
-	punchangle->x = 0.f;
-
-	ogapplyrecoil(a1, a2, a3, a4, a5);
-
-}
-
-typedef __int64(__fastcall* f_FetchRecoil)(__int64 a1);
-static f_FetchRecoil ogfetchrecoil = nullptr;
-static f_FetchRecoil fetchrecoiltarget = reinterpret_cast<f_FetchRecoil>(MEM::GetClientBase() + 0x352C50);
-
-__int64 __fastcall hkFetchRecoil(__int64 a1) {
-
-	auto pawn = Helper::GetPawn(Helper::get_local_player());
-
-	auto cameraservices = *(uint64_t*)(pawn + C_BasePlayerPawn::m_pCameraServices);
-
-	vec3* punchangle = (vec3*)(cameraservices + CPlayer_CameraServices::m_vecPunchAngle);
-
-	punchangle->x = 0.f;
-
-	__int64 result = ogfetchrecoil(a1);
-
-	std::cout << std::hex << result << "\n";
-
-	return result;
-
-}
-
-
-
-typedef __int64(__fastcall* f_applyspread)(__int64 a1, __int64 a2);
-static f_applyspread ogApplySpread = nullptr;
-static f_applyspread applyspreadtarget = reinterpret_cast<f_applyspread>(MEM::GetClientBase() + 0x108E720);
-
-
-// Hook function
-int64_t __fastcall hkApplySpread(int64_t a1, int64_t a2) {
-
-	return ogApplySpread(a1, a2);
-
 }
 
 

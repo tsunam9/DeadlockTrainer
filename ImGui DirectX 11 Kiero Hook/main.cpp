@@ -50,6 +50,14 @@ void InitImGui()
 
 	//colors
 
+	ImVec4* colors = ImGui::GetStyle().Colors;
+
+	colors[ImGuiCol_FrameBg] = ImVec4(0.139,0.139,0.139,0.54);
+	colors[ImGuiCol_FrameBgHovered] = ImVec4(0.195,0.195,0.195,0.54);
+	colors[ImGuiCol_FrameBgActive] = ImVec4(0.239,0.239,0.239,0.54);
+
+	
+
 	io.Fonts->AddFontDefault();
 	static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
 	ImFontConfig icons_config;

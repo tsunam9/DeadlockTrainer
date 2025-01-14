@@ -241,6 +241,38 @@ void Menu::DrawConfigs  () {
 
 }
 
+void DrawMapObjsEspTab(vec2 res) {
+
+	auto cursorposy = ImGui::GetCursorPosY();
+
+	float spacing_x = res.x * 0.01;
+	float spacing_y = res.y * 0.02;
+
+	ImGui::SetCursorPosX(spacing_x);
+	ImGui::SetCursorPosY(cursorposy + spacing_y);
+
+	ImVec2 regionavailable = ImGui::GetContentRegionAvail();
+
+	ImVec2 espmisctabsize = ImVec2(regionavailable.x - (spacing_x * 2), regionavailable.y - spacing_y);
+
+	ImGui::BeginChild("Lootables", espmisctabsize, true, ImGuiWindowFlags_AlwaysAutoResize); \
+
+		menu.checkbox("Souls", &cfg::esp_DrawXp);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Souls Esp Color", (float*)&cfg::colors_drawxpcol);
+
+	menu.checkbox("Neutral Monsters", &cfg::esp_DrawMonsters);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Monster Esp Color", (float*)&cfg::colors_drawmonsterscol);
+
+	menu.checkbox("Minions", &cfg::esp_DrawMinions);
+	menu.checkbox("Towers", &cfg::esp_drawTowers);
+
+
+	ImGui::EndChild();
+
+}
+
 void DrawMiscEspTab(vec2 res) {
 
 	auto cursorposy = ImGui::GetCursorPosY();
@@ -269,21 +301,13 @@ void DrawMiscEspTab(vec2 res) {
 	ImGui::SameLine();
 	ImGui::ColorEdit4("Fov Circle Color", (float*)&cfg::colors_drawfovcol);
 
-	menu.checkbox("Souls", &cfg::esp_DrawXp);
-	ImGui::SameLine();
-	ImGui::ColorEdit4("Souls Esp Color", (float*)&cfg::colors_drawxpcol);
-
-	menu.checkbox("Neutral Monsters", &cfg::esp_DrawMonsters);
-	ImGui::SameLine();
-	ImGui::ColorEdit4("Monster Esp Color", (float*)&cfg::colors_drawmonsterscol);
-
-	menu.checkbox("Minions", &cfg::esp_DrawMinions);
-
 	menu.checkbox("Aimbot Target", &cfg::esp_DrawAimbotTarget);
 	ImGui::SameLine();
 	ImGui::ColorEdit4("Aimbot Target Color", (float*)&cfg::colors_aimbotTargetcol);
 
 	menu.checkbox("Show Keybind List", &cfg::esp_ShowKeyBindList);
+
+	ImGui::SliderFloat("Fov", &cfg::misc_fov, 0.1f, 180.0f, "%.3f");
 
 	ImGui::Spacing();
 
@@ -295,7 +319,7 @@ void DrawMiscEspTab(vec2 res) {
 
 }
 
-void DrawPlayersEspTab(vec2 res) {
+void DrawTeammatesEspTab(vec2 res) {
 
 	auto cursorposy = ImGui::GetCursorPosY();
 
@@ -315,22 +339,22 @@ void DrawPlayersEspTab(vec2 res) {
 
 	menu.checkbox("Enabled", &cfg::esp_bEsp);
 
-	menu.checkbox("Bounding Box", &cfg::esp_boxEsp);
+	menu.checkbox("Bounding Box", &cfg::esp_tBoxEsp);
 	ImGui::SameLine();
-	ImGui::ColorEdit4("Box Color", (float*)&cfg::colors_boxespcol);
+	ImGui::ColorEdit4("Box Color", (float*)&cfg::colors_tBoxespcol);
 
-	menu.checkbox("Health Bar", &cfg::esp_HealthBar);
-	menu.checkbox("Health Text", &cfg::esp_HealthText);
+	menu.checkbox("Health Bar", &cfg::esp_tHealthBar);
+	menu.checkbox("Health Text", &cfg::esp_tHealthText);
 
-	menu.checkbox("Skeleton", &cfg::esp_boneEsp);
+	menu.checkbox("Skeleton", &cfg::esp_tBoneEsp);
 	ImGui::SameLine();
-	ImGui::ColorEdit4("Skeleton Color", (float*)&cfg::colors_skeletoncol);
+	ImGui::ColorEdit4("Skeleton Color", (float*)&cfg::colors_tSkeletoncol);
 
-	menu.checkbox("Name", &cfg::esp_NameEsp);
+	menu.checkbox("Name", &cfg::esp_tNameEsp);
 
-	menu.checkbox("Tracers", &cfg::esp_Tracers);
+	menu.checkbox("Tracers", &cfg::esp_tTracers);
 
-	menu.checkbox("Distance", &cfg::esp_DistanceEsp);
+	menu.checkbox("Distance", &cfg::esp_tDistanceEsp);
 
 	ImGui::EndChild();
 
@@ -340,22 +364,74 @@ void DrawPlayersEspTab(vec2 res) {
 
 	ImGui::BeginChild("Models", ImVec2(regionavailable.x - (spacing_x * 2), regionavailable.y - spacing_y), true);
 
-	menu.checkbox("Chams", &cfg::esp_Chams );
+	menu.checkbox("Chams", &cfg::esp_tChams);
 	ImGui::SameLine();
-	ImGui::ColorEdit4("Chams Color", (float*)&cfg::colors_ChamsCol);
+	ImGui::ColorEdit4("Chams Color", (float*)&cfg::colors_tChamsCol);
 
-	menu.checkbox("Local Chams", &cfg::esp_LocalChams);
-	ImGui::SameLine();
-	ImGui::ColorEdit4("Local Chams Color", (float*)&cfg::colors_LocalChamsCol);
-	menu.checkbox("Override Model Material", &cfg::esp_ModelChams);
+	menu.checkbox("Override Model Material", &cfg::esp_tModelChams);
 
-	menu.checkbox("Glow", &cfg::esp_GlowEsp);
+	menu.checkbox("Glow", &cfg::esp_tGlowEsp);
 	ImGui::SameLine();
-	ImGui::ColorEdit4("Glow Color", (float*)&cfg::colors_GlowCol);
+	ImGui::ColorEdit4("Glow Color", (float*)&cfg::colors_tGlowCol);
 
-	menu.checkbox("Team Glow", &cfg::esp_GlowTeam);
+
+	ImGui::EndChild();
+}
+
+void DrawEnemyPlayersEspTab(vec2 res) {
+
+	auto cursorposy = ImGui::GetCursorPosY();
+
+	float spacing_x = res.x * 0.01;
+	float spacing_y = res.y * 0.02;
+
+	ImGui::SetCursorPosX(spacing_x);
+	ImGui::SetCursorPosY(cursorposy + spacing_y);
+
+
+	ImVec2 regionavailable = ImGui::GetContentRegionAvail();
+
+	ImVec2 drawablestabsize = ImVec2(regionavailable.x * 0.45, regionavailable.y - spacing_y);
+
+
+	ImGui::BeginChild("drawables", drawablestabsize, true);
+
+	menu.checkbox("Enabled", &cfg::esp_bEsp);
+
+	menu.checkbox("Bounding Box", &cfg::esp_eBoxEsp);
 	ImGui::SameLine();
-	ImGui::ColorEdit4("Team Glow Color", (float*)&cfg::colors_GlowTeamCol);
+	ImGui::ColorEdit4("Box Color", (float*)&cfg::colors_eBoxespcol);
+
+	menu.checkbox("Health Bar", &cfg::esp_eHealthBar);
+	menu.checkbox("Health Text", &cfg::esp_eHealthText);
+
+	menu.checkbox("Skeleton", &cfg::esp_eBoneEsp);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Skeleton Color", (float*)&cfg::colors_eSkeletoncol);
+
+	menu.checkbox("Name", &cfg::esp_eNameEsp);
+
+	menu.checkbox("Tracers", &cfg::esp_eTracers);
+
+	menu.checkbox("Distance", &cfg::esp_eDistanceEsp);
+
+	ImGui::EndChild();
+
+	ImGui::SameLine(0.f, spacing_x * 2);
+
+	regionavailable = ImGui::GetContentRegionAvail();
+
+	ImGui::BeginChild("Models", ImVec2(regionavailable.x - (spacing_x * 2), regionavailable.y - spacing_y), true);
+
+	menu.checkbox("Chams", &cfg::esp_eChams );
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Chams Color", (float*)&cfg::colors_eChamsCol);
+
+	menu.checkbox("Override Model Material", &cfg::esp_eModelChams);
+
+	menu.checkbox("Glow", &cfg::esp_eGlowEsp);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Glow Color", (float*)&cfg::colors_eGlowCol);
 
 
 	ImGui::EndChild();
@@ -375,9 +451,9 @@ void Menu::DrawEspTab() {
 
 	ImVec2 regionavailable = ImGui::GetContentRegionAvail();
 
-	const char* tabs[] = { "Players", "Misc" };
+	const char* tabs[] = { "Enemies", "Teammates", "Map Objects", "Misc"};
 
-	int numtabs = 2;
+	int numtabs = 4;
 
 	static int selectedTab = 0;
 
@@ -415,9 +491,15 @@ void Menu::DrawEspTab() {
 	regionavailable = ImGui::GetContentRegionAvail();
 
 	if (selectedTab == 0) {
-		DrawPlayersEspTab(res);
+		DrawEnemyPlayersEspTab(res);
 	}
 	else if (selectedTab == 1) {
+		DrawTeammatesEspTab(res);
+	}
+	else if (selectedTab == 2) {
+		DrawMapObjsEspTab(res);
+	}
+	else if (selectedTab == 3) {
 		DrawMiscEspTab(res);
 	}
 
@@ -719,7 +801,6 @@ void Menu::DrawConfigTab(FILE* fp) {
 	ImGui::BeginChild("MainMisc", ImVec2(ConfigWindowWidth * 0.5, 0.0f), true);
 
 	menu.checkbox("No Recoil", &cfg::misc_bNorecoil);
-	ImGui::SliderFloat("Fov", &cfg::misc_fov, 0.1f, 180.0f, "%.3f");
 
 	menu.checkbox("Auto Active Reload", &cfg::misc_autoactivereload);
 
@@ -807,7 +888,6 @@ void Menu::checkbox(const char* label, bool* v) {
 						ImGui::CloseCurrentPopup();
 					}
 
-					std::cout << "Set Key to : " << KeyNames[key] << "\n";
 					newkey = key;
 					waitingforkey = false;
 				}
@@ -861,8 +941,6 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
 	if (ImGui::Begin("CustomMaterialInput")) {
 
-		std::cout << "SIZE : " << sizeof(quickiterationmaterial) << "\n";
-
 		// Multi-line text input for material buffer
 		ImGui::InputTextMultiline("##MaterialBuffer", quickiterationmaterial, sizeof(quickiterationmaterial),
 			ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 8),
@@ -884,9 +962,6 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 	ImVec4 menuColor = ImVec4(cfg::colors_MenuColor.x, cfg::colors_MenuColor.y, cfg::colors_MenuColor.z, 1.0f); // Get the menu color
 
 		colors[ImGuiCol_Border] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.24f);
-		colors[ImGuiCol_FrameBg] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.54f);
-		colors[ImGuiCol_FrameBgHovered] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.40f);
-		colors[ImGuiCol_FrameBgActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.40f);
 		colors[ImGuiCol_TitleBg] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
 		colors[ImGuiCol_TitleBgActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
 		colors[ImGuiCol_CheckMark] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.85);
@@ -1030,7 +1105,7 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
 
 
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.1f,0.1f,0.1f,1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.05f,0.05f,0.05f,1.0f));
 
 		switch (selectedTab) {
 		case 0: DrawRageBotTab(); break;

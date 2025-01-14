@@ -6,13 +6,15 @@ extern Binds mainbinds;
 
 inline globals& globs = globals::instance();
 
-void DrawBoneEsp(uintptr_t entity) {
+PlayerData LocalPlayerData;
 
-	PlayerData* plrdata = new PlayerData;
-	Helper::get_player_data(entity, plrdata);
+void DrawBoneEsp(uintptr_t entity, bool enemy) {
+
+	PlayerData plrdata;
+	Helper::get_player_data(entity, &plrdata);
 
 
-	std::vector<BoneConnection> connections = Helper::GetBoneConnections(entity, plrdata->HeroID); //really inneficient will find better solution
+	std::vector<BoneConnection> connections = Helper::GetBoneConnections(entity, plrdata.HeroID); //really inneficient will find better solution
 
 	uint64_t PawnHandle = *(uint64_t*)(entity + CCitadelPlayerController::m_hHeroPawn);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Helper::CHandle_get_entry_index(PawnHandle));
@@ -23,14 +25,14 @@ void DrawBoneEsp(uintptr_t entity) {
 		vec2 ScreenPos1;
 		vec2 ScreenPos2;
 		if (Helper::WorldToScreen(BonePos1, ScreenPos1) && Helper::WorldToScreen(BonePos2, ScreenPos2))
-			draw.DrawLine(ScreenPos1.x, ScreenPos1.y, ScreenPos2.x, ScreenPos2.y, ImColor(cfg::colors_skeletoncol));
-
-
-
+			if (enemy) {
+				draw.DrawLine(ScreenPos1.x, ScreenPos1.y, ScreenPos2.x, ScreenPos2.y, ImColor(cfg::colors_eSkeletoncol));
+			}
+			else {
+				draw.DrawLine(ScreenPos1.x, ScreenPos1.y, ScreenPos2.x, ScreenPos2.y, ImColor(cfg::colors_tSkeletoncol));
+			}
 
 	}
-
-	delete plrdata;
 
 }
 
@@ -167,11 +169,11 @@ void RenderWatermark() {
 	char fullBuffer[256];
 
 	if (iEngine->IsInGame()) {
-		snprintf(fullBuffer, sizeof(fullBuffer), "Darks Slain : %d | FPS : %.0f | JohnWickWare ",
+		snprintf(fullBuffer, sizeof(fullBuffer), "Kills : %d | FPS : %.0f | JohnWickWare ",
 			plrdata.kills, GetSmoothedFPS());
 	}
 	else {
-		snprintf(fullBuffer, sizeof(fullBuffer), "Darks Slain : %d | FPS : %.0f | JohnWickWare ",
+		snprintf(fullBuffer, sizeof(fullBuffer), "Kills : %d | FPS : %.0f | JohnWickWare ",
 			0, GetSmoothedFPS());
 	}
 
@@ -211,54 +213,79 @@ void RenderWatermark() {
 	ImGui::End();
 }
 
+void DrawTowerEsp(uintptr_t TowerEntity) {
+
+	//if (!cfg::esp_drawTowers || !TowerEntity)
+		//return;
+
+	NpcData EntInfo;
+	Helper::get_npc_data(TowerEntity, &EntInfo);
+
+	if (EntInfo.m_bDormant)
+		return;
+	if (EntInfo.m_ilifestate != 0)
+		return;
+
+	float distance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, EntInfo.m_vecOrigin);
+
+	if (distance > 3500.f)
+		return;
+
+	uint64_t entteamnum = 262144 + LocalPlayerData.TeamNum;
+	if (EntInfo.m_iteamnum == entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
+		return;
+	}
+	
+	vec2 screen;
+
+	vec3 textpos = EntInfo.m_vecOrigin;
+	textpos.z += 125.f;
+
+	if (!(Helper::WorldToScreen(textpos, screen)))
+		return;
+
+	draw.DrawTextA(screen.x, screen.y, IM_COL32(255, 255, 255, 255), "Tower");
+
+	return;
+
+}
+
 void DrawMinionEsp(uintptr_t entity) {
 
 	if (!cfg::esp_DrawMinions || !entity)
 		return;
 
+	NpcData EntInfo;
+	Helper::get_npc_data(entity, &EntInfo);
 
-
-	NpcData* EntInfo = new NpcData;
-	Helper::get_npc_data(entity, EntInfo);
-	PlayerData* LocalPlayerData = new PlayerData;
-	Helper::get_player_data(Helper::get_local_player(), LocalPlayerData);
-
-	float distance = Helper::GetDistance(LocalPlayerData->m_vecOrigin, EntInfo->m_vecOrigin);
+	float distance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, EntInfo.m_vecOrigin);
 
 	ImColor red = IM_COL32(255, 0, 0, 127);
 	ImColor green = IM_COL32(0, 255, 0, 127);
 
-	if (EntInfo->m_bDormant) {
-		delete EntInfo;
-		delete LocalPlayerData;
+	if (EntInfo.m_bDormant) {
 		return;
 	}
 	
-	uint64_t entteamnum = 263168 + LocalPlayerData->TeamNum;
-	if (EntInfo->m_iteamnum == entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
-		delete EntInfo;
-		delete LocalPlayerData;
+	uint64_t entteamnum = 263168 + LocalPlayerData.TeamNum;
+	if (EntInfo.m_iteamnum == entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
 		return;
 	}
 
-	if (EntInfo->m_ilifestate != 0) {
-		delete EntInfo;
-		delete LocalPlayerData;
+	if (EntInfo.m_ilifestate != 0) {
 		return;
 	}
 
 	if (distance > 2000.0f) {
-		delete EntInfo;
-		delete LocalPlayerData;
 		return;
 	}
 
 
 	// im sorry
-	vec3 posleft = EntInfo->m_vecOrigin;
-	vec3 posright = EntInfo->m_vecOrigin;
-	vec3 posup = EntInfo->m_vecOrigin;
-	vec3 posdown = EntInfo->m_vecOrigin;
+	vec3 posleft = EntInfo.m_vecOrigin;
+	vec3 posright = EntInfo.m_vecOrigin;
+	vec3 posup = EntInfo.m_vecOrigin;
+	vec3 posdown = EntInfo.m_vecOrigin;
 
 	posleft.x += 25;
 	posright.x -= 25;
@@ -271,34 +298,23 @@ void DrawMinionEsp(uintptr_t entity) {
 	vec2 limitdown;
 
 	if (!Helper::WorldToScreen(posleft, limitleft)) {
-		delete EntInfo;
-		delete LocalPlayerData;
 		return;
 	}
 	if (!Helper::WorldToScreen(posright, limitright)) {
-		delete EntInfo;
-		delete LocalPlayerData;
 		return;
 	}
 	if (!Helper::WorldToScreen(posup, limitup)) {
-		delete EntInfo;
-		delete LocalPlayerData;
 		return;
 	}
 	if (!Helper::WorldToScreen(posdown, limitdown)) {
-		delete EntInfo;
-		delete LocalPlayerData;
 		return;
 	}
 
-	float healthpercent = (float)EntInfo->m_iHealth / (float)EntInfo->m_iMaxHealth;
+	float healthpercent = (float)EntInfo.m_iHealth / (float)EntInfo.m_iMaxHealth;
 	if (healthpercent <= 0.3)
 		draw.DrawQuad(limitup, limitright, limitdown, limitleft, red);
 	else
 		draw.DrawQuad(limitup, limitright, limitdown, limitleft, green);
-
-	delete EntInfo;
-	delete LocalPlayerData;
 
 }
 
@@ -368,7 +384,11 @@ void Esp::DoEsp() {
 	if (cfg::esp_DrawFov) {
 		DrawFov();
 	}
-	RenderWatermark();
+	if (cfg::esp_DrawWaterMark) {
+		RenderWatermark();
+	}
+	
+	Helper::get_player_data(Helper::get_local_player(), &LocalPlayerData);
 	
 	if (cfg::esp_ShowKeyBindList) {
 		mainbinds.think();
@@ -381,113 +401,6 @@ void Esp::DoEsp() {
 		return;
 
 
-
-	/*
-	
-		PlayerData* LocalPlrData = new PlayerData;
-	Helper::get_player_data(Helper::get_local_player(), LocalPlrData);
-	vec2* viewangles = (vec2*)(Helper::get_Camera() + 0x44);
-
-	char buffer[256];
-	snprintf(buffer, sizeof(buffer), "LocalPlayer: 0x%016llx", Helper::get_local_player());
-	draw.ncDrawText(50, 100, IM_COL32(255, 255, 255, 255), buffer);
-
-	snprintf(buffer, sizeof(buffer), "Team: %d", LocalPlrData->TeamNum);
-	draw.ncDrawText(50, 125, IM_COL32(255, 255, 255, 255), buffer);
-
-	snprintf(buffer, sizeof(buffer), "Velocity: X:%f , Y:%f , Z:%f  ", LocalPlrData->m_vecVelocity.x, LocalPlrData->m_vecVelocity.y, LocalPlrData->m_vecVelocity.z);
-	draw.ncDrawText(50, 150, IM_COL32(255, 255, 255, 255), buffer);
-
-	snprintf(buffer, sizeof(buffer), "Local Pos: X:%f , Y:%f , Z:%f ", LocalPlrData->m_vecOrigin.x, LocalPlrData->m_vecOrigin.y, LocalPlrData->m_vecOrigin.z);
-	draw.ncDrawText(50, 175, IM_COL32(255, 255, 255, 255), buffer);
-
-	snprintf(buffer, sizeof(buffer), "Local Angle: PITCH:%f , YAW:%f  ", viewangles->x, viewangles->y);
-	draw.ncDrawText(50, 200, IM_COL32(255, 255, 255, 255), buffer);
-	
-	*/
-
-
-/*
-	uint64_t aimbottarget = Aimbot::GetCurrentAimbotTarget();
-	if (aimbottarget) {
-
-		vec3 localheadpos = Helper::GetBonePosition(Helper::get_local_player(), "head");
-
-		vec3 targetheadpos = Helper::GetBonePosition(aimbottarget, "head");
-
-		vec3 check1 = { localheadpos.x + Config.tempvalues.slider1, localheadpos.y, localheadpos.z };
-		vec3 check2 = { localheadpos.x - Config.tempvalues.slider1, localheadpos.y, localheadpos.z };
-		vec3 check3 = { localheadpos.x, localheadpos.y + Config.tempvalues.slider1, localheadpos.z };
-		vec3 check4 = { localheadpos.x, localheadpos.y - Config.tempvalues.slider1, localheadpos.z };
-		vec3 check5 = { localheadpos.x, localheadpos.y, localheadpos.z + Config.tempvalues.slider1 };
-
-		bool check1vis = Helper::CheckLocationVisible(check1, targetheadpos);
-		bool check2vis = Helper::CheckLocationVisible(check2, targetheadpos);
-		bool check3vis = Helper::CheckLocationVisible(check3, targetheadpos);
-		bool check4vis = Helper::CheckLocationVisible(check4, targetheadpos);z
-		bool check5vis = Helper::CheckLocationVisible(check5, targetheadpos);
-
-		vec2 screen1;
-		vec2 screen2;
-		vec2 screen3;
-		vec2 screen4;
-		vec2 screen5;
-
-		if (Helper::WorldToScreen(check1, screen1)) {
-			if (check1vis) {
-				draw.DrawCircle(screen1.x, screen1.y, 5.0f, IM_COL32(0, 255, 0, 255));
-				draw.DrawTextA(screen1.x, screen1.y, IM_COL32(255, 255, 255, 255), "1");
-			}
-			else {
-				draw.DrawCircle(screen1.x, screen1.y, 5.0f, IM_COL32(255, 0, 0, 255));
-				draw.DrawTextA(screen1.x, screen1.y, IM_COL32(255, 255, 255, 255), "1");
-			}
-		}
-
-		if (Helper::WorldToScreen(check2, screen2)) {
-			if (check2vis) {
-				draw.DrawCircle(screen2.x, screen2.y, 5.0f, IM_COL32(0, 255, 0, 255));
-				draw.DrawTextA(screen2.x, screen2.y, IM_COL32(255, 255, 255, 255), "2");
-			}
-			else {
-				draw.DrawCircle(screen2.x, screen2.y, 5.0f, IM_COL32(255, 0, 0, 255));
-				draw.DrawTextA(screen2.x, screen2.y, IM_COL32(255, 255, 255, 255), "2");
-			}
-		}
-
-		if (Helper::WorldToScreen(check3, screen3)) {
-			if (check3vis) {
-				draw.DrawCircle(screen3.x, screen3.y, 5.0f, IM_COL32(0, 255, 0, 255));
-				draw.DrawTextA(screen3.x, screen3.y, IM_COL32(255, 255, 255, 255), "3");
-			}
-			else {
-				draw.DrawCircle(screen3.x, screen3.y, 5.0f, IM_COL32(255, 0, 0, 255));
-				draw.DrawTextA(screen3.x, screen3.y, IM_COL32(255, 255, 255, 255), "3");
-			}
-		}
-
-		if (Helper::WorldToScreen(check4, screen4)) {
-			if (check4vis) {
-				draw.DrawCircle(screen4.x, screen4.y, 5.0f, IM_COL32(0, 255, 0, 255));
-				draw.DrawTextA(screen4.x, screen4.y, IM_COL32(255, 255, 255, 255), "4");
-			}
-			else {
-				draw.DrawCircle(screen4.x, screen4.y, 5.0f, IM_COL32(255, 0, 0, 255));
-				draw.DrawTextA(screen4.x, screen4.y, IM_COL32(255, 255, 255, 255), "4");
-			}
-		}
-
-
-		vec2 screenheadpos;
-
-		const char* positionString = Vec3ToCString(localheadpos);
-
-		Helper::WorldToScreen(localheadpos, screenheadpos);
-		draw.DrawTextA(screenheadpos.x, screenheadpos.y, IM_COL32(255, 255, 255, 255), positionString);
-	}
-*/
-
-
 	for (int i = 0; i < globs.espEntList.active->size(); i++) {
 
 		if (globs.espEntList.active->empty() || !(*globs.espEntList.active)[i])
@@ -497,8 +410,6 @@ void Esp::DoEsp() {
 		std::string EntName = Helper::get_schema_name((*globs.espEntList.active)[i]);
 
 		if (EntName == "CCitadelPlayerController") {
-			PlayerData LocalPlayerData;
-			Helper::get_player_data(Helper::get_local_player(), &LocalPlayerData);
 
 			PlayerData TargetPlayerData;
 			if (!Helper::get_player_data((*globs.espEntList.active)[i], &TargetPlayerData)) {
@@ -511,10 +422,7 @@ void Esp::DoEsp() {
 			if (!TargetPlayerData.isalive)
 				continue;
 
-			if (TargetPlayerData.TeamNum == LocalPlayerData.TeamNum)
-				continue;
-
-			Esp::DrawEsp((*globs.espEntList.active)[i], &TargetPlayerData);
+			Esp::DrawEsp((*globs.espEntList.active)[i], &TargetPlayerData, &LocalPlayerData);
 
 
 		}
@@ -527,11 +435,14 @@ void Esp::DoEsp() {
 		else if (EntName == "C_NPC_Trooper" && cfg::esp_DrawMinions) {
 			DrawMinionEsp((*globs.espEntList.active)[i]);
 		}
+		else if (EntName == "C_NPC_TrooperBoss" && cfg::esp_drawTowers) {
+			DrawTowerEsp((*globs.espEntList.active)[i]);
+		}
 	}
 
 }
 
-void Esp::DrawEsp(uintptr_t Entity, PlayerData* EntInfo)
+void Esp::DrawEsp(uintptr_t Entity, PlayerData* EntInfo, PlayerData* LocalInfo)
 {
 
 
@@ -580,70 +491,135 @@ void Esp::DrawEsp(uintptr_t Entity, PlayerData* EntInfo)
 	}
 	
 	if (w2sresult) {
-		if (cfg::esp_boxEsp) {
-			draw.DrawBox(BoxHead.x, BoxHead.y, width, height * 1.2, ImColor(cfg::colors_boxespcol));
-		}
-		if (cfg::esp_HealthEsp) {
-			std::string Health = std::to_string(EntInfo->Health);
-			std::string MaxHealth = std::to_string(EntInfo->MaxHealth);
-			std::string HealthDisplay = "Health: " + Health + " / " + MaxHealth;
 
-			draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.2, ImColor(cfg::colors_healthtextcolesp), _strdup(HealthDisplay.c_str()));
-		}
-		if (cfg::esp_Tracers) {
-			draw.DrawLine(resolution.x / 2, resolution.y, ScreenFeet.x, ScreenFeet.y, ImColor(cfg::colors_tracerscol));
-		}
-		if (cfg::esp_DistanceEsp) {
-
-			PlayerData* LocalPlayerData = new PlayerData;
-			Helper::get_player_data(Helper::get_local_player(), LocalPlayerData);
-
-			std::string temp = std::to_string(Helper::GetDistance(LocalPlayerData->m_vecOrigin, EntInfo->m_vecOrigin));
-			draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2 + 25, ImColor(cfg::colors_distancecolesp), _strdup(temp.c_str()));
-			delete LocalPlayerData;
-		}
-		if (cfg::esp_NameEsp) {
-			draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2, ImColor(cfg::colors_namecoloresp), Helper::GetHeroNameByID(EntInfo->HeroID).c_str());
-		}
-		if (cfg::esp_HealthBar) {
-			float health_ratio = (float)EntInfo->Health / (float)EntInfo->MaxHealth;
-			float scaled_height = height * 1.2f;
-
-			float bar_x = BoxHead.x - 6;
-			float top_y = BoxHead.y;
-			float bottom_y = top_y + scaled_height;
-			float health_y = bottom_y - (scaled_height * health_ratio);
-			draw.DrawLine(
-				bar_x, top_y,
-				bar_x, bottom_y,
-				IM_COL32(0, 0, 0, 85),
-				3.0f
-			);
-			draw.DrawLine(
-				bar_x, bottom_y,
-				bar_x, health_y,
-				IM_COL32(0, 255, 0, 255),
-				3.0f
-			);
-
-			auto io = ImGui::GetIO();
-			ImFontAtlas* fontAtlas = io.Fonts;      // Get the font atlas
-			ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[3]);
-
-			if (health_ratio < 1.0f) {
-				draw.DrawTextA(
-					bar_x,
-					health_y - 10,
-					IM_COL32(255, 255, 255, 255),
-					std::to_string((int)(health_ratio * 100)).c_str()
-				);
+		if (EntInfo->TeamNum == LocalInfo->TeamNum) { // draw team esp
+			if (cfg::esp_tBoxEsp) {
+				draw.DrawBox(BoxHead.x, BoxHead.y, width, height * 1.2, ImColor(cfg::colors_tBoxespcol));
 			}
+			if (cfg::esp_tHealthEsp) {
+				std::string Health = std::to_string(EntInfo->Health);
+				std::string MaxHealth = std::to_string(EntInfo->MaxHealth);
+				std::string HealthDisplay = "Health: " + Health + " / " + MaxHealth;
 
-			ImGui::PopFont();
+				draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.2, ImColor(cfg::colors_tHealthtextcolesp), _strdup(HealthDisplay.c_str()));
+			}
+			if (cfg::esp_tTracers) {
+				draw.DrawLine(resolution.x / 2, resolution.y, ScreenFeet.x, ScreenFeet.y, ImColor(cfg::colors_tTracerscol));
+			}
+			if (cfg::esp_tDistanceEsp) {
+
+
+				std::string temp = std::to_string(Helper::GetDistance(LocalInfo->m_vecOrigin, EntInfo->m_vecOrigin));
+				draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2 + 25, ImColor(cfg::colors_tDistancecolesp), _strdup(temp.c_str()));
+			}
+			if (cfg::esp_tNameEsp) {
+				draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2, ImColor(cfg::colors_tNamecoloresp), Helper::GetHeroNameByID(EntInfo->HeroID).c_str());
+			}
+			if (cfg::esp_tHealthBar) {
+				float health_ratio = (float)EntInfo->Health / (float)EntInfo->MaxHealth;
+				float scaled_height = height * 1.2f;
+
+				float bar_x = BoxHead.x - 6;
+				float top_y = BoxHead.y;
+				float bottom_y = top_y + scaled_height;
+				float health_y = bottom_y - (scaled_height * health_ratio);
+				draw.DrawLine(
+					bar_x, top_y,
+					bar_x, bottom_y,
+					IM_COL32(0, 0, 0, 85),
+					3.0f
+				);
+				draw.DrawLine(
+					bar_x, bottom_y,
+					bar_x, health_y,
+					IM_COL32(0, 255, 0, 255),
+					3.0f
+				);
+
+				auto io = ImGui::GetIO();
+				ImFontAtlas* fontAtlas = io.Fonts;      // Get the font atlas
+				ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[3]);
+
+				if (health_ratio < 1.0f) {
+					draw.DrawTextA(
+						bar_x,
+						health_y - 10,
+						IM_COL32(255, 255, 255, 255),
+						std::to_string((int)(health_ratio * 100)).c_str()
+					);
+				}
+
+				ImGui::PopFont();
+			}
+			if (cfg::esp_tBoneEsp) {
+				DrawBoneEsp(Entity, false);
+			}
 		}
-		if (cfg::esp_boneEsp) {
-			DrawBoneEsp(Entity);
+		else {
+			if (cfg::esp_eBoxEsp) {
+				draw.DrawBox(BoxHead.x, BoxHead.y, width, height * 1.2, ImColor(cfg::colors_eBoxespcol));
+			}
+			if (cfg::esp_eHealthEsp) {
+				std::string Health = std::to_string(EntInfo->Health);
+				std::string MaxHealth = std::to_string(EntInfo->MaxHealth);
+				std::string HealthDisplay = "Health: " + Health + " / " + MaxHealth;
+
+				draw.DrawTextA(BoxHead.x, BoxHead.y + height * 1.2, ImColor(cfg::colors_eHealthtextcolesp), _strdup(HealthDisplay.c_str()));
+			}
+			if (cfg::esp_eTracers) {
+				draw.DrawLine(resolution.x / 2, resolution.y, ScreenFeet.x, ScreenFeet.y, ImColor(cfg::colors_eTracerscol));
+			}
+			if (cfg::esp_eDistanceEsp) {
+
+
+				std::string temp = std::to_string(Helper::GetDistance(LocalInfo->m_vecOrigin, EntInfo->m_vecOrigin));
+				draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2 + 25, ImColor(cfg::colors_eDistancecolesp), _strdup(temp.c_str()));
+			}
+			if (cfg::esp_eNameEsp) {
+				draw.DrawTextA(BoxHead.x + (0.5 * width), BoxHead.y + height * 1.2, ImColor(cfg::colors_eNamecoloresp), Helper::GetHeroNameByID(EntInfo->HeroID).c_str());
+			}
+			if (cfg::esp_eHealthBar) {
+				float health_ratio = (float)EntInfo->Health / (float)EntInfo->MaxHealth;
+				float scaled_height = height * 1.2f;
+
+				float bar_x = BoxHead.x - 6;
+				float top_y = BoxHead.y;
+				float bottom_y = top_y + scaled_height;
+				float health_y = bottom_y - (scaled_height * health_ratio);
+				draw.DrawLine(
+					bar_x, top_y,
+					bar_x, bottom_y,
+					IM_COL32(0, 0, 0, 85),
+					3.0f
+				);
+				draw.DrawLine(
+					bar_x, bottom_y,
+					bar_x, health_y,
+					IM_COL32(0, 255, 0, 255),
+					3.0f
+				);
+
+				auto io = ImGui::GetIO();
+				ImFontAtlas* fontAtlas = io.Fonts;      // Get the font atlas
+				ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[3]);
+
+				if (health_ratio < 1.0f) {
+					draw.DrawTextA(
+						bar_x,
+						health_y - 10,
+						IM_COL32(255, 255, 255, 255),
+						std::to_string((int)(health_ratio * 100)).c_str()
+					);
+				}
+
+				ImGui::PopFont();
+			}
+			if (cfg::esp_eBoneEsp) {
+				DrawBoneEsp(Entity, true);
+			}
 		}
+
+
 	}
 	//do not delete entinfo its deleted afterwards trust :D 
 }

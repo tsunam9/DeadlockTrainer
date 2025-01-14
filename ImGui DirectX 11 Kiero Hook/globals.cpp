@@ -59,6 +59,8 @@ void globals::SortEntsEsp() { // ONLY CALL IN DOESP
             this->espEntList.updating->push_back(entity);
         if (EntName == "C_NPC_Trooper")
             this->espEntList.updating->push_back(entity);
+        if (EntName == "C_NPC_TrooperBoss")
+            this->espEntList.updating->push_back(entity);
     }
 
     this->espEntList.SwapBuffers();
