@@ -53,37 +53,81 @@ void Misc::DoSkyModulation(){
 	}
 }
 
-/*	if (GetAsyncKeyState(VK_F3)) {
-		CCitadelBulletManager* bulletman = (CCitadelBulletManager*)(0x7ffb696eff50);
-		uint64_t bullet1 = *(uint64_t*)bulletman->BulletHandler->CurrentBullets;
-		float speed = Helper::getBulletSpeed(bullet1);
-		std::cout << speed << std::endl;
-	}*/
+void Misc::settargetfov(float fov) {
 
-Drawing testdraw;
+	static uint64_t offset = MEM::PatternScanOffset((void*)ClientModuleBase, "48 8b 05 ? ? ? ? 48 8b 40 ? f3 0f 10 00 48 8d 44 24", 3, 7);
+
+	if (!iEngine->IsInGame()) {
+		return;
+	}
+
+	auto layer = *(uint64_t*)(ClientModuleBase + offset);
+	float* realfov = (float*)(layer + 0x40);
+
+	if (*realfov != fov) {
+		*realfov = fov;
+	}
+
+	return;
+}
 
 
+void Misc::AutoActiveReload(CCitadelUserCmdPB* cmd) {
+
+	if (!(iEngine->IsInGame()))
+		return;
+
+	if (!cfg::misc_autoactivereload)
+		return;
+
+	static globals& globals = globals::instance();
+
+	auto weapon = Helper::get_localplr_weapon();
+
+	if (!weapon) {
+		return;
+	}
+
+
+	bool inreload = *(bool*)(weapon + CCitadel_Ability_PrimaryWeapon::m_bInReload);
+
+	if (inreload) {
+
+		bool canactivereload = *(bool*)(weapon + CCitadel_Ability_PrimaryWeapon::m_bCanActiveReload);
+		if (!canactivereload) {
+			return;
+		}
+
+		float delaystarttime = *(float*)(weapon + CCitadel_Ability_PrimaryWeapon::m_flNextAttackDelayStartTime);
+		float delayendtime = *(float*)(weapon + CCitadel_Ability_PrimaryWeapon::m_flNextAttackDelayEndTime);
+		float reloadtime = delayendtime - delaystarttime;
+
+		float reloadprogress = (globals.Globals->flAbsCurTime - delaystarttime) / reloadtime;
+
+		if (reloadprogress > 0.45) {
+
+			cmd->buttons |= IN_RELOAD;
+
+		}
+
+	}
+
+}
 
 void testbed() {
 
 	if (!(iEngine->IsInGame()))
 		return;
-
 	
-	auto pawn = Helper::GetPawn(Helper::get_local_player());
-
-	auto cameraservices = *(uint64_t*)(pawn + C_BasePlayerPawn::m_pCameraServices);
-
-	vec3 democamera = *(vec3*)(cameraservices + CPlayer_CameraServices::m_angDemoViewAngles);
-
-	std::cout << "X: " << democamera.x << " Y: " << democamera.y << "\n";
-
 
 }
 
-
 void Misc::DoMisc() {
+
 		SimpleNoRecoil();
-		//testbed();
+
+		settargetfov(cfg::misc_fov);
+
+		testbed();
 		//DoSkyModulation();
 }

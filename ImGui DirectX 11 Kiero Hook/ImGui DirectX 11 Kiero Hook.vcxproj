@@ -79,12 +79,12 @@
     <IncludePath>C:\Users\Russel Ward\source\repos\ImGui-DirectX-11-Kiero-Hook;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;C:\Users\Russel Ward\source\repos\ImGui-DirectX-11-Kiero-Hook\ImGui DirectX 11 Kiero Hook;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;C:\Users\Russ\source\repos\Derpfaceking\DeadlockCheatMain\ImGui DirectX 11 Kiero Hook\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath);C:\Program Files\OpenSSL-Win64\include;C:\openssl-3.4.0\include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\Russel Ward\source\repos\ImGui-DirectX-11-Kiero-Hook;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;C:\Users\Russel Ward\source\repos\ImGui-DirectX-11-Kiero-Hook\ImGui DirectX 11 Kiero Hook;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;C:\Users\Russ\source\repos\Derpfaceking\DeadlockCheatMain\ImGui DirectX 11 Kiero Hook\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Russel Ward\source\repos\ImGui-DirectX-11-Kiero-Hook;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;C:\Users\Russel Ward\source\repos\ImGui-DirectX-11-Kiero-Hook\ImGui DirectX 11 Kiero Hook;$(IncludePath);C:\Program Files\OpenSSL-Win64\include;C:\openssl-3.4.0\include</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -105,10 +105,13 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;libssl.lib;
+libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Russ\source\repos\Derpfaceking\DeadlockCheatMain\ImGui DirectX 11 Kiero Hook\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,12 +139,15 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;libssl.lib;
+libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Russ\source\repos\Derpfaceking\DeadlockCheatMain\ImGui DirectX 11 Kiero Hook\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -186,6 +192,7 @@
     <ClCompile Include="offsets.cpp" />
     <ClCompile Include="Paradox.cpp" />
     <ClCompile Include="Pocket.cpp" />
+    <ClCompile Include="Security.cpp" />
     <ClCompile Include="Seven.cpp" />
     <ClCompile Include="shiv.cpp" />
     <ClCompile Include="vindicta.cpp" />
@@ -195,12 +202,14 @@
     <ClCompile Include="Yamato.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="html1.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="kiero\minhook\dll_resources\font1.bin" />
     <None Include="kiero\minhook\dll_resources\MinHook.def" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="kiero\minhook\dll_resources\MinHook.rc" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Desktop\fontawesome_data.h" />
     <ClInclude Include="..\..\..\Cs2Dumper\output\buttons.hpp" />
     <ClInclude Include="Abrams.h" />
     <ClInclude Include="Aimbot.h" />
@@ -221,6 +230,7 @@
     <ClInclude Include="helper.h" />
     <ClInclude Include="heros.h" />
     <ClInclude Include="hooks.h" />
+    <ClInclude Include="httpthings.h" />
     <ClInclude Include="IEngineClient.h" />
     <ClInclude Include="IEngineCvar.h" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -254,6 +264,8 @@
     <ClInclude Include="mem.h" />
     <ClInclude Include="Paradox.h" />
     <ClInclude Include="Pocket.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Security.h" />
     <ClInclude Include="Seven.h" />
     <ClInclude Include="shiv.h" />
     <ClInclude Include="source2client.h" />

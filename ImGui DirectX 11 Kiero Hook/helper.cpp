@@ -24,6 +24,15 @@ uint64_t Helper::get_entity_list() {
 
 }
 
+float Helper::GetServerTime() {
+	if (iEngine->IsInGame() && iEngine->IsConnected()) {
+		auto local = Helper::get_local_player();
+		if (local) {
+			return *(int*)(local + CBasePlayerController::m_nTickBase) * 0.015625; // interval per tick hardcoded in source 2
+		}
+	}
+}
+
 
 std::string Helper::readstr(uintptr_t address){
 	std::string str;

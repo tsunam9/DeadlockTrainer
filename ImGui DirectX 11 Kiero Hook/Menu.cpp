@@ -7,12 +7,13 @@
 
 using Microsoft::WRL::ComPtr;
 
+extern Binds mainbinds;
+
+extern Menu menu;
+
 bool GlyphButton(const char* glyph, ImVec2 size, bool selecctedtab) {
 	// Create base button
 
-	if (selecctedtab) {
-		ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
-	}
 
 	std::string GlyphStr = glyph;
 	std::string buttonID = "##Button" + GlyphStr;
@@ -50,7 +51,7 @@ bool GlyphButton(const char* glyph, ImVec2 size, bool selecctedtab) {
 	ImGui::SetCursorPos(relativeOffset);
 
 	if (selecctedtab) {
-		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_Text, cfg::colors_MenuColor);
 	}
 	else {
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.2, 0.2f, 0.2f, 1.0f));
@@ -62,10 +63,6 @@ bool GlyphButton(const char* glyph, ImVec2 size, bool selecctedtab) {
 	ImGui::PopStyleColor();
 
 	ImGui::SetCursorPos(cursorPos);
-
-	if (selecctedtab) {
-		ImGui::PopStyleVar();
-	}
 
 	return clicked;
 }
@@ -143,8 +140,10 @@ ID3D11ShaderResourceView* CreateShaderResourceView(ID3D11Device* device, ID3D11T
 }
 
 
+
+
 void Menu::DrawConfigs  () {
-    const std::string path = "C:/LynchWare/";
+    const std::string path = "C:/JohnWickWare/";
 	static char newConfigName[64]{ "\0" };
 
 	auto style = ImGui::GetStyle();
@@ -156,6 +155,9 @@ void Menu::DrawConfigs  () {
     if (ImGui::InputTextWithHint("", "Create New Config", newConfigName, sizeof(newConfigName), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CharsNoBlank)) {
         std::cout << "SAVED CONFIG " << newConfigName << "\n";
         cfg::save(path + newConfigName + ".json");
+
+		mainbinds.save(path + "/binds/binds.json");
+
 		memset(newConfigName, 0, sizeof(newConfigName));
     }
 
@@ -210,12 +212,16 @@ void Menu::DrawConfigs  () {
 
 			if (ImGui::Button("Load")) {
 				cfg::load(file.path().string());
+				mainbinds.load(file.path().parent_path().string() + "/binds/binds.json");
 				std::cout << "Loaded Config : " << file.path().stem().string() << "\n";
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::SameLine();
 				if (ImGui::Button("Save")) {
 					cfg::save(file.path().string());
+
+					mainbinds.save(file.path().parent_path().string() + "/binds/binds.json");
+
 					std::cout << "Saved Config : " << file.path().stem().string() << "\n";
 					ImGui::CloseCurrentPopup();
 				}
@@ -235,6 +241,38 @@ void Menu::DrawConfigs  () {
 
 }
 
+void DrawMapObjsEspTab(vec2 res) {
+
+	auto cursorposy = ImGui::GetCursorPosY();
+
+	float spacing_x = res.x * 0.01;
+	float spacing_y = res.y * 0.02;
+
+	ImGui::SetCursorPosX(spacing_x);
+	ImGui::SetCursorPosY(cursorposy + spacing_y);
+
+	ImVec2 regionavailable = ImGui::GetContentRegionAvail();
+
+	ImVec2 espmisctabsize = ImVec2(regionavailable.x - (spacing_x * 2), regionavailable.y - spacing_y);
+
+	ImGui::BeginChild("Lootables", espmisctabsize, true, ImGuiWindowFlags_AlwaysAutoResize); \
+
+		menu.checkbox("Souls", &cfg::esp_DrawXp);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Souls Esp Color", (float*)&cfg::colors_drawxpcol);
+
+	menu.checkbox("Neutral Monsters", &cfg::esp_DrawMonsters);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Monster Esp Color", (float*)&cfg::colors_drawmonsterscol);
+
+	menu.checkbox("Minions", &cfg::esp_DrawMinions);
+	menu.checkbox("Towers", &cfg::esp_drawTowers);
+
+
+	ImGui::EndChild();
+
+}
+
 void DrawMiscEspTab(vec2 res) {
 
 	auto cursorposy = ImGui::GetCursorPosY();
@@ -251,33 +289,25 @@ void DrawMiscEspTab(vec2 res) {
 
 	ImGui::BeginChild("Esp Misc", espmisctabsize, true);
 
-	Menu::checkbox("World Modulation", &cfg::esp_ModWorld);
+	menu.checkbox("World Modulation", &cfg::esp_ModWorld);
 	ImGui::SameLine();
 	ImGui::ColorEdit4("World Color", (float*)&cfg::colors_WorldModulationColor);
 
-	Menu::checkbox("Light Modulation", &cfg::esp_ModLights);
+	menu.checkbox("Light Modulation", &cfg::esp_ModLights);
 	ImGui::SameLine();
 	ImGui::ColorEdit4("Lights Color", (float*)&cfg::colors_LightModColor);
 
-	Menu::checkbox("Aimbot Fov", &cfg::esp_DrawFov);
+	menu.checkbox("Aimbot Fov", &cfg::esp_DrawFov);
 	ImGui::SameLine();
 	ImGui::ColorEdit4("Fov Circle Color", (float*)&cfg::colors_drawfovcol);
 
-	Menu::checkbox("Souls", &cfg::esp_DrawXp);
-	ImGui::SameLine();
-	ImGui::ColorEdit4("Souls Esp Color", (float*)&cfg::colors_drawxpcol);
-
-	Menu::checkbox("Neutral Monsters", &cfg::esp_DrawMinions);
-	ImGui::SameLine();
-	ImGui::ColorEdit4("Monster Esp Color", (float*)&cfg::colors_drawmonsterscol);
-
-	Menu::checkbox("Minions", &cfg::esp_DrawMinions);
-
-	Menu::checkbox("Aimbot Target", &cfg::esp_DrawAimbotTarget);
+	menu.checkbox("Aimbot Target", &cfg::esp_DrawAimbotTarget);
 	ImGui::SameLine();
 	ImGui::ColorEdit4("Aimbot Target Color", (float*)&cfg::colors_aimbotTargetcol);
 
-	Menu::checkbox("Show Keybind List", &cfg::esp_ShowKeyBindList);
+	menu.checkbox("Show Keybind List", &cfg::esp_ShowKeyBindList);
+
+	ImGui::SliderFloat("Fov", &cfg::misc_fov, 0.1f, 180.0f, "%.3f");
 
 	ImGui::Spacing();
 
@@ -289,7 +319,7 @@ void DrawMiscEspTab(vec2 res) {
 
 }
 
-void DrawPlayersEspTab(vec2 res) {
+void DrawTeammatesEspTab(vec2 res) {
 
 	auto cursorposy = ImGui::GetCursorPosY();
 
@@ -307,24 +337,24 @@ void DrawPlayersEspTab(vec2 res) {
 
 	ImGui::BeginChild("drawables", drawablestabsize, true);
 
-	Menu::checkbox("Enabled", &cfg::esp_bEsp);
+	menu.checkbox("Enabled", &cfg::esp_bEsp);
 
-	Menu::checkbox("Bounding Box", &cfg::esp_boxEsp);
+	menu.checkbox("Bounding Box", &cfg::esp_tBoxEsp);
 	ImGui::SameLine();
-	ImGui::ColorEdit4("Box Color", (float*)&cfg::colors_boxespcol);
+	ImGui::ColorEdit4("Box Color", (float*)&cfg::colors_tBoxespcol);
 
-	Menu::checkbox("Health Bar", &cfg::esp_HealthBar);
-	Menu::checkbox("Health Text", &cfg::esp_HealthText);
+	menu.checkbox("Health Bar", &cfg::esp_tHealthBar);
+	menu.checkbox("Health Text", &cfg::esp_tHealthText);
 
-	Menu::checkbox("Skeleton", &cfg::esp_boneEsp);
+	menu.checkbox("Skeleton", &cfg::esp_tBoneEsp);
 	ImGui::SameLine();
-	ImGui::ColorEdit4("Skeleton Color", (float*)&cfg::colors_skeletoncol);
+	ImGui::ColorEdit4("Skeleton Color", (float*)&cfg::colors_tSkeletoncol);
 
-	Menu::checkbox("Name", &cfg::esp_NameEsp);
+	menu.checkbox("Name", &cfg::esp_tNameEsp);
 
-	Menu::checkbox("Tracers", &cfg::esp_Tracers);
+	menu.checkbox("Tracers", &cfg::esp_tTracers);
 
-	Menu::checkbox("Distance", &cfg::esp_DistanceEsp);
+	menu.checkbox("Distance", &cfg::esp_tDistanceEsp);
 
 	ImGui::EndChild();
 
@@ -334,22 +364,74 @@ void DrawPlayersEspTab(vec2 res) {
 
 	ImGui::BeginChild("Models", ImVec2(regionavailable.x - (spacing_x * 2), regionavailable.y - spacing_y), true);
 
-	Menu::checkbox("Chams", &cfg::esp_Chams );
+	menu.checkbox("Chams", &cfg::esp_tChams);
 	ImGui::SameLine();
-	ImGui::ColorEdit4("Chams Color", (float*)&cfg::colors_ChamsCol);
+	ImGui::ColorEdit4("Chams Color", (float*)&cfg::colors_tChamsCol);
 
-	Menu::checkbox("Local Chams", &cfg::esp_LocalChams);
-	ImGui::SameLine();
-	ImGui::ColorEdit4("Local Chams Color", (float*)&cfg::colors_LocalChamsCol);
-	Menu::checkbox("Override Model Material", &cfg::esp_ModelChams);
+	menu.checkbox("Override Model Material", &cfg::esp_tModelChams);
 
-	Menu::checkbox("Glow", &cfg::esp_GlowEsp);
+	menu.checkbox("Glow", &cfg::esp_tGlowEsp);
 	ImGui::SameLine();
-	ImGui::ColorEdit4("Glow Color", (float*)&cfg::colors_GlowCol);
+	ImGui::ColorEdit4("Glow Color", (float*)&cfg::colors_tGlowCol);
 
-	Menu::checkbox("Team Glow", &cfg::esp_GlowTeam);
+
+	ImGui::EndChild();
+}
+
+void DrawEnemyPlayersEspTab(vec2 res) {
+
+	auto cursorposy = ImGui::GetCursorPosY();
+
+	float spacing_x = res.x * 0.01;
+	float spacing_y = res.y * 0.02;
+
+	ImGui::SetCursorPosX(spacing_x);
+	ImGui::SetCursorPosY(cursorposy + spacing_y);
+
+
+	ImVec2 regionavailable = ImGui::GetContentRegionAvail();
+
+	ImVec2 drawablestabsize = ImVec2(regionavailable.x * 0.45, regionavailable.y - spacing_y);
+
+
+	ImGui::BeginChild("drawables", drawablestabsize, true);
+
+	menu.checkbox("Enabled", &cfg::esp_bEsp);
+
+	menu.checkbox("Bounding Box", &cfg::esp_eBoxEsp);
 	ImGui::SameLine();
-	ImGui::ColorEdit4("Team Glow Color", (float*)&cfg::colors_GlowTeamCol);
+	ImGui::ColorEdit4("Box Color", (float*)&cfg::colors_eBoxespcol);
+
+	menu.checkbox("Health Bar", &cfg::esp_eHealthBar);
+	menu.checkbox("Health Text", &cfg::esp_eHealthText);
+
+	menu.checkbox("Skeleton", &cfg::esp_eBoneEsp);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Skeleton Color", (float*)&cfg::colors_eSkeletoncol);
+
+	menu.checkbox("Name", &cfg::esp_eNameEsp);
+
+	menu.checkbox("Tracers", &cfg::esp_eTracers);
+
+	menu.checkbox("Distance", &cfg::esp_eDistanceEsp);
+
+	ImGui::EndChild();
+
+	ImGui::SameLine(0.f, spacing_x * 2);
+
+	regionavailable = ImGui::GetContentRegionAvail();
+
+	ImGui::BeginChild("Models", ImVec2(regionavailable.x - (spacing_x * 2), regionavailable.y - spacing_y), true);
+
+	menu.checkbox("Chams", &cfg::esp_eChams );
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Chams Color", (float*)&cfg::colors_eChamsCol);
+
+	menu.checkbox("Override Model Material", &cfg::esp_eModelChams);
+
+	menu.checkbox("Glow", &cfg::esp_eGlowEsp);
+	ImGui::SameLine();
+	ImGui::ColorEdit4("Glow Color", (float*)&cfg::colors_eGlowCol);
 
 
 	ImGui::EndChild();
@@ -369,9 +451,9 @@ void Menu::DrawEspTab() {
 
 	ImVec2 regionavailable = ImGui::GetContentRegionAvail();
 
-	const char* tabs[] = { "Players", "Misc" };
+	const char* tabs[] = { "Enemies", "Teammates", "Map Objects", "Misc"};
 
-	int numtabs = 2;
+	int numtabs = 4;
 
 	static int selectedTab = 0;
 
@@ -409,9 +491,15 @@ void Menu::DrawEspTab() {
 	regionavailable = ImGui::GetContentRegionAvail();
 
 	if (selectedTab == 0) {
-		DrawPlayersEspTab(res);
+		DrawEnemyPlayersEspTab(res);
 	}
 	else if (selectedTab == 1) {
+		DrawTeammatesEspTab(res);
+	}
+	else if (selectedTab == 2) {
+		DrawMapObjsEspTab(res);
+	}
+	else if (selectedTab == 3) {
 		DrawMiscEspTab(res);
 	}
 
@@ -442,9 +530,9 @@ void Menu::DrawHeroesTab() {
 	}
 	case Bebop: {
 		ImGui::Text("Bebop");
-		Menu::checkbox("Auto Aim Hook", &cfg::bebop_AimHook);
-		Menu::checkbox("Auto Apply Bomb", &cfg::bebop_AutoBomb);
-		Menu::checkbox("Auto UpperCut", &cfg::bebop_AutoUppercut);
+		menu.checkbox("Auto Aim Hook", &cfg::bebop_AimHook);
+		menu.checkbox("Auto Apply Bomb", &cfg::bebop_AutoBomb);
+		menu.checkbox("Auto UpperCut", &cfg::bebop_AutoUppercut);
 		break;
 	}
 	case Dynamo: {
@@ -457,29 +545,29 @@ void Menu::DrawHeroesTab() {
 	}
 	case Haze: {
 		ImGui::Text("Haze");
-		Menu::checkbox("Aim Dagger", &cfg::haze_AimDagger);
+		menu.checkbox("Aim Dagger", &cfg::haze_AimDagger);
 		break;
 	}
 	case Infernus: {
 		ImGui::Text("Infernus");
-		Menu::checkbox("Aim Fire", &cfg::infernus_AimCatalyst);
+		menu.checkbox("Aim Fire", &cfg::infernus_AimCatalyst);
 		break;
 	}
 	case Ivy: {
 		ImGui::Text("Ivy");
-		Menu::checkbox("Aim Bomb", &cfg::ivy_AimBomb);
+		menu.checkbox("Aim Bomb", &cfg::ivy_AimBomb);
 		break;
 	}
 	case Kelvin: {
 		ImGui::Text("Kelvin");
-		Menu::checkbox("Aim Grenade", &cfg::kelvin_AimGrenade);
-		Menu::checkbox("Lockon Ice Beam", &cfg::kelvin_LockBeam);
+		menu.checkbox("Aim Grenade", &cfg::kelvin_AimGrenade);
+		menu.checkbox("Lockon Ice Beam", &cfg::kelvin_LockBeam);
 		break;
 	}
 	case LadyGeist: {
 		ImGui::Text("LadyGeist");
-		Menu::checkbox("Aim Grenade", &cfg::ladygeist_AimBomb);
-		Menu::checkbox("Aim Knives", &cfg::ladygeist_AimMalice);
+		menu.checkbox("Aim Grenade", &cfg::ladygeist_AimBomb);
+		menu.checkbox("Aim Knives", &cfg::ladygeist_AimMalice);
 		break;
 	}
 	case Lash: {
@@ -492,8 +580,8 @@ void Menu::DrawHeroesTab() {
 	}
 	case Mirage: {
 		ImGui::Text("Mirage");
-		Menu::checkbox("Aim Tornado",&cfg::mirage_AimTornado);
-		Menu::checkbox("Aim Scarabs",&cfg::mirage_AimScarabs);
+		menu.checkbox("Aim Tornado",&cfg::mirage_AimTornado);
+		menu.checkbox("Aim Scarabs",&cfg::mirage_AimScarabs);
 		break;
 	}
 	case MoAndKrill: {
@@ -502,34 +590,34 @@ void Menu::DrawHeroesTab() {
 	}
 	case Paradox: {
 		ImGui::Text("Paradox");
-		Menu::checkbox("Aim Grenade", &cfg::paradox_AimGrenade);
-		Menu::checkbox("Aim Swap", &cfg::paradox_AimSwap);
+		menu.checkbox("Aim Grenade", &cfg::paradox_AimGrenade);
+		menu.checkbox("Aim Swap", &cfg::paradox_AimSwap);
 		break;
 	}
 	case Pocket: {
 		ImGui::Text("Pocket");
-		Menu::checkbox("Aim Barrage", &cfg::pocket_AimBarrage);
-		Menu::checkbox("Aim Cloak", &cfg::pocket_AimCloak);
+		menu.checkbox("Aim Barrage", &cfg::pocket_AimBarrage);
+		menu.checkbox("Aim Cloak", &cfg::pocket_AimCloak);
 		break;
 	}
 	case Seven: {
 		ImGui::Text("Seven");
-		Menu::checkbox("Aim Lighting Ball", &cfg::seven_AimLightingBall);
-		Menu::checkbox("Auto Apply Static Charge", &cfg::seven_AutoStaticCharge);
+		menu.checkbox("Aim Lighting Ball", &cfg::seven_AimLightingBall);
+		menu.checkbox("Auto Apply Static Charge", &cfg::seven_AutoStaticCharge);
 		break;
 	}
 	case Shiv: {
 		ImGui::Text("Shiv");
-		Menu::checkbox("Auto Aim Dagger", &cfg::shiv_AutoAimDagger);
-		Menu::checkbox("Auto Aim Dash", &cfg::shiv_AutoAimDash);
-		Menu::checkbox("Auto Execute", &cfg::shiv_AutoExecute);
+		menu.checkbox("Auto Aim Dagger", &cfg::shiv_AutoAimDagger);
+		menu.checkbox("Auto Aim Dash", &cfg::shiv_AutoAimDash);
+		menu.checkbox("Auto Execute", &cfg::shiv_AutoExecute);
 		break;
 	}
 	case Vindicta: {
 		ImGui::Text("Vindicta");
-		Menu::checkbox("Auto Aim Stake", &cfg::vindicta_AutoAimStake);
-		Menu::checkbox("Auto Aim Crow", &cfg::vindicta_AutoAimCrow);
-		Menu::checkbox("Auto Snipe", &cfg::vindicta_AutoSnipe);
+		menu.checkbox("Auto Aim Stake", &cfg::vindicta_AutoAimStake);
+		menu.checkbox("Auto Aim Crow", &cfg::vindicta_AutoAimCrow);
+		menu.checkbox("Auto Snipe", &cfg::vindicta_AutoSnipe);
 		ImGui::SameLine();
 		// Directly use a temporary variable for the slider
 		float f = cfg::vindicta_AutoUltHealthPercent * 100.0f; // Temporary variable
@@ -540,23 +628,23 @@ void Menu::DrawHeroesTab() {
 	}
 	case Viscous: {
 		ImGui::Text("Viscous");
-		Menu::checkbox("Aim Grenade", &cfg::viscous_AimGooGrenade);
+		menu.checkbox("Aim Grenade", &cfg::viscous_AimGooGrenade);
 		break;
 	}
 	case Warden: {
 		ImGui::Text("Warden");
-		Menu::checkbox("Aim Grenade", &cfg::warden_AimLightingGrenade);
+		menu.checkbox("Aim Grenade", &cfg::warden_AimLightingGrenade);
 		break;
 	}
 	case Wraith: {
 		ImGui::Text("Wraith");
-		Menu::checkbox("Aim Cards", &cfg::wraith_AimCards);
+		menu.checkbox("Aim Cards", &cfg::wraith_AimCards);
 		break;
 	}
 	case Yamato: {
 		ImGui::Text("Yamato");
-		Menu::checkbox("Aim Power Slash", &cfg::yamato_AimPowerSlash);
-		Menu::checkbox("Aim Crimson Slash", &cfg::yamato_AimCrimsonSlash);
+		menu.checkbox("Aim Power Slash", &cfg::yamato_AimPowerSlash);
+		menu.checkbox("Aim Crimson Slash", &cfg::yamato_AimCrimsonSlash);
 		break;
 	}
 	default: {
@@ -582,7 +670,6 @@ void Menu::DrawRageBotTab() {
 	}
 
 
-
 	ImGui::SetCursorPos(ImVec2(res.x * 0.01, res.y * 0.013));
 
 	ImVec2 regionavailable = ImGui::GetContentRegionAvail();
@@ -592,18 +679,18 @@ void Menu::DrawRageBotTab() {
 
 	ImGui::BeginChild("MainRage", ImVec2(childWidth, regionavailable.y - res.y * 0.02), true);
 
-	Menu::checkbox("RageBot", &cfg::ragebot_masterswitch);
-	Menu::checkbox("Enabled", &cfg::ragebot_bAimbot);
+	menu.checkbox("RageBot", &cfg::ragebot_masterswitch);
+	menu.checkbox("Enabled", &cfg::ragebot_bAimbot);
 
-	Menu::checkbox("Silent Aim", &cfg::ragebot_silentaim);
+	menu.checkbox("Silent Aim", &cfg::ragebot_silentaim);
 
 	static const char* items[] = { "Distance", "Lowest Health", "FOV" }; // Options for the dropdown
 	//static int currentItem = 0; // Index of the currently selected item
 	ImGui::Combo("Target ", &cfg::ragebot_TargetSelectMode, items, IM_ARRAYSIZE(items));
-	ImGui::SliderFloat("Max Distance", &cfg::ragebot_maxdistance, 0.0f, 5000.0f, "%.1f");
+	ImGui::SliderFloat("Distance", &cfg::ragebot_maxdistance, 0.0f, 5000.0f, "%.1f");
 	ImGui::SliderFloat("FOV", &cfg::ragebot_aimfov, 0.0f, 180.0f, "%.1f");
-	Menu::checkbox("Aim at Souls", &cfg::ragebot_AimXp);
-	Menu::checkbox("Aim at Minions", &cfg::ragebot_AimMinions);
+	menu.checkbox("Souls", &cfg::ragebot_AimXp);
+	menu.checkbox("Minions", &cfg::ragebot_AimMinions);
 
 
 	ImGui::EndChild();
@@ -617,19 +704,18 @@ void Menu::DrawRageBotTab() {
 
 	ImGui::BeginChild("AntiAim", ImVec2(antiAimWidth, regionavailable.y * 0.45), true);
 	ImGui::Text("Anti Aim");
-	Menu::checkbox("Enabled", &cfg::antiaim_bAntiAim);
+	menu.checkbox("Enabled", &cfg::antiaim_bAntiAim);
 	static const char* AAitems[] = { "Spin", "Jitter", "180 Treehouse" }; // Options for the dropdown
 	static int AAcurrentItem = 0; // Index of the currently selected item
-	ImGui::Combo("AAType", &AAcurrentItem, AAitems, IM_ARRAYSIZE(AAitems)); cfg::antiaim_AAtype = AAcurrentItem;
-	ImGui::Text("Selected: %s", AAitems[AAcurrentItem]);
+	ImGui::Combo("Type", &AAcurrentItem, AAitems, IM_ARRAYSIZE(AAitems)); cfg::antiaim_AAtype = AAcurrentItem;
 
 	if (cfg::antiaim_AAtype == 0) {
-		ImGui::SliderFloat("Pitch Speed", &cfg::antiaim_SpinPitchChange, 1.0f, 100.0f);
-		ImGui::SliderFloat("Yaw Speed", &cfg::antiaim_SpinYawChange,1.0f,100.0f);
+		ImGui::SliderFloat("Speed X", &cfg::antiaim_SpinPitchChange, 1.0f, 100.0f);
+		ImGui::SliderFloat("Speed Y", &cfg::antiaim_SpinYawChange,1.0f,100.0f);
 	}
 	else if (cfg::antiaim_AAtype == 1) {
-		ImGui::SliderFloat("Lower Jitter", &cfg::antiaim_lowerjitter, -180, cfg::antiaim_upperjitter, "%.1f");
-		ImGui::SliderFloat("Upper Jitter", &cfg::antiaim_upperjitter, cfg::antiaim_lowerjitter, 180.0f, "%.1f");
+		ImGui::SliderFloat("Range Low", &cfg::antiaim_lowerjitter, -180, cfg::antiaim_upperjitter, "%.1f");
+		ImGui::SliderFloat("Range High", &cfg::antiaim_upperjitter, cfg::antiaim_lowerjitter, 180.0f, "%.1f");
 	}
 
 	ImGui::EndChild();
@@ -640,9 +726,7 @@ void Menu::DrawRageBotTab() {
 
 	ImGui::BeginChild("RageBotMisc", ImVec2(antiAimWidth, regionavailable.y - (res.y * 0.02)), true);
 
-	Menu::checkbox("Movement Fix", &cfg::ragebot_movementfix);
-
-	Menu::checkbox("Magic Bullet", &cfg::ragebot_magicbullet);
+	menu.checkbox("Magic Bullet", &cfg::ragebot_magicbullet);
 
 	ImGui::EndChild();
 
@@ -675,15 +759,15 @@ void Menu::DrawLegitBotTab() {
 
 	ImGui::BeginChild("MainLegit", ImVec2(childWidth, regionavailable.y - res.y * 0.02), true);
 
-	Menu::checkbox("LegitBot", &cfg::legitbot_masterswitch);
+	menu.checkbox("LegitBot", &cfg::legitbot_masterswitch);
 
-	Menu::checkbox("Enabled", &cfg::legitbot_bLegitBot);
+	menu.checkbox("Enabled", &cfg::legitbot_bLegitBot);
 
-	Menu::checkbox("Pitch Correction", &cfg::legitbot_pitchcorrection);
+	menu.checkbox("Pitch Correction", &cfg::legitbot_pitchcorrection);
 		ImGui::SameLine();
 		ImGui::SliderFloat("##PitchAmmount", &cfg::legitbot_pitchcorrectammount, 0.0f, 1.0f, "%.2f");
 
-	Menu::checkbox("Yaw Correction", &cfg::legitbot_yawcorrection);
+	menu.checkbox("Yaw Correction", &cfg::legitbot_yawcorrection);
 		ImGui::SameLine();
 		ImGui::SliderFloat("##YawAmmount", &cfg::legitbot_yawcorrectammount, 0.0f, 1.0f, "%.2f");
 
@@ -716,8 +800,9 @@ void Menu::DrawConfigTab(FILE* fp) {
 
 	ImGui::BeginChild("MainMisc", ImVec2(ConfigWindowWidth * 0.5, 0.0f), true);
 
-	Menu::checkbox("No Recoil", &cfg::misc_bNorecoil);
-	ImGui::SliderFloat("Fov Multiplier", &cfg::misc_fovmodifier, 0.1f, 2.0f, "%.3f");
+	menu.checkbox("No Recoil", &cfg::misc_bNorecoil);
+
+	menu.checkbox("Auto Active Reload", &cfg::misc_autoactivereload);
 
 	ImGui::EndChild();
 
@@ -740,12 +825,10 @@ void Menu::DrawConfigTab(FILE* fp) {
 
 }
 
-extern Binds mainbinds;
-
 void Menu::checkbox(const char* label, bool* v) {
 
-	static bool waswaiting = false;
 
+	static bool waswaiting = false;
 
 	ImGui::Checkbox(label, v);
 
@@ -773,8 +856,6 @@ void Menu::checkbox(const char* label, bool* v) {
 	cfgvar* cfg_var{ findCfgVar() };
 
 	if (ImGui::BeginPopup(uniqueId.c_str())) {
-
-
 
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.f,1.f,1.f,1.f));
 
@@ -807,7 +888,6 @@ void Menu::checkbox(const char* label, bool* v) {
 						ImGui::CloseCurrentPopup();
 					}
 
-					std::cout << "Set Key to : " << KeyNames[key] << "\n";
 					newkey = key;
 					waitingforkey = false;
 				}
@@ -853,36 +933,51 @@ void Menu::checkbox(const char* label, bool* v) {
 
 }
 
+static bool searching = false;
 
 void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
+
+
+	/*if (ImGui::Begin("CustomMaterialInput")) {
+
+		// Multi-line text input for material buffer
+		ImGui::InputTextMultiline("##MaterialBuffer", quickiterationmaterial, sizeof(quickiterationmaterial),
+			ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 8),
+			ImGuiInputTextFlags_AllowTabInput);
+
+		if (ImGui::Button("Create Material")) {
+			if (!firstreplacedmaterial)
+				firstreplacedmaterial = true;
+			replacedmaterial = true;
+		}
+
+		ImGui::End();
+	}
+	*/
+
 
 
 	ImVec4* colors = ImGui::GetStyle().Colors;
 
 	ImVec4 menuColor = ImVec4(cfg::colors_MenuColor.x, cfg::colors_MenuColor.y, cfg::colors_MenuColor.z, 1.0f); // Get the menu color
 
-
-	colors[ImGuiCol_Border] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.24f);
-	colors[ImGuiCol_FrameBg] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.54f);
-	colors[ImGuiCol_FrameBgHovered] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.40f);
-	colors[ImGuiCol_FrameBgActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.40f);
-	colors[ImGuiCol_TitleBg] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
-	colors[ImGuiCol_TitleBgActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
-	colors[ImGuiCol_CheckMark] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.85);
-	colors[ImGuiCol_SliderGrab] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.85);
-	colors[ImGuiCol_SliderGrabActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
-	colors[ImGuiCol_Button] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.85);
-	colors[ImGuiCol_ButtonHovered] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.95);
-	colors[ImGuiCol_ButtonActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
-	colors[ImGuiCol_Separator] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.50f);
-	colors[ImGuiCol_ResizeGrip] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.24f);
-	colors[ImGuiCol_ResizeGripHovered] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.24f);
-	colors[ImGuiCol_ResizeGripActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.68f);
-	colors[ImGuiCol_Tab] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
-	colors[ImGuiCol_TabHovered] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
-	colors[ImGuiCol_TabActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
-
-	colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.06f, 0.06f, 0.98f);
+		colors[ImGuiCol_Border] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.24f);
+		colors[ImGuiCol_TitleBg] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+		colors[ImGuiCol_TitleBgActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+		colors[ImGuiCol_CheckMark] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.85);
+		colors[ImGuiCol_SliderGrab] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.85);
+		colors[ImGuiCol_SliderGrabActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+		colors[ImGuiCol_Button] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.85);
+		colors[ImGuiCol_ButtonHovered] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.95);
+		colors[ImGuiCol_ButtonActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+		colors[ImGuiCol_Separator] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.50f);
+		colors[ImGuiCol_ResizeGrip] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.24f);
+		colors[ImGuiCol_ResizeGripHovered] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.24f);
+		colors[ImGuiCol_ResizeGripActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 0.68f);
+		colors[ImGuiCol_Tab] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+		colors[ImGuiCol_TabHovered] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+		colors[ImGuiCol_TabActive] = ImVec4(menuColor.x, menuColor.y, menuColor.z, 1.00f);
+		colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.06f, 0.06f, 0.98f);
 
 
 	// Variable to hold the selected tab
@@ -901,9 +996,54 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, zero);
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, zero);
+	
+	/*	if (ImGui::Begin("Search", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+
+		static char searchbuffer[32]{ '\0' };
+
+		if (ImGui::InputTextWithHint(" ", "Search", searchbuffer, sizeof(searchbuffer), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CharsNoBlank)) {
+		}
+
+		std::string search = searchbuffer; // Search string
+
+		if (!(search.empty())) {
+
+			for (cfgvar* const var : getInsts<cfgvar>()) {
+
+				std::string varname = var->m_name; // Access the variable name
+
+				// Convert both strings to lowercase
+				std::transform(varname.begin(), varname.end(), varname.begin(), ::tolower);
+				std::transform(search.begin(), search.end(), search.begin(), ::tolower);
+
+				// Check if the search string is found in the variable name
+				if (varname.find(search) != std::string::npos) {
+					// Display and edit the variable based on its type
+					if (var->typehash == typeid(bool).hash_code()) {
+						ImGui::Checkbox(var->m_name.c_str(), reinterpret_cast<bool*>(var->m_data));
+					}
+					else if (var->typehash == typeid(int).hash_code()) {
+						ImGui::SliderInt(var->m_name.c_str(), reinterpret_cast<int*>(var->m_data), 1, 100);
+					}
+					else {
+						ImGui::Text("Unsupported Type");
+					}
+				}
+
+			}
+
+		}
+
+		ImGui::End();
+
+	}*/
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
 
 	if (ImGui::Begin("Sovereign", NULL, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar)) {
 		// Force all relevant style properties to zero
+
 
 		float availableWidth = ImGui::GetWindowWidth();
 		float availableHeight = ImGui::GetWindowHeight();
@@ -915,7 +1055,7 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 			ImGuiWindowFlags_NoScrollbar |
 			ImGuiWindowFlags_NoScrollWithMouse);
 
-		ImGui::PopStyleVar(2); // padding and spacing
+		ImGui::PopStyleVar(4); // padding and spacing
 
 		// Button styles
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
@@ -965,7 +1105,7 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
 
 
-		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(cfg::colors_MenuColor.x, cfg::colors_MenuColor.y, cfg::colors_MenuColor.z, 0.04f));
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.05f,0.05f,0.05f,1.0f));
 
 		switch (selectedTab) {
 		case 0: DrawRageBotTab(); break;

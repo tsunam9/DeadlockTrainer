@@ -37,7 +37,6 @@ struct KeyBind {
 // Aimbot Settings
 MAKE_CFGVAR(ragebot_masterswitch, false);
 MAKE_CFGVAR(ragebot_bAimbot, false);
-MAKE_CFGVAR(ragebot_movementfix, false);
 MAKE_CFGVAR(ragebot_AimXp, false);
 MAKE_CFGVAR(ragebot_AimMinions, false);
 MAKE_CFGVAR(ragebot_TargetSelectMode, 0);
@@ -59,16 +58,35 @@ MAKE_CFGVAR(legitbot_pitchcorrectammount, 1.0f);
 MAKE_CFGVAR(legitbot_yawcorrection, false);
 MAKE_CFGVAR(legitbot_yawcorrectammount, 1.0f);
 
-// ESP Settings
+// Enemy Esp
 MAKE_CFGVAR(esp_bEsp, false);
-MAKE_CFGVAR(esp_boneEsp, false);
-MAKE_CFGVAR(esp_boxEsp, false);
-MAKE_CFGVAR(esp_HealthText, false);
-MAKE_CFGVAR(esp_Tracers, false);
-MAKE_CFGVAR(esp_HealthEsp, false);
-MAKE_CFGVAR(esp_DistanceEsp, false);
-MAKE_CFGVAR(esp_NameEsp, false);
-MAKE_CFGVAR(esp_HealthBar, false);
+MAKE_CFGVAR(esp_eBoneEsp, false);
+MAKE_CFGVAR(esp_eBoxEsp, false);
+MAKE_CFGVAR(esp_eHealthText, false);
+MAKE_CFGVAR(esp_eTracers, false);
+MAKE_CFGVAR(esp_eHealthEsp, false);
+MAKE_CFGVAR(esp_eDistanceEsp, false);
+MAKE_CFGVAR(esp_eNameEsp, false);
+MAKE_CFGVAR(esp_eHealthBar, false);
+MAKE_CFGVAR(esp_eChams, false);
+MAKE_CFGVAR(esp_eModelChams, false);
+MAKE_CFGVAR(esp_eGlowEsp, false);
+
+// Team Esp
+
+MAKE_CFGVAR(esp_tBoneEsp, false);
+MAKE_CFGVAR(esp_tBoxEsp, false);
+MAKE_CFGVAR(esp_tHealthText, false);
+MAKE_CFGVAR(esp_tTracers, false);
+MAKE_CFGVAR(esp_tHealthEsp, false);
+MAKE_CFGVAR(esp_tDistanceEsp, false);
+MAKE_CFGVAR(esp_tNameEsp, false);
+MAKE_CFGVAR(esp_tHealthBar, false);
+MAKE_CFGVAR(esp_tChams, false);
+MAKE_CFGVAR(esp_tModelChams, false);
+MAKE_CFGVAR(esp_tGlowEsp, false);
+
+//misc esp
 MAKE_CFGVAR(esp_DrawFov, false);
 MAKE_CFGVAR(esp_DrawAimbotPrediction, false);
 MAKE_CFGVAR(esp_DrawXp, false);
@@ -76,19 +94,17 @@ MAKE_CFGVAR(esp_DrawMonsters, false);
 MAKE_CFGVAR(esp_DrawMinions, false);
 MAKE_CFGVAR(esp_DrawAimbotTarget, false);
 MAKE_CFGVAR(esp_ShowKeyBindList, false);
-MAKE_CFGVAR(esp_Chams, false);
-MAKE_CFGVAR(esp_ModelChams, false);
-MAKE_CFGVAR(esp_LocalChams, false);
 MAKE_CFGVAR(esp_ModWorld, false);
 MAKE_CFGVAR(esp_ModLights, false);
-MAKE_CFGVAR(esp_GlowEsp, false);
-MAKE_CFGVAR(esp_GlowTeam, false);
+MAKE_CFGVAR(esp_drawTowers, false);
+MAKE_CFGVAR(esp_DrawWaterMark, true);
 
 // Misc Settings
 MAKE_CFGVAR(misc_bNorecoil, false);
 MAKE_CFGVAR(misc_modfovandaspect, false);
-MAKE_CFGVAR(misc_fovmodifier, 1.0f);
+MAKE_CFGVAR(misc_fov, 75.f);
 MAKE_CFGVAR(misc_aspectratio, 1.0f);
+MAKE_CFGVAR(misc_autoactivereload, false);
 
 // Shiv Settings
 MAKE_CFGVAR(shiv_AutoAimDagger, false);
@@ -160,24 +176,35 @@ MAKE_CFGVAR(antiaim_SpinPitchChange, 1.0f);
 MAKE_CFGVAR(antiaim_lowerjitter, -90.0f);
 MAKE_CFGVAR(antiaim_upperjitter, 90.0f);
 
-//Color Settings
-MAKE_CFGVAR(colors_boxespcol, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-MAKE_CFGVAR(colors_skeletoncol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-MAKE_CFGVAR(colors_namecoloresp, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-MAKE_CFGVAR(colors_healthtextcolesp, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-MAKE_CFGVAR(colors_tracerscol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-MAKE_CFGVAR(colors_distancecolesp, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+//Enemy Esp Colors
+MAKE_CFGVAR(colors_eBoxespcol, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+MAKE_CFGVAR(colors_eSkeletoncol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_eNamecoloresp, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_eHealthtextcolesp, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_eTracerscol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_eDistancecolesp, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_eChamsCol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_eGlowCol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+
+// Team Esp Colors
+
+MAKE_CFGVAR(colors_tBoxespcol, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+MAKE_CFGVAR(colors_tSkeletoncol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_tNamecoloresp, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_tHealthtextcolesp, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_tTracerscol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_tDistancecolesp, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_tChamsCol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_tGlowCol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+
+// Misc Colors
 MAKE_CFGVAR(colors_drawfovcol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 MAKE_CFGVAR(colors_drawxpcol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 MAKE_CFGVAR(colors_drawmonsterscol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 MAKE_CFGVAR(colors_aimbotTargetcol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-MAKE_CFGVAR(colors_ChamsCol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-MAKE_CFGVAR(colors_LocalChamsCol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+MAKE_CFGVAR(colors_MenuColor, ImVec4(1.00f, 0.00f, 0.53f, 1.0f));
 MAKE_CFGVAR(colors_WorldModulationColor, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 MAKE_CFGVAR(colors_LightModColor, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-MAKE_CFGVAR(colors_GlowCol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-MAKE_CFGVAR(colors_GlowTeamCol, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-MAKE_CFGVAR(colors_MenuColor, ImVec4(1.00f, 0.00f, 0.53f, 1.0f));
 
 MAKE_CFGVAR(menu_open, true);
 

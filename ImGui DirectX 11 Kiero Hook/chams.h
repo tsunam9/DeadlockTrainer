@@ -77,7 +77,7 @@ public:
 	static CKeyValues3* CreateMaterialResource()
 	{
 		using fnSetTypeKV3 = CKeyValues3 * (_fastcall*)(CKeyValues3*, unsigned int, unsigned int);
-		static const fnSetTypeKV3 oSetTypeKV3 = reinterpret_cast<fnSetTypeKV3>(ClientModuleBase + (MEM::PatternScanFunc((void*)ClientModuleBase, "40 53 48 83 ec ? 48 8b 01 48 8b d9 44 0f b6 ca")));
+		static const fnSetTypeKV3 oSetTypeKV3 = reinterpret_cast<fnSetTypeKV3>(ClientModuleBase + (MEM::PatternScanFunc((void*)ClientModuleBase, "40 53 48 83 ec ? 48 8b d9 49 ba")));
 
 		CKeyValues3* pKeyValue = new CKeyValues3[0x10];
 		return oSetTypeKV3(pKeyValue, 1U, 6U);
@@ -292,84 +292,19 @@ public:
 
 };
 
-static const char* flat = R"(R"#(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d}
-			format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
-			{
-                shader = "generic.vfx"
-                g_tColor = resource:"materials/dev/primary_white_color_tga_4eaba099.vtex"
-                g_tNormal = resource:"materials/default/default_normal_tga_7652cb.vtex"
-                g_tRoughness = resource:"materials/default/default_normal_tga_794cb9ce.vtex"
-                g_tMetalness = resource:"materials/default/default_normal_tga_794cb9ce.vtex"
-                g_tAmbientOcclusion = resource:"materials/default/default_normal_tga_b3f4ec4c.vtex"
-                F_IGNOREZ = 0
-                F_DISABLE_Z_WRITE = 0
-                F_DISABLE_Z_BUFFERING = 0
-                F_RENDER_BACKFACES = 1
-                g_vColorTint = [1.0, 1.0, 1.0, 1.0]
-			} )#")";
-
-static constexpr char szVMatBufferWhiteVisible[] =
-R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
-{
-	shader = "generic.vfx"
-
-	F_PAINT_VERTEX_COLORS = 1
-	F_TRANSLUCENT = 1
-	F_BLEND_MODE = 1
-
-	g_vColorTint = [1, 1, 1, 1]
-
-	TextureAmbientOcclusion = resource:"materials/default/default_mask_tga_8d0774e6.vtex"
-	g_tAmbientOcclusion = resource:"materials/default/default_mask_tga_8d0774e6.vtex"
-	g_tColor = resource:"materials/default/default_mask_tga_8d0774e6.vtex"
-	g_tNormal = resource:"materials/default/default_mask_tga_8d0774e6.vtex"
-	g_tTintMask = resource:"materials/default/default_mask_tga_8d0774e6.vtex"
-
-})";
-
-static const char* textured = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
-{
-    shader = "tools_solid.vfx"
-
-	F_UNLIT = 1
-	g_flPhongExp = 0.100000
-
-})";
-
-
-
 static constexpr char szVMatBufferWhiteInvisible[] =
 R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
 	shader = "pbr.vfx"
 
 	F_SELF_ILLUM = 1
-	F_UNLIT = 1
-
+	g_bNoEnvMapOcclusion = 0
+		
 	g_tAmbientOcclusion = resource:"materials/default/default_ao_tga_559f1ac6.vtex"
-	g_tColor = resource:"models/heroes_staging/gen_man/materials/gen_man_color_psd_66eccf52.vtex"
+	g_tColor = resource:"materials/dev/primary_white_color_tga_e79cd79d.vtex"
 	g_tNormalRoughness = resource:"materials/default/default_normal_tga_7be61377.vtex"
-    g_tSelfIllumMask = resource:"materials/default/default_mask_tga_344101f8.vtex"
+    g_tSelfIllumMask = resource:"materials/dev/primary_white_color_tga_e3f40130.vtex"
     g_tTintMask = resource:"materials/default/default_mask_tga_344101f8.vtex"
-
-
-})";
-
-static constexpr char outlinetest[] =
-R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
-{
-                shader = "tools_wireframe.vfx"
-				
-				F_WIREFRAME = 1
-				F_TRANSLUCENT = 1
-				
-
-	            g_tColor = resource:"materials/dev/primary_white_color_tga_e79cd79d.vtex"
-                g_tNormal = resource:"materials/default/default_normal_tga_7be61377.vtex"
-                g_tRoughness = resource:"materials/default/default_ao_tga_559f1ac6.vtex"
-                g_tMetalness = resource:"materials/default/default_ao_tga_559f1ac6.vtex"
-                g_tAmbientOcclusion = resource:"materials/default/default_ao_tga_559f1ac6.vtex"
-                g_vColorTint = [1.0, 1.0, 1.0, 1.0]
 
 })";
 
@@ -425,7 +360,7 @@ public:
 class C_AggregateSceneObject
 {
 private:
-	char pad_0000[0x120];
+	char pad_0000[0x130];
 public:
 	int m_nCount; // 0x120
 private:

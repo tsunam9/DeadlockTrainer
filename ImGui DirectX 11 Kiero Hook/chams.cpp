@@ -1,5 +1,9 @@
 #include "chams.h"
 
+char quickiterationmaterial[20480];
+bool replacedmaterial = false;
+bool firstreplacedmaterial = false;
+
 typedef void (__fastcall* fnCreateMaterial)(void*, void*, const char*, void*, unsigned int, unsigned int);
 fnCreateMaterial creatematerial = fnCreateMaterial(materialsystembase + (MEM::PatternScanFunc((void*)materialsystembase, "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 56 48 81 EC ? ? ? ? 48 8B 05")));
 
@@ -97,89 +101,63 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 	Helper::get_player_data(Helper::get_local_player(), &LocalPlayerData);
 
 
-	/*	static auto mymatsystem = GetInterface<IMaterialSystem2>("materialsystem2.dll", "VMaterialSystem2_001");
+	/*
+		std::string firsthalf = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+		{)";
 
-	CMaterial2*** mymat2 = new CMaterial2**;
-	CMaterial2*** ignorezmat = new CMaterial2**;
-	const char* str = "materials/dev/primary_white.vmat";
-	const char* str2 = "materials/dev/outlineproperty.vmat";
-	CMaterial2*** mymaterial = drawfindmattarget((__int64)mymatsystem, (__int64*)mymat2, (__int64)str);
-	CMaterial2*** ignorematerial = drawfindmattarget((__int64)mymatsystem, (__int64*)ignorezmat, (__int64)str2);*/
+		std::string iteration = quickiterationmaterial;
 
+		std::string secondhalf = R"(	
+		})";
+
+		std::string total = firsthalf + iteration + secondhalf;
+   
+		static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
+
+		if (firstreplacedmaterial) {
+			setmat = Chams::CreateMaterial("invisible", total.c_str());
+			firstreplacedmaterial = false;
+		}
+	*/
+	
 	static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
 
+	
 	std::string matname = matdata->pMaterial->GetName();
 	if (matname.find("outline") != std::string::npos) {
 		return;
 	}
 
-	if (islocal && cfg::esp_LocalChams) {
-		matdata->colValue.r = cfg::colors_LocalChamsCol.x* 255;
-		matdata->colValue.g = cfg::colors_LocalChamsCol.y * 255;
-		matdata->colValue.b = cfg::colors_LocalChamsCol.z * 255;
-		matdata->colValue.a = cfg::colors_LocalChamsCol.w * 255;
-		if (cfg::esp_ModelChams) {
+
+	if (targetchamsdata.TeamNum == LocalPlayerData.TeamNum) {
+		matdata->colValue.r = cfg::colors_tChamsCol.x * 255;
+		matdata->colValue.g = cfg::colors_tChamsCol.y * 255;
+		matdata->colValue.b = cfg::colors_tChamsCol.z * 255;
+		matdata->colValue.a = cfg::colors_tChamsCol.w * 255;
+
+		if (cfg::esp_tModelChams) {
+
 			matdata->pMaterial = setmat;
-		}
-		goto LABEL_1;
-	}
+			matdata->pMaterial2 = setmat;
 
-	if (targetchamsdata.TeamNum == LocalPlayerData.TeamNum)
-		return;
-
-	matdata->colValue.r = cfg::colors_ChamsCol.x * 255;
-	matdata->colValue.g = cfg::colors_ChamsCol.y * 255;
-	matdata->colValue.b = cfg::colors_ChamsCol.z * 255;
-	matdata->colValue.a = cfg::colors_ChamsCol.w * 255;
-
-	if (cfg::esp_ModelChams) {
-		if (ignorez) {
-			matdata->pMaterial = setmat;
-		}
-		else {
-			if (setmat) {
-				matdata->pMaterial = setmat;
-			}
 		}
 	}
+	else {
+		matdata->colValue.r = cfg::colors_eChamsCol.x * 255;
+		matdata->colValue.g = cfg::colors_eChamsCol.y * 255;
+		matdata->colValue.b = cfg::colors_eChamsCol.z * 255;
+		matdata->colValue.a = cfg::colors_eChamsCol.w * 255;
+
+		if (cfg::esp_eModelChams) {
+
+			matdata->pMaterial = setmat;
+			matdata->pMaterial2 = setmat;
+
+		}
+	}
 
 
-
-	LABEL_1:
-
-	//delete mymat2;
-	//delete ignorezmat;
 	return;
 
 }
 
-/*
-	if (Config.aimbot
-	) {
-
-
-
-		
-
-		uint32_t* flags = (uint32_t*)((uint32_t)(matdata->pMaterial) + Config.tempvalues.inputint);
-
-
-
-		if (*flags & (1 << 15)) {
-			std::cout << "FLAGSVALUE : " << *flags << std::endl;
-			std::cout << "OFFSET : " << std::hex << Config.tempvalues.inputint << std::endl;
-			std::cout << "IGNOREZ : TRUE" << std::endl;
-			std::cout << "----------" << std::endl;
-		}
-		else {
-			std::cout << "FLAGSVALUE : " << *flags << std::endl;
-			std::cout << "OFFSET : " << std::hex << Config.tempvalues.inputint << std::endl;
-			std::cout << "IGNOREZ : FALSE" << std::endl;
-			std::cout << "----------" << std::endl;
-		}
-
-		*flags |= MaterialVarFlags_t::MATERIAL_VAR_IGNOREZ;
-	}
-	else {
-		std::cout << "MATDATA : " << matdata << "\n";
-	}*/

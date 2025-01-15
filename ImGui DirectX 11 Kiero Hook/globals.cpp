@@ -8,7 +8,7 @@ ISource2Client* source2client = GetInterface<ISource2Client>("client.dll", "Sour
 
 
 
-bool unloadRequested = false; // Define the variable here
+bool unloadRequested = false; 
 
 void globals::SortEnts() { // ONLY CALL IN AIMBOT
 
@@ -58,6 +58,8 @@ void globals::SortEntsEsp() { // ONLY CALL IN DOESP
         if (EntName == "C_NPC_TrooperNeutral")
             this->espEntList.updating->push_back(entity);
         if (EntName == "C_NPC_Trooper")
+            this->espEntList.updating->push_back(entity);
+        if (EntName == "C_NPC_TrooperBoss")
             this->espEntList.updating->push_back(entity);
     }
 

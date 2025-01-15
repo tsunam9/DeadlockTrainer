@@ -33,6 +33,9 @@ void Binds::removebind(Bind* const bind_ptr) {
 
 void Binds::think() {
 
+	if (!iEngine->IsInGame())
+		return;
+
 	for (Bind& deletebind : bindstodelete) {
 
 		auto it = std::find(bindlist.begin(), bindlist.end(), deletebind);
@@ -82,6 +85,7 @@ void Binds::paint() {
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
 
+	
 	if (ImGui::Begin("Binds", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize )) {
 
 		for (Bind& bind : bindlist) {
@@ -166,4 +170,83 @@ void Binds::paint() {
 	ImGui::PopStyleVar();
 
 	return;
+}
+
+void Binds::load(const std::string& path){
+
+	nlohmann::json j{};
+
+	std::ifstream file{ path.data() };
+
+	if (!file.is_open()) {
+		return;
+	}
+
+	file >> j;
+
+	file.close();
+
+	auto findCfgVarByName = [&](const std::string& name) -> cfgvar* const
+		{
+			for (cfgvar* const var : getInsts<cfgvar>())
+			{
+				if (!var || var->m_name != name) {
+					continue;
+				}
+
+				return var;
+			}
+
+			return nullptr;
+		};
+
+	if (!j.empty()) {
+		bindlist.clear();
+	}
+
+	for (const nlohmann::json& b : j)
+	{
+		Bind bind{};
+
+		bind.name = b["name"].get<std::string>();
+		bind.key = b["key"].get<int>();
+		bind.type = b["type"].get<int>();
+		bind.configvar = findCfgVarByName(b["cfgvarname"].get<std::string>());
+
+		if (!(bind.configvar)) {
+			continue;
+		}
+
+		bind.val_off = b["val_off"].get<bool>();
+		bind.val_on = b["val_on"].get<bool>();
+
+
+		bindlist.push_back(bind);
+	}
+
+
+}
+
+void Binds::save(const std::string& path){
+
+	nlohmann::json j{};
+
+	for (const Bind& bind : bindlist) {
+
+		nlohmann::json b{};
+
+		b["name"] = bind.name;
+		b["key"] = bind.key;
+		b["type"] = bind.type;
+		b["cfgvarname"] = bind.configvar->m_name;
+		b["val_on"] = true;
+		b["val_off"] = false;
+
+		j.push_back(b);
+	}
+
+	std::ofstream file{ path.data() };
+	file << std::setw(4) << j;
+	file.close();
+
 }
