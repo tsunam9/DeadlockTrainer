@@ -101,7 +101,7 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 	Helper::get_player_data(Helper::get_local_player(), &LocalPlayerData);
 
 
-
+	/*
 		std::string firsthalf = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 		{)";
 
@@ -111,15 +111,16 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 		})";
 
 		std::string total = firsthalf + iteration + secondhalf;
-
+   
 		static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
 
 		if (firstreplacedmaterial) {
 			setmat = Chams::CreateMaterial("invisible", total.c_str());
 			firstreplacedmaterial = false;
 		}
-
+	*/
 	
+	static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
 
 	
 	std::string matname = matdata->pMaterial->GetName();
