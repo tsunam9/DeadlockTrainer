@@ -938,7 +938,7 @@ static bool searching = false;
 void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
 
-	/*if (ImGui::Begin("CustomMaterialInput")) {
+	if (ImGui::Begin("CustomMaterialInput")) {
 
 		// Multi-line text input for material buffer
 		ImGui::InputTextMultiline("##MaterialBuffer", quickiterationmaterial, sizeof(quickiterationmaterial),
@@ -953,7 +953,7 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
 		ImGui::End();
 	}
-	*/
+	
 
 
 

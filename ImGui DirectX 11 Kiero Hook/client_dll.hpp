@@ -6097,7 +6097,7 @@ namespace cs2_dumper {
             }
             // Parent: CCitadel_Item
             // Field count: 0
-            namespace CCitadel_Item_QuickSilver {
+            namespace CCitadel_Item_4Silver {
             }
             // Parent: CCitadel_Item
             // Field count: 0

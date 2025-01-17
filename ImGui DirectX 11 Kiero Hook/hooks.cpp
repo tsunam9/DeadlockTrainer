@@ -4,6 +4,10 @@
 static CMaterial2* permamat;
 static bool foundmat = false;
 
+extern char quickiterationmaterial[20408];
+extern bool replacedmaterial;
+extern bool firstreplacedmaterial;
+
 struct object_info_t {
 	enum e_id : int {
 		arm = 38,
@@ -28,14 +32,14 @@ typedef __int64(__fastcall* f_DrawModel)(
 	__int64 a5,
 	__int64 a6,
 	__int64 a7,
-	__int64 a8);
+	CMaterial2* overridematerial);
 f_DrawModel DrawModel = nullptr;
 f_DrawModel DrawModelTarget = reinterpret_cast<f_DrawModel>(scenesytembase + MEM::PatternScanFunc((void*)scenesytembase, "48 8b c4 48 89 50 ? 53"));
 
 //a1 : Animatablesceneobjectdesc
 //a2 : dx device
 // a3 : cmeshdata
-// a4 : idk
+// a4 : meshes to draw
 // a5 : CSceneView
 // a6 : CSceneLayer
 // a7 : idk
@@ -43,33 +47,167 @@ f_DrawModel DrawModelTarget = reinterpret_cast<f_DrawModel>(scenesytembase + MEM
 
 class CRenderContextBase;
 
-void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, __int64 a8) {
+ID3D11DepthStencilState* originalDepthStencilState = nullptr;
+ID3D11DepthStencilState* ignoreZDepthStencilState = nullptr;
+
+extern ID3D11DeviceContext* pContext;
+extern ID3D11Device* pDevice;
+
+bool DepthEnabled(ID3D11DeviceContext* pContext) {
+	ID3D11DepthStencilState* stencilstate = NULL;
+
+	pContext->OMGetDepthStencilState(&stencilstate, nullptr);
+
+	D3D11_DEPTH_STENCIL_DESC desc;
+	stencilstate->GetDesc(&desc);
+
+	if (!desc.DepthFunc == D3D11_COMPARISON_ALWAYS) {
+		return false;
+	}
+	else { return true; }
+
+}
+
+void PrintDepthStencilDesc(ID3D11DeviceContext* pContext) {
+
+	ID3D11DepthStencilState* stencilstate = NULL;
+
+	pContext->OMGetDepthStencilState(&stencilstate, nullptr);
+
+	D3D11_DEPTH_STENCIL_DESC desc;
+	stencilstate->GetDesc(&desc);
+
+	std::cout << "Depth Enable: " << (desc.DepthEnable ? "Enabled" : "Disabled") << std::endl;
+	std::cout << "Depth Write Mask: " << (desc.DepthWriteMask == D3D11_DEPTH_WRITE_MASK_ALL ? "All" : "Zero") << std::endl;
+	std::cout << "Depth Function: ";
+	switch (desc.DepthFunc) {
+	case D3D11_COMPARISON_NEVER: std::cout << "Never"; break;
+	case D3D11_COMPARISON_LESS: std::cout << "Less"; break;
+	case D3D11_COMPARISON_EQUAL: std::cout << "Equal"; break;
+	case D3D11_COMPARISON_LESS_EQUAL: std::cout << "Less Equal"; break;
+	case D3D11_COMPARISON_GREATER: std::cout << "Greater"; break;
+	case D3D11_COMPARISON_NOT_EQUAL: std::cout << "Not Equal"; break;
+	case D3D11_COMPARISON_GREATER_EQUAL: std::cout << "Greater Equal"; break;
+	case D3D11_COMPARISON_ALWAYS: std::cout << "Always"; break;
+	default: std::cout << "Unknown"; break;
+	}
+	std::cout << std::endl;
+
+	std::cout << "Stencil Enable: " << (desc.StencilEnable ? "Enabled" : "Disabled") << std::endl;
+	std::cout << "Stencil Read Mask: " << std::hex << desc.StencilReadMask << std::dec << std::endl;
+	std::cout << "Stencil Write Mask: " << std::hex << desc.StencilWriteMask << std::dec << std::endl;
+
+	// Stencil Operations (Front)
+	std::cout << "Front Stencil Fail Op: ";
+	switch (desc.FrontFace.StencilFailOp) {
+	case D3D11_STENCIL_OP_KEEP: std::cout << "Keep"; break;
+	case D3D11_STENCIL_OP_ZERO: std::cout << "Zero"; break;
+	case D3D11_STENCIL_OP_REPLACE: std::cout << "Replace"; break;
+	case D3D11_STENCIL_OP_INCR: std::cout << "Increment"; break;
+	case D3D11_STENCIL_OP_DECR: std::cout << "Decrement"; break;
+	case D3D11_STENCIL_OP_INVERT: std::cout << "Invert"; break;
+	case D3D11_STENCIL_OP_INCR_SAT: std::cout << "Increment Saturate"; break;
+	case D3D11_STENCIL_OP_DECR_SAT: std::cout << "Decrement Saturate"; break;
+	default: std::cout << "Unknown"; break;
+	}
+	std::cout << std::endl;
+
+	std::cout << "Front Stencil Pass Op: ";
+	switch (desc.FrontFace.StencilPassOp) {
+	case D3D11_STENCIL_OP_KEEP: std::cout << "Keep"; break;
+	case D3D11_STENCIL_OP_ZERO: std::cout << "Zero"; break;
+	case D3D11_STENCIL_OP_REPLACE: std::cout << "Replace"; break;
+	case D3D11_STENCIL_OP_INCR: std::cout << "Increment"; break;
+	case D3D11_STENCIL_OP_DECR: std::cout << "Decrement"; break;
+	case D3D11_STENCIL_OP_INVERT: std::cout << "Invert"; break;
+	case D3D11_STENCIL_OP_INCR_SAT: std::cout << "Increment Saturate"; break;
+	case D3D11_STENCIL_OP_DECR_SAT: std::cout << "Decrement Saturate"; break;
+	default: std::cout << "Unknown"; break;
+	}
+	std::cout << std::endl;
+
+	// Stencil Operations (Back)
+	std::cout << "Back Stencil Fail Op: ";
+	switch (desc.BackFace.StencilFailOp) {
+	case D3D11_STENCIL_OP_KEEP: std::cout << "Keep"; break;
+	case D3D11_STENCIL_OP_ZERO: std::cout << "Zero"; break;
+	case D3D11_STENCIL_OP_REPLACE: std::cout << "Replace"; break;
+	case D3D11_STENCIL_OP_INCR: std::cout << "Increment"; break;
+	case D3D11_STENCIL_OP_DECR: std::cout << "Decrement"; break;
+	case D3D11_STENCIL_OP_INVERT: std::cout << "Invert"; break;
+	case D3D11_STENCIL_OP_INCR_SAT: std::cout << "Increment Saturate"; break;
+	case D3D11_STENCIL_OP_DECR_SAT: std::cout << "Decrement Saturate"; break;
+	default: std::cout << "Unknown"; break;
+	}
+	std::cout << std::endl;
+
+	std::cout << "Back Stencil Pass Op: ";
+	switch (desc.BackFace.StencilPassOp) {
+	case D3D11_STENCIL_OP_KEEP: std::cout << "Keep"; break;
+	case D3D11_STENCIL_OP_ZERO: std::cout << "Zero"; break;
+	case D3D11_STENCIL_OP_REPLACE: std::cout << "Replace"; break;
+	case D3D11_STENCIL_OP_INCR: std::cout << "Increment"; break;
+	case D3D11_STENCIL_OP_DECR: std::cout << "Decrement"; break;
+	case D3D11_STENCIL_OP_INVERT: std::cout << "Invert"; break;
+	case D3D11_STENCIL_OP_INCR_SAT: std::cout << "Increment Saturate"; break;
+	case D3D11_STENCIL_OP_DECR_SAT: std::cout << "Decrement Saturate"; break;
+	default: std::cout << "Unknown"; break;
+	}
+	std::cout << std::endl;
+	std::cout << "---------------------------------------------\n";
+}
+
+static void CreateIgnoreZDepthStencilState() {
+
+	if (ignoreZDepthStencilState)
+		return;
+
+	// Depth-stencil state description
+	D3D11_DEPTH_STENCIL_DESC depthStencilDesc = {};
+	depthStencilDesc.DepthEnable = TRUE;
+	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO; // Prevent writing to the Z-buffer
+	depthStencilDesc.DepthFunc = D3D11_COMPARISON_ALWAYS; // Ignore Z-testing
+	depthStencilDesc.StencilEnable = FALSE;
+
+	HRESULT hr = pDevice->CreateDepthStencilState(&depthStencilDesc, &ignoreZDepthStencilState);
+	if (FAILED(hr)) {
+		std::cout << "Failed to create ignore-Z depth-stencil state.\n";
+	}
+
+	pContext->OMGetDepthStencilState(&originalDepthStencilState, nullptr); // Save original state
+
+}
+
+__int64 detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, CMaterial2* overridematerial) {
+
+	CreateIgnoreZDepthStencilState();
 
 	if (!(iEngine->IsInGame())) {
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 	}
 
 	uint64_t hOwner = material_data->pSceneAnimatableObject->hOwner;
 	if (!hOwner) {
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 	}
 
 	uint64_t ownerobjindex = Helper::CHandle_get_entry_index(hOwner);
 	uint64_t ownerobj = Helper::get_base_entity_from_index(ownerobjindex);
 	if (!ownerobj)
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 
 	std::string objname = Helper::get_schema_name(ownerobj);
 
 	uint64_t localpawn = Helper::GetPawn(Helper::get_local_player());
 	if (!localpawn)
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 
 	if ((!localpawn) || localpawn == 0xCCCCCCCCCCCCCCCC) {
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
+	}
+
+	if (ownerobj == localpawn) {
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 	}
 
 	PlayerData LocalData;
@@ -78,30 +216,48 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 
 	if(objname == "C_CitadelPlayerPawn"){
 
-		bool islocal = false;
-
-		if (ownerobj == localpawn) {
-			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-			return;
+		if (!cfg::esp_eChams && !cfg::esp_tChams) {
+			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		}
 
 		std::string matname = material_data->pMaterial->GetName();
 
-		if (matname.find("glow") != std::string::npos) {
-			return;
+		if (matname.find("outline") != std::string::npos) {
+			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		}
 
-		Chams::DrawChams(material_data, islocal, ownerobj, false);
+		std::string firsthalf = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+		{)";
 
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+		std::string iteration = quickiterationmaterial;
 
-		return;
+		std::string secondhalf = R"(	
+		})";
+
+		std::string total = firsthalf + iteration + secondhalf;
+
+		static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
+
+		if (firstreplacedmaterial) {
+			setmat = Chams::CreateMaterial("invisible", total.c_str());
+			firstreplacedmaterial = false;
+			std::cout << "NEW MATERIAL | " << std::hex << setmat << "\n";
+		}
+
+		PlayerData playerdata;
+		Helper::getPawnData(ownerobj, &playerdata);
+
+		Chams::HandleColor(material_data, ownerobj, LocalData.TeamNum, a4);
+
+
+		__int64 result =  DrawModel(a1, a2, material_data, a4, a5, a6, a7, setmat);
+		return result;
+
 	}
 	if (objname == "C_NPC_Trooper") {
 
 		if (!cfg::esp_DrawMinions) {
-			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-			return;
+			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		}
 
 		NpcData EntInfo;
@@ -109,8 +265,7 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 
 		uint64_t entteamnum = 263168 + LocalData.TeamNum;
 		if (EntInfo.m_iteamnum == entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
-			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-			return;
+			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		}
 
 		material_data->colValue.a = 255;
@@ -123,16 +278,13 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 		material_data->pMaterial = setmat;
 		material_data->pMaterial2 = setmat;
 
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 
 	}
 	if (objname == "C_NPC_TrooperBoss") {
 
 		if (!cfg::esp_drawTowers) {
-			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-			return;
+			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		}
 
 		NpcData EntInfo;
@@ -140,8 +292,7 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 
 		uint64_t entteamnum = 262144 + LocalData.TeamNum;
 		if (EntInfo.m_iteamnum == entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
-			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-			return;
+			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		}
 
 		std::string matname = material_data->pMaterial->GetName();
@@ -156,15 +307,13 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 		material_data->pMaterial = setmat;
 		material_data->pMaterial2 = setmat;
 
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 
 	}
 
 
 
-	DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+	return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 
 }
 
@@ -191,6 +340,7 @@ unsigned long long createMask(const std::string& bitString) {
 typedef void(__fastcall* f_CreateMove)(__int64* a1, int a2, char a3);
 static f_CreateMove CreateMove = nullptr;
 static f_CreateMove CreateMoveTarget = reinterpret_cast<f_CreateMove>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "85 D2 0F 85 ? ? ? ? 48 8B C4 44 88 40"));
+
 
 
 void detourCreateMove(__int64* a1, int a2, char a3) {
@@ -666,10 +816,6 @@ __int64 __fastcall hkVerifyGlowObject(__int64 a1, int a2, float a3) {
 
 	return result;
 }
-
-
-
-
 
 void CreateHooks() {
 

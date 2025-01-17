@@ -90,6 +90,57 @@ CMaterial2* create_material(const std::string_view material_name) {
 
 }
 
+void Chams::HandleMaterial(CMeshData* matdata, uint64_t entity_pawn, CMaterial2* material) {
+
+	if (!matdata)
+		return;
+
+	PlayerData targetchamsdata;
+	PlayerData LocalPlayerData;
+	Helper::getPawnData(entity_pawn, &targetchamsdata);
+	Helper::get_player_data(Helper::get_local_player(), &LocalPlayerData);
+
+	static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
+
+	if (targetchamsdata.TeamNum == LocalPlayerData.TeamNum && cfg::esp_tChams) {
+		material = setmat;
+	}
+	else if (cfg::esp_eChams) {
+		material = setmat;
+	}
+
+}
+
+void Chams::HandleColor(CMeshData* matdata, uint64_t entity_pawn, int localteamnum, int numMeshes) {
+
+	if (!matdata)
+		return;
+
+	PlayerData targetchamsdata;
+	Helper::getPawnData(entity_pawn, &targetchamsdata);
+
+	for (int i = 0; i < numMeshes; i++) {
+
+		auto& currentMesh = matdata[i];
+
+		if (targetchamsdata.TeamNum == localteamnum && cfg::esp_tChams) {
+			currentMesh.colValue.r = cfg::colors_tChamsCol.x * 255;
+			currentMesh.colValue.g = cfg::colors_tChamsCol.y * 255;
+			currentMesh.colValue.b = cfg::colors_tChamsCol.z * 255;
+			currentMesh.colValue.a = cfg::colors_tChamsCol.w * 255;
+		}
+		else if (cfg::esp_eChams) {
+			currentMesh.colValue.r = cfg::colors_eChamsCol.x * 255;
+			currentMesh.colValue.g = cfg::colors_eChamsCol.y * 255;
+			currentMesh.colValue.b = cfg::colors_eChamsCol.z * 255;
+			currentMesh.colValue.a = cfg::colors_eChamsCol.w * 255;
+		}
+
+
+	}
+
+}
+
 void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bool ignorez) {
 
 	if (!matdata)
@@ -101,7 +152,7 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 	Helper::get_player_data(Helper::get_local_player(), &LocalPlayerData);
 
 
-	/*
+	
 		std::string firsthalf = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 		{)";
 
@@ -118,9 +169,7 @@ void Chams::DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bo
 			setmat = Chams::CreateMaterial("invisible", total.c_str());
 			firstreplacedmaterial = false;
 		}
-	*/
-	
-	static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
+
 
 	
 	std::string matname = matdata->pMaterial->GetName();

@@ -232,6 +232,10 @@ int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name)
 	 if (!entity_pawn)
 		 return false;
 
+	 uint64_t handleToController = *(uint64_t*)(entity_pawn + C_BasePlayerPawn::m_hController);
+	 uint64_t Index = Helper::CHandle_get_entry_index(handleToController);
+	 uint64_t Controller = Helper::get_base_entity_from_index(Index);
+	 uint64_t PlayerDataGlobal = Controller + CCitadelPlayerController::m_PlayerDataGlobal;
 
 	 uint64_t GameSceneNode = *(uint64_t*)(entity_pawn + C_BaseEntity::m_pGameSceneNode);
 	 outputPlrData->m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
@@ -239,6 +243,8 @@ int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name)
 	 outputPlrData->TeamNum = *(int*)(entity_pawn + C_BaseEntity::m_iTeamNum);
 	 outputPlrData->dormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
 	 outputPlrData->weaponservices = *(uint64_t*)(entity_pawn + C_BasePlayerPawn::m_pWeaponServices);
+
+	 outputPlrData->HeroID = *(int*)(PlayerDataGlobal + PlayerDataGlobal_t::m_nHeroID);
 
 
 	 return true;
