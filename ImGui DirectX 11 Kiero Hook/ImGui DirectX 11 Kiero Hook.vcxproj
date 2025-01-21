@@ -156,6 +156,7 @@ libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="AntiAim.cpp" />
     <ClCompile Include="Bebop.cpp" />
     <ClCompile Include="binds.cpp" />
+    <ClCompile Include="Calico.cpp" />
     <ClCompile Include="cfgvar.cpp" />
     <ClCompile Include="chams.cpp" />
     <ClCompile Include="Drawing.cpp" />
@@ -216,6 +217,7 @@ libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="AntiAim.h" />
     <ClInclude Include="Bebop.h" />
     <ClInclude Include="binds.h" />
+    <ClInclude Include="Calico.h" />
     <ClInclude Include="CCitadelBulletManager.h" />
     <ClInclude Include="cfgvar.h" />
     <ClInclude Include="chams.h" />

@@ -4,10 +4,6 @@
 static CMaterial2* permamat;
 static bool foundmat = false;
 
-extern char quickiterationmaterial[20408];
-extern bool replacedmaterial;
-extern bool firstreplacedmaterial;
-
 struct object_info_t {
 	enum e_id : int {
 		arm = 38,
@@ -43,144 +39,15 @@ f_DrawModel DrawModelTarget = reinterpret_cast<f_DrawModel>(scenesytembase + MEM
 // a5 : CSceneView
 // a6 : CSceneLayer
 // a7 : idk
-// a8 : idk
+// a8 : overridematerial
 
 class CRenderContextBase;
+__int64 detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, CMaterial2* overridematerial){
 
-ID3D11DepthStencilState* originalDepthStencilState = nullptr;
-ID3D11DepthStencilState* ignoreZDepthStencilState = nullptr;
+	static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
 
-extern ID3D11DeviceContext* pContext;
-extern ID3D11Device* pDevice;
-
-bool DepthEnabled(ID3D11DeviceContext* pContext) {
-	ID3D11DepthStencilState* stencilstate = NULL;
-
-	pContext->OMGetDepthStencilState(&stencilstate, nullptr);
-
-	D3D11_DEPTH_STENCIL_DESC desc;
-	stencilstate->GetDesc(&desc);
-
-	if (!desc.DepthFunc == D3D11_COMPARISON_ALWAYS) {
-		return false;
-	}
-	else { return true; }
-
-}
-
-void PrintDepthStencilDesc(ID3D11DeviceContext* pContext) {
-
-	ID3D11DepthStencilState* stencilstate = NULL;
-
-	pContext->OMGetDepthStencilState(&stencilstate, nullptr);
-
-	D3D11_DEPTH_STENCIL_DESC desc;
-	stencilstate->GetDesc(&desc);
-
-	std::cout << "Depth Enable: " << (desc.DepthEnable ? "Enabled" : "Disabled") << std::endl;
-	std::cout << "Depth Write Mask: " << (desc.DepthWriteMask == D3D11_DEPTH_WRITE_MASK_ALL ? "All" : "Zero") << std::endl;
-	std::cout << "Depth Function: ";
-	switch (desc.DepthFunc) {
-	case D3D11_COMPARISON_NEVER: std::cout << "Never"; break;
-	case D3D11_COMPARISON_LESS: std::cout << "Less"; break;
-	case D3D11_COMPARISON_EQUAL: std::cout << "Equal"; break;
-	case D3D11_COMPARISON_LESS_EQUAL: std::cout << "Less Equal"; break;
-	case D3D11_COMPARISON_GREATER: std::cout << "Greater"; break;
-	case D3D11_COMPARISON_NOT_EQUAL: std::cout << "Not Equal"; break;
-	case D3D11_COMPARISON_GREATER_EQUAL: std::cout << "Greater Equal"; break;
-	case D3D11_COMPARISON_ALWAYS: std::cout << "Always"; break;
-	default: std::cout << "Unknown"; break;
-	}
-	std::cout << std::endl;
-
-	std::cout << "Stencil Enable: " << (desc.StencilEnable ? "Enabled" : "Disabled") << std::endl;
-	std::cout << "Stencil Read Mask: " << std::hex << desc.StencilReadMask << std::dec << std::endl;
-	std::cout << "Stencil Write Mask: " << std::hex << desc.StencilWriteMask << std::dec << std::endl;
-
-	// Stencil Operations (Front)
-	std::cout << "Front Stencil Fail Op: ";
-	switch (desc.FrontFace.StencilFailOp) {
-	case D3D11_STENCIL_OP_KEEP: std::cout << "Keep"; break;
-	case D3D11_STENCIL_OP_ZERO: std::cout << "Zero"; break;
-	case D3D11_STENCIL_OP_REPLACE: std::cout << "Replace"; break;
-	case D3D11_STENCIL_OP_INCR: std::cout << "Increment"; break;
-	case D3D11_STENCIL_OP_DECR: std::cout << "Decrement"; break;
-	case D3D11_STENCIL_OP_INVERT: std::cout << "Invert"; break;
-	case D3D11_STENCIL_OP_INCR_SAT: std::cout << "Increment Saturate"; break;
-	case D3D11_STENCIL_OP_DECR_SAT: std::cout << "Decrement Saturate"; break;
-	default: std::cout << "Unknown"; break;
-	}
-	std::cout << std::endl;
-
-	std::cout << "Front Stencil Pass Op: ";
-	switch (desc.FrontFace.StencilPassOp) {
-	case D3D11_STENCIL_OP_KEEP: std::cout << "Keep"; break;
-	case D3D11_STENCIL_OP_ZERO: std::cout << "Zero"; break;
-	case D3D11_STENCIL_OP_REPLACE: std::cout << "Replace"; break;
-	case D3D11_STENCIL_OP_INCR: std::cout << "Increment"; break;
-	case D3D11_STENCIL_OP_DECR: std::cout << "Decrement"; break;
-	case D3D11_STENCIL_OP_INVERT: std::cout << "Invert"; break;
-	case D3D11_STENCIL_OP_INCR_SAT: std::cout << "Increment Saturate"; break;
-	case D3D11_STENCIL_OP_DECR_SAT: std::cout << "Decrement Saturate"; break;
-	default: std::cout << "Unknown"; break;
-	}
-	std::cout << std::endl;
-
-	// Stencil Operations (Back)
-	std::cout << "Back Stencil Fail Op: ";
-	switch (desc.BackFace.StencilFailOp) {
-	case D3D11_STENCIL_OP_KEEP: std::cout << "Keep"; break;
-	case D3D11_STENCIL_OP_ZERO: std::cout << "Zero"; break;
-	case D3D11_STENCIL_OP_REPLACE: std::cout << "Replace"; break;
-	case D3D11_STENCIL_OP_INCR: std::cout << "Increment"; break;
-	case D3D11_STENCIL_OP_DECR: std::cout << "Decrement"; break;
-	case D3D11_STENCIL_OP_INVERT: std::cout << "Invert"; break;
-	case D3D11_STENCIL_OP_INCR_SAT: std::cout << "Increment Saturate"; break;
-	case D3D11_STENCIL_OP_DECR_SAT: std::cout << "Decrement Saturate"; break;
-	default: std::cout << "Unknown"; break;
-	}
-	std::cout << std::endl;
-
-	std::cout << "Back Stencil Pass Op: ";
-	switch (desc.BackFace.StencilPassOp) {
-	case D3D11_STENCIL_OP_KEEP: std::cout << "Keep"; break;
-	case D3D11_STENCIL_OP_ZERO: std::cout << "Zero"; break;
-	case D3D11_STENCIL_OP_REPLACE: std::cout << "Replace"; break;
-	case D3D11_STENCIL_OP_INCR: std::cout << "Increment"; break;
-	case D3D11_STENCIL_OP_DECR: std::cout << "Decrement"; break;
-	case D3D11_STENCIL_OP_INVERT: std::cout << "Invert"; break;
-	case D3D11_STENCIL_OP_INCR_SAT: std::cout << "Increment Saturate"; break;
-	case D3D11_STENCIL_OP_DECR_SAT: std::cout << "Decrement Saturate"; break;
-	default: std::cout << "Unknown"; break;
-	}
-	std::cout << std::endl;
-	std::cout << "---------------------------------------------\n";
-}
-
-static void CreateIgnoreZDepthStencilState() {
-
-	if (ignoreZDepthStencilState)
-		return;
-
-	// Depth-stencil state description
-	D3D11_DEPTH_STENCIL_DESC depthStencilDesc = {};
-	depthStencilDesc.DepthEnable = TRUE;
-	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO; // Prevent writing to the Z-buffer
-	depthStencilDesc.DepthFunc = D3D11_COMPARISON_ALWAYS; // Ignore Z-testing
-	depthStencilDesc.StencilEnable = FALSE;
-
-	HRESULT hr = pDevice->CreateDepthStencilState(&depthStencilDesc, &ignoreZDepthStencilState);
-	if (FAILED(hr)) {
-		std::cout << "Failed to create ignore-Z depth-stencil state.\n";
-	}
-
-	pContext->OMGetDepthStencilState(&originalDepthStencilState, nullptr); // Save original state
-
-}
-
-__int64 detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, CMaterial2* overridematerial) {
-
-	CreateIgnoreZDepthStencilState();
+	if (!cfg::esp_bEsp)
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 
 	if (!(iEngine->IsInGame())) {
 		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
@@ -216,9 +83,8 @@ __int64 detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4
 
 	if(objname == "C_CitadelPlayerPawn"){
 
-		if (!cfg::esp_eChams && !cfg::esp_tChams) {
-			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
-		}
+		PlayerData playerdata;
+		Helper::getPawnData(ownerobj, &playerdata);
 
 		std::string matname = material_data->pMaterial->GetName();
 
@@ -226,31 +92,26 @@ __int64 detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4
 			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		}
 
-		std::string firsthalf = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
-		{)";
-
-		std::string iteration = quickiterationmaterial;
-
-		std::string secondhalf = R"(	
-		})";
-
-		std::string total = firsthalf + iteration + secondhalf;
-
-		static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
-
-		if (firstreplacedmaterial) {
-			setmat = Chams::CreateMaterial("invisible", total.c_str());
-			firstreplacedmaterial = false;
-			std::cout << "NEW MATERIAL | " << std::hex << setmat << "\n";
+		if (playerdata.TeamNum == LocalData.TeamNum) {
+			if (!cfg::esp_tChams) {
+				return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
+			}
+			else if(cfg::esp_tModelChams) {
+				overridematerial = setmat;
+			}
 		}
-
-		PlayerData playerdata;
-		Helper::getPawnData(ownerobj, &playerdata);
+		else {
+			if (!cfg::esp_eChams) {
+				return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
+			}
+			else if(cfg::esp_eModelChams) {
+				overridematerial = setmat;
+			}
+		}
 
 		Chams::HandleColor(material_data, ownerobj, LocalData.TeamNum, a4);
 
-
-		__int64 result =  DrawModel(a1, a2, material_data, a4, a5, a6, a7, setmat);
+		__int64 result =  DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		return result;
 
 	}
@@ -389,6 +250,7 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	WardenLogic warden;
 	YamatoLogic yamato;
 	WraithLogic wraith;
+	CalicoLogic calico;
 
 		switch (LocalPlayer.HeroID) {
 
@@ -440,14 +302,15 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 		case Wraith:
 			wraith.RunScript(cmd);
 			break;
-		default:
+		case Calico:
+			calico.RunScript(cmd);
 			break;
+		default: break;
 		}
 
 	if (cfg::ragebot_masterswitch) {
 		Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
 	}
-
 
 	return;
 }
@@ -726,11 +589,11 @@ void __fastcall hkDoGlow(__int64 a1) {
 			PlayerData entdata;
 			Helper::get_player_data(entity, &entdata);
 
-			if (entdata.TeamNum != localdata.TeamNum) {
+			if (entdata.TeamNum != localdata.TeamNum && cfg::esp_eGlowEsp){
 				teamnums.push_back(entdata.TeamNum);
 				Controllers.push_back(entity);
 			}
-			else if (cfg::esp_tGlowEsp) {
+			else if (entdata.TeamNum == localdata.TeamNum && cfg::esp_tGlowEsp){
 				teamnums.push_back(entdata.TeamNum);
 				Controllers.push_back(entity);
 			}
@@ -817,6 +680,51 @@ __int64 __fastcall hkVerifyGlowObject(__int64 a1, int a2, float a3) {
 	return result;
 }
 
+typedef __int64(__fastcall* setupview)(__int64 a1, __int64 a2);
+static setupview ogsetupview = nullptr;
+static setupview setupviewtarget = reinterpret_cast<setupview>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 8b c4 55 53 56 57 41 54 41 56 41 57 48 8d 68"));
+
+__int64 __fastcall hkSetupView(__int64 ThirdPersonCamera, __int64 PlayerPawn) {
+
+	__int64 result = ogsetupview(ThirdPersonCamera, PlayerPawn);
+
+	float* fov = (float*)(ThirdPersonCamera + 0x50);
+
+	float oldfov = *fov;
+
+	float multiplier = oldfov / 75.f;
+
+	*fov = cfg::misc_fov * multiplier;
+
+	return result;
+
+}
+
+typedef __int64(__fastcall* SetPunchAngle)(__int64 a1, const void** a2, __int64 a3, int a4, __int64 a5, __int64 a6, __int16 a7);
+static SetPunchAngle ogSetPunchAngle = nullptr;
+static SetPunchAngle SetPunchAngleTarget = reinterpret_cast<SetPunchAngle>(MEM::GetClientBase() + 0x947A80);
+
+__int64 __fastcall hkSetPunchAngle(__int64 a1, const void** a2, __int64 a3, int a4, __int64 a5, __int64 a6, __int16 a7) {
+
+	__int64 result = ogSetPunchAngle(a1, a2, a3, a4, a5, a6, a7);
+
+	if (!cfg::misc_bNorecoil || !iEngine->IsInGame()) {
+		return result;
+	}
+
+	auto controller = Helper::get_local_player();
+	auto pawn = Helper::GetPawn(controller);
+	auto cameraservices = *(uint64_t*)(pawn + C_BasePlayerPawn::m_pCameraServices);
+
+	vec3 zero{ 0.f,0.f,0.f };
+
+	*(vec3*)(cameraservices + CPlayer_CameraServices::m_vecPunchAngle) = zero;
+
+	return result;
+
+}
+
+
 void CreateHooks() {
 
 	static bool init = false;
@@ -860,6 +768,15 @@ void CreateHooks() {
 	MH_CreateHook((LPVOID)doglowtarget, &hkDoGlow, reinterpret_cast<LPVOID*>(&ogdoglow));
 	MH_EnableHook((LPVOID)doglowtarget);
 	//std::cout << "[+] DoGlow Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)setupviewtarget, &hkSetupView, reinterpret_cast<LPVOID*>(&ogsetupview));
+	MH_EnableHook((LPVOID)setupviewtarget);
+	//std::cout << "[+] DoGlow Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)SetPunchAngleTarget, &hkSetPunchAngle, reinterpret_cast<LPVOID*>(&ogSetPunchAngle));
+	MH_EnableHook((LPVOID)SetPunchAngleTarget);
+	//std::cout << "[+] DoGlow Hook Initialized!" << std::endl;
+
 
 
 	// Set the new window procedure

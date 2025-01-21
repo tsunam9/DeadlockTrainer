@@ -44,7 +44,7 @@ void WraithLogic::OnAbility4() {
 
 void WraithLogic::OnTick() {
 
-	this->target = Aimbot::GetCurrentAimbotTarget();
+	this->target = Aimbot::CalculateNewAimbotTarget(AimGroups::AimGroup_Player, cfg::heroes_maxdistance, cfg::heroes_fov, false);
 	if (!(this->target)) return;
 	Helper::get_player_data(this->target, this->targetdata);
 

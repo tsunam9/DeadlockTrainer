@@ -565,7 +565,8 @@ enum HeroIDs {
     Haze,
     Holliday,
     Bebop,
-    GreyTalon = 17,
+    Calico,
+    GreyTalon,
     MoAndKrill,
     Shiv,
     Ivy,
@@ -575,7 +576,9 @@ enum HeroIDs {
     Viscous = 35,
     Wrecker = 48,
     Pocket = 50,
-    Mirage = 52
+    Mirage = 52,
+    Vyper = 58,
+    Sinclair = 60
 };
 
 class CMsgQAngle {
@@ -729,7 +732,7 @@ public:
     static bool CHandle_is_valid(uint64_t handle);
     static uint64_t get_Camera();
     static uint64_t get_local_player();
-    static bool get_player_data(uint64_t entity, PlayerData* outputPlrData);
+    static bool get_player_data(uint64_t PlayerController, PlayerData* outputPlrData);
     static bool getPawnData(uint64_t entity_pawn, PlayerData* outputPlrData);
     static uint64_t get_localplr_weapon();
     static uint64_t gettracemanager();

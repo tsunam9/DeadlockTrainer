@@ -3,6 +3,11 @@
 #include "Config.h"
 #include "Globals.h"
 
+enum AimGroups {
+	AimGroup_Player,
+	AimGroup_Soul,
+	AimGroup_Minion
+};
 
 class Aimbot {
 
@@ -23,6 +28,8 @@ public:
 
 	static bool LegitGetAimbotTarget(uint32_t group, int& closestbone, uint64_t& aimtarget);
 	static void LegitAimAt(uint64_t entity, std::string bone);
+
+	static uint64_t CalculateNewAimbotTarget(uint32_t group, float maxdistance, float fov, bool aim_teammates);
 
 
 

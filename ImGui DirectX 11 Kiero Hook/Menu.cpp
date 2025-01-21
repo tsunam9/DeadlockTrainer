@@ -307,6 +307,8 @@ void DrawMiscEspTab(vec2 res) {
 
 	menu.checkbox("Show Keybind List", &cfg::esp_ShowKeyBindList);
 
+	menu.checkbox("Show Watermark", &cfg::esp_DrawWaterMark);
+
 	ImGui::SliderFloat("Fov", &cfg::misc_fov, 0.1f, 180.0f, "%.3f");
 
 	ImGui::Spacing();
@@ -518,6 +520,13 @@ void Menu::DrawHeroesTab() {
 		return;
 	}
 
+	ImGui::BeginChild("main_heroes", ImVec2(0, ImGui::GetContentRegionAvail().y / 2), true, ImGuiWindowFlags_AlwaysAutoResize);
+
+	ImGui::SliderFloat("Abilities Max Distance", &cfg::heroes_maxdistance, 0.f, 5000.f);
+	ImGui::SliderFloat("Abilites FOV", &cfg::heroes_fov, 0.f, 180.f);
+
+	ImGui::EndChild();
+
 
 	ImGui::BeginChild("Heroes", ImVec2(0, 0), true);
 	PlayerData* plrdata = new PlayerData;
@@ -645,6 +654,12 @@ void Menu::DrawHeroesTab() {
 		ImGui::Text("Yamato");
 		menu.checkbox("Aim Power Slash", &cfg::yamato_AimPowerSlash);
 		menu.checkbox("Aim Crimson Slash", &cfg::yamato_AimCrimsonSlash);
+		break;
+	}
+	case Calico: {
+		ImGui::Text("Calico");
+		menu.checkbox("Aim Bombs", &cfg::calico_AimBombs);
+		menu.checkbox("Aim Dash", &cfg::calico_AimDash);
 		break;
 	}
 	default: {
@@ -938,7 +953,7 @@ static bool searching = false;
 void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
 
-	if (ImGui::Begin("CustomMaterialInput")) {
+	/*if (ImGui::Begin("CustomMaterialInput")) {
 
 		// Multi-line text input for material buffer
 		ImGui::InputTextMultiline("##MaterialBuffer", quickiterationmaterial, sizeof(quickiterationmaterial),
@@ -953,7 +968,7 @@ void Menu::DrawNewMenu(FILE* fp, ID3D11Device* dx11Device) {
 
 		ImGui::End();
 	}
-	
+	*/
 
 
 
