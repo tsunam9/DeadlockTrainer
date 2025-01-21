@@ -126,7 +126,7 @@ void DrawMonsterEsp(uintptr_t entity) {
 		return;
 	}
 
-	draw.DrawQuad(limitup, limitright, limitdown, limitleft, ImColor(cfg::colors_drawmonsterscol));
+	draw.DrawQuad(limitup, limitright, limitdown, limitleft, ImColor(cfg::colors_drawmonsterscol), 4.0f);
 
 
 }

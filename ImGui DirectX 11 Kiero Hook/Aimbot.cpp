@@ -22,12 +22,6 @@ bool aim_Aimbotting = false;
 bool aim_RageBotting = false;
 bool aim_LegitBotting = false;
 
-enum AimGroups {
-	AimGroup_Player,
-	AimGroup_Soul,
-	AimGroup_Minion
-};
-
 bool IsPlayerVisible(uint64_t entity) {
 
 	vec3 EnemyHead = Helper::GetBonePosition(entity, "head");
@@ -232,10 +226,9 @@ bool Aimbot::LegitGetAimbotTarget(uint32_t group, int &closestbone, uint64_t& ai
 	return false;
 }
 
+
+
 uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
-
-
-	
 
 	float ClosestDistance = 99999999999.0;
 	int ClosestIndex = 999;
@@ -510,6 +503,283 @@ uint64_t Aimbot::RageGetAimbotTarget(uint32_t group) {
 	}
 }
 
+uint64_t Aimbot::CalculateNewAimbotTarget(uint32_t group, float maxdistance, float aim_fov, bool aim_teammates) {
+
+	float ClosestDistance = 99999999999.0;
+	int ClosestIndex = 999;
+	int LowestHealth = 99999999999;
+	int LowestHealthIndex = 999;
+	float LowestFov = 99999999999.0;
+	int lowestfovindex = 999;
+
+	//(*aimbotglobs.entlist.active)
+
+	// Sort Entities
+	for (int i = 0; i < aimbotglobs.entlist.active->size(); i++) {
+
+		if (aimbotglobs.entlist.active->empty())
+			continue;
+
+		std::string entClass = Helper::get_schema_name((*aimbotglobs.entlist.active)[i]);
+
+		if (entClass == "CCitadelPlayerController" && group == AimGroup_Player) {
+
+			PlayerData TargetPlayerData;
+			if (!Helper::get_player_data((*aimbotglobs.entlist.active)[i], &TargetPlayerData)) {
+				continue;
+			}
+
+			if (TargetPlayerData.dormant) {
+				continue;
+			}
+
+			if (!(TargetPlayerData.isalive)) {
+				continue;
+			}
+
+			if (TargetPlayerData.TeamNum == LocalPlayerData.TeamNum && !aim_teammates) {
+				continue;
+			}
+
+			if (aim_teammates) {
+				if (TargetPlayerData.TeamNum != LocalPlayerData.TeamNum) {
+					continue;
+				}
+			}
+
+			if (!cfg::ragebot_magicbullet) { // if magic bullet then obviously dont do vischeck 
+				if (IsPlayerVisible((*aimbotglobs.entlist.active)[i]) == false) {
+					continue;
+				}
+			}
+
+			vec3 TargetPos = { 0, 0, 0 };
+			TargetPos = Helper::GetBonePosition((*aimbotglobs.entlist.active)[i], "head");
+
+			if (TargetPos.x == 0 && TargetPos.y == 0 && TargetPos.z == 0) {
+				continue;
+			}
+
+			// Closest
+			// Calculate distance between targetpos and localplayer
+			float distance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetPos);
+
+			if (distance > maxdistance) {
+				continue;
+			}
+
+			// Fov
+
+			vec2 LocalPlayerAngles = { ViewAngles->x, ViewAngles->y };
+			vec2 AimAngles = GetAimAngles(TargetPos);
+			vec2 angle_difference = AimAngles - LocalPlayerAngles;
+			angle_difference = angle_difference.clamp();
+
+			float FOV = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
+
+			if (FOV > aim_fov) {
+				continue; // Skip targets outside of the FOV
+			}
+
+			if (distance < ClosestDistance) {
+				ClosestDistance = distance;
+				ClosestIndex = i;
+			}
+
+			if (TargetPlayerData.Health < LowestHealth) {
+				LowestHealth = TargetPlayerData.Health;
+				LowestHealthIndex = i;
+			}
+
+			if (FOV < LowestFov) {
+				LowestFov = FOV; // Update the lowest FOV
+				lowestfovindex = i; // Update the index of the target with the lowest FOV
+			}
+
+		}
+		else if (entClass == "CItemXP" && group == AimGroup_Soul) {
+
+			xpData* TargetXPData = new xpData;
+			Helper::get_xp_data((*aimbotglobs.entlist.active)[i], TargetXPData);
+			float GameTime = globals::instance().Globals->flAbsCurTime;
+			float launchtime = TargetXPData->m_flLaunchtime;
+
+			if (TargetXPData->m_bDormant)
+				continue;
+			if (GameTime < TargetXPData->m_flLaunchtime + 0.184)
+				continue;
+
+			if (IsXpVisible((*aimbotglobs.entlist.active)[i]) == false)
+				continue;
+
+			float xpdistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetXPData->m_vecOrigin);
+			if (xpdistance > maxdistance)
+				continue;
+
+			vec2 LocalPlayerAngles = { ViewAngles->x, ViewAngles->y };
+			vec2 AimAngles = GetAimAngles(TargetXPData->m_vecOrigin);
+			vec2 angle_difference = AimAngles - LocalPlayerAngles;
+			angle_difference = angle_difference.clamp();
+
+			float xpFOV = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
+
+			if (xpFOV > aim_fov)
+				continue; // Skip targets outside of the FOV
+
+			if (xpdistance < ClosestIndex) {
+				ClosestDistance = xpdistance;
+				ClosestIndex = i;
+			}
+
+			if (xpFOV < LowestFov) {
+				LowestFov = xpFOV; // Update the lowest FOV
+				lowestfovindex = i; // Update the index of the target with the lowest FOV
+			}
+
+			delete TargetXPData;
+
+		}
+		else if (entClass == "C_NPC_Trooper" && group == AimGroup_Minion) {
+
+			NpcData* TargetNpcData = new NpcData;
+			Helper::get_npc_data((*aimbotglobs.entlist.active)[i], TargetNpcData);
+
+
+			if (TargetNpcData->m_bDormant) {
+				delete TargetNpcData;
+				continue;
+			}
+
+			uint64_t entteamnum = 263168 + LocalPlayerData.TeamNum;
+			if (TargetNpcData->m_iteamnum == entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
+				delete TargetNpcData;
+				continue;
+			}
+
+			if (TargetNpcData->m_ilifestate != 0) {
+				delete TargetNpcData;
+				continue;
+			}
+
+			if (IsNpcVisible((*aimbotglobs.entlist.active)[i]) == false) {
+				delete TargetNpcData;
+				continue;
+			}
+
+			float MinionDistance = Helper::GetDistance(LocalPlayerData.m_vecOrigin, TargetNpcData->m_vecOrigin);
+			if (MinionDistance > cfg::ragebot_maxdistance) {
+				delete TargetNpcData;
+				continue;
+			}
+
+			if (MinionDistance > maxdistance) {
+				delete TargetNpcData;
+				continue;
+			}
+
+			int boneindex = Helper::get_bone_index((*aimbotglobs.entlist.active)[i], "head");
+			if (!boneindex) {
+				delete TargetNpcData;
+				continue;
+			}
+
+			vec3 HeadPos = Helper::GetBoneVectorFromIndex((*aimbotglobs.entlist.active)[i], boneindex);  // No re-declaration of TargetPos here
+			vec2 LocalPlayerAngles = { ViewAngles->x, ViewAngles->y };
+			vec2 AimAngles = GetAimAngles(HeadPos);
+			vec2 angle_difference = AimAngles - LocalPlayerAngles;
+			angle_difference = angle_difference.clamp();
+
+			float minionfov = sqrt(angle_difference.x * angle_difference.x + angle_difference.y * angle_difference.y);
+
+			if (minionfov > aim_fov) {
+				delete TargetNpcData;
+				continue;
+			} // Skip targets outside of the FOV
+
+			if (MinionDistance < ClosestDistance) {
+				ClosestDistance = MinionDistance;
+				ClosestIndex = i;
+			}
+
+			if (TargetNpcData->m_iHealth < LowestHealth) {
+				LowestHealth = TargetNpcData->m_iHealth;
+				LowestHealthIndex = i;
+			}
+
+			if (minionfov < LowestFov) {
+				LowestFov = minionfov; // Update the lowest FOV
+				lowestfovindex = i; // Update the index of the target with the lowest FOV
+			}
+
+			delete TargetNpcData;
+
+		}
+	}
+
+
+
+
+	if (group == AimGroup_Player) {
+		switch (cfg::ragebot_TargetSelectMode) {
+		case 0:
+			if (ClosestIndex == 999) {
+				return 0;
+			}
+			return (*aimbotglobs.entlist.active)[ClosestIndex];
+		case 1:
+			if (LowestHealthIndex == 999) {
+				CurrentPlayerTarget = 0;
+				return 0;
+			}
+			return (*aimbotglobs.entlist.active)[LowestHealthIndex];
+		case 2:
+			if (lowestfovindex == 999) {
+				CurrentPlayerTarget = 0;
+				return 0;
+			}
+			return (*aimbotglobs.entlist.active)[lowestfovindex];
+		}
+	}
+	else if (group == AimGroup_Soul) {
+		switch (cfg::ragebot_TargetSelectMode) {
+		case 0:
+			if (ClosestIndex == 999) {
+				return 0;
+			}
+			return (*aimbotglobs.entlist.active)[ClosestIndex];
+		case 1:
+			if (lowestfovindex == 999) {
+				return 0;
+			}
+			return (*aimbotglobs.entlist.active)[lowestfovindex];
+		case 2:
+			if (lowestfovindex == 999) {
+				return 0;
+			}
+			return (*aimbotglobs.entlist.active)[lowestfovindex];
+		}
+	}
+	else if (group == AimGroup_Minion) {
+		switch (cfg::ragebot_TargetSelectMode) {
+		case 0:
+			if (ClosestIndex == 999) {
+				return 0;
+			}
+			return (*aimbotglobs.entlist.active)[ClosestIndex];
+		case 1:
+			if (LowestHealthIndex == 999) {
+				return 0;
+			}
+			return (*aimbotglobs.entlist.active)[LowestHealthIndex];
+		case 2:
+			if (lowestfovindex == 999) {
+				return 0;
+			}
+			return (*aimbotglobs.entlist.active)[lowestfovindex];
+		}
+	}
+}
+
 
 
 vec3 Aimbot::PredictPosition(vec3 Target, vec3 Velocity, float bulletspeed) {
@@ -541,7 +811,7 @@ vec2 Aimbot::GetAimAngles(vec3 Target) {
 	return GetAim(CameraPos, Target);
 }
 
-void Aimbot::AimAbility(uintptr_t entity, int aimpos, uintptr_t ability, float projectilespeed, bool projectile) {
+void Aimbot::AimAbility(uintptr_t entity, int aimpos, uintptr_t ability, float projectilespeed, bool projectile) { // 0 head, 1 pelvis, else origin aimpos
 
 	if (!entity)
 		return;

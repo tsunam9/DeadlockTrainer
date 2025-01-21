@@ -106,6 +106,10 @@ MAKE_CFGVAR(misc_fov, 75.f);
 MAKE_CFGVAR(misc_aspectratio, 1.0f);
 MAKE_CFGVAR(misc_autoactivereload, false);
 
+// Hero Settings
+MAKE_CFGVAR(heroes_maxdistance, 3000.f);
+MAKE_CFGVAR(heroes_fov, 180.f);
+
 // Shiv Settings
 MAKE_CFGVAR(shiv_AutoAimDagger, false);
 MAKE_CFGVAR(shiv_AutoAimDash, false);
@@ -124,6 +128,7 @@ MAKE_CFGVAR(bebop_AutoUppercut, false);
 
 // Haze Settings
 MAKE_CFGVAR(haze_AimDagger, false);
+
 
 // Infernus Settings
 MAKE_CFGVAR(infernus_AimCatalyst, false);
@@ -167,6 +172,10 @@ MAKE_CFGVAR(wraith_AimCards, false);
 // Yamato Settings
 MAKE_CFGVAR(yamato_AimPowerSlash, false);
 MAKE_CFGVAR(yamato_AimCrimsonSlash, false);
+
+// Calico Settings
+MAKE_CFGVAR(calico_AimDash, false);
+MAKE_CFGVAR(calico_AimBombs, false);
 
 // AntiAim Settings
 MAKE_CFGVAR(antiaim_bAntiAim, false);

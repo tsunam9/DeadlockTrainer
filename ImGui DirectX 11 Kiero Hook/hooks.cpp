@@ -28,48 +28,53 @@ typedef __int64(__fastcall* f_DrawModel)(
 	__int64 a5,
 	__int64 a6,
 	__int64 a7,
-	__int64 a8);
+	CMaterial2* overridematerial);
 f_DrawModel DrawModel = nullptr;
 f_DrawModel DrawModelTarget = reinterpret_cast<f_DrawModel>(scenesytembase + MEM::PatternScanFunc((void*)scenesytembase, "48 8b c4 48 89 50 ? 53"));
 
 //a1 : Animatablesceneobjectdesc
 //a2 : dx device
 // a3 : cmeshdata
-// a4 : idk
+// a4 : meshes to draw
 // a5 : CSceneView
 // a6 : CSceneLayer
 // a7 : idk
-// a8 : idk
+// a8 : overridematerial
 
 class CRenderContextBase;
+__int64 detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, CMaterial2* overridematerial){
 
-void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, __int64 a8) {
+	static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
+
+	if (!cfg::esp_bEsp)
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 
 	if (!(iEngine->IsInGame())) {
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 	}
 
 	uint64_t hOwner = material_data->pSceneAnimatableObject->hOwner;
 	if (!hOwner) {
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 	}
 
 	uint64_t ownerobjindex = Helper::CHandle_get_entry_index(hOwner);
 	uint64_t ownerobj = Helper::get_base_entity_from_index(ownerobjindex);
 	if (!ownerobj)
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 
 	std::string objname = Helper::get_schema_name(ownerobj);
 
 	uint64_t localpawn = Helper::GetPawn(Helper::get_local_player());
 	if (!localpawn)
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 
 	if ((!localpawn) || localpawn == 0xCCCCCCCCCCCCCCCC) {
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
+	}
+
+	if (ownerobj == localpawn) {
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 	}
 
 	PlayerData LocalData;
@@ -78,30 +83,42 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 
 	if(objname == "C_CitadelPlayerPawn"){
 
-		bool islocal = false;
-
-		if (ownerobj == localpawn) {
-			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-			return;
-		}
+		PlayerData playerdata;
+		Helper::getPawnData(ownerobj, &playerdata);
 
 		std::string matname = material_data->pMaterial->GetName();
 
-		if (matname.find("glow") != std::string::npos) {
-			return;
+		if (matname.find("outline") != std::string::npos) {
+			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		}
 
-		Chams::DrawChams(material_data, islocal, ownerobj, false);
+		if (playerdata.TeamNum == LocalData.TeamNum) {
+			if (!cfg::esp_tChams) {
+				return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
+			}
+			else if(cfg::esp_tModelChams) {
+				overridematerial = setmat;
+			}
+		}
+		else {
+			if (!cfg::esp_eChams) {
+				return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
+			}
+			else if(cfg::esp_eModelChams) {
+				overridematerial = setmat;
+			}
+		}
 
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+		Chams::HandleColor(material_data, ownerobj, LocalData.TeamNum, a4);
 
-		return;
+		__int64 result =  DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
+		return result;
+
 	}
 	if (objname == "C_NPC_Trooper") {
 
 		if (!cfg::esp_DrawMinions) {
-			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-			return;
+			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		}
 
 		NpcData EntInfo;
@@ -109,8 +126,7 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 
 		uint64_t entteamnum = 263168 + LocalData.TeamNum;
 		if (EntInfo.m_iteamnum == entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
-			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-			return;
+			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		}
 
 		material_data->colValue.a = 255;
@@ -123,16 +139,13 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 		material_data->pMaterial = setmat;
 		material_data->pMaterial2 = setmat;
 
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 
 	}
 	if (objname == "C_NPC_TrooperBoss") {
 
 		if (!cfg::esp_drawTowers) {
-			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-			return;
+			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		}
 
 		NpcData EntInfo;
@@ -140,8 +153,7 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 
 		uint64_t entteamnum = 262144 + LocalData.TeamNum;
 		if (EntInfo.m_iteamnum == entteamnum) {  // really awful terribleness because the number just happens to be this for minion teams
-			DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-			return;
+			return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		}
 
 		std::string matname = material_data->pMaterial->GetName();
@@ -156,15 +168,13 @@ void detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, _
 		material_data->pMaterial = setmat;
 		material_data->pMaterial2 = setmat;
 
-		DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
-
-		return;
+		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 
 	}
 
 
 
-	DrawModel(a1, a2, material_data, a4, a5, a6, a7, a8);
+	return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 
 }
 
@@ -191,6 +201,7 @@ unsigned long long createMask(const std::string& bitString) {
 typedef void(__fastcall* f_CreateMove)(__int64* a1, int a2, char a3);
 static f_CreateMove CreateMove = nullptr;
 static f_CreateMove CreateMoveTarget = reinterpret_cast<f_CreateMove>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "85 D2 0F 85 ? ? ? ? 48 8B C4 44 88 40"));
+
 
 
 void detourCreateMove(__int64* a1, int a2, char a3) {
@@ -239,6 +250,7 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 	WardenLogic warden;
 	YamatoLogic yamato;
 	WraithLogic wraith;
+	CalicoLogic calico;
 
 		switch (LocalPlayer.HeroID) {
 
@@ -290,14 +302,15 @@ void detourCreateMove(__int64* a1, int a2, char a3) {
 		case Wraith:
 			wraith.RunScript(cmd);
 			break;
-		default:
+		case Calico:
+			calico.RunScript(cmd);
 			break;
+		default: break;
 		}
 
 	if (cfg::ragebot_masterswitch) {
 		Helper::CorrectMovement(cmd, old_forwardmove, old_sidemove, old_viewangles);
 	}
-
 
 	return;
 }
@@ -576,11 +589,11 @@ void __fastcall hkDoGlow(__int64 a1) {
 			PlayerData entdata;
 			Helper::get_player_data(entity, &entdata);
 
-			if (entdata.TeamNum != localdata.TeamNum) {
+			if (entdata.TeamNum != localdata.TeamNum && cfg::esp_eGlowEsp){
 				teamnums.push_back(entdata.TeamNum);
 				Controllers.push_back(entity);
 			}
-			else if (cfg::esp_tGlowEsp) {
+			else if (entdata.TeamNum == localdata.TeamNum && cfg::esp_tGlowEsp){
 				teamnums.push_back(entdata.TeamNum);
 				Controllers.push_back(entity);
 			}
@@ -667,8 +680,49 @@ __int64 __fastcall hkVerifyGlowObject(__int64 a1, int a2, float a3) {
 	return result;
 }
 
+typedef __int64(__fastcall* setupview)(__int64 a1, __int64 a2);
+static setupview ogsetupview = nullptr;
+static setupview setupviewtarget = reinterpret_cast<setupview>(MEM::GetClientBase() + MEM::PatternScanFunc((void*)MEM::GetClientBase(), "48 8b c4 55 53 56 57 41 54 41 56 41 57 48 8d 68"));
 
+__int64 __fastcall hkSetupView(__int64 ThirdPersonCamera, __int64 PlayerPawn) {
 
+	__int64 result = ogsetupview(ThirdPersonCamera, PlayerPawn);
+
+	float* fov = (float*)(ThirdPersonCamera + 0x50);
+
+	float oldfov = *fov;
+
+	float multiplier = oldfov / 75.f;
+
+	*fov = cfg::misc_fov * multiplier;
+
+	return result;
+
+}
+
+typedef __int64(__fastcall* SetPunchAngle)(__int64 a1, const void** a2, __int64 a3, int a4, __int64 a5, __int64 a6, __int16 a7);
+static SetPunchAngle ogSetPunchAngle = nullptr;
+static SetPunchAngle SetPunchAngleTarget = reinterpret_cast<SetPunchAngle>(MEM::GetClientBase() + 0x947A80);
+
+__int64 __fastcall hkSetPunchAngle(__int64 a1, const void** a2, __int64 a3, int a4, __int64 a5, __int64 a6, __int16 a7) {
+
+	__int64 result = ogSetPunchAngle(a1, a2, a3, a4, a5, a6, a7);
+
+	if (!cfg::misc_bNorecoil || !iEngine->IsInGame()) {
+		return result;
+	}
+
+	auto controller = Helper::get_local_player();
+	auto pawn = Helper::GetPawn(controller);
+	auto cameraservices = *(uint64_t*)(pawn + C_BasePlayerPawn::m_pCameraServices);
+
+	vec3 zero{ 0.f,0.f,0.f };
+
+	*(vec3*)(cameraservices + CPlayer_CameraServices::m_vecPunchAngle) = zero;
+
+	return result;
+
+}
 
 
 void CreateHooks() {
@@ -714,6 +768,15 @@ void CreateHooks() {
 	MH_CreateHook((LPVOID)doglowtarget, &hkDoGlow, reinterpret_cast<LPVOID*>(&ogdoglow));
 	MH_EnableHook((LPVOID)doglowtarget);
 	//std::cout << "[+] DoGlow Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)setupviewtarget, &hkSetupView, reinterpret_cast<LPVOID*>(&ogsetupview));
+	MH_EnableHook((LPVOID)setupviewtarget);
+	//std::cout << "[+] DoGlow Hook Initialized!" << std::endl;
+
+	MH_CreateHook((LPVOID)SetPunchAngleTarget, &hkSetPunchAngle, reinterpret_cast<LPVOID*>(&ogSetPunchAngle));
+	MH_EnableHook((LPVOID)SetPunchAngleTarget);
+	//std::cout << "[+] DoGlow Hook Initialized!" << std::endl;
+
 
 
 	// Set the new window procedure

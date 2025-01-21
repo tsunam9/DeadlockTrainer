@@ -12,9 +12,7 @@ public:
 
 
 	void DoMisc();
-	void SimpleNoRecoil();
 	void DoSkyModulation();
-	static void settargetfov(float fov);
 
 	static void AutoActiveReload(CCitadelUserCmdPB* cmd);
 

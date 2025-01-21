@@ -9,6 +9,7 @@
 static uint64_t particlesdllbase = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "particles.dll");
 static uint64_t hTier0 = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "tier0.dll");
 static uint64_t materialsystembase = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "materialsystem2.dll");
+static uint64_t meshsystembase = MEM::GetModuleBaseAddress(MEM::GetProcessIdByName("project8.exe"), "meshsystem.dll");
 
 template <typename T = std::uint8_t>
 [[nodiscard]] T* GetAbsoluteAddress(T* pRelativeAddress, int nPreOffset = 0x0, int nPostOffset = 0x0)
@@ -186,11 +187,14 @@ struct material_data_t {
 };
 
 
-
 struct CMaterial2
 {
 	virtual const char* GetName() = 0;
 	virtual const char* GetShareName() = 0;
+
+	bool IsLoaded() {
+		return MEM::CallVFunc<bool, 4>(this);
+	}
 
 	__int64 GetAttributes()
 	{
@@ -236,37 +240,29 @@ class CObjectInfo
 	int nId;
 };
 
+class CMeshInstance_IMP {
+public:
+	__int64 SetMaterialOverrides(uint64_t thisptr, CStrongHandle<CMaterial2> material, int nummaterials) {
+		using fnSetMatOverrides = __int64(__fastcall*)(uint64_t thisptr, CStrongHandle<CMaterial2> material, int nummaterials);
+		static auto OverrideMaterials = reinterpret_cast<fnSetMatOverrides>(meshsystembase + MEM::PatternScanFunc((void*)meshsystembase, "40 55 41 56 41 57 48 83 ec ? 48 8d 6c 24 ? 48 8b 41 ? 48 89 5d"));
+
+	return OverrideMaterials(thisptr, material, nummaterials);
+
+	}
+};
+
 class CMeshData
 {
 public:
-	void SetShaderType(const char* szShaderName)
-	{
-		// @ida: #STR: shader, spritecard.vfx
-		using fnSetMaterialShaderType = void(__fastcall*)(__int64 thisptr , int* , BYTE* a3, __int8 a4);
-		static auto oSetMaterialShaderType = reinterpret_cast<fnSetMaterialShaderType>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5c 24 ? 48 89 6c 24 ? 56 57 41 54 41 56 41 57 48 83 ec ? 0f b6 01 45 0f b6 f9 8b 2a 4d 8b e0 4c 8b 72 ? 48 8b d9 c0 e8 ? 24 ? 3c ? 74 ? 41 b0 ? b2 ? e8 ? ? ? ? 0f b6 03 33 ff c0 e8 ? 24 ? 3c ? 75 ? 48 8b 73 ? eb ? 48 8b f7 4c 8d 44 24 ? c7 44 24 ? ? ? ? ? 48 8d 54 24 ? 89 6c 24 ? 48 8b ce 4c 89 74 24 ? e8 ? ? ? ? 83 f8 ? 75 ? 45 33 c9 89 6c 24 ? 4c 8d 44 24 ? 4c 89 74 24 ? 48 8b d3 48 8b ce e8 ? ? ? ? 0f b6 0b c0 e9 ? 80 e1 ? 80 f9 ? 75 ? 48 8b 7b ? 80 7f ? ? 48 8d 57"));
 
-		MaterialKeyVar_t shaderVar(0x162C1777, "shader");
-		oSetMaterialShaderType((__int64)this, (int*)&shaderVar.uKey, (BYTE*)szShaderName, 0x1A);	
-	}
-
-	void SetMaterialFunction(const char* szFunctionName, int nValue, void* pData)
-	{
-		using fnSetMaterialFunction = unsigned __int64*(__fastcall*)(unsigned __int64* a1, MaterialKeyVar_t, __int64 a3, unsigned __int8 a4);
-		static auto oSetMaterialFunction = reinterpret_cast<fnSetMaterialFunction>(particlesdllbase + MEM::PatternScanFunc((void*)particlesdllbase, "48 89 5C 24 08 48 89 6C 24 10 56 57 41 54"));
-
-		MaterialKeyVar_t functionVar(szFunctionName, true);
-
-		oSetMaterialFunction((unsigned __int64*)pData, functionVar , nValue, 0x12);
-	}
-
-	char pad01[0x18];
+	CMeshInstance_IMP* pMeshInstance;
+	char pad01[0x10];
 	CSceneAnimatableObject* pSceneAnimatableObject; // 0x18
 	CMaterial2* pMaterial; // 0x20
 	CMaterial2* pMaterial2; // 0x28
 	char pad02[0x20];
-	Color_t colValue; // 0x40
-	char pad03[0x4];
-	CObjectInfo* pObjectInfo; // 0x48
+	Color_t colValue; // 0x50 
+	char pad03[0x10];
 };
 
 class IMaterialSystem2
@@ -296,15 +292,15 @@ static constexpr char szVMatBufferWhiteInvisible[] =
 R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
 	shader = "pbr.vfx"
-
+	
 	F_SELF_ILLUM = 1
-	g_bNoEnvMapOcclusion = 0
-		
+	g_flSelfIllumScale1 = 0.2	
+
 	g_tAmbientOcclusion = resource:"materials/default/default_ao_tga_559f1ac6.vtex"
 	g_tColor = resource:"materials/dev/primary_white_color_tga_e79cd79d.vtex"
 	g_tNormalRoughness = resource:"materials/default/default_normal_tga_7be61377.vtex"
-    g_tSelfIllumMask = resource:"materials/dev/primary_white_color_tga_e3f40130.vtex"
-    g_tTintMask = resource:"materials/default/default_mask_tga_344101f8.vtex"
+	g_tSelfIllumMask = resource:"materials/dev/primary_white_color_tga_e3f40130.vtex"
+	g_tTintMask = resource:"materials/default/default_mask_tga_344101f8.vtex"
 
 })";
 
@@ -316,6 +312,8 @@ public:
 
 	static CStrongHandle<CMaterial2> CreateMaterial(const char* szMaterialName, const char szVmatBuffer[]);
 	static void DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bool ignorez);
+	static void HandleMaterial(CMeshData* matdata, uint64_t entity_pawn, CMaterial2* material);
+	static void HandleColor(CMeshData* matdata, uint64_t entity_pawn,int localteamnum, int numMeshes);
 
 };
 

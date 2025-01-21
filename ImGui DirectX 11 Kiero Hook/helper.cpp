@@ -196,13 +196,13 @@ int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name)
 	return -1;
 }
 
- bool Helper::get_player_data(uint64_t entity, PlayerData* outputPlrData){
+ bool Helper::get_player_data(uint64_t PlayerController, PlayerData* outputPlrData){
 
 
-	 if (!entity)
+	 if (!PlayerController)
 		 return false;
 
-	uint64_t PawnHandle = *(uint64_t*)(entity + CBasePlayerController::m_hPawn);
+	uint64_t PawnHandle = *(uint64_t*)(PlayerController + CBasePlayerController::m_hPawn);
 	uint64_t Index = Helper::CHandle_get_entry_index(PawnHandle);
 	uint64_t Pawn = Helper::get_base_entity_from_index(Index);
 
@@ -210,7 +210,7 @@ int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name)
 		return false;
 
 	uint64_t GameSceneNode = *(uint64_t*)(Pawn + C_BaseEntity::m_pGameSceneNode);
-	uint64_t PlayerDataGlobal = entity + CCitadelPlayerController::m_PlayerDataGlobal;
+	uint64_t PlayerDataGlobal = PlayerController + CCitadelPlayerController::m_PlayerDataGlobal;
 	outputPlrData->m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
 	outputPlrData->m_vecVelocity= *(vec3*)(Pawn + C_BaseEntity::m_vecVelocity);
 	outputPlrData->Health = *(uint32_t*)(PlayerDataGlobal + PlayerDataGlobal_t::m_iHealth);
@@ -232,6 +232,10 @@ int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name)
 	 if (!entity_pawn)
 		 return false;
 
+	 uint64_t handleToController = *(uint64_t*)(entity_pawn + C_BasePlayerPawn::m_hController);
+	 uint64_t Index = Helper::CHandle_get_entry_index(handleToController);
+	 uint64_t Controller = Helper::get_base_entity_from_index(Index);
+	 uint64_t PlayerDataGlobal = Controller + CCitadelPlayerController::m_PlayerDataGlobal;
 
 	 uint64_t GameSceneNode = *(uint64_t*)(entity_pawn + C_BaseEntity::m_pGameSceneNode);
 	 outputPlrData->m_vecOrigin = *(vec3*)(GameSceneNode + CGameSceneNode::m_vecAbsOrigin);
@@ -239,6 +243,8 @@ int Helper::get_bone_index(uintptr_t target_entity, const std::string bone_name)
 	 outputPlrData->TeamNum = *(int*)(entity_pawn + C_BaseEntity::m_iTeamNum);
 	 outputPlrData->dormant = *(bool*)(GameSceneNode + CGameSceneNode::m_bDormant);
 	 outputPlrData->weaponservices = *(uint64_t*)(entity_pawn + C_BasePlayerPawn::m_pWeaponServices);
+
+	 outputPlrData->HeroID = *(int*)(PlayerDataGlobal + PlayerDataGlobal_t::m_nHeroID);
 
 
 	 return true;
@@ -325,7 +331,10 @@ std::string Helper::GetHeroNameByID(int id) {
 	case Wrecker: return "Wrecker";
 	case Pocket: return "Pocket";
 	case Mirage: return "Mirage";
-	default: return "Unknown Hero"; // Handle invalid IDs
+	case Vyper: return "Vyper";
+	case Sinclair: return "Sinclair";
+	case Calico: return "Calico";
+	default: return std::format("Target Dummy {}", id); // Use {} instead of %d because std::format sucks 
 	}
 }
 

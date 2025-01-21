@@ -35,6 +35,7 @@ Menu menu;
 
 
 
+
 void InitImGui()
 {
 	ImGui::CreateContext();
@@ -72,9 +73,6 @@ void InitImGui()
 	style.FrameRounding = 6.f;
 
 	minitext = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ARIAL.ttf", 10.f, NULL, io.Fonts->GetGlyphRangesDefault());
-
-
-
 
 }
 
@@ -138,7 +136,9 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	{
 		if (SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&pDevice)))
 		{
+
 			pDevice->GetImmediateContext(&pContext);
+			
 			DXGI_SWAP_CHAIN_DESC sd;
 			pSwapChain->GetDesc(&sd);
 			window = sd.OutputWindow;
@@ -181,6 +181,7 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
+
 	// Set the background color HERE
 
 	ImGui::PushFont(Franklin);
@@ -196,15 +197,15 @@ HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT 
 	}
 	else {
 		iEngine->ClientCmd_Unrestricted("hud_free_cursor -1");
-	}	
+	}
+
 	ImGui::Render();
 
 	pContext->OMSetRenderTargets(1, &mainRenderTargetView, NULL);
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
 	pContext->OMSetRenderTargets(1, &originalRTV, NULL);
 
-	if (originalRTV) originalRTV->Release();
+	if (originalRTV) originalRTV->Release();	
 
 	return oPresent(pSwapChain, SyncInterval, Flags);
 }
