@@ -3,7 +3,7 @@
 
 void CalicoLogic::AutoAimBombs() {
 
-	float CastingEnd = *(float*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_flCooldownEnd); // use cooldown end because it for some reason sets the internal cd to 0.1 i guess to recast for multiple bombs?
+	float CastingEnd = *(float*)(this->abilitiesarray[1] + C_CitadelBaseAbility::m_flCastCompletedTime); // use cooldown end because it for some reason sets the internal cd to 0.1 i guess to recast for multiple bombs?
 
 	if (CastingEnd + 0.25 < globals::instance().Globals->flAbsCurTime) {
 		return;
@@ -12,7 +12,7 @@ void CalicoLogic::AutoAimBombs() {
 	if (!(cfg::calico_AimBombs))
 		return;
 
-	Aimbot::AimAbility(this->target, 1, this->abilitiesarray[1], 2840.f, true);
+	Aimbot::AimAbility(this->target, 2, this->abilitiesarray[1], 2840.f, true);
 
 }
 
@@ -24,7 +24,6 @@ void CalicoLogic::OnAbility1() {
 	if (!(cfg::calico_AimBombs))
 		return;
 
-	uint64_t target = Aimbot::GetCurrentAimbotTarget();
 	if (!target)
 		return;
 

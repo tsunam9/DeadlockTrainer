@@ -76,9 +76,6 @@
     <Filter Include="Source Files\Features\Binds">
       <UniqueIdentifier>{13f0555b-6b90-466f-a77d-6106fe686ebc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Security">
-      <UniqueIdentifier>{5acb3ba0-eae2-40ad-8ecf-e1613d5284fa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Features\Heroes">
       <UniqueIdentifier>{2de12c44-f8e6-4bac-a68a-4e09b495bfdd}</UniqueIdentifier>
     </Filter>
@@ -282,9 +279,6 @@
     <ClCompile Include="binds.cpp">
       <Filter>Source Files\Features\Binds</Filter>
     </ClCompile>
-    <ClCompile Include="Security.cpp">
-      <Filter>Source Files\Security</Filter>
-    </ClCompile>
     <ClCompile Include="Calico.cpp">
       <Filter>Source Files\Features\Heroes\Calico</Filter>
     </ClCompile>
@@ -469,9 +463,6 @@
     </ClInclude>
     <ClInclude Include="binds.h">
       <Filter>Source Files\Features\Binds</Filter>
-    </ClInclude>
-    <ClInclude Include="Security.h">
-      <Filter>Source Files\Security</Filter>
     </ClInclude>
     <ClInclude Include="httpthings.h">
       <Filter>Dump\Header Files</Filter>

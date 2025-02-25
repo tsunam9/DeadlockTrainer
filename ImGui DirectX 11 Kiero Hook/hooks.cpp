@@ -41,10 +41,40 @@ f_DrawModel DrawModelTarget = reinterpret_cast<f_DrawModel>(scenesytembase + MEM
 // a7 : idk
 // a8 : overridematerial
 
+#ifdef chamsiteration
+char quickiterationmaterial[20408]; // only definition allowed
+bool replacedmaterial;
+bool firstreplacedmaterial;
+#endif
+
+__int64 copya1;
+__int64 copya2;
+CMeshData* copymatdata = new CMeshData;
+int copya4;
+__int64 copya5;
+__int64 copya6;
+__int64 copya7;
+
+
 class CRenderContextBase;
 __int64 detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4, __int64 a5, __int64 a6, __int64 a7, CMaterial2* overridematerial){
 
+
 	static auto setmat = Chams::CreateMaterial("invisible", szVMatBufferWhiteInvisible);
+
+#ifdef chamsiteration
+	if (replacedmaterial) {
+
+		std::string firsthalf = R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{)";
+		std::string material = quickiterationmaterial;
+		std::string secondhalf = "}";
+		std::string matbuffer = firsthalf + material + secondhalf;
+
+		setmat = Chams::CreateMaterial("invisible", matbuffer.c_str());
+		replacedmaterial = false;
+	}
+#endif
 
 	if (!cfg::esp_bEsp)
 		return DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
@@ -110,6 +140,8 @@ __int64 detourdrawmodel(__int64 a1, __int64 a2, CMeshData* material_data, int a4
 		}
 
 		Chams::HandleColor(material_data, ownerobj, LocalData.TeamNum, a4);
+
+
 
 		__int64 result =  DrawModel(a1, a2, material_data, a4, a5, a6, a7, overridematerial);
 		return result;
@@ -567,7 +599,6 @@ void __fastcall hkDoGlow(__int64 a1) {
 	if ((!cfg::esp_eGlowEsp && !cfg::esp_tGlowEsp ) || !cfg::esp_bEsp)
 		return;
 
-
 	std::vector<uint64_t> Controllers;
 	std::vector<uint32_t> teamnums;
 
@@ -776,8 +807,6 @@ void CreateHooks() {
 	MH_CreateHook((LPVOID)SetPunchAngleTarget, &hkSetPunchAngle, reinterpret_cast<LPVOID*>(&ogSetPunchAngle));
 	MH_EnableHook((LPVOID)SetPunchAngleTarget);
 	//std::cout << "[+] DoGlow Hook Initialized!" << std::endl;
-
-
 
 	// Set the new window procedure
 

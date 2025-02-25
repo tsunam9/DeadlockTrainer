@@ -193,7 +193,6 @@ libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClCompile Include="offsets.cpp" />
     <ClCompile Include="Paradox.cpp" />
     <ClCompile Include="Pocket.cpp" />
-    <ClCompile Include="Security.cpp" />
     <ClCompile Include="Seven.cpp" />
     <ClCompile Include="shiv.cpp" />
     <ClCompile Include="vindicta.cpp" />
@@ -267,7 +266,6 @@ libcrypto.lib;%(AdditionalDependencies)</AdditionalDependencies>
     <ClInclude Include="Paradox.h" />
     <ClInclude Include="Pocket.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Security.h" />
     <ClInclude Include="Seven.h" />
     <ClInclude Include="shiv.h" />
     <ClInclude Include="source2client.h" />

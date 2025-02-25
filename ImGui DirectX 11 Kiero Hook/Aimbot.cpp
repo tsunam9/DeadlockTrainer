@@ -1170,9 +1170,6 @@ void Aimbot::RunAimbot(CCitadelUserCmdPB* usercmd) { // ran in CreateMove hook
 			}
 		}
 
-
-
-
 		if (cfg::legitbot_bLegitBot && aimtarget) {
 				LegitAimAt(aimtarget, legitbot_hitboxes[closestbone]);
 				return;

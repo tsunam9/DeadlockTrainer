@@ -7,15 +7,21 @@
 #include "binds.h"
 #include "cfgvar.h"
 
+
+
+#ifdef chamsiteration
 extern char quickiterationmaterial[20408];
 extern bool replacedmaterial;
 extern bool firstreplacedmaterial;
+#endif
+
 
 enum WidgetType {
 	checkbox,
 	sliderint,
 	sliderfloat
 };
+
 
 struct widgetinfo_checkbox {
 

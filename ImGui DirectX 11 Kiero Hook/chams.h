@@ -294,7 +294,7 @@ R"(<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:g
 	shader = "pbr.vfx"
 	
 	F_SELF_ILLUM = 1
-	g_flSelfIllumScale1 = 0.2	
+	g_flSelfIllumScale1 = 0.05	
 
 	g_tAmbientOcclusion = resource:"materials/default/default_ao_tga_559f1ac6.vtex"
 	g_tColor = resource:"materials/dev/primary_white_color_tga_e79cd79d.vtex"
@@ -311,7 +311,6 @@ class Chams
 public:
 
 	static CStrongHandle<CMaterial2> CreateMaterial(const char* szMaterialName, const char szVmatBuffer[]);
-	static void DrawChams(CMeshData* matdata, bool islocal, uint64_t entity_pawn, bool ignorez);
 	static void HandleMaterial(CMeshData* matdata, uint64_t entity_pawn, CMaterial2* material);
 	static void HandleColor(CMeshData* matdata, uint64_t entity_pawn,int localteamnum, int numMeshes);
 
