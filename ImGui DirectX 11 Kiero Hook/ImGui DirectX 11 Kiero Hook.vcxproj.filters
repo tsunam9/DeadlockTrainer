@@ -1,0 +1,492 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="kiero">
+      <UniqueIdentifier>{c914abae-6128-4a2a-8821-07a38f656930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{3ba57e14-8ac2-485a-b12c-f06690c43d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Offsets">
+      <UniqueIdentifier>{866b1c13-8e7b-488c-852c-c0ad9d449e60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Helper">
+      <UniqueIdentifier>{e81ee0a9-56a3-49e0-a3ff-fbdbc9bb7258}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dump">
+      <UniqueIdentifier>{62a58775-7b43-43ca-8e1d-07ee0585863f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Logic">
+      <UniqueIdentifier>{204658b2-3c0a-4387-a7e0-bf375616e93c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Config">
+      <UniqueIdentifier>{2f1fc201-bec1-467e-8ccb-954f18a42bfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Drawing">
+      <UniqueIdentifier>{b82b2467-0075-4e4a-8a04-c75e8a812a9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features">
+      <UniqueIdentifier>{5bbbdbf2-334c-47f3-bf2d-14a2788f03ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\ESP">
+      <UniqueIdentifier>{6f824638-cb05-4b44-90d4-9dbfa97bccd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Aimbot">
+      <UniqueIdentifier>{ec54dd53-398a-4e3a-960f-73d61f1a090b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameInterface">
+      <UniqueIdentifier>{04c32b85-9f1e-42bc-9640-dafeab0fbd29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Hooks">
+      <UniqueIdentifier>{3712a731-ea13-462f-a753-87cd3b73bdc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SigScanner">
+      <UniqueIdentifier>{a052dac5-42c7-494d-b7b5-599be03a3c09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Chams">
+      <UniqueIdentifier>{17b27bb5-e346-446f-919c-9a010ef11600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dump\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Menu">
+      <UniqueIdentifier>{6ad05beb-af5a-469b-b3a8-e0b382a2efe8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Globals">
+      <UniqueIdentifier>{94802320-d0f6-4807-b39e-8f96257c1b61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ValveClasses">
+      <UniqueIdentifier>{d711d5e8-9a46-40ac-99e9-a9537ba62da1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Globals\Misc">
+      <UniqueIdentifier>{ec49920a-12af-465f-bc20-990de62346da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Chams\AntiAim">
+      <UniqueIdentifier>{db13c58b-dcea-4ea4-9963-85f28abbcee3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Binds">
+      <UniqueIdentifier>{13f0555b-6b90-466f-a77d-6106fe686ebc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes">
+      <UniqueIdentifier>{2de12c44-f8e6-4bac-a68a-4e09b495bfdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Vindicta">
+      <UniqueIdentifier>{18d71714-7ba0-4d82-8da6-5e8f9d32953a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Abrams">
+      <UniqueIdentifier>{c99ddf8b-6443-47bb-a391-9994f641d5e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Abrams\shiv">
+      <UniqueIdentifier>{bbf72b9b-e122-4b39-8449-b39772486d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Bebop">
+      <UniqueIdentifier>{7b52edaa-9ccd-45aa-b71b-097fe8f290dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Haze">
+      <UniqueIdentifier>{4a216151-6a16-4975-9645-2b71510c2274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Infernus">
+      <UniqueIdentifier>{0657e111-cc36-4dd7-9747-5e46f3288e71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Ivy">
+      <UniqueIdentifier>{fea1e91c-2875-4d08-a6fb-29a3fd1c7e72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Kelvin">
+      <UniqueIdentifier>{6d577581-f2db-4bb7-9395-6012bd25d222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\LadyGeist">
+      <UniqueIdentifier>{0717eb99-26c8-4f0e-8955-adfb4cee2c02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Mirage">
+      <UniqueIdentifier>{22e6d39c-0465-46ac-b864-238f8db1a0dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Paradox">
+      <UniqueIdentifier>{dd42e7dc-8120-480f-bc5e-21a3daa9d965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Pocket">
+      <UniqueIdentifier>{837b182c-5ff2-474f-955f-55dd33beac6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Seven">
+      <UniqueIdentifier>{3e64ef47-d680-4e72-aaa4-c0066477a9bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Viscous">
+      <UniqueIdentifier>{d6dd4ab5-5f33-45c6-b9b0-8007335c1a3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Warden">
+      <UniqueIdentifier>{07a97290-caa9-4542-8472-ce589232f7a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Wraith">
+      <UniqueIdentifier>{7ee38b32-55a0-47c0-8cc0-c10378311a1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Yamato">
+      <UniqueIdentifier>{78a8e2c5-82f0-4a12-b63c-9f8c5bd9d29b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Features\Heroes\Calico">
+      <UniqueIdentifier>{d84c86a3-be3b-40f8-9907-30865f4a67db}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="kiero\minhook\src\buffer.c">
+      <Filter>kiero</Filter>
+    </ClCompile>
+    <ClCompile Include="kiero\minhook\src\hde\hde32.c">
+      <Filter>kiero</Filter>
+    </ClCompile>
+    <ClCompile Include="kiero\minhook\src\hde\hde64.c">
+      <Filter>kiero</Filter>
+    </ClCompile>
+    <ClCompile Include="kiero\minhook\src\hook.c">
+      <Filter>kiero</Filter>
+    </ClCompile>
+    <ClCompile Include="kiero\kiero.cpp">
+      <Filter>kiero</Filter>
+    </ClCompile>
+    <ClCompile Include="kiero\minhook\src\trampoline.c">
+      <Filter>kiero</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_dx11.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_win32.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Aimbot.cpp">
+      <Filter>Source Files\Features\Aimbot</Filter>
+    </ClCompile>
+    <ClCompile Include="ESP.cpp">
+      <Filter>Source Files\Features\ESP</Filter>
+    </ClCompile>
+    <ClCompile Include="helper.cpp">
+      <Filter>Source Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic.cpp">
+      <Filter>Source Files\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawing.cpp">
+      <Filter>Source Files\Drawing</Filter>
+    </ClCompile>
+    <ClCompile Include="Misc.cpp">
+      <Filter>Source Files\Globals\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="hooks.cpp">
+      <Filter>Source Files\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="AntiAim.cpp">
+      <Filter>Source Files\Features\Chams\AntiAim</Filter>
+    </ClCompile>
+    <ClCompile Include="mem.cpp">
+      <Filter>Source Files\SigScanner</Filter>
+    </ClCompile>
+    <ClCompile Include="gameinterface.cpp">
+      <Filter>Source Files\GameInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="offsets.cpp">
+      <Filter>Source Files\Offsets</Filter>
+    </ClCompile>
+    <ClCompile Include="heros.cpp">
+      <Filter>Source Files\Features\Heroes</Filter>
+    </ClCompile>
+    <ClCompile Include="shiv.cpp">
+      <Filter>Source Files\Features\Heroes\Abrams\shiv</Filter>
+    </ClCompile>
+    <ClCompile Include="chams.cpp">
+      <Filter>Source Files\Features\Chams</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="vindicta.cpp">
+      <Filter>Source Files\Features\Heroes\Vindicta</Filter>
+    </ClCompile>
+    <ClCompile Include="Globals.cpp">
+      <Filter>Source Files\Globals</Filter>
+    </ClCompile>
+    <ClCompile Include="Abrams.cpp">
+      <Filter>Source Files\Features\Heroes\Abrams</Filter>
+    </ClCompile>
+    <ClCompile Include="Bebop.cpp">
+      <Filter>Source Files\Features\Heroes\Bebop</Filter>
+    </ClCompile>
+    <ClCompile Include="Haze.cpp">
+      <Filter>Source Files\Features\Heroes\Haze</Filter>
+    </ClCompile>
+    <ClCompile Include="Infernus.cpp">
+      <Filter>Source Files\Features\Heroes\Infernus</Filter>
+    </ClCompile>
+    <ClCompile Include="Ivy.cpp">
+      <Filter>Source Files\Features\Heroes\Ivy</Filter>
+    </ClCompile>
+    <ClCompile Include="Kelvin.cpp">
+      <Filter>Source Files\Features\Heroes\Kelvin</Filter>
+    </ClCompile>
+    <ClCompile Include="LadyGeist.cpp">
+      <Filter>Source Files\Features\Heroes\LadyGeist</Filter>
+    </ClCompile>
+    <ClCompile Include="Mirage.cpp">
+      <Filter>Source Files\Features\Heroes\Mirage</Filter>
+    </ClCompile>
+    <ClCompile Include="Paradox.cpp">
+      <Filter>Source Files\Features\Heroes\Paradox</Filter>
+    </ClCompile>
+    <ClCompile Include="Pocket.cpp">
+      <Filter>Source Files\Features\Heroes\Pocket</Filter>
+    </ClCompile>
+    <ClCompile Include="Seven.cpp">
+      <Filter>Source Files\Features\Heroes\Seven</Filter>
+    </ClCompile>
+    <ClCompile Include="Viscous.cpp">
+      <Filter>Source Files\Features\Heroes\Viscous</Filter>
+    </ClCompile>
+    <ClCompile Include="Warden.cpp">
+      <Filter>Source Files\Features\Heroes\Warden</Filter>
+    </ClCompile>
+    <ClCompile Include="Wraith.cpp">
+      <Filter>Source Files\Features\Heroes\Wraith</Filter>
+    </ClCompile>
+    <ClCompile Include="Yamato.cpp">
+      <Filter>Source Files\Features\Heroes\Yamato</Filter>
+    </ClCompile>
+    <ClCompile Include="cfgvar.cpp">
+      <Filter>Source Files\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="insttracker.cpp">
+      <Filter>Source Files\Globals</Filter>
+    </ClCompile>
+    <ClCompile Include="binds.cpp">
+      <Filter>Source Files\Features\Binds</Filter>
+    </ClCompile>
+    <ClCompile Include="Calico.cpp">
+      <Filter>Source Files\Features\Heroes\Calico</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="kiero\minhook\src\buffer.h">
+      <Filter>kiero</Filter>
+    </ClInclude>
+    <ClInclude Include="kiero\minhook\src\hde\hde32.h">
+      <Filter>kiero</Filter>
+    </ClInclude>
+    <ClInclude Include="kiero\minhook\src\hde\hde64.h">
+      <Filter>kiero</Filter>
+    </ClInclude>
+    <ClInclude Include="kiero\kiero.h">
+      <Filter>kiero</Filter>
+    </ClInclude>
+    <ClInclude Include="kiero\minhook\include\MinHook.h">
+      <Filter>kiero</Filter>
+    </ClInclude>
+    <ClInclude Include="kiero\minhook\src\hde\pstdint.h">
+      <Filter>kiero</Filter>
+    </ClInclude>
+    <ClInclude Include="kiero\minhook\src\hde\table32.h">
+      <Filter>kiero</Filter>
+    </ClInclude>
+    <ClInclude Include="kiero\minhook\src\hde\table64.h">
+      <Filter>kiero</Filter>
+    </ClInclude>
+    <ClInclude Include="kiero\minhook\src\trampoline.h">
+      <Filter>kiero</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_dx11.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_win32.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="includes.h">
+      <Filter>Dump\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="offsets.h">
+      <Filter>Source Files\Offsets</Filter>
+    </ClInclude>
+    <ClInclude Include="Aimbot.h">
+      <Filter>Source Files\Features\Aimbot</Filter>
+    </ClInclude>
+    <ClInclude Include="ESP.h">
+      <Filter>Source Files\Features\ESP</Filter>
+    </ClInclude>
+    <ClInclude Include="helper.h">
+      <Filter>Source Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Source Files\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawing.h">
+      <Filter>Source Files\Drawing</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic.h">
+      <Filter>Source Files\Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc.h">
+      <Filter>Source Files\Globals\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cs2Dumper\output\buttons.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="gameinterface.h">
+      <Filter>Source Files\GameInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="client_dll.hpp">
+      <Filter>Dump</Filter>
+    </ClInclude>
+    <ClInclude Include="hooks.h">
+      <Filter>Source Files\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="AntiAim.h">
+      <Filter>Source Files\Features\Chams\AntiAim</Filter>
+    </ClInclude>
+    <ClInclude Include="mem.h">
+      <Filter>Source Files\SigScanner</Filter>
+    </ClInclude>
+    <ClInclude Include="heros.h">
+      <Filter>Source Files\Features\Heroes</Filter>
+    </ClInclude>
+    <ClInclude Include="shiv.h">
+      <Filter>Source Files\Features\Heroes\Abrams\shiv</Filter>
+    </ClInclude>
+    <ClInclude Include="vindicta.h">
+      <Filter>Source Files\Features\Heroes\Vindicta</Filter>
+    </ClInclude>
+    <ClInclude Include="chams.h">
+      <Filter>Source Files\Features\Chams</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Source Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Source Files\Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="CGlobalVarsBase.h">
+      <Filter>Source Files\ValveClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="CCitadelBulletManager.h">
+      <Filter>Source Files\ValveClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="IEngineClient.h">
+      <Filter>Source Files\ValveClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="IEngineCvar.h">
+      <Filter>Source Files\ValveClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Abrams.h">
+      <Filter>Source Files\Features\Heroes\Abrams</Filter>
+    </ClInclude>
+    <ClInclude Include="Bebop.h">
+      <Filter>Source Files\Features\Heroes\Bebop</Filter>
+    </ClInclude>
+    <ClInclude Include="Haze.h">
+      <Filter>Source Files\Features\Heroes\Haze</Filter>
+    </ClInclude>
+    <ClInclude Include="Infernus.h">
+      <Filter>Source Files\Features\Heroes\Infernus</Filter>
+    </ClInclude>
+    <ClInclude Include="Ivy.h">
+      <Filter>Source Files\Features\Heroes\Ivy</Filter>
+    </ClInclude>
+    <ClInclude Include="Kelvin.h">
+      <Filter>Source Files\Features\Heroes\Kelvin</Filter>
+    </ClInclude>
+    <ClInclude Include="LadyGeist.h">
+      <Filter>Source Files\Features\Heroes\LadyGeist</Filter>
+    </ClInclude>
+    <ClInclude Include="Mirage.h">
+      <Filter>Source Files\Features\Heroes\Mirage</Filter>
+    </ClInclude>
+    <ClInclude Include="Paradox.h">
+      <Filter>Source Files\Features\Heroes\Paradox</Filter>
+    </ClInclude>
+    <ClInclude Include="Seven.h">
+      <Filter>Source Files\Features\Heroes\Seven</Filter>
+    </ClInclude>
+    <ClInclude Include="Viscous.h">
+      <Filter>Source Files\Features\Heroes\Viscous</Filter>
+    </ClInclude>
+    <ClInclude Include="Warden.h">
+      <Filter>Source Files\Features\Heroes\Warden</Filter>
+    </ClInclude>
+    <ClInclude Include="Wraith.h">
+      <Filter>Source Files\Features\Heroes\Wraith</Filter>
+    </ClInclude>
+    <ClInclude Include="Yamato.h">
+      <Filter>Source Files\Features\Heroes\Yamato</Filter>
+    </ClInclude>
+    <ClInclude Include="ISceneSystem.h">
+      <Filter>Source Files\ValveClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="source2client.h">
+      <Filter>Source Files\ValveClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="cfgvar.h">
+      <Filter>Source Files\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="binds.h">
+      <Filter>Source Files\Features\Binds</Filter>
+    </ClInclude>
+    <ClInclude Include="httpthings.h">
+      <Filter>Dump\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Dump\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\fontawesome_data.h">
+      <Filter>Dump\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Calico.h">
+      <Filter>Source Files\Features\Heroes\Calico</Filter>
+    </ClInclude>
+    <ClInclude Include="Pocket.h">
+      <Filter>Source Files\Features\Heroes\Pocket</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="kiero\minhook\dll_resources\MinHook.def">
+      <Filter>kiero</Filter>
+    </None>
+    <None Include="kiero\minhook\dll_resources\font1.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="html1.htm" />
+  </ItemGroup>
+</Project>
