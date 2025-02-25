@@ -4,6 +4,9 @@
 ## Crashing?
 If it is crashing on inject, it is likely that the signatures are outdated, look on unknowncheats reversal thread for deadlock for up to date signatures.
 
+## Usage tips
+  * Bind things in the menu with right click.
+  * Configs are located at C:\DeadlockTrainer
 ## Ragebot
 * Silent aim
 * Aim conditions
